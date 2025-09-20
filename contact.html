@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact | Aadhirai Innovations</title>
+    <meta name="description" content="Get a quote or request a demo. Chatbot + email built-in." />
+    <link rel="canonical" href="./contact.html" />
+    <meta property="og:title" content="Contact | Aadhirai Innovations">
+    <meta property="og:description" content="Get a quote or request a demo. Chatbot + email built-in.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/img/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="assets/icons/favicon.svg">
+    <link rel="preload" href="assets/css/main.css" as="style" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <script defer src="assets/js/app.js"></script>
+  </head>
+  <body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="logo" href="">
+      <span class="logo-mark">A</span>
+      <span class="logo-text">Aadhirai Innovations</span>
+    </a>
+    <button class="nav-toggle" aria-label="Open Menu" aria-expanded="false">☰</button>
+    <nav class="nav">
+      <a href="index.html#offerings">What We Offer</a>
+      <a href="services.html">Services</a>
+      <a href="solutions/index.html">Solutions</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="contact.html" class="btn btn-primary">Get a Quote</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container pad-y">
+  <h1 class="section-title reveal">Contact</h1>
+  <div class="grid-2">
+    <form id="contactForm" class="card form hover-lift reveal" method="POST" action="https://formspree.io/f/your-id" novalidate>
+      <div class="grid-2">
+        <label>Name<input name="name" required></label>
+        <label>Email<input type="email" name="email" required></label>
+      </div>
+      <label>Company (optional)<input name="company"></label>
+      <label>How can we help?<textarea name="message" rows="5" required></textarea></label>
+      <input type="hidden" name="source" value="contact-form">
+      <div class="row">
+        <button class="btn btn-primary" type="submit">Send</button>
+        <button class="btn btn-secondary" type="button" data-open-chat>Use Chatbot</button>
+      </div>
+    </form>
+    <aside class="card reveal">
+      <h3>Reach Us</h3>
+      <p>Email: <a href="mailto:hello@aadhirai.com">hello@aadhirai.com</a></p>
+      <p>WhatsApp: <a href="https://wa.me/918754202581" target="_blank" rel="noopener">+91 8754202581</a></p>
+      <p>Offices: Singapore / India</p>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container grid-3">
+    <div>
+      <div class="logo-footer"><span class="logo-mark">A</span> Aadhirai Innovations</div>
+      <p class="muted">Websites &amp; Custom Software—fast, secure, scalable.</p>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul class="list">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="solutions/index.html">Solutions</a></li>
+        <li><a href="blog/index.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul class="list">
+        <li>Email: <a href="mailto:hello@aadhirai.com">hello@aadhirai.com</a></li>
+        <li>Phone: +65 8000 0000</li>
+        <li>WhatsApp: +91 8754202581</li>
+      </ul>
+    </div>
+  </div>
+  <div class="subfooter">© 2025 Aadhirai Innovations. All rights reserved.</div>
+</footer>
+
+
+<div id="chatbot" class="chatbot" aria-hidden="true">
+  <div class="chat-header">
+    <strong>Ask Aadhirai</strong>
+    <button class="chat-close" aria-label="Close chat">×</button>
+  </div>
+  <div class="chat-body" id="chatBody" role="log" aria-live="polite">
+    <div class="msg bot">Hi! I can collect your details and email our team. What’s your name?</div>
+  </div>
+  <form id="chatForm" class="chat-input" novalidate>
+    <input type="text" id="chatInput" placeholder="Type here…" autocomplete="off" aria-label="Your message" />
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>

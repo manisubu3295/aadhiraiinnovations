@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hotel Management Demo | Aadhirai Innovations</title>
+    <meta name="description" content="Aadhirai Hotel Manager demo." />
+    <link rel="canonical" href="./solutions/hotel.html" />
+    <meta property="og:title" content="Hotel Management Demo | Aadhirai Innovations">
+    <meta property="og:description" content="Aadhirai Hotel Manager demo.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/img/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="../assets/icons/favicon.svg">
+    <link rel="preload" href="../assets/css/main.css" as="style" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <script defer src="../assets/js/app.js"></script>
+  </head>
+  <body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="logo" href="../">
+      <span class="logo-mark">A</span>
+      <span class="logo-text">Aadhirai Innovations</span>
+    </a>
+    <button class="nav-toggle" aria-label="Open Menu" aria-expanded="false">☰</button>
+    <nav class="nav">
+      <a href="../index.html#offerings">What We Offer</a>
+      <a href="../services.html">Services</a>
+      <a href="../solutions/index.html">Solutions</a>
+      <a href="../blog/index.html">Blog</a>
+      <a href="../contact.html" class="btn btn-primary">Get a Quote</a>
+    </nav>
+  </div>
+</header>
+
+<main id="content">
+  <section class="hero inner-hero">
+    <div class="container hero-inner">
+      <div class="hero-copy reveal">
+        <h1>Hotel Management</h1>
+        <p class="lead">Rooms, housekeeping, reports—streamlined for boutique hotels.</p>
+        <div class="cta-row">
+          <a href="../contact.html" class="btn btn-primary">Request Demo</a>
+          <button class="btn btn-secondary" data-open-chat>Chat Now</button>
+        </div>
+      </div>
+      <div class="hero-art float reveal">
+        <img src="../assets/img/demo-hotel.png" alt="Hotel Mock" width="520" height="340" loading="eager"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="container pad-y">
+    <div class="grid-3">
+      <div class="card hover-lift reveal">
+        <h3>Room Types & Rates</h3>
+        <p>Configurable inventory with seasonal pricing.</p>
+      </div>
+      <div class="card hover-lift reveal">
+        <h3>Bookings & Check-ins</h3>
+        <p>Simple flow with confirmations & reminders.</p>
+      </div>
+      <div class="card hover-lift reveal">
+        <h3>Reports</h3>
+        <p>Occupancy, revenue, add-ons; CSV export.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container pad-y">
+    <h2 class="section-title reveal">Screenshots</h2>
+    <div class="gallery">
+      <img src="../assets/img/screen-hotel-1.png" alt="Screen 1" loading="lazy"/>
+      <img src="../assets/img/screen-hotel-2.png" alt="Screen 2" loading="lazy"/>
+      <img src="../assets/img/screen-hotel-3.png" alt="Screen 3" loading="lazy"/>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container grid-3">
+    <div>
+      <div class="logo-footer"><span class="logo-mark">A</span> Aadhirai Innovations</div>
+      <p class="muted">Websites &amp; Custom Software—fast, secure, scalable.</p>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul class="list">
+        <li><a href="../services.html">Services</a></li>
+        <li><a href="../solutions/index.html">Solutions</a></li>
+        <li><a href="../blog/index.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul class="list">
+        <li>Email: <a href="mailto:hello@aadhirai.com">hello@aadhirai.com</a></li>
+        <li>Phone: +65 8000 0000</li>
+        <li>WhatsApp: +91 8754202581</li>
+      </ul>
+    </div>
+  </div>
+  <div class="subfooter">© 2025 Aadhirai Innovations. All rights reserved.</div>
+</footer>
+
+
+<div id="chatbot" class="chatbot" aria-hidden="true">
+  <div class="chat-header">
+    <strong>Ask Aadhirai</strong>
+    <button class="chat-close" aria-label="Close chat">×</button>
+  </div>
+  <div class="chat-body" id="chatBody" role="log" aria-live="polite">
+    <div class="msg bot">Hi! I can collect your details and email our team. What’s your name?</div>
+  </div>
+  <form id="chatForm" class="chat-input" novalidate>
+    <input type="text" id="chatInput" placeholder="Type here…" autocomplete="off" aria-label="Your message" />
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>
