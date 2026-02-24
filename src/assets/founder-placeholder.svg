@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="860" viewBox="0 0 720 860" fill="none">
+  <rect width="720" height="860" rx="28" fill="#F8FAFC"/>
+  <rect x="36" y="36" width="648" height="788" rx="22" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <circle cx="360" cy="330" r="132" fill="#0B1F3A" opacity="0.1"/>
+  <rect x="210" y="510" width="300" height="24" rx="12" fill="#CBD5E1"/>
+  <rect x="160" y="550" width="400" height="18" rx="9" fill="#E2E8F0"/>
+  <text x="176" y="640" fill="#475569" font-family="Inter, Arial" font-size="24">Replace with founder portrait</text>
+</svg>

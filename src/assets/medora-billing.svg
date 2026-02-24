@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" rx="24" fill="#F8FAFC"/>
+  <rect x="44" y="44" width="1192" height="632" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="88" y="118" fill="#0B1F3A" font-family="Inter, Arial" font-size="38" font-weight="700">Medora+ Billing Screen Placeholder</text>
+  <rect x="88" y="150" width="520" height="16" rx="8" fill="#CBD5E1"/>
+  <rect x="88" y="214" width="1104" height="72" rx="12" fill="#F1F5F9"/>
+  <rect x="88" y="304" width="740" height="320" rx="12" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <rect x="848" y="304" width="344" height="320" rx="12" fill="#0B1F3A" opacity="0.92"/>
+  <text x="888" y="360" fill="#FFFFFF" font-family="Inter, Arial" font-size="24" font-weight="600">Replace with real screenshot</text>
+</svg>

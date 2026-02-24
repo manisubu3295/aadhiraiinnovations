@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" rx="24" fill="#F8FAFC"/>
+  <rect x="44" y="44" width="1192" height="632" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="88" y="118" fill="#0B1F3A" font-family="Inter, Arial" font-size="38" font-weight="700">Medora+ Expiry Alerts Placeholder</text>
+  <rect x="88" y="156" width="420" height="16" rx="8" fill="#CBD5E1"/>
+  <rect x="88" y="220" width="760" height="406" rx="14" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <circle cx="930" cy="324" r="102" fill="#0B1F3A" opacity="0.1"/>
+  <circle cx="930" cy="324" r="66" fill="#0B1F3A" opacity="0.16"/>
+  <text x="880" y="334" fill="#0B1F3A" font-family="Inter, Arial" font-size="24" font-weight="700">Alerts</text>
+  <text x="88" y="654" fill="#475569" font-family="Inter, Arial" font-size="22">Replace with real screenshot</text>
+</svg>

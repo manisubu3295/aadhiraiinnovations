@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  font-family: "Inter", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: #0b1f3a;
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+::selection {
+  color: #ffffff;
+  background: #173762;
+}
+
+/* Smooth scroll with offset for sticky header */
+section {
+  scroll-margin-top: 96px;
+}
+
+/* Premium card 3D transforms */
+@media (prefers-reduced-motion: no-preference) {
+  .preserve-3d {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
