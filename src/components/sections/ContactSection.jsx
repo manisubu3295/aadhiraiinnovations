@@ -32,7 +32,19 @@ function ContactSection() {
         body: JSON.stringify(formData),
       })
 
-      const result = await response.json()
+      const contentType = response.headers.get('content-type') || ''
+      let result = null
+
+      if (contentType.includes('application/json')) {
+        result = await response.json()
+      } else {
+        const text = await response.text()
+        try {
+          result = JSON.parse(text)
+        } catch {
+          result = { success: false, message: text || 'Unexpected server response.' }
+        }
+      }
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Unable to send enquiry.')
