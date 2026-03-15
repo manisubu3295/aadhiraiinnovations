@@ -7,7 +7,9 @@ function BookCardPremium({
   theme,
   includes,
   outcomes,
-  delay = 0
+  delay = 0,
+  compact = false,
+  image
 }) {
   const shouldReduceMotion = useReducedMotion()
 
@@ -17,13 +19,13 @@ function BookCardPremium({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, ease: 'easeOut', delay }}
-      className="relative min-h-[500px] md:min-h-[520px]"
+      className={compact ? "relative min-h-[220px] md:min-h-[240px]" : "relative min-h-[500px] md:min-h-[520px]"}
       style={{ perspective: '1400px' }}
     >
       <div className="relative h-full" style={{ transformStyle: 'preserve-3d' }}>
         {/* Back page (right side - always visible) */}
         <div className={`absolute inset-0 rounded-xl ${theme.bgGradient} border ${theme.borderColor} shadow-lg overflow-hidden`}>
-          <div className="h-full p-6 md:p-7 flex flex-col">
+          <div className={compact ? "h-full p-2 flex flex-col" : "h-full p-6 md:p-7 flex flex-col"}>
             {/* Decorative pattern */}
             <div 
               className="absolute inset-0 opacity-[0.08]"
@@ -34,24 +36,27 @@ function BookCardPremium({
             />
             
             <div className="relative flex-1 flex flex-col">
-              <div className={`inline-flex items-center justify-center rounded-lg ${theme.iconBg} w-12 h-12 mb-4`}>
-                <Icon className={`h-6 w-6 ${theme.iconColor}`} strokeWidth={2} />
-              </div>
+              {image ? (
+                <img src={image} alt={title + ' illustration'} className="w-10 h-10 rounded-lg object-cover mb-2" />
+              ) : (
+                <div className={`inline-flex items-center justify-center rounded-lg ${theme.iconBg} w-10 h-10 mb-2`}>
+                  <Icon className={`h-5 w-5 ${theme.iconColor}`} strokeWidth={2} />
+                </div>
+              )}
               
-              <h3 className={`text-xl md:text-2xl font-bold ${theme.textColor} leading-tight mb-3`}>
+              <h3 className={`text-base md:text-lg font-bold ${theme.textColor} leading-tight mb-1`}>
                 {title}
               </h3>
-              
-              <p className={`text-sm ${theme.descColor} leading-relaxed mb-5`}>
+              <p className={`text-xs ${theme.descColor} leading-snug mb-2`}>
                 {description}
               </p>
 
-              <div className="mt-auto space-y-4">
+              <div className="mt-auto space-y-1">
                 <div>
-                  <h4 className={`text-xs font-bold uppercase tracking-wider ${theme.labelColor} mb-2`}>
+                  <h4 className={`text-[10px] font-bold uppercase tracking-wider ${theme.labelColor} mb-0.5`}>
                     Includes
                   </h4>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-0.5">
                     {includes.map((item, i) => (
                       <motion.li
                         key={i}
@@ -59,7 +64,7 @@ function BookCardPremium({
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: delay + 0.8 + i * 0.1, duration: 0.4 }}
-                        className={`flex items-start gap-2 text-sm ${theme.descColor}`}
+                        className={`flex items-start gap-1 text-[11px] ${theme.descColor}`}
                       >
                         <span className={theme.bulletColor}>•</span>
                         <span>{item}</span>
@@ -69,10 +74,10 @@ function BookCardPremium({
                 </div>
                 
                 <div>
-                  <h4 className={`text-xs font-bold uppercase tracking-wider ${theme.labelColor} mb-2`}>
+                  <h4 className={`text-[10px] font-bold uppercase tracking-wider ${theme.labelColor} mb-0.5`}>
                     Outcome
                   </h4>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-0.5">
                     {outcomes.map((item, i) => (
                       <motion.li
                         key={i}
@@ -80,7 +85,7 @@ function BookCardPremium({
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: delay + 1.0 + i * 0.1, duration: 0.4 }}
-                        className={`flex items-start gap-2 text-sm ${theme.descColor}`}
+                        className={`flex items-start gap-1 text-[11px] ${theme.descColor}`}
                       >
                         <span className={theme.bulletColor}>•</span>
                         <span>{item}</span>

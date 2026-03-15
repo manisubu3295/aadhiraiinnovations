@@ -50,7 +50,7 @@ function FinalCtaSection() {
 
           <div className="mt-6 md:mt-7 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
             <p>WhatsApp: +91 8508716957 / +65 90356479</p>
-            <p>Email: maniubu3295@gmail.com</p>
+            <p>Email: info@aadhiraiinnovations.com</p>
             <p>Peravurani & Chennai, Tamil Nadu, India</p>
           </div>
         </div>

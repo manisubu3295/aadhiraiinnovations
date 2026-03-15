@@ -31,7 +31,7 @@ The contact form submits to backend endpoint `POST /api/enquiry` and sends email
 	- `SMTP_PORT`
 	- `SMTP_USER`
 	- `SMTP_PASS`
-	- `ENQUIRY_TO_EMAIL` (default: `maniubu3295@gmail.com`)
+	- `ENQUIRY_TO_EMAIL` (default: `info@aadhiraiinnovations.com`)
 3. Start backend: `npm run server`
 4. Start frontend: `npm run dev`
 

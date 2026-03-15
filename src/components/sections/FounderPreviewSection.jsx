@@ -33,17 +33,12 @@ function FounderPreviewSection() {
           <div>
             <h3 className="text-2xl font-semibold text-[#0B1F3A]">Founder’s Note</h3>
             <p className="mt-3 md:mt-4 text-slate-600">
-              I founded Aadhirai Innovations with a simple principle — build systems that work in real business
-              environments. Enterprise and banking-grade exposure shaped our approach to clarity, reliability, and
-              long-term value.
+              I founded Aadhirai Innovations with a simple belief — technology should solve real business problems, not create more complexity.<br /><br />
+              Having contributed to enterprise and banking-grade systems, I learned that reliable software is built through structured thinking, disciplined engineering, and a deep understanding of how businesses actually operate. That philosophy shapes how we design, implement, and support every solution we deliver.<br /><br />
+              At Aadhirai Innovations, our focus is on clarity, reliability, and long-term value. We build systems that help businesses operate more efficiently, make informed decisions, and grow with confidence.<br /><br />
+              We work with SMEs, pharmacies, and growing businesses across globally — translating real operational needs into practical, well-engineered software systems.<br /><br />
+              — Manikandan Subramaniyan<br />Founder, Aadhirai Innovations.
             </p>
-            <Link
-              to="/founder"
-              className="mt-5 md:mt-6 inline-flex items-center gap-2 rounded-md bg-[#0B1F3A] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#173762]"
-            >
-              Read Founder’s Note
-              <ArrowRight className="h-4 w-4" />
-            </Link>
           </div>
         </motion.article>
       </Container>

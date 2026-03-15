@@ -57,14 +57,7 @@ function Header() {
                 ) : null}
               </div>
             ))}
-            <NavLink
-              to="/founder"
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${isActive ? 'text-[#0B1F3A]' : 'text-slate-600 hover:text-[#0B1F3A]'}`
-              }
-            >
-              Founder
-            </NavLink>
+            {/* Founder link removed */}
             <a
               href="/#contact"
               className="rounded-md bg-[#0B1F3A] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#173762]"
@@ -96,14 +89,7 @@ function Header() {
                   </a>
                 ))}
 
-                <NavLink
-                  to="/founder"
-                  className={({ isActive }) =>
-                    `rounded-md px-3 py-2 text-sm font-medium transition-colors ${isActive ? 'bg-slate-50 text-[#0B1F3A]' : 'text-slate-700 hover:bg-slate-50 hover:text-[#0B1F3A]'}`
-                  }
-                >
-                  Founder
-                </NavLink>
+                {/* Founder link removed from mobile menu */}
 
                 <a
                   href="/#contact"

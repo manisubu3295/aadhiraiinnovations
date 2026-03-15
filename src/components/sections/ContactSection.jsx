@@ -149,7 +149,7 @@ function ContactSection() {
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />
-                <a href="mailto:maniubu3295@gmail.com" className="min-w-0 break-all hover:text-[#0B1F3A]">maniubu3295@gmail.com</a>
+                <a href="mailto:info@aadhiraiinnovations.com" className="min-w-0 break-all hover:text-[#0B1F3A]">info@aadhiraiinnovations.com</a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />

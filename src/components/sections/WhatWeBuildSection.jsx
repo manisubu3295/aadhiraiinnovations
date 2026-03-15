@@ -3,6 +3,12 @@ import Container from '../ui/Container'
 import SectionHeading from '../ui/SectionHeading'
 import Reveal from '../ui/Reveal'
 import BookCardPremium from '../ui/BookCardPremium'
+import img1 from '../../assets/images/placeholder-1.svg'
+import img2 from '../../assets/images/placeholder-2.svg'
+import img3 from '../../assets/images/placeholder-3.svg'
+import img4 from '../../assets/images/placeholder-4.svg'
+import img5 from '../../assets/images/placeholder-5.svg'
+import img6 from '../../assets/images/placeholder-6.svg'
 
 // Premium book theme configurations with distinct colors
 const themes = {
@@ -124,6 +130,7 @@ const solutions = [
     title: 'Subscription SaaS Platforms',
     description: 'Scalable systems designed for multi-tenant growth and operational control.',
     theme: themes.navy,
+    image: img1,
     includes: [
       'Multi-tenant architecture with data isolation',
       'Subscription billing and tier management',
@@ -138,6 +145,7 @@ const solutions = [
     title: 'Billing & Inventory Systems',
     description: 'Practical transaction and stock workflows designed for daily reliability.',
     theme: themes.indigo,
+    image: img2,
     includes: [
       'Real-time stock tracking with expiry alerts',
       'GST/tax handling and batch tracking',
@@ -152,6 +160,7 @@ const solutions = [
     title: 'Workflow Automation',
     description: 'Process automation that reduces manual handoffs and reporting friction.',
     theme: themes.teal,
+    image: img3,
     includes: [
       'Visual workflow builder for processes',
       'Automated notifications and approvals',
@@ -166,6 +175,7 @@ const solutions = [
     title: 'Secure Access Architecture',
     description: 'Role-aware permissions and secure implementation aligned with enterprise practices.',
     theme: themes.cyan,
+    image: img4,
     includes: [
       'Role-based access control (RBAC)',
       'Audit logging and encrypted data',
@@ -180,6 +190,7 @@ const solutions = [
     title: 'Hybrid Desktop + Web',
     description: 'Operational desktop experience with web visibility for analytics and oversight.',
     theme: themes.emerald,
+    image: img5,
     includes: [
       'Desktop app for daily operations (offline)',
       'Web dashboard for analytics and reporting',
@@ -194,6 +205,7 @@ const solutions = [
     title: 'Cloud-Optional Deployments',
     description: 'Offline-first core with optional cloud sync based on business readiness.',
     theme: themes.slate,
+    image: img6,
     includes: [
       'Core functionality runs fully offline',
       'Optional cloud sync for backup',
@@ -210,20 +222,20 @@ function WhatWeBuildSection() {
     <Reveal as="section" id="build" className="py-12 md:py-16 lg:py-20 scroll-mt-24">
       <Container>
         <SectionHeading
-          eyebrow="What We Build"
-          title="Enterprise SaaS and business systems designed for real teams"
-          description="Solutions built for SMEs, pharmacies, and operations-led organizations."
+          title="Why Us"
+          centered
         />
-
-        <div className="mt-8 md:mt-10 grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {solutions.map((solution, index) => (
             <BookCardPremium
               key={solution.title}
               {...solution}
-              delay={index * 0.15}
+              delay={index * 0.12}
+              compact
             />
           ))}
         </div>
+        {/* Brochure download button moved to Product Spotlight */}
       </Container>
     </Reveal>
   )

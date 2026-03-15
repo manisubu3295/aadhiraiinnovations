@@ -35,7 +35,7 @@ function Footer() {
           <p className="text-sm font-semibold text-[#0B1F3A]">Contact</p>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             <li className="break-words">WhatsApp: +91 8508716957 / +65 90356479</li>
-            <li className="break-all">Email: maniubu3295@gmail.com</li>
+            <li className="break-all">Email: info@aadhiraiinnovations.com</li>
           </ul>
         </div>
 

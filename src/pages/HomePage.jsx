@@ -1,10 +1,11 @@
-import HeroSection from '../components/sections/HeroSection'
 import ProofStripSection from '../components/sections/ProofStripSection'
-import WhatWeBuildSection from '../components/sections/WhatWeBuildSection'
+import HeroSection from '../components/sections/HeroSection'
+import PartnershipsSection from '../components/sections/PartnershipsSection'
+import WhyChooseUsSection from '../components/sections/WhyChooseUsSection'
 import ResearchApproachSection from '../components/sections/ResearchApproachSection'
 import MedoraSpotlightSection from '../components/sections/MedoraSpotlightSection'
-import IndustriesCarouselSection from '../components/sections/IndustriesCarouselSection'
 import MediaGallerySection from '../components/sections/MediaGallerySection'
+import MedoraPharmacyBenefitsSection from '../components/sections/MedoraPharmacyBenefitsSection'
 import VideoSection from '../components/sections/VideoSection'
 import EnterpriseExposureSection from '../components/sections/EnterpriseExposureSection'
 import FounderPreviewSection from '../components/sections/FounderPreviewSection'
@@ -15,11 +16,12 @@ function HomePage() {
   return (
     <>
       <HeroSection />
+      <PartnershipsSection />
       <ProofStripSection />
-      <WhatWeBuildSection />
+      <WhyChooseUsSection />
       <ResearchApproachSection />
       <MedoraSpotlightSection />
-      <IndustriesCarouselSection />
+      <MedoraPharmacyBenefitsSection />
       <MediaGallerySection />
       <VideoSection />
       <EnterpriseExposureSection />

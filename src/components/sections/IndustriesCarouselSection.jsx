@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion'
-import { Pill, ShoppingCart, Workflow } from 'lucide-react'
+// import { Pill, ShoppingCart, Workflow } from 'lucide-react'
+import placeholder1 from '../../assets/images/placeholder-1.svg';
+import placeholder2 from '../../assets/images/placeholder-2.svg';
+import placeholder3 from '../../assets/images/placeholder-3.svg';
 import MotionSection from '../ui/MotionSection'
 import Container from '../ui/Container'
 import SectionHeading from '../ui/SectionHeading'
@@ -8,7 +11,7 @@ const industrySlides = [
   {
     id: 'industry-1',
     caption: 'Pharmacy Operations',
-    icon: Pill,
+    image: placeholder1,
     description: 'GST billing, stock tracking, expiry alerts, and regulatory compliance',
     color: 'from-blue-500 to-cyan-500',
     bgColor: 'bg-blue-50/80',
@@ -16,7 +19,7 @@ const industrySlides = [
   {
     id: 'industry-2',
     caption: 'SME Retail Systems',
-    icon: ShoppingCart,
+    image: placeholder2,
     description: 'Point-of-sale, inventory management, and multi-location support',
     color: 'from-purple-500 to-pink-500',
     bgColor: 'bg-purple-50/80',
@@ -24,7 +27,7 @@ const industrySlides = [
   {
     id: 'industry-3',
     caption: 'ERP Automation',
-    icon: Workflow,
+    image: placeholder3,
     description: 'Process workflows, approval systems, and integrated reporting',
     color: 'from-emerald-500 to-teal-500',
     bgColor: 'bg-emerald-50/80',
@@ -98,13 +101,13 @@ function IndustriesCarouselSection() {
                   <div className={`absolute inset-0 ${industry.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
 
                   <div className="relative">
-                    {/* Icon */}
+                    {/* Image */}
                     <motion.div
                       className={`inline-flex rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 p-3 mb-3`}
                       whileHover={{ rotate: [0, -5, 5, 0], scale: 1.1 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <industry.icon className="h-6 w-6 text-[#0B1F3A]" strokeWidth={2} />
+                      <img src={industry.image} alt={industry.caption} className="h-10 w-10 object-contain" />
                     </motion.div>
 
                     <h3 className="text-lg font-bold text-slate-900 mb-2">

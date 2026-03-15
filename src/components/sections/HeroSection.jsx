@@ -1,14 +1,14 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { ArrowRight, PlayCircle, ShieldCheck, CloudCog, MonitorSmartphone } from 'lucide-react'
 import Container from '../ui/Container'
-import PatternBackground from '../ui/PatternBackground'
 import { itemReveal, staggerContainer } from '../../lib/motion'
 
 const proofItems = [
   { label: 'Offline-first', icon: ShieldCheck },
+  { label: 'Hybrid web/desktop app', icon: MonitorSmartphone },
   { label: 'SaaS-ready', icon: CloudCog },
-  { label: 'Hybrid desktop + web', icon: MonitorSmartphone },
+  { label: 'Top support model', icon: ArrowRight },
 ]
 
 function HeroSection() {
@@ -36,8 +36,9 @@ function HeroSection() {
         </video>
       )}
       <div className="pointer-events-none absolute inset-0 bg-[#0B1F3A]/78" />
-      <PatternBackground />
+      {/* PatternBackground intentionally omitted for revert */}
       <div className="pointer-events-none absolute -left-24 top-[-180px] h-[360px] w-[360px] rounded-full bg-[#0B1F3A]/30 blur-3xl" />
+      {/* Removed Medora brochure button for enterprise look */}
       <Container className="relative">
         <motion.div
           initial="hidden"
@@ -45,12 +46,14 @@ function HeroSection() {
           variants={staggerContainer}
           className="max-w-4xl"
         >
-          <motion.p
+          <motion.div
             variants={itemReveal}
-            className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-200"
+            className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2 text-sm font-bold uppercase tracking-wide text-[#0B1F3A] shadow-sm ring-2 ring-[#173762]/10 backdrop-blur"
+            style={{ letterSpacing: '0.18em' }}
           >
-            AADHIRAI INNOVATIONS
-          </motion.p>
+            <ShieldCheck className="h-5 w-5 text-[#173762]" />
+            10+ Years Technical & SME Expertise
+          </motion.div>
 
           <motion.h1
             variants={itemReveal}
@@ -59,13 +62,21 @@ function HeroSection() {
             Enterprise-Grade SaaS & Business Systems Built for Real Operations.
           </motion.h1>
 
+
           <motion.p
             variants={itemReveal}
             className="mt-5 md:mt-6 max-w-3xl text-base text-slate-100 sm:text-lg"
           >
-            Aadhirai Innovations builds scalable SaaS platforms and hybrid business systems for Tamil Nadu SMEs,
-            pharmacies, and growing businesses — engineered with enterprise delivery discipline.
+            Empowering SMEs and pharmacies with robust SaaS platforms and automation—engineered for growth, reliability, and real-world business impact.
           </motion.p>
+
+          <motion.div
+            variants={itemReveal}
+            className="mt-2 mb-2 max-w-2xl text-lg md:text-xl font-semibold text-[#FFD700] bg-[#0B1F3A]/80 px-4 py-2 rounded-md shadow-sm border-l-4 border-yellow-400"
+            style={{letterSpacing: '0.04em'}}
+          >
+            We don&apos;t build software, <span className="text-white">we engineer it.</span>
+          </motion.div>
 
           <motion.div
             variants={itemReveal}
