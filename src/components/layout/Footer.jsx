@@ -24,11 +24,6 @@ function Footer() {
                 Medora+
               </a>
             </li>
-            <li>
-              <Link to="/founder" className="transition-colors hover:text-[#0B1F3A]">
-                Founder
-              </Link>
-            </li>
           </ul>
         </div>
 
