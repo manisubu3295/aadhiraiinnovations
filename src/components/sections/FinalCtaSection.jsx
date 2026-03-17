@@ -39,7 +39,7 @@ function FinalCtaSection() {
               WhatsApp (Singapore)
             </a>
             <a
-              href="http://151.185.43.65/login"
+              href="https://demo.aadhiraiinnovations.com/"
               target="_blank"
               rel="noreferrer"
               className="rounded-md border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-[#0B1F3A] transition-colors hover:border-slate-300 hover:bg-slate-50"
