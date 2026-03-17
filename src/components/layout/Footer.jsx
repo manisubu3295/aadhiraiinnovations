@@ -1,5 +1,6 @@
 import Container from '../ui/Container'
 import { Link } from 'react-router-dom'
+import { Linkedin , Instagram } from 'lucide-react'
 
 function Footer() {
   return (
@@ -36,6 +37,14 @@ function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             <li className="break-words">WhatsApp: +91 8508716957 / +65 90356479</li>
             <li className="break-all">Email: info@aadhiraiinnovations.com</li>
+            <li className="flex space-x-2">
+              <a href="https://www.linkedin.com/in/aadhirai-innovations-1818853a3?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />
+              </a>
+              <a target="_blank" rel="noopener noreferrer">
+                <Instagram className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />
+              </a>
+            </li>
           </ul>
         </div>
 
