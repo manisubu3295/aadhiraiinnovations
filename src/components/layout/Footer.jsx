@@ -36,7 +36,7 @@ function Footer() {
               <a href="https://www.linkedin.com/in/aadhirai-innovations-1818853a3?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />
               </a>
-              <a target="_blank" rel="noopener noreferrer">
+              <a href='https://www.instagram.com/aadhirai_innovations?igsh=MWNlN2k5NHk5bzN5YQ==' target="_blank" rel="noopener noreferrer">
                 <Instagram className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />
               </a>
             </li>
