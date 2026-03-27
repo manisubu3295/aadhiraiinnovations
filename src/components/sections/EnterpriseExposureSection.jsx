@@ -33,7 +33,7 @@ const pillars = [
 
 const outcomes = [
   'Reduced rework through disciplined technical decisions',
-  'Higher reliability for operations-critical SME systems',
+  'Higher reliability for operations-critical enterprise systems',
   'Enterprise thinking adapted for Tamil Nadu business realities',
 ]
 
@@ -65,7 +65,7 @@ function EnterpriseExposureSection() {
           className="mt-5 md:mt-6 max-w-4xl text-base text-slate-600 sm:text-lg"
         >
           Aadhirai Innovations applies disciplined architecture, controlled implementation, and secure design principles
-          from enterprise settings to SME-focused platforms in Tamil Nadu.
+          from enterprise settings to AI-integrated platforms across Tamil Nadu and India.
         </motion.p>
 
         <div className="mt-8 md:mt-10 grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-3">

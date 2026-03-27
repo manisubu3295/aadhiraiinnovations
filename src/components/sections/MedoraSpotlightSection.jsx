@@ -1,76 +1,140 @@
 import { motion } from 'framer-motion'
-import { Pill, ExternalLink } from 'lucide-react'
-import MotionSection from '../ui/MotionSection'
+import { ExternalLink, Download, Brain, PackageCheck, Database, Cloud } from 'lucide-react'
 import Container from '../ui/Container'
-import SectionHeading from '../ui/SectionHeading'
 
-
+const featureGrid = [
+  {
+    icon: Brain,
+    title: 'AI Forecasting',
+    sub: 'Demand prediction · Stock optimisation',
+  },
+  {
+    icon: PackageCheck,
+    title: 'Smart Billing',
+    sub: 'GST-compliant · Anomaly detection',
+  },
+  {
+    icon: Database,
+    title: 'Inventory Control',
+    sub: 'Batch tracking · Expiry alerts',
+  },
+  {
+    icon: Cloud,
+    title: 'Cloud Intelligence',
+    sub: 'Optional sync · Central analytics',
+  },
+]
 
 function MedoraSpotlightSection() {
   return (
-    <MotionSection id="products" className="py-8 md:py-12 scroll-mt-24">
-      <Container>
-        <div className="grid gap-8 md:gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <div>
-            <SectionHeading
-              eyebrow="Product Spotlight"
-              title="Medora+"
-              description="A scalable pharmacy management system designed for operational clarity."
-            />
+    <section id="products" className="relative scroll-mt-24 overflow-hidden bg-[#060e1c] py-16 md:py-20 lg:py-24">
+      {/* Grid texture */}
+      <div className="absolute inset-0 grid-texture pointer-events-none" />
 
-            <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-              <Pill className="h-3.5 w-3.5" />
-              Demo available
-            </span>
+      {/* Subtle glow */}
+      <div
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full opacity-[0.04] blur-3xl"
+        style={{ background: 'radial-gradient(circle, #6366f1, transparent 70%)' }}
+      />
 
-            <ul className="mt-6 md:mt-7 space-y-2 text-sm text-slate-600">
-              <li>GST Billing</li>
-              <li>Stock & Batch Tracking</li>
-              <li>Expiry Alerts</li>
-              <li>Sales & Purchase</li>
-              <li>Offline Mode</li>
-              <li>Optional Cloud Sync</li>
-              <li>Multi-tenant SaaS capability</li>
-            </ul>
+      <Container className="relative z-10">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:items-center">
 
-            <div className="mt-6 md:mt-7 flex flex-wrap gap-3">
+          {/* Left: content */}
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="flex items-center gap-3 mb-7">
+              <div className="h-px w-10 bg-white/18" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38">
+                Flagship Product
+              </span>
+            </div>
+
+            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Medora<span className="text-white/35">+</span>
+            </h2>
+            <p className="mt-2 text-sm uppercase tracking-widest text-white/30">
+              AI-Powered Pharmacy Intelligence Platform
+            </p>
+
+            {/* AI badge */}
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5">
+              <Brain className="h-3.5 w-3.5 text-white/45" strokeWidth={1.75} />
+              <span className="text-[11px] font-semibold uppercase tracking-widest text-white/45">
+                AI Intelligence Layer Included
+              </span>
+            </div>
+
+            <p className="mt-6 max-w-lg text-base text-white/50 leading-relaxed">
+              Billing, inventory, compliance, and AI forecasting — tightly integrated, offline-first, and production-ready.
+            </p>
+
+            {/* Feature 2×2 grid */}
+            <div className="mt-8 grid grid-cols-2 gap-3">
+              {featureGrid.map((feature, i) => {
+                const Icon = feature.icon
+                return (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.07 }}
+                    className="rounded-xl border border-white/8 bg-white/5 p-4"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-7 h-7 rounded-md border border-white/10 bg-white/8 flex items-center justify-center flex-none">
+                        <Icon className="h-3.5 w-3.5 text-white/55" strokeWidth={1.75} />
+                      </div>
+                      <span className="text-[12px] font-semibold text-white/80">{feature.title}</span>
+                    </div>
+                    <p className="text-[10px] text-white/32 leading-relaxed">{feature.sub}</p>
+                  </motion.div>
+                )
+              })}
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="https://demo.aadhiraiinnovations.com"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-md bg-[#0B1F3A] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#173762]"
+                className="group inline-flex items-center gap-2.5 rounded-sm bg-white px-6 py-3 text-sm font-semibold tracking-wide text-[#060e1c] transition-all hover:bg-white/92"
               >
-                Launch Medora+ Demo
-                <ExternalLink className="h-4 w-4" />
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center rounded-md border border-slate-200 px-5 py-3 text-sm font-medium text-[#0B1F3A] transition-colors hover:border-slate-300 hover:bg-slate-50"
-              >
-                Request Pilot
+                Launch Demo
+                <ExternalLink className="h-3.5 w-3.5" />
               </a>
               <a
                 href="/media/Medora-brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-md border border-emerald-400 bg-emerald-50 px-5 py-3 text-sm font-medium text-emerald-800 transition-colors hover:bg-emerald-100 hover:border-emerald-500 gap-2"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/16 px-6 py-3 text-sm font-medium tracking-wide text-white/62 transition-all hover:border-white/32 hover:text-white"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l-6-6m6 6l6-6" />
-                </svg>
+                <Download className="h-3.5 w-3.5" />
                 View Brochure
               </a>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/16 px-6 py-3 text-sm font-medium tracking-wide text-white/62 transition-all hover:border-white/32 hover:text-white"
+              >
+                Request Pilot
+              </a>
             </div>
-          </div>
+          </motion.div>
 
+          {/* Right: video */}
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_16px_38px_rgba(11,31,58,0.08)] mb-6">
-              <div className="aspect-video overflow-hidden rounded-xl">
+            <div className="overflow-hidden rounded-xl border border-white/8 shadow-2xl">
+              <div className="aspect-video">
                 <iframe
                   className="h-full w-full"
                   src="https://www.youtube.com/embed/Cac-96pbNq0?si=Cl7BEZAgmz9WTrjZ"
@@ -83,9 +147,10 @@ function MedoraSpotlightSection() {
               </div>
             </div>
           </motion.div>
+
         </div>
       </Container>
-    </MotionSection>
+    </section>
   )
 }
 

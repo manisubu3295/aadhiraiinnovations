@@ -37,21 +37,21 @@ function SiteLayout() {
       return
     }
 
-    document.title = 'AADHIRAI INNOVATIONS | Enterprise SaaS & Business Systems'
+    document.title = 'AADHIRAI INNOVATIONS | AI-Powered Intelligence Systems'
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute(
         'content',
-        'Aadhirai Innovations builds scalable SaaS platforms and enterprise business systems for SMEs and pharmacies across Tamil Nadu.',
+        'Aadhirai Innovations builds AI-powered intelligence systems, SaaS platforms, and enterprise software for pharmacies and serious businesses across India.',
       )
     document
       .querySelector('meta[property="og:title"]')
-      ?.setAttribute('content', 'AADHIRAI INNOVATIONS | Enterprise-Grade SaaS')
+      ?.setAttribute('content', 'AADHIRAI INNOVATIONS | AI-Integrated Enterprise Systems')
     document
       .querySelector('meta[property="og:description"]')
       ?.setAttribute(
         'content',
-        'Enterprise-grade SaaS and business systems built for real operations.',
+        'AI-powered intelligence systems and enterprise platforms built for serious operations.',
       )
   }, [pathname])
 

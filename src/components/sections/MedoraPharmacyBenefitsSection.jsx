@@ -1,31 +1,36 @@
-import SectionHeading from '../ui/SectionHeading';
-import Container from '../ui/Container';
-import { CheckCircle } from 'lucide-react';
-
-const benefits = [
-  'Automates GST billing and reduces manual errors',
-  'Tracks stock, batches, and expiry for compliance',
-  'Provides instant expiry alerts to prevent losses',
-  'Enables fast sales and purchase management',
-  'Works offline and syncs to cloud when needed',
-  'Supports multi-store and multi-user operations',
-  'Easy reporting for regulatory and business insights',
-  'Quick onboarding and reliable support',
-];
+import { motion } from 'framer-motion'
+import Container from '../ui/Container'
 
 export default function MedoraPharmacyBenefitsSection() {
   return (
-    <section className="py-8 md:py-12 bg-gradient-to-br from-emerald-50 via-white to-cyan-50/60">
+    <section className="bg-white border-t border-slate-100 py-14 md:py-16">
       <Container>
-        <SectionHeading
-          eyebrow="How Medora+ Helps"
-          title="Empowering Pharmacies with Medora+"
-          description="Medora+ is designed to solve real pharmacy pain points, streamline operations, and ensure compliance."
-          centered
-        />
-        {/* Testimonial video below the benefits */}
-        <div className="mt-6 max-w-2xl mx-auto">
-          <div className="aspect-video overflow-hidden rounded-2xl border border-amber-200 bg-white shadow-[0_8px_24px_rgba(255,193,7,0.08)]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7 }}
+          className="mb-8"
+        >
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-px w-10 bg-slate-300" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+              Client Testimonial
+            </span>
+          </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-[#0B1F3A] sm:text-3xl max-w-xl leading-[1.2]">
+            Medora+ in a real pharmacy setting.
+          </h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="max-w-2xl overflow-hidden rounded-xl border border-slate-200 shadow-sm"
+        >
+          <div className="aspect-video">
             <iframe
               className="h-full w-full"
               src="https://www.youtube.com/embed/4vQjlgKnycY"
@@ -36,8 +41,8 @@ export default function MedoraPharmacyBenefitsSection() {
               allowFullScreen
             />
           </div>
-        </div>
+        </motion.div>
       </Container>
     </section>
-  );
+  )
 }
