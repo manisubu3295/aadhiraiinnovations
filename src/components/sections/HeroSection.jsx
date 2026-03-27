@@ -1,122 +1,271 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
-import { ArrowRight, PlayCircle, ShieldCheck, CloudCog, MonitorSmartphone } from 'lucide-react'
+import { ArrowRight, ChevronDown, Brain, Package, Building2, Workflow } from 'lucide-react'
 import Container from '../ui/Container'
-import { itemReveal, staggerContainer } from '../../lib/motion'
 
-const proofItems = [
-  { label: 'Offline-first', icon: ShieldCheck },
-  { label: 'Hybrid web/desktop app', icon: MonitorSmartphone },
-  { label: 'SaaS-ready', icon: CloudCog },
-  { label: 'Top support model', icon: ArrowRight },
+/* ─── Animation variants ────────────────────────────────────── */
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.06 } },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
+}
+
+/* ─── Data ──────────────────────────────────────────────────── */
+const capabilities = [
+  {
+    icon: Brain,
+    title: 'AI Pharmacy Intelligence',
+    desc: 'Predictive stock · expiry · demand forecasting',
+  },
+  {
+    icon: Package,
+    title: 'Intelligent Billing & Inventory',
+    desc: 'Anomaly detection · real-time tracking · GST',
+  },
+  {
+    icon: Building2,
+    title: 'Multi-Tenant SaaS',
+    desc: 'AI analytics · subscription tiers · scalable',
+  },
+  {
+    icon: Workflow,
+    title: 'Workflow Automation',
+    desc: 'AI routing · decision support · 60–80% less overhead',
+  },
 ]
 
+const secondaryShots = [
+  { src: '/media/stock.png', label: 'Intelligent Inventory Control' },
+  { src: '/media/report.png', label: 'AI-Powered Business Reports' },
+]
+
+/* ─── Component ─────────────────────────────────────────────── */
 function HeroSection() {
-  const [videoFailed, setVideoFailed] = useState(false)
-
   return (
-    <section className="relative overflow-hidden border-b border-slate-100 py-16 text-white md:py-20 lg:py-24">
-      {videoFailed ? (
-        <div className="absolute inset-0">
-          {/* TODO: Replace /public/media/intro-poster.svg with final hero poster image. */}
-          <img src="/media/intro-poster.svg" alt="Hero fallback background" className="h-full w-full object-cover" />
-        </div>
-      ) : (
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/media/intro-poster.svg"
-          onError={() => setVideoFailed(true)}
-        >
-          {/* TODO: Replace /public/media/hero.mp4 with final hero background video. */}
-          <source src="/media/hero.mp4" type="video/mp4" />
-        </video>
-      )}
-      <div className="pointer-events-none absolute inset-0 bg-[#0B1F3A]/78" />
-      {/* PatternBackground intentionally omitted for revert */}
-      <div className="pointer-events-none absolute -left-24 top-[-180px] h-[360px] w-[360px] rounded-full bg-[#0B1F3A]/30 blur-3xl" />
-      {/* Removed Medora brochure button for enterprise look */}
-      <Container className="relative">
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={staggerContainer}
-          className="max-w-4xl"
-        >
+    <section className="relative overflow-hidden bg-[#050d1a] min-h-screen flex items-center text-white noise-overlay">
+      {/* Grid texture */}
+      <div className="absolute inset-0 grid-texture pointer-events-none" />
+
+      {/* Bottom vignette */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050d1a]/80 via-transparent to-transparent pointer-events-none" />
+
+      {/* Ambient glow — top-left */}
+      <div
+        className="pointer-events-none absolute -left-60 -top-60 h-[640px] w-[640px] rounded-full opacity-[0.07] blur-3xl"
+        style={{ background: 'radial-gradient(circle, #3b82f6, transparent 70%)' }}
+      />
+      {/* Ambient glow — bottom-right */}
+      <div
+        className="pointer-events-none absolute -bottom-32 -right-32 h-[500px] w-[500px] rounded-full opacity-[0.05] blur-3xl"
+        style={{ background: 'radial-gradient(circle, #6366f1, transparent 70%)' }}
+      />
+      {/* Ambient glow — center top */}
+      <div
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-[400px] w-[800px] rounded-full opacity-[0.035] blur-3xl"
+        style={{ background: 'radial-gradient(ellipse, #1e3a8a, transparent 70%)' }}
+      />
+
+      <Container className="relative z-10 py-20 lg:py-0 lg:min-h-screen lg:flex lg:items-center">
+        <div className="grid w-full gap-14 lg:grid-cols-[1fr_1.08fr] lg:gap-16 xl:gap-24">
+
+          {/* ── LEFT: Copy ──────────────────────────────────── */}
           <motion.div
-            variants={itemReveal}
-            className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2 text-sm font-bold uppercase tracking-wide text-[#0B1F3A] shadow-sm ring-2 ring-[#173762]/10 backdrop-blur"
-            style={{ letterSpacing: '0.18em' }}
+            initial="hidden"
+            animate="show"
+            variants={stagger}
+            className="flex flex-col justify-center lg:py-20"
           >
-            <ShieldCheck className="h-5 w-5 text-[#173762]" />
-            10+ Years Technical & SME Expertise
-          </motion.div>
+            {/* Eyebrow */}
+            <motion.div variants={fadeUp} className="mb-8 flex items-center gap-3">
+              <div className="h-px w-10 bg-white/20" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/38">
+                AI-Integrated Enterprise Systems · India
+              </span>
+            </motion.div>
 
-          <motion.h1
-            variants={itemReveal}
-            className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
-          >
-            Enterprise-Grade SaaS & Business Systems Built for Real Operations.
-          </motion.h1>
-
-
-          <motion.p
-            variants={itemReveal}
-            className="mt-5 md:mt-6 max-w-3xl text-base text-slate-100 sm:text-lg"
-          >
-            Empowering SMEs and pharmacies with robust SaaS platforms and automation—engineered for growth, reliability, and real-world business impact.
-          </motion.p>
-
-          <motion.div
-            variants={itemReveal}
-            className="mt-2 mb-2 max-w-2xl text-lg md:text-xl font-semibold text-[#FFD700] bg-[#0B1F3A]/80 px-4 py-2 rounded-md shadow-sm border-l-4 border-yellow-400"
-            style={{letterSpacing: '0.04em'}}
-          >
-            We don&apos;t build software, <span className="text-white">we engineer it.</span>
-          </motion.div>
-
-          <motion.div
-            variants={itemReveal}
-            className="mt-6 md:mt-7 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-medium text-[#0B1F3A] transition-colors hover:bg-slate-100"
+            {/* Headline */}
+            <motion.h1
+              variants={fadeUp}
+              className="font-bold leading-[1.05] tracking-[-0.028em]"
+              style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}
             >
-              Discuss Your Business
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#build"
-              className="inline-flex items-center gap-2 rounded-md border border-white/40 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
-            >
-              Explore Solutions
-            </a>
-            <a
-              href="#video"
-              className="inline-flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-slate-200 transition-colors hover:text-white"
-            >
-              <PlayCircle className="h-4 w-4" />
-              Scroll to video
-            </a>
-          </motion.div>
+              <span className="text-gradient-ai">AI-powered</span> intelligence
+              <br />
+              systems for pharmacies,
+              <br />
+              <span className="text-white/38">operations & enterprise.</span>
+            </motion.h1>
 
-          <motion.ul variants={itemReveal} className="mt-7 md:mt-8 flex flex-wrap gap-3">
-            {proofItems.map((item) => (
-              <li
-                key={item.label}
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur"
+            {/* Sub */}
+            <motion.p
+              variants={fadeUp}
+              className="mt-7 max-w-sm text-[15px] leading-[1.75] text-white/42"
+            >
+              We design and deploy AI-integrated, enterprise-grade platforms
+              for pharmacies, retail operations, and businesses that demand
+              intelligence, reliability, and scale.
+            </motion.p>
+
+            {/* Capabilities grid — 2×2 */}
+            <motion.div variants={fadeUp} className="mt-9 grid grid-cols-2 gap-2">
+              {capabilities.map((cap) => {
+                const Icon = cap.icon
+                return (
+                  <div
+                    key={cap.title}
+                    className="glass-dark glass-dark-hover flex items-start gap-3 rounded-xl px-4 py-3.5"
+                  >
+                    <div className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-white/[0.07]">
+                      <Icon className="h-3.5 w-3.5 text-white/50" strokeWidth={1.75} />
+                    </div>
+                    <div>
+                      <div className="text-[12px] font-semibold leading-tight text-white/80">
+                        {cap.title}
+                      </div>
+                      <div className="mt-0.5 text-[10.5px] leading-relaxed text-white/28">
+                        {cap.desc}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div variants={fadeUp} className="mt-9 flex flex-wrap gap-3">
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-2.5 rounded-sm bg-white px-7 py-4 text-sm font-bold tracking-wide text-[#050d1a] shadow-[0_1px_0_0_rgba(255,255,255,0.15)_inset,0_8px_32px_rgba(0,0,0,0.35)] transition-all hover:bg-white/94 hover:shadow-[0_8px_40px_rgba(0,0,0,0.45)]"
               >
-                <item.icon className="h-4 w-4 text-white" />
-                {item.label}
-              </li>
-            ))}
-          </motion.ul>
-        </motion.div>
+                Start a Conversation
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href="#build"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/14 px-7 py-4 text-sm font-medium tracking-wide text-white/55 transition-all hover:border-white/28 hover:text-white/90"
+              >
+                Explore Systems
+              </a>
+            </motion.div>
+
+            {/* Trust strip */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-11 flex flex-wrap gap-8 border-t border-white/[0.07] pt-9"
+            >
+              {[
+                { val: '10+', label: 'Years engineering' },
+                { val: 'AI+', label: 'Integrated intelligence' },
+                { val: 'SaaS', label: 'Multi-tenant ready' },
+              ].map((m) => (
+                <div key={m.label}>
+                  <div className="text-xl font-extrabold tracking-tight text-white">{m.val}</div>
+                  <div className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-white/28">
+                    {m.label}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* ── RIGHT: Product showcase ──────────────────────── */}
+          <div className="relative flex items-center lg:py-16">
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.05, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full"
+            >
+              {/* Main screenshot */}
+              <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#080f1d] shadow-[0_40px_80px_rgba(0,0,0,0.7),0_0_60px_rgba(30,64,175,0.08)]">
+                <div className="flex items-center gap-2 border-b border-white/[0.06] bg-[#0b1525] px-4 py-2.5">
+                  <div className="flex gap-1.5">
+                    <div className="h-2.5 w-2.5 rounded-full bg-white/[0.08]" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-white/[0.08]" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-white/[0.08]" />
+                  </div>
+                  <div className="ml-3 h-4 w-28 rounded bg-white/[0.04]" />
+                  <span className="ml-auto text-[11px] text-white/24 tracking-wide">
+                    Medora+ · AI Billing Intelligence
+                  </span>
+                </div>
+                <img
+                  src="/media/billing.png"
+                  alt="Medora+ AI Billing Dashboard"
+                  className="w-full object-cover"
+                  loading="eager"
+                  draggable={false}
+                />
+              </div>
+
+              {/* Secondary screenshots */}
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                {secondaryShots.map((shot, i) => (
+                  <motion.div
+                    key={shot.label}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.7 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#080f1d] shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+                  >
+                    <div className="border-b border-white/[0.06] bg-[#0b1525] px-3 py-2">
+                      <span className="text-[10px] font-medium tracking-wide text-white/24">
+                        {shot.label}
+                      </span>
+                    </div>
+                    <img
+                      src={shot.src}
+                      alt={shot.label}
+                      className="w-full object-cover"
+                      loading="eager"
+                      draggable={false}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Caption */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 1.1 }}
+                className="mt-4 flex items-center justify-between"
+              >
+                <span className="text-[10px] uppercase tracking-[0.18em] text-white/18">
+                  Medora+ — AI-Powered Pharmacy Intelligence Platform
+                </span>
+                <a
+                  href="#products"
+                  className="text-[11px] text-white/28 underline underline-offset-2 transition-colors hover:text-white/50"
+                >
+                  View demo →
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+
+        </div>
       </Container>
+
+      {/* Scroll cue */}
+      <motion.a
+        href="#capabilities"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.28 }}
+        transition={{ duration: 0.6, delay: 2.4 }}
+        className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/40 hover:text-white/65 transition-colors"
+        aria-label="Scroll down"
+      >
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown className="h-5 w-5" />
+        </motion.div>
+      </motion.a>
     </section>
   )
 }

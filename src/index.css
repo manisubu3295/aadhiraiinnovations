@@ -1,18 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  font-family: "Inter", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.6;
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss02" 1, "cv01" 1, "liga" 1;
 }
 
-html,
-body,
-#root {
+html, body, #root {
   min-height: 100%;
 }
 
@@ -26,27 +25,112 @@ body {
 
 ::selection {
   color: #ffffff;
-  background: #173762;
+  background: #1e40af;
 }
 
-/* Smooth scroll with offset for sticky header */
 section {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 80px;
 }
 
-/* Premium card 3D transforms */
-@media (prefers-reduced-motion: no-preference) {
-  .preserve-3d {
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-  }
-}
-
-/* Reduced motion support */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ─── Grid textures ─────────────────────────────────────────── */
+.grid-texture {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.grid-texture-light {
+  background-image:
+    linear-gradient(to right, rgba(11,31,58,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11,31,58,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ─── Gradient text utilities ───────────────────────────────── */
+
+/* AI accent — blue to violet (for dark backgrounds) */
+.text-gradient-ai {
+  background: linear-gradient(135deg, #93c5fd 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* White fade (for dark bg headlines) */
+.text-gradient-white {
+  background: linear-gradient(180deg, #ffffff 20%, rgba(255,255,255,0.72) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dark fade (for light bg headlines) */
+.text-gradient-dark {
+  background: linear-gradient(180deg, #0B1F3A 0%, #173762 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glass morphism ────────────────────────────────────────── */
+.glass-dark {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.075);
+}
+
+.glass-dark-hover {
+  transition: background 0.2s, border-color 0.2s;
+}
+.glass-dark-hover:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.11);
+}
+
+/* ─── Noise film overlay ────────────────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Section utilities ─────────────────────────────────────── */
+.section-rule {
+  display: inline-block;
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.3;
+}
+
+/* Gradient top border for premium cards */
+.border-top-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(147,197,253,0.4), transparent);
 }

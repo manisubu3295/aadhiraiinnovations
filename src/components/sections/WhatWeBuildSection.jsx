@@ -1,243 +1,323 @@
-import { Building2, PackageCheck, Workflow, Shield, MonitorCog, Database } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { PackageCheck, Building2, Workflow, Brain, Shield, MonitorCog, Database, ArrowRight } from 'lucide-react'
 import Container from '../ui/Container'
-import SectionHeading from '../ui/SectionHeading'
-import Reveal from '../ui/Reveal'
-import BookCardPremium from '../ui/BookCardPremium'
-import img1 from '../../assets/images/placeholder-1.svg'
-import img2 from '../../assets/images/placeholder-2.svg'
-import img3 from '../../assets/images/placeholder-3.svg'
-import img4 from '../../assets/images/placeholder-4.svg'
-import img5 from '../../assets/images/placeholder-5.svg'
-import img6 from '../../assets/images/placeholder-6.svg'
 
-// Premium book theme configurations with distinct colors
-const themes = {
-  navy: {
-    // Cover (front)
-    coverGradient: 'bg-gradient-to-br from-[#0B1F3A] via-[#1e3a5f] to-[#0B1F3A]',
-    coverBorder: 'border-[#0B1F3A]',
-    coverIconBg: 'bg-white/10 backdrop-blur-sm',
-    coverIconColor: 'text-white',
-    coverTextColor: 'text-white',
-    spineColor: 'bg-white/30',
-    
-    // Inside page
-    bgGradient: 'bg-gradient-to-br from-slate-50 to-white',
-    borderColor: 'border-slate-200',
-    iconBg: 'bg-[#0B1F3A]/10',
-    iconColor: 'text-[#0B1F3A]',
-    textColor: 'text-[#0B1F3A]',
-    descColor: 'text-slate-600',
-    labelColor: 'text-slate-500',
-    bulletColor: 'text-[#0B1F3A]/60',
-    pattern: 'radial-gradient(circle at 20% 50%, rgba(11, 31, 58, 0.15) 0.5px, transparent 0.5px)',
-  },
-  indigo: {
-    coverGradient: 'bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800',
-    coverBorder: 'border-indigo-700',
-    coverIconBg: 'bg-white/15 backdrop-blur-sm',
-    coverIconColor: 'text-white',
-    coverTextColor: 'text-white',
-    spineColor: 'bg-white/30',
-    
-    bgGradient: 'bg-gradient-to-br from-indigo-50/50 to-white',
-    borderColor: 'border-indigo-200',
-    iconBg: 'bg-indigo-100',
-    iconColor: 'text-indigo-700',
-    textColor: 'text-slate-900',
-    descColor: 'text-slate-600',
-    labelColor: 'text-indigo-600',
-    bulletColor: 'text-indigo-500',
-    pattern: 'repeating-linear-gradient(90deg, rgba(79, 70, 229, 0.08) 0px, transparent 1px, transparent 16px)',
-  },
-  teal: {
-    coverGradient: 'bg-gradient-to-br from-teal-600 via-teal-700 to-teal-800',
-    coverBorder: 'border-teal-700',
-    coverIconBg: 'bg-white/15 backdrop-blur-sm',
-    coverIconColor: 'text-white',
-    coverTextColor: 'text-white',
-    spineColor: 'bg-white/30',
-    
-    bgGradient: 'bg-gradient-to-br from-teal-50/50 to-white',
-    borderColor: 'border-teal-200',
-    iconBg: 'bg-teal-100',
-    iconColor: 'text-teal-700',
-    textColor: 'text-slate-900',
-    descColor: 'text-slate-600',
-    labelColor: 'text-teal-600',
-    bulletColor: 'text-teal-500',
-    pattern: 'repeating-linear-gradient(45deg, rgba(13, 148, 136, 0.08) 0px, transparent 0px, transparent 12px, rgba(13, 148, 136, 0.08) 12px)',
-  },
-  cyan: {
-    coverGradient: 'bg-gradient-to-br from-cyan-600 via-cyan-700 to-cyan-800',
-    coverBorder: 'border-cyan-700',
-    coverIconBg: 'bg-white/15 backdrop-blur-sm',
-    coverIconColor: 'text-white',
-    coverTextColor: 'text-white',
-    spineColor: 'bg-white/30',
-    
-    bgGradient: 'bg-gradient-to-br from-cyan-50/50 to-white',
-    borderColor: 'border-cyan-200',
-    iconBg: 'bg-cyan-100',
-    iconColor: 'text-cyan-700',
-    textColor: 'text-slate-900',
-    descColor: 'text-slate-600',
-    labelColor: 'text-cyan-600',
-    bulletColor: 'text-cyan-500',
-    pattern: 'radial-gradient(circle, rgba(8, 145, 178, 0.08) 0.5px, transparent 0.5px)',
-  },
-  emerald: {
-    coverGradient: 'bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800',
-    coverBorder: 'border-emerald-700',
-    coverIconBg: 'bg-white/15 backdrop-blur-sm',
-    coverIconColor: 'text-white',
-    coverTextColor: 'text-white',
-    spineColor: 'bg-white/30',
-    
-    bgGradient: 'bg-gradient-to-br from-emerald-50/50 to-white',
-    borderColor: 'border-emerald-200',
-    iconBg: 'bg-emerald-100',
-    iconColor: 'text-emerald-700',
-    textColor: 'text-slate-900',
-    descColor: 'text-slate-600',
-    labelColor: 'text-emerald-600',
-    bulletColor: 'text-emerald-500',
-    pattern: 'repeating-linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0px, transparent 1px, transparent 14px)',
-  },
-  slate: {
-    coverGradient: 'bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900',
-    coverBorder: 'border-slate-800',
-    coverIconBg: 'bg-white/15 backdrop-blur-sm',
-    coverIconColor: 'text-white',
-    coverTextColor: 'text-white',
-    spineColor: 'bg-white/30',
-    
-    bgGradient: 'bg-gradient-to-br from-slate-50 to-white',
-    borderColor: 'border-slate-200',
-    iconBg: 'bg-slate-100',
-    iconColor: 'text-slate-700',
-    textColor: 'text-slate-900',
-    descColor: 'text-slate-600',
-    labelColor: 'text-slate-600',
-    bulletColor: 'text-slate-500',
-    pattern: 'linear-gradient(0deg, rgba(71, 85, 105, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(71, 85, 105, 0.08) 1px, transparent 1px)',
-  },
+/* ─── Visual diagrams ──────────────────────────────────────────────── */
+
+function BillingFlowDiagram() {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-7 md:p-8">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-5">
+        System Flow
+      </div>
+      <div className="flex items-center gap-2 mb-5">
+        {[
+          { label: 'Scan & Bill', sub: 'AI anomaly detection' },
+          { label: 'Stock Control', sub: 'Predictive alerts' },
+          { label: 'Compliance', sub: 'Auto audit trail' },
+        ].map((step, i, arr) => (
+          <div key={step.label} className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="flex-1 rounded-lg border border-slate-200 bg-white p-3 text-center shadow-sm">
+              <div className="text-[11px] font-semibold text-[#0B1F3A] leading-tight">{step.label}</div>
+              <div className="mt-0.5 text-[10px] text-slate-400 leading-tight">{step.sub}</div>
+            </div>
+            {i < arr.length - 1 && (
+              <div className="text-slate-300 text-xs flex-none">→</div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {['GST-compliant', 'Real-time stock', 'Expiry alerts', 'Audit-ready'].map(tag => (
+          <div key={tag} className="rounded-md border border-slate-200 bg-white px-3 py-2 text-[11px] font-medium text-[#0B1F3A]/60 text-center">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
-const solutions = [
+function AIPipelineDiagram() {
+  const nodes = [
+    { label: 'Data Ingestion', sub: 'Sales · Stock · Billing events' },
+    { label: 'AI Processing', sub: 'Pattern recognition · Forecasting · Decision support', highlight: true },
+    { label: 'Intelligence Output', sub: 'Alerts · Insights · Automated decisions' },
+  ]
+  return (
+    <div className="rounded-xl border border-white/8 bg-white/5 p-7 md:p-8">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/32 mb-5">
+        AI Pipeline
+      </div>
+      <div className="space-y-2 mb-5">
+        {nodes.map((node, i, arr) => (
+          <div key={node.label}>
+            <div className={`rounded-lg border px-4 py-3 ${node.highlight ? 'border-white/18 bg-white/10' : 'border-white/8 bg-white/4'}`}>
+              <div className={`text-[11px] font-semibold ${node.highlight ? 'text-white' : 'text-white/58'}`}>
+                {node.label}
+              </div>
+              <div className="text-[10px] text-white/28 mt-0.5">{node.sub}</div>
+            </div>
+            {i < arr.length - 1 && (
+              <div className="flex justify-center py-1 text-white/15 text-[10px]">↓</div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {['40% less stock-outs', 'Auto-insights', 'Adaptive reports', 'AI routing'].map(chip => (
+          <span key={chip} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] text-white/40">
+            {chip}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SaaSArchDiagram() {
+  const layers = [
+    { label: 'Client Interface', tag: 'Multi-tenant UI' },
+    { label: 'API & Business Logic', tag: 'REST / WebSockets' },
+    { label: 'AI Analytics Engine', tag: 'Intelligence layer', accent: true },
+    { label: 'Data Layer', tag: 'Tenant isolation' },
+    { label: 'Infrastructure', tag: 'Cloud-optional' },
+  ]
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-7 md:p-8">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-5">
+        Platform Architecture
+      </div>
+      <div className="space-y-1.5">
+        {layers.map(layer => (
+          <div
+            key={layer.label}
+            className={`flex items-center justify-between rounded-md px-4 py-2.5 border ${
+              layer.accent ? 'border-[#0B1F3A]/16 bg-[#0B1F3A]/5' : 'border-slate-200 bg-white'
+            }`}
+          >
+            <span className={`text-[11px] font-semibold ${layer.accent ? 'text-[#0B1F3A]' : 'text-[#0B1F3A]/62'}`}>
+              {layer.label}
+            </span>
+            <span className={`text-[10px] ${layer.accent ? 'text-[#0B1F3A]/42' : 'text-slate-400'}`}>
+              {layer.tag}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function WorkflowDiagram() {
+  return (
+    <div className="rounded-xl border border-white/8 bg-white/5 p-7 md:p-8">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/32 mb-5">
+        AI Workflow Routing
+      </div>
+      <div className="flex items-center gap-3 mb-5">
+        <div className="flex flex-col gap-2 flex-1">
+          {['Manual entry', 'Form input', 'API event'].map(inp => (
+            <div key={inp} className="rounded-md border border-white/8 bg-white/4 px-3 py-2 text-[10px] text-white/38 text-center">
+              {inp}
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-1.5">
+          <div className="text-white/15 text-[10px]">→</div>
+          <div className="rounded-lg border border-white/18 bg-white/10 px-3 py-2.5 text-center">
+            <div className="text-[10px] font-bold text-white uppercase tracking-wider">AI</div>
+            <div className="text-[9px] text-white/28 mt-0.5">Router</div>
+          </div>
+          <div className="text-white/15 text-[10px]">→</div>
+        </div>
+        <div className="flex flex-col gap-2 flex-1">
+          {['Auto-approve', 'Flag review', 'Escalate'].map(out => (
+            <div key={out} className="rounded-md border border-white/8 bg-white/4 px-3 py-2 text-[10px] text-white/38 text-center">
+              {out}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {['60–80% less manual work', 'Full audit trail', 'Zero bottlenecks'].map(chip => (
+          <span key={chip} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] text-white/36">
+            {chip}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* ─── Data ─────────────────────────────────────────────────────────── */
+
+const mainSolutions = [
   {
-    icon: Building2,
-    title: 'Subscription SaaS Platforms',
-    description: 'Scalable systems designed for multi-tenant growth and operational control.',
-    theme: themes.navy,
-    image: img1,
-    includes: [
-      'Multi-tenant architecture with data isolation',
-      'Subscription billing and tier management',
-    ],
-    outcomes: [
-      'Scale from 10 to 10,000 customers seamlessly',
-      'Predictable recurring revenue streams',
-    ],
-  },
-  {
+    tag: 'Core Platform',
+    title: 'Intelligent Billing & Inventory',
+    description: 'End-to-end operational platform with AI anomaly detection, predictive expiry alerts, and compliance-ready transaction management.',
+    Visual: BillingFlowDiagram,
     icon: PackageCheck,
-    title: 'Billing & Inventory Systems',
-    description: 'Practical transaction and stock workflows designed for daily reliability.',
-    theme: themes.indigo,
-    image: img2,
-    includes: [
-      'Real-time stock tracking with expiry alerts',
-      'GST/tax handling and batch tracking',
-    ],
-    outcomes: [
-      'Eliminate stock discrepancies',
-      'Automated compliance for regulated industries',
-    ],
+    dark: false,
   },
   {
+    tag: 'AI Intelligence',
+    title: 'AI-Powered Analytics & Forecasting',
+    description: 'Embedded AI layer that turns operational data into demand forecasts, anomaly alerts, and adaptive business insights.',
+    Visual: AIPipelineDiagram,
+    icon: Brain,
+    dark: true,
+  },
+  {
+    tag: 'SaaS Platform',
+    title: 'Multi-Tenant SaaS Architecture',
+    description: 'Scalable, AI-integrated multi-tenant platforms built for thousands of clients with intelligent analytics and subscription management.',
+    Visual: SaaSArchDiagram,
+    icon: Building2,
+    dark: false,
+  },
+  {
+    tag: 'Automation',
+    title: 'Workflow Intelligence & Automation',
+    description: 'AI-assisted routing that eliminates manual overhead, routes decisions intelligently, and surfaces operational bottlenecks in real time.',
+    Visual: WorkflowDiagram,
     icon: Workflow,
-    title: 'Workflow Automation',
-    description: 'Process automation that reduces manual handoffs and reporting friction.',
-    theme: themes.teal,
-    image: img3,
-    includes: [
-      'Visual workflow builder for processes',
-      'Automated notifications and approvals',
-    ],
-    outcomes: [
-      'Cut manual data entry by 60-80%',
-      'Faster approval cycles, fewer errors',
-    ],
-  },
-  {
-    icon: Shield,
-    title: 'Secure Access Architecture',
-    description: 'Role-aware permissions and secure implementation aligned with enterprise practices.',
-    theme: themes.cyan,
-    image: img4,
-    includes: [
-      'Role-based access control (RBAC)',
-      'Audit logging and encrypted data',
-    ],
-    outcomes: [
-      'Meet regulatory requirements (HIPAA, GDPR)',
-      'Build customer trust with visible security',
-    ],
-  },
-  {
-    icon: MonitorCog,
-    title: 'Hybrid Desktop + Web',
-    description: 'Operational desktop experience with web visibility for analytics and oversight.',
-    theme: themes.emerald,
-    image: img5,
-    includes: [
-      'Desktop app for daily operations (offline)',
-      'Web dashboard for analytics and reporting',
-    ],
-    outcomes: [
-      'Operations run without internet dependency',
-      'Management gets visibility without disruption',
-    ],
-  },
-  {
-    icon: Database,
-    title: 'Cloud-Optional Deployments',
-    description: 'Offline-first core with optional cloud sync based on business readiness.',
-    theme: themes.slate,
-    image: img6,
-    includes: [
-      'Core functionality runs fully offline',
-      'Optional cloud sync for backup',
-    ],
-    outcomes: [
-      'Zero dependency on constant connectivity',
-      'Lower ongoing operational costs',
-    ],
+    dark: true,
   },
 ]
 
+const additionalCapabilities = [
+  { icon: Shield, title: 'Secure Access Architecture' },
+  { icon: MonitorCog, title: 'Hybrid Desktop + Web' },
+  { icon: Database, title: 'Cloud-Optional Intelligence' },
+]
+
+/* ─── Component ─────────────────────────────────────────────────────── */
+
 function WhatWeBuildSection() {
   return (
-    <Reveal as="section" id="build" className="py-12 md:py-16 lg:py-20 scroll-mt-24">
-      <Container>
-        <SectionHeading
-          title="Why Us"
-          centered
-        />
-        <div className="mt-6 grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {solutions.map((solution, index) => (
-            <BookCardPremium
-              key={solution.title}
-              {...solution}
-              delay={index * 0.12}
-              compact
-            />
-          ))}
-        </div>
-        {/* Brochure download button moved to Product Spotlight */}
-      </Container>
-    </Reveal>
+    <section id="build" className="scroll-mt-24">
+      {/* Section header */}
+      <div className="border-t border-slate-100 bg-white py-14 md:py-20">
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-2xl"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px w-10 bg-slate-300" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                What We Build
+              </span>
+            </div>
+            <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl lg:text-5xl leading-[1.15]">
+              AI-integrated systems built
+              <br />
+              for serious operations.
+            </h2>
+          </motion.div>
+        </Container>
+      </div>
+
+      {/* Alternating solution blocks */}
+      {mainSolutions.map((solution, index) => {
+        const { Visual } = solution
+        return (
+          <motion.div
+            key={solution.title}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.12 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+            className={`border-t py-14 md:py-20 ${
+              solution.dark ? 'bg-[#0B1F3A] border-white/5' : 'bg-white border-slate-100'
+            }`}
+          >
+            <Container>
+              <div
+                className={`grid gap-12 lg:grid-cols-2 lg:gap-20 lg:items-center ${
+                  index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''
+                }`}
+              >
+                {/* Text */}
+                <div>
+                  <div
+                    className={`inline-flex items-center mb-5 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] ${
+                      solution.dark ? 'bg-white/8 text-white/50' : 'bg-slate-100 text-slate-500'
+                    }`}
+                  >
+                    {solution.tag}
+                  </div>
+                  <h3
+                    className={`text-2xl font-semibold tracking-tight leading-[1.25] sm:text-3xl ${
+                      solution.dark ? 'text-white' : 'text-[#0B1F3A]'
+                    }`}
+                  >
+                    {solution.title}
+                  </h3>
+                  <p
+                    className={`mt-4 text-base leading-relaxed ${
+                      solution.dark ? 'text-white/50' : 'text-slate-500'
+                    }`}
+                  >
+                    {solution.description}
+                  </p>
+                  <a
+                    href="#contact"
+                    className={`mt-8 inline-flex items-center gap-2 text-sm font-medium transition-colors group ${
+                      solution.dark ? 'text-white/45 hover:text-white' : 'text-[#0B1F3A]/45 hover:text-[#0B1F3A]'
+                    }`}
+                  >
+                    Discuss this solution
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                </div>
+
+                {/* Visual diagram */}
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: 0.15 }}
+                >
+                  <Visual />
+                </motion.div>
+              </div>
+            </Container>
+          </motion.div>
+        )
+      })}
+
+      {/* Additional capabilities */}
+      <div className="border-t border-slate-100 bg-slate-50 py-12 md:py-14">
+        <Container>
+          <div className="flex flex-wrap items-center gap-8 sm:gap-12">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 flex-none">
+              Also includes
+            </span>
+            {additionalCapabilities.map((cap, i) => (
+              <motion.div
+                key={cap.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="flex items-center gap-3"
+              >
+                <div className="flex-none rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
+                  <cap.icon className="h-4 w-4 text-[#0B1F3A]/65" strokeWidth={1.75} />
+                </div>
+                <span className="text-sm font-medium text-[#0B1F3A]/70">{cap.title}</span>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </div>
+    </section>
   )
 }
 

@@ -5,10 +5,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Container from '../ui/Container'
 
 const navItems = [
-  { label: 'Build', href: '/#build' },
-  { label: 'Approach', href: '/#approach' },
-  { label: 'Products', href: '/#products' },
-  { label: 'Video', href: '/#video' },
+  { label: 'Solutions', href: '/#build' },
+  { label: 'Process', href: '/#approach' },
+  { label: 'Medora+', href: '/#products' },
+  { label: 'Overview', href: '/#video' },
   { label: 'Contact', href: '/#contact' },
 ]
 
@@ -60,7 +60,7 @@ function Header() {
             {/* Founder link removed */}
             <a
               href="/#contact"
-              className="rounded-md bg-[#0B1F3A] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#173762]"
+              className="rounded-sm bg-[#0B1F3A] px-5 py-2.5 text-sm font-semibold text-white tracking-wide transition-colors hover:bg-[#173762]"
             >
               Discuss Business
             </a>
@@ -93,7 +93,7 @@ function Header() {
 
                 <a
                   href="/#contact"
-                  className="mt-1 rounded-md bg-[#0B1F3A] px-3 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#173762]"
+                  className="mt-1 rounded-sm bg-[#0B1F3A] px-3 py-2.5 text-sm font-semibold text-white tracking-wide transition-colors hover:bg-[#173762]"
                 >
                   Discuss Business
                 </a>

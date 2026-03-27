@@ -66,8 +66,8 @@ function FounderPage() {
                 value.
               </p>
               <p className="mt-4 text-slate-600">
-                From Peravurani and Chennai, we work with SMEs, pharmacies, and growing businesses across Tamil Nadu,
-                translating operational needs into structured software delivery.
+                From Peravurani and Chennai, we build AI-integrated systems for pharmacies, enterprise clients, and demanding businesses across India —
+                translating operational complexity into structured, intelligent software delivery.
               </p>
             </motion.div>
           </div>

@@ -1,61 +1,69 @@
-import MotionSection from '../ui/MotionSection'
-import Container from '../ui/Container'
 import { motion } from 'framer-motion'
+import { ArrowRight, MessageCircle } from 'lucide-react'
+import Container from '../ui/Container'
 
 function FinalCtaSection() {
   return (
-    <MotionSection id="contact" className="py-16 md:py-20 lg:py-24 scroll-mt-24">
-      <Container>
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-10 sm:px-10 sm:py-12">
-          <motion.div
-            className="absolute left-0 top-0 h-0.5 w-full bg-gradient-to-r from-transparent via-[#0B1F3A]/40 to-transparent"
-            initial={{ x: '-100%' }}
-            whileInView={{ x: '100%' }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1.8, ease: 'easeInOut' }}
-          />
-          <h2 className="text-2xl font-semibold tracking-tight text-[#0B1F3A] sm:text-3xl">
-            Ready to modernize your operations with structured software delivery?
+    <section id="contact" className="relative overflow-hidden bg-[#0B1F3A] py-20 md:py-24 lg:py-28 scroll-mt-20">
+      {/* Subtle grid */}
+      <div className="absolute inset-0 grid-texture pointer-events-none" />
+
+      <Container className="relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl"
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-px w-10 bg-white/18" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38">
+              Get Started
+            </span>
+          </div>
+
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl leading-[1.15]">
+            Ready to deploy AI-integrated
+            <br className="hidden sm:block" />
+            intelligence into your operations?
           </h2>
-          <p className="mt-4 max-w-3xl text-slate-600">
-            Start with a practical business discussion. We focus on implementation clarity, not inflated promises.
+
+          <p className="mt-6 max-w-xl text-base text-white/50 leading-relaxed">
+            Start with a focused technical discussion. We deliver AI-integrated
+            platforms with structured implementation, measurable outcomes, and
+            direct engineering accountability.
           </p>
 
-          <div className="mt-6 md:mt-7 flex flex-wrap gap-3">
+          <div className="mt-10 flex flex-wrap gap-4">
             <a
               href="https://wa.me/918508716957"
               target="_blank"
               rel="noreferrer"
-              className="rounded-md bg-[#0B1F3A] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#173762]"
+              className="group inline-flex items-center gap-2.5 bg-white px-7 py-3.5 text-sm font-semibold text-[#0B1F3A] tracking-wide transition-all hover:bg-white/92 rounded-sm"
             >
+              <MessageCircle className="h-4 w-4" />
               WhatsApp (India)
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
               href="https://wa.me/6590356479"
               target="_blank"
               rel="noreferrer"
-              className="rounded-md border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-[#0B1F3A] transition-colors hover:border-slate-300 hover:bg-slate-50"
+              className="inline-flex items-center gap-2 border border-white/18 px-7 py-3.5 text-sm font-medium text-white/75 tracking-wide transition-all hover:border-white/38 hover:text-white rounded-sm"
             >
               WhatsApp (Singapore)
             </a>
-            <a
-              href="http://151.185.43.65/login"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-md border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-[#0B1F3A] transition-colors hover:border-slate-300 hover:bg-slate-50"
-            >
-              View Demo
-            </a>
           </div>
 
-          <div className="mt-6 md:mt-7 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
-            <p>WhatsApp: +91 8508716957 / +65 90356479</p>
-            <p>Email: info@aadhiraiinnovations.com</p>
-            <p>Peravurani & Chennai, Tamil Nadu, India</p>
+          <div className="mt-10 pt-8 border-t border-white/8 grid gap-2 text-xs text-white/30 sm:grid-cols-3">
+            <span>+91 8508716957 / +65 90356479</span>
+            <span>info@aadhiraiinnovations.com</span>
+            <span>Peravurani & Chennai, Tamil Nadu</span>
           </div>
-        </div>
+        </motion.div>
       </Container>
-    </MotionSection>
+    </section>
   )
 }
 
