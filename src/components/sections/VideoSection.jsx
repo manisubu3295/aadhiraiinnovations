@@ -22,11 +22,12 @@ function VideoSection() {
             </span>
           </div>
           <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl max-w-xl leading-[1.2]">
-            Company and delivery overview.
+            How Aadhirai Innovations builds
+            pharmacy and enterprise software.
           </h2>
           <p className="mt-4 text-base text-slate-500 max-w-xl leading-relaxed">
-            A short walkthrough of Aadhirai Innovations' direction, engineering
-            philosophy, and implementation approach.
+            A short walkthrough of our engineering philosophy, structured delivery
+            approach, and how we build pharmacy software and ERP systems for Indian businesses.
           </p>
         </motion.div>
 

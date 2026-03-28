@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Tenant SaaS Architecture — Aadhirai Innovations</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #CBD5E1;
+      padding: 24px;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .toolbar h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1E293B;
+    }
+    .btn {
+      padding: 7px 18px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-blue { background: #3B82F6; color: white; }
+    .btn-slate { background: #475569; color: white; }
+    .wrapper {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+      padding: 24px;
+      overflow: auto;
+    }
+    svg { display: block; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <h1>Multi-Tenant SaaS Architecture — Enterprise Edition</h1>
+    <button class="btn btn-blue" onclick="downloadSVG()">⬇ Download SVG</button>
+    <button class="btn btn-slate" onclick="window.print()">🖨 Print / PDF</button>
+  </div>
+  <div class="wrapper">
+    <svg id="diagram" width="2020" height="1420" viewBox="0 0 2020 1420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#94A3B8"/>
+        </marker>
+        <marker id="arr-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#3B82F6"/>
+        </marker>
+        <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#16A34A"/>
+        </marker>
+        <marker id="arr-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#EA580C"/>
+        </marker>
+        <filter id="card-shadow">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(15,23,42,0.08)"/>
+        </filter>
+        <filter id="section-shadow">
+          <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="rgba(15,23,42,0.10)"/>
+        </filter>
+      </defs>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  CANVAS BACKGROUND                                 -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect width="2020" height="1420" fill="#F8FAFC" rx="10"/>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  TITLE BAR                                         -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="0" y="0" width="2020" height="72" fill="#0F172A" rx="10"/>
+      <rect x="0" y="62" width="2020" height="10" fill="#0F172A"/>
+      <text x="1010" y="32" text-anchor="middle" font-size="22" font-weight="700" fill="white" font-family="Segoe UI, system-ui, sans-serif" letter-spacing="-0.3">Multi-Tenant SaaS Architecture</text>
+      <text x="1010" y="56" text-anchor="middle" font-size="11" fill="#94A3B8" font-family="Segoe UI, system-ui, sans-serif" letter-spacing="2.5">ENTERPRISE-GRADE  •  SCALABLE  •  SECURE  •  MULTI-TENANT</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 1A — USERS  (x:20 y:85 w:380 h:155)          -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="85" width="380" height="158" rx="10" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <!-- Section header -->
+      <rect x="20" y="85" width="380" height="28" rx="10" fill="#2563EB"/>
+      <rect x="20" y="101" width="380" height="12" fill="#2563EB"/>
+      <text x="210" y="104" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">USERS</text>
+
+      <!-- Tenant Admin -->
+      <rect x="32" y="124" width="166" height="42" rx="7" fill="white" stroke="#BFDBFE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="115" y="140" text-anchor="middle" font-size="9" fill="#1D4ED8" font-weight="700" font-family="Segoe UI,sans-serif">Tenant Admin</text>
+      <text x="115" y="155" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Manages tenant workspace</text>
+
+      <!-- Tenant Staff -->
+      <rect x="208" y="124" width="180" height="42" rx="7" fill="white" stroke="#BFDBFE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="298" y="140" text-anchor="middle" font-size="9" fill="#1D4ED8" font-weight="700" font-family="Segoe UI,sans-serif">Tenant Staff / End Users</text>
+      <text x="298" y="155" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Day-to-day operations</text>
+
+      <!-- Super Admin -->
+      <rect x="32" y="174" width="166" height="42" rx="7" fill="white" stroke="#BFDBFE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="115" y="190" text-anchor="middle" font-size="9" fill="#1D4ED8" font-weight="700" font-family="Segoe UI,sans-serif">Super Admin</text>
+      <text x="115" y="205" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Platform Owner</text>
+
+      <!-- External -->
+      <rect x="208" y="174" width="180" height="42" rx="7" fill="white" stroke="#BFDBFE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="298" y="190" text-anchor="middle" font-size="9" fill="#1D4ED8" font-weight="700" font-family="Segoe UI,sans-serif">External Integrations</text>
+      <text x="298" y="205" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">3rd Party APIs / Webhooks</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 1B — CLIENT APPS  (x:415 y:85 w:905 h:158)   -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="415" y="85" width="905" height="158" rx="10" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="415" y="85" width="905" height="28" rx="10" fill="#15803D"/>
+      <rect x="415" y="101" width="905" height="12" fill="#15803D"/>
+      <text x="867" y="104" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">CLIENT APPLICATIONS</text>
+
+      <!-- Web App -->
+      <rect x="428" y="124" width="200" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="528" y="143" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Web App</text>
+      <text x="528" y="158" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">React / Vue / Angular</text>
+      <text x="528" y="170" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">SPA / SSR / SSG</text>
+
+      <!-- Mobile App -->
+      <rect x="642" y="124" width="200" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="742" y="143" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Mobile App</text>
+      <text x="742" y="158" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">React Native / Flutter</text>
+      <text x="742" y="170" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">iOS / Android</text>
+
+      <!-- Desktop App -->
+      <rect x="856" y="124" width="200" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="956" y="143" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Desktop App</text>
+      <text x="956" y="158" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Electron / Tauri</text>
+      <text x="956" y="170" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Offline-First Capable</text>
+
+      <!-- Admin Portal -->
+      <rect x="1070" y="124" width="238" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1189" y="143" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Admin Portal</text>
+      <text x="1189" y="158" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Platform Management</text>
+      <text x="1189" y="170" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Tenant Provisioning</text>
+
+      <!-- ARROWS: Row1 → Edge -->
+      <line x1="210" y1="243" x2="210" y2="262" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,2"/>
+      <line x1="867" y1="243" x2="867" y2="262" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,2"/>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 2 — EDGE LAYER  (x:20 y:267 w:1300 h:105)    -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="267" width="1300" height="105" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="20" y="267" width="1300" height="28" rx="10" fill="#B45309"/>
+      <rect x="20" y="283" width="1300" height="12" fill="#B45309"/>
+      <text x="670" y="286" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">EDGE / DELIVERY LAYER</text>
+
+      <!-- DNS -->
+      <rect x="32" y="305" width="295" height="45" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="179" y="322" text-anchor="middle" font-size="9.5" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">DNS Resolution</text>
+      <text x="179" y="337" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Route53 / Cloudflare DNS — domain → IP</text>
+
+      <!-- CDN -->
+      <rect x="338" y="305" width="295" height="45" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="485" y="322" text-anchor="middle" font-size="9.5" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">CDN</text>
+      <text x="485" y="337" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Cloudflare / CloudFront — static assets</text>
+
+      <!-- Load Balancer -->
+      <rect x="644" y="305" width="295" height="45" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="791" y="322" text-anchor="middle" font-size="9.5" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Load Balancer</text>
+      <text x="791" y="337" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Nginx / AWS ALB / HAProxy</text>
+
+      <!-- API Gateway -->
+      <rect x="950" y="305" width="358" height="45" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1129" y="322" text-anchor="middle" font-size="9.5" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">API Gateway / Reverse Proxy</text>
+      <text x="1129" y="337" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Kong / AWS API GW / Traefik</text>
+
+      <!-- ARROW: Edge → Tenant/Auth row -->
+      <line x1="670" y1="372" x2="670" y2="390" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 3A — TENANT RESOLUTION  (x:20 y:395 w:630 h:158) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="395" width="630" height="158" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="20" y="395" width="630" height="28" rx="10" fill="#6D28D9"/>
+      <rect x="20" y="411" width="630" height="12" fill="#6D28D9"/>
+      <text x="335" y="414" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">TENANT IDENTIFICATION / ROUTING</text>
+
+      <!-- Subdomain -->
+      <rect x="32" y="433" width="185" height="48" rx="7" fill="white" stroke="#C4B5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="124" y="452" text-anchor="middle" font-size="9" fill="#4C1D95" font-weight="700" font-family="Segoe UI,sans-serif">Subdomain Tenancy</text>
+      <text x="124" y="465" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">tenant1.app.com</text>
+      <text x="124" y="476" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">tenant2.app.com</text>
+
+      <!-- Path-based -->
+      <rect x="228" y="433" width="185" height="48" rx="7" fill="white" stroke="#C4B5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="320" y="452" text-anchor="middle" font-size="9" fill="#4C1D95" font-weight="700" font-family="Segoe UI,sans-serif">Path-Based Tenancy</text>
+      <text x="320" y="465" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">app.com/tenant1/</text>
+      <text x="320" y="476" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">app.com/tenant2/</text>
+
+      <!-- Custom Domain -->
+      <rect x="424" y="433" width="214" height="48" rx="7" fill="white" stroke="#C4B5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="531" y="452" text-anchor="middle" font-size="9" fill="#4C1D95" font-weight="700" font-family="Segoe UI,sans-serif">Custom Domain</text>
+      <text x="531" y="465" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">client.customdomain.com</text>
+      <text x="531" y="476" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">SSL per domain</text>
+
+      <!-- Tenant Resolver -->
+      <rect x="32" y="491" width="290" height="38" rx="7" fill="#EDE9FE" stroke="#A78BFA" stroke-width="1"/>
+      <text x="177" y="506" text-anchor="middle" font-size="9" fill="#4C1D95" font-weight="700" font-family="Segoe UI,sans-serif">Tenant Resolver Middleware</text>
+      <text x="177" y="520" text-anchor="middle" font-size="7.5" fill="#5B21B6" font-family="Segoe UI,sans-serif">Extracts tenantId from request</text>
+
+      <!-- Context Injection -->
+      <rect x="332" y="491" width="306" height="38" rx="7" fill="#EDE9FE" stroke="#A78BFA" stroke-width="1"/>
+      <text x="485" y="506" text-anchor="middle" font-size="9" fill="#4C1D95" font-weight="700" font-family="Segoe UI,sans-serif">Tenant Context Injection</text>
+      <text x="485" y="520" text-anchor="middle" font-size="7.5" fill="#5B21B6" font-family="Segoe UI,sans-serif">Injects tenantId into request context</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 3B — AUTH & SECURITY  (x:665 y:395 w:655 h:158) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="665" y="395" width="655" height="158" rx="10" fill="#FFF1F2" stroke="#FECDD3" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="665" y="395" width="655" height="28" rx="10" fill="#BE123C"/>
+      <rect x="665" y="411" width="655" height="12" fill="#BE123C"/>
+      <text x="992" y="414" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">AUTHENTICATION &amp; AUTHORIZATION</text>
+
+      <!-- Identity Provider -->
+      <rect x="677" y="433" width="198" height="40" rx="7" fill="white" stroke="#FECDD3" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="776" y="449" text-anchor="middle" font-size="9" fill="#9F1239" font-weight="700" font-family="Segoe UI,sans-serif">Identity Provider</text>
+      <text x="776" y="464" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Keycloak / Auth0 / Custom</text>
+
+      <!-- JWT/Session -->
+      <rect x="887" y="433" width="198" height="40" rx="7" fill="white" stroke="#FECDD3" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="986" y="449" text-anchor="middle" font-size="9" fill="#9F1239" font-weight="700" font-family="Segoe UI,sans-serif">JWT / Session Mgmt</text>
+      <text x="986" y="464" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Token lifecycle management</text>
+
+      <!-- RBAC -->
+      <rect x="1097" y="433" width="211" height="40" rx="7" fill="white" stroke="#FECDD3" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1202" y="449" text-anchor="middle" font-size="9" fill="#9F1239" font-weight="700" font-family="Segoe UI,sans-serif">RBAC</text>
+      <text x="1202" y="464" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Role-Based Access Control</text>
+
+      <!-- Tenant Isolation Enforcement -->
+      <rect x="677" y="483" width="198" height="40" rx="7" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="1"/>
+      <text x="776" y="499" text-anchor="middle" font-size="9" fill="#9F1239" font-weight="700" font-family="Segoe UI,sans-serif">Tenant Isolation</text>
+      <text x="776" y="514" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Enforcement Layer</text>
+
+      <!-- Rate Limiting -->
+      <rect x="887" y="483" width="198" height="40" rx="7" fill="white" stroke="#FECDD3" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="986" y="499" text-anchor="middle" font-size="9" fill="#9F1239" font-weight="700" font-family="Segoe UI,sans-serif">Rate Limiting</text>
+      <text x="986" y="514" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">API security / Throttling</text>
+
+      <!-- Audit Logging -->
+      <rect x="1097" y="483" width="211" height="40" rx="7" fill="white" stroke="#FECDD3" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1202" y="499" text-anchor="middle" font-size="9" fill="#9F1239" font-weight="700" font-family="Segoe UI,sans-serif">Audit Logging</text>
+      <text x="1202" y="514" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Compliance &amp; security logs</text>
+
+      <!-- ARROW: Row3 → App Layer -->
+      <line x1="660" y1="553" x2="660" y2="572" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 4 — APPLICATION LAYER  (x:20 y:577 w:1300 h:188) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="577" width="1300" height="190" rx="10" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="20" y="577" width="1300" height="28" rx="10" fill="#15803D"/>
+      <rect x="20" y="593" width="1300" height="12" fill="#15803D"/>
+      <text x="670" y="596" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">APPLICATION LAYER</text>
+
+      <!-- Frontend App Server -->
+      <rect x="32" y="616" width="220" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="142" y="634" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Frontend App Server</text>
+      <text x="142" y="648" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">SSR / Static Hosting</text>
+      <text x="142" y="660" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Vercel / S3 + CloudFront</text>
+
+      <!-- Backend API -->
+      <rect x="265" y="616" width="220" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="375" y="634" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Backend API Layer</text>
+      <text x="375" y="648" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">REST / GraphQL</text>
+      <text x="375" y="660" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Node.js / .NET / Python</text>
+
+      <!-- Multi-Tenant App Server (highlighted) -->
+      <rect x="498" y="612" width="240" height="63" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" filter="url(#card-shadow)"/>
+      <text x="618" y="630" text-anchor="middle" font-size="9.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Multi-Tenant App Server</text>
+      <text x="618" y="644" text-anchor="middle" font-size="8" fill="#166534" font-weight="600" font-family="Segoe UI,sans-serif">Tenant-Context Aware</text>
+      <text x="618" y="657" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">All requests scoped to tenantId</text>
+      <text x="618" y="669" text-anchor="middle" font-size="7" fill="#15803D" font-family="Segoe UI,sans-serif">Stateless • Horizontally scalable</text>
+
+      <!-- Modules container -->
+      <rect x="752" y="616" width="556" height="55" rx="7" fill="white" stroke="#86EFAC" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1030" y="630" text-anchor="middle" font-size="8.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">APPLICATION MODULES</text>
+
+      <!-- Module chips -->
+      <rect x="760" y="636" width="78" height="22" rx="11" fill="#DCFCE7" stroke="#4ADE80" stroke-width="1"/>
+      <text x="799" y="651" text-anchor="middle" font-size="7.5" fill="#14532D" font-weight="600" font-family="Segoe UI,sans-serif">User Mgmt</text>
+
+      <rect x="847" y="636" width="78" height="22" rx="11" fill="#DCFCE7" stroke="#4ADE80" stroke-width="1"/>
+      <text x="886" y="651" text-anchor="middle" font-size="7.5" fill="#14532D" font-weight="600" font-family="Segoe UI,sans-serif">Billing / Sub</text>
+
+      <rect x="934" y="636" width="72" height="22" rx="11" fill="#DCFCE7" stroke="#4ADE80" stroke-width="1"/>
+      <text x="970" y="651" text-anchor="middle" font-size="7.5" fill="#14532D" font-weight="600" font-family="Segoe UI,sans-serif">CRM / ERP</text>
+
+      <rect x="1015" y="636" width="75" height="22" rx="11" fill="#DCFCE7" stroke="#4ADE80" stroke-width="1"/>
+      <text x="1052" y="651" text-anchor="middle" font-size="7.5" fill="#14532D" font-weight="600" font-family="Segoe UI,sans-serif">Reporting</text>
+
+      <rect x="1099" y="636" width="90" height="22" rx="11" fill="#DCFCE7" stroke="#4ADE80" stroke-width="1"/>
+      <text x="1144" y="651" text-anchor="middle" font-size="7.5" fill="#14532D" font-weight="600" font-family="Segoe UI,sans-serif">Notifications</text>
+
+      <rect x="1198" y="636" width="100" height="22" rx="11" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="1248" y="651" text-anchor="middle" font-size="7.5" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">AI Assistant ✦</text>
+
+      <!-- Pipeline strip -->
+      <rect x="32" y="683" width="1276" height="52" rx="7" fill="white" stroke="#BBF7D0" stroke-width="1"/>
+      <text x="172" y="697" text-anchor="middle" font-size="8" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">REQUEST PIPELINE</text>
+
+      <!-- pipeline steps -->
+      <rect x="35" y="703" width="88" height="24" rx="4" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1"/>
+      <text x="79" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-family="Segoe UI,sans-serif">Request In</text>
+      <line x1="123" y1="715" x2="138" y2="715" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+      <rect x="140" y="703" width="118" height="24" rx="4" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1"/>
+      <text x="199" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-family="Segoe UI,sans-serif">Tenant Middleware</text>
+      <line x1="258" y1="715" x2="273" y2="715" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+      <rect x="275" y="703" width="118" height="24" rx="4" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1"/>
+      <text x="334" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-family="Segoe UI,sans-serif">Auth Validation</text>
+      <line x1="393" y1="715" x2="408" y2="715" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+      <rect x="410" y="703" width="118" height="24" rx="4" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1"/>
+      <text x="469" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-family="Segoe UI,sans-serif">Business Logic</text>
+      <line x1="528" y1="715" x2="543" y2="715" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+      <rect x="545" y="703" width="130" height="24" rx="4" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1"/>
+      <text x="610" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-family="Segoe UI,sans-serif">Tenant DB Resolver</text>
+      <line x1="675" y1="715" x2="690" y2="715" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+      <rect x="692" y="703" width="120" height="24" rx="4" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1"/>
+      <text x="752" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-family="Segoe UI,sans-serif">Data Layer Access</text>
+      <line x1="812" y1="715" x2="827" y2="715" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+      <rect x="829" y="703" width="120" height="24" rx="4" fill="#DCFCE7" stroke="#4ADE80" stroke-width="1.5"/>
+      <text x="889" y="719" text-anchor="middle" font-size="7" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">Response Sent</text>
+
+      <!-- ARROW: App → Service -->
+      <line x1="660" y1="767" x2="660" y2="786" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 5 — SERVICE LAYER  (x:20 y:791 w:1300 h:155) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="791" width="1300" height="158" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="20" y="791" width="1300" height="28" rx="10" fill="#92400E"/>
+      <rect x="20" y="807" width="1300" height="12" fill="#92400E"/>
+      <text x="670" y="810" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">BUSINESS LOGIC / SERVICE LAYER</text>
+
+      <!-- 7 service boxes -->
+      <rect x="32" y="829" width="168" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="116" y="846" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Tenant-aware</text>
+      <text x="116" y="859" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Service Layer</text>
+      <text x="116" y="873" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Scoped operations</text>
+
+      <rect x="212" y="829" width="168" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="296" y="850" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Validation Layer</text>
+      <text x="296" y="866" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Input / Business rules</text>
+
+      <rect x="392" y="829" width="168" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="476" y="850" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Workflow Engine</text>
+      <text x="476" y="866" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Process automation</text>
+
+      <rect x="572" y="829" width="168" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="656" y="846" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">File / Document</text>
+      <text x="656" y="859" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Service</text>
+      <text x="656" y="873" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Upload / manage files</text>
+
+      <rect x="752" y="829" width="168" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="836" y="846" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Reporting /</text>
+      <text x="836" y="859" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Analytics</text>
+      <text x="836" y="873" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Per-tenant analytics</text>
+
+      <rect x="932" y="829" width="168" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1016" y="846" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Notification</text>
+      <text x="1016" y="859" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Service</text>
+      <text x="1016" y="873" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Email / SMS / WhatsApp</text>
+
+      <rect x="1112" y="829" width="196" height="52" rx="7" fill="white" stroke="#FDE68A" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1210" y="846" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">Integration Service</text>
+      <text x="1210" y="862" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">3rd party connectors</text>
+      <text x="1210" y="875" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Webhooks / REST / gRPC</text>
+
+      <!-- Cross-cutting bar -->
+      <rect x="32" y="892" width="1276" height="38" rx="6" fill="#FEF3C7" stroke="#FDE68A" stroke-width="1"/>
+      <text x="670" y="907" text-anchor="middle" font-size="8.5" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">CROSS-CUTTING CONCERNS</text>
+      <text x="670" y="921" text-anchor="middle" font-size="7.5" fill="#92400E" font-family="Segoe UI,sans-serif">Config-Driven Provisioning  •  Event Bus / Message Queue  •  Caching Layer  •  Error Handling  •  Distributed Tracing  •  Tenant Isolation enforced on every query</text>
+
+      <!-- ARROW: Service → Data -->
+      <line x1="660" y1="949" x2="660" y2="968" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 6 — DATA ARCHITECTURE  (x:20 y:973 w:1300 h:210) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="973" width="1300" height="212" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="20" y="973" width="1300" height="28" rx="10" fill="#1D4ED8"/>
+      <rect x="20" y="989" width="1300" height="12" fill="#1D4ED8"/>
+      <text x="670" y="992" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">DATA ARCHITECTURE LAYER</text>
+
+      <!-- DB Option A -->
+      <rect x="32" y="1012" width="295" height="88" rx="7" fill="white" stroke="#93C5FD" stroke-width="1.5" filter="url(#card-shadow)"/>
+      <rect x="32" y="1012" width="295" height="22" rx="7" fill="#DBEAFE"/>
+      <rect x="32" y="1022" width="295" height="12" fill="#DBEAFE"/>
+      <text x="179" y="1027" text-anchor="middle" font-size="8.5" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">OPTION A: Shared DB + Shared Schema</text>
+      <text x="179" y="1044" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Single DB with tenant_id column</text>
+      <text x="179" y="1057" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Row-Level Security per tenant</text>
+      <text x="179" y="1070" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Lower cost • Simpler ops</text>
+      <text x="179" y="1083" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">PostgreSQL / MySQL (RLS Policies)</text>
+      <text x="179" y="1095" text-anchor="middle" font-size="7" fill="#DC2626" font-family="Segoe UI,sans-serif">Shared schema — less isolation</text>
+
+      <!-- DB Option B -->
+      <rect x="338" y="1012" width="295" height="88" rx="7" fill="white" stroke="#93C5FD" stroke-width="1.5" filter="url(#card-shadow)"/>
+      <rect x="338" y="1012" width="295" height="22" rx="7" fill="#DBEAFE"/>
+      <rect x="338" y="1022" width="295" height="12" fill="#DBEAFE"/>
+      <text x="485" y="1027" text-anchor="middle" font-size="8.5" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">OPTION B: Separate DB per Tenant</text>
+      <text x="485" y="1044" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Dedicated database per tenant</text>
+      <text x="485" y="1057" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Full data isolation</text>
+      <text x="485" y="1070" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Best for compliance / enterprise</text>
+      <text x="485" y="1083" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">PostgreSQL / MongoDB per tenant</text>
+      <text x="485" y="1095" text-anchor="middle" font-size="7" fill="#16A34A" font-family="Segoe UI,sans-serif">Strong isolation — recommended</text>
+
+      <!-- Platform Master DB -->
+      <rect x="645" y="1012" width="188" height="88" rx="7" fill="white" stroke="#93C5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="739" y="1030" text-anchor="middle" font-size="9" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">Platform Master DB</text>
+      <text x="739" y="1046" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Tenant Registry</text>
+      <text x="739" y="1060" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Subscription / Plan Data</text>
+      <text x="739" y="1074" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Platform Config</text>
+      <text x="739" y="1088" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">PostgreSQL (HA Cluster)</text>
+
+      <!-- Audit DB -->
+      <rect x="845" y="1012" width="188" height="88" rx="7" fill="white" stroke="#93C5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="939" y="1030" text-anchor="middle" font-size="9" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">Audit Logs DB</text>
+      <text x="939" y="1046" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Security Audit Trail</text>
+      <text x="939" y="1060" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Compliance Logs</text>
+      <text x="939" y="1074" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">User Activity History</text>
+      <text x="939" y="1088" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Elasticsearch / TimescaleDB</text>
+
+      <!-- Cache -->
+      <rect x="1045" y="1012" width="175" height="88" rx="7" fill="white" stroke="#93C5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1132" y="1030" text-anchor="middle" font-size="9" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">Cache Layer</text>
+      <text x="1132" y="1046" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Redis / Memcached</text>
+      <text x="1132" y="1060" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Tenant-namespaced keys</text>
+      <text x="1132" y="1074" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Session / Query cache</text>
+
+      <!-- Object Storage -->
+      <rect x="32" y="1112" width="617" height="48" rx="7" fill="white" stroke="#93C5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="340" y="1130" text-anchor="middle" font-size="9" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">Object Storage / File Store — S3 / GCS / Azure Blob</text>
+      <text x="340" y="1148" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Tenant files isolated by prefix: /tenants/{tenantId}/...  •  CDN-backed delivery  •  Lifecycle policies</text>
+
+      <!-- Search -->
+      <rect x="661" y="1112" width="647" height="48" rx="7" fill="white" stroke="#93C5FD" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="984" y="1130" text-anchor="middle" font-size="9" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">Search Index — Elasticsearch / OpenSearch (per-tenant indices)</text>
+      <text x="984" y="1148" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Full-text search across documents, records  •  Tenant-isolated index namespaces  •  Real-time indexing</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  ROW 7 — ONBOARDING + LIFECYCLE  (x:20 y:1198 w:1300 h:178) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="20" y="1198" width="1300" height="178" rx="10" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="20" y="1198" width="1300" height="28" rx="10" fill="#C2410C"/>
+      <rect x="20" y="1214" width="1300" height="12" fill="#C2410C"/>
+      <text x="670" y="1217" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">TENANT ONBOARDING FLOW &amp; REQUEST LIFECYCLE</text>
+
+      <!-- Onboarding label -->
+      <text x="32" y="1243" font-size="8" fill="#9A3412" font-weight="700" font-family="Segoe UI,sans-serif">ONBOARDING FLOW:</text>
+
+      <!-- Steps -->
+      <rect x="32" y="1250" width="100" height="30" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="82" y="1262" text-anchor="middle" font-size="7" fill="#7C2D12" font-weight="700" font-family="Segoe UI,sans-serif">1. Sign Up</text>
+      <text x="82" y="1274" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Segoe UI,sans-serif">Admin registers</text>
+      <line x1="132" y1="1265" x2="147" y2="1265" stroke="#C2410C" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+      <rect x="149" y="1250" width="112" height="30" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="205" y="1262" text-anchor="middle" font-size="7" fill="#7C2D12" font-weight="700" font-family="Segoe UI,sans-serif">2. Tenant Registry</text>
+      <text x="205" y="1274" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Segoe UI,sans-serif">Create tenant record</text>
+      <line x1="261" y1="1265" x2="276" y2="1265" stroke="#C2410C" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+      <rect x="278" y="1250" width="112" height="30" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="334" y="1262" text-anchor="middle" font-size="7" fill="#7C2D12" font-weight="700" font-family="Segoe UI,sans-serif">3. DB Provision</text>
+      <text x="334" y="1274" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Segoe UI,sans-serif">Schema / DB created</text>
+      <line x1="390" y1="1265" x2="405" y2="1265" stroke="#C2410C" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+      <rect x="407" y="1250" width="112" height="30" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="463" y="1262" text-anchor="middle" font-size="7" fill="#7C2D12" font-weight="700" font-family="Segoe UI,sans-serif">4. Subscription</text>
+      <text x="463" y="1274" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Segoe UI,sans-serif">Plan activated</text>
+      <line x1="519" y1="1265" x2="534" y2="1265" stroke="#C2410C" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+      <rect x="536" y="1250" width="112" height="30" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="592" y="1262" text-anchor="middle" font-size="7" fill="#7C2D12" font-weight="700" font-family="Segoe UI,sans-serif">5. Admin Created</text>
+      <text x="592" y="1274" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Segoe UI,sans-serif">First user set up</text>
+      <line x1="648" y1="1265" x2="663" y2="1265" stroke="#C2410C" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+      <rect x="665" y="1250" width="112" height="30" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="721" y="1262" text-anchor="middle" font-size="7" fill="#7C2D12" font-weight="700" font-family="Segoe UI,sans-serif">6. Welcome Email</text>
+      <text x="721" y="1274" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Segoe UI,sans-serif">Onboarding comms</text>
+      <line x1="777" y1="1265" x2="792" y2="1265" stroke="#C2410C" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+      <rect x="794" y="1250" width="115" height="30" rx="5" fill="#D1FAE5" stroke="#4ADE80" stroke-width="1.5"/>
+      <text x="851" y="1262" text-anchor="middle" font-size="7" fill="#065F46" font-weight="700" font-family="Segoe UI,sans-serif">Tenant Live</text>
+      <text x="851" y="1274" text-anchor="middle" font-size="6.5" fill="#064E3B" font-family="Segoe UI,sans-serif">Ready to use</text>
+
+      <!-- Request lifecycle label -->
+      <text x="32" y="1298" font-size="8" fill="#9A3412" font-weight="700" font-family="Segoe UI,sans-serif">REQUEST LIFECYCLE:</text>
+
+      <!-- lifecycle steps -->
+      <rect x="32" y="1305" width="86" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="75" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">User Request</text>
+      <line x1="118" y1="1319" x2="130" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="132" y="1305" width="86" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="175" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">DNS / CDN</text>
+      <line x1="218" y1="1319" x2="230" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="232" y="1305" width="86" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="275" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">API Gateway</text>
+      <line x1="318" y1="1319" x2="330" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="332" y="1305" width="95" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="379" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">Tenant Resolver</text>
+      <line x1="427" y1="1319" x2="439" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="441" y="1305" width="86" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="484" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">Auth / RBAC</text>
+      <line x1="527" y1="1319" x2="539" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="541" y="1305" width="86" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="584" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">App Services</text>
+      <line x1="627" y1="1319" x2="639" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="641" y="1305" width="105" height="28" rx="5" fill="white" stroke="#FDBA74" stroke-width="1"/>
+      <text x="693" y="1323" text-anchor="middle" font-size="6.5" fill="#7C2D12" font-family="Segoe UI,sans-serif">DB (tenant-scoped)</text>
+      <line x1="746" y1="1319" x2="758" y2="1319" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+      <rect x="760" y="1305" width="86" height="28" rx="5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+      <text x="803" y="1323" text-anchor="middle" font-size="6.5" fill="#1E40AF" font-weight="700" font-family="Segoe UI,sans-serif">Response</text>
+
+      <!-- Annotation box -->
+      <rect x="930" y="1238" width="378" height="132" rx="7" fill="white" stroke="#FED7AA" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1119" y="1256" text-anchor="middle" font-size="8.5" fill="#9A3412" font-weight="700" font-family="Segoe UI,sans-serif">ARCHITECTURE ANNOTATIONS</text>
+      <text x="938" y="1274" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">Config-driven provisioning — new tenants provisioned via API</text>
+      <text x="938" y="1288" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">Stateless services — horizontal scaling without shared state</text>
+      <text x="938" y="1302" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">All DB queries auto-scoped via tenant middleware (no leaks)</text>
+      <text x="938" y="1316" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">Role hierarchy: Super Admin → Tenant Admin → Staff</text>
+      <text x="938" y="1330" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">AI layer extensible — inject per-tenant LLM context</text>
+      <text x="938" y="1344" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">Zero-downtime deploys via Kubernetes rolling updates</text>
+      <text x="938" y="1358" font-size="7" fill="#374151" font-family="Segoe UI,sans-serif">Offline-first: sync queue resolves on reconnect</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  RIGHT SIDE — SHARED PLATFORM SERVICES  (x:1340 y:85 w:660 h:558) -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="1340" y="85" width="660" height="558" rx="10" fill="#FAF5FF" stroke="#E9D5FF" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="1340" y="85" width="660" height="28" rx="10" fill="#7E22CE"/>
+      <rect x="1340" y="101" width="660" height="12" fill="#7E22CE"/>
+      <text x="1670" y="104" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">SHARED PLATFORM SERVICES</text>
+
+      <!-- 8 service boxes in 2 cols -->
+      <rect x="1352" y="124" width="308" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="143" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Payment Gateway</text>
+      <text x="1506" y="158" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Stripe / Razorpay / PayPal</text>
+      <text x="1506" y="170" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Billing • Subscriptions • Invoices</text>
+
+      <rect x="1672" y="124" width="316" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="143" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Email Service</text>
+      <text x="1830" y="158" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">SendGrid / SES / Postmark</text>
+      <text x="1830" y="170" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Transactional • Tenant templates</text>
+
+      <rect x="1352" y="190" width="308" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="209" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">SMS / WhatsApp</text>
+      <text x="1506" y="224" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Twilio / WATI / MSG91</text>
+      <text x="1506" y="236" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Alerts • OTP • Notifications</text>
+
+      <rect x="1672" y="190" width="316" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="209" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Background Jobs / Queue</text>
+      <text x="1830" y="224" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">BullMQ / SQS / Kafka</text>
+      <text x="1830" y="236" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Async processing • Event-driven</text>
+
+      <rect x="1352" y="256" width="308" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="275" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Scheduler / Cron Jobs</text>
+      <text x="1506" y="290" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Node-cron / Temporal</text>
+      <text x="1506" y="302" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Recurring tasks per tenant</text>
+
+      <rect x="1672" y="256" width="316" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="275" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Monitoring / Logging</text>
+      <text x="1830" y="290" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Datadog / New Relic / ELK</text>
+      <text x="1830" y="302" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">APM • Error tracking • Logs</text>
+
+      <rect x="1352" y="322" width="308" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="341" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Analytics Platform</text>
+      <text x="1506" y="356" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Mixpanel / Amplitude</text>
+      <text x="1506" y="368" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Usage • Engagement • Funnels</text>
+
+      <rect x="1672" y="322" width="316" height="55" rx="7" fill="white" stroke="#D8B4FE" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="341" text-anchor="middle" font-size="9.5" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">Backup Service</text>
+      <text x="1830" y="356" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Automated daily backups</text>
+      <text x="1830" y="368" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">S3 / Glacier • Per-tenant restore</text>
+
+      <!-- Tenant Isolation Strategy callout -->
+      <rect x="1352" y="390" width="636" height="62" rx="7" fill="#F3E8FF" stroke="#C084FC" stroke-width="1.5"/>
+      <text x="1670" y="410" text-anchor="middle" font-size="9" fill="#581C87" font-weight="700" font-family="Segoe UI,sans-serif">TENANT ISOLATION STRATEGY</text>
+      <text x="1670" y="426" text-anchor="middle" font-size="7.5" fill="#7C3AED" font-family="Segoe UI,sans-serif">Shared Schema (tenant_id)  •  Separate Schema per Tenant  •  Separate DB per Tenant</text>
+      <text x="1670" y="440" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Config-driven: choose isolation level per tenant tier (Basic / Pro / Enterprise)</text>
+
+      <!-- Scalability callout -->
+      <rect x="1352" y="465" width="305" height="68" rx="7" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1.5"/>
+      <text x="1504" y="484" text-anchor="middle" font-size="9" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">SCALABILITY</text>
+      <text x="1504" y="499" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Horizontal pod autoscaling</text>
+      <text x="1504" y="513" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Stateless services • DB connection pool</text>
+      <text x="1504" y="525" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">CDN-cached static assets</text>
+
+      <!-- Security callout -->
+      <rect x="1670" y="465" width="318" height="68" rx="7" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="1.5"/>
+      <text x="1829" y="484" text-anchor="middle" font-size="9" fill="#881337" font-weight="700" font-family="Segoe UI,sans-serif">SECURITY</text>
+      <text x="1829" y="499" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">mTLS between microservices</text>
+      <text x="1829" y="513" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Secrets via Vault / AWS SM</text>
+      <text x="1829" y="525" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">OWASP • GDPR • SOC2 compliant</text>
+
+      <!-- AI Extension callout -->
+      <rect x="1352" y="546" width="636" height="50" rx="7" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="1670" y="565" text-anchor="middle" font-size="9" fill="#78350F" font-weight="700" font-family="Segoe UI,sans-serif">AI / ANALYTICS EXTENSION LAYER (Future Roadmap)</text>
+      <text x="1670" y="580" text-anchor="middle" font-size="7.5" fill="#92400E" font-family="Segoe UI,sans-serif">LLM-powered features  •  Predictive analytics  •  Tenant-specific AI models  •  RAG pipeline</text>
+      <text x="1670" y="592" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">OpenAI / Anthropic API  •  Vector DB (Pinecone / Qdrant)  •  LangChain / LlamaIndex</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  RIGHT SIDE — DEVOPS  (x:1340 y:658 w:660 h:518)  -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <rect x="1340" y="658" width="660" height="518" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" filter="url(#section-shadow)"/>
+      <rect x="1340" y="658" width="660" height="28" rx="10" fill="#334155"/>
+      <rect x="1340" y="674" width="660" height="12" fill="#334155"/>
+      <text x="1670" y="677" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Segoe UI,sans-serif" letter-spacing="1.2">DEVOPS / INFRASTRUCTURE / DEPLOYMENT</text>
+
+      <!-- CI/CD -->
+      <rect x="1352" y="697" width="308" height="55" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="716" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">CI/CD Pipeline</text>
+      <text x="1506" y="731" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">GitHub Actions / GitLab CI</text>
+      <text x="1506" y="743" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Build → Test → Deploy → Verify</text>
+
+      <!-- Containerization -->
+      <rect x="1672" y="697" width="316" height="55" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="716" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">Containerization</text>
+      <text x="1830" y="731" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Docker • Multi-stage builds</text>
+      <text x="1830" y="743" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Container registry (ECR / GCR)</text>
+
+      <!-- Kubernetes -->
+      <rect x="1352" y="763" width="308" height="55" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="782" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">Kubernetes / Orchestration</text>
+      <text x="1506" y="797" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">EKS / GKE / AKS / k3s</text>
+      <text x="1506" y="809" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Namespace per tenant (optional)</text>
+
+      <!-- Nginx / Ingress -->
+      <rect x="1672" y="763" width="316" height="55" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="782" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">Nginx / Ingress Controller</text>
+      <text x="1830" y="797" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Reverse proxy • SSL termination</text>
+      <text x="1830" y="809" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Tenant routing via ingress rules</text>
+
+      <!-- Secrets Manager -->
+      <rect x="1352" y="829" width="308" height="55" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1506" y="848" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">Secrets Manager</text>
+      <text x="1506" y="863" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">HashiCorp Vault / AWS SM</text>
+      <text x="1506" y="875" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Env config • DB credentials</text>
+
+      <!-- Auto Scaling -->
+      <rect x="1672" y="829" width="316" height="55" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1830" y="848" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">Auto Scaling</text>
+      <text x="1830" y="863" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">HPA / VPA / Cluster autoscaler</text>
+      <text x="1830" y="875" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Scale per load • Cost optimized</text>
+
+      <!-- Observability -->
+      <rect x="1352" y="895" width="636" height="52" rx="7" fill="white" stroke="#CBD5E1" stroke-width="1" filter="url(#card-shadow)"/>
+      <text x="1670" y="914" text-anchor="middle" font-size="9.5" fill="#1E293B" font-weight="700" font-family="Segoe UI,sans-serif">Observability Dashboard</text>
+      <text x="1670" y="929" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Grafana + Prometheus + Loki  •  Distributed Tracing (Jaeger / Zipkin)</text>
+      <text x="1670" y="941" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">Metrics • Logs • Traces — per service and per tenant</text>
+
+      <!-- Environments -->
+      <rect x="1352" y="959" width="636" height="46" rx="7" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+      <text x="1670" y="977" text-anchor="middle" font-size="8.5" fill="#334155" font-weight="700" font-family="Segoe UI,sans-serif">ENVIRONMENTS: dev → staging → production</text>
+      <text x="1670" y="993" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Feature flags • Blue/Green deployments • Canary releases • Rollback strategy</text>
+
+      <!-- IaC -->
+      <rect x="1352" y="1017" width="636" height="46" rx="7" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+      <text x="1670" y="1035" text-anchor="middle" font-size="8.5" fill="#334155" font-weight="700" font-family="Segoe UI,sans-serif">INFRASTRUCTURE AS CODE</text>
+      <text x="1670" y="1051" text-anchor="middle" font-size="7.5" fill="#64748B" font-family="Segoe UI,sans-serif">Terraform / Pulumi  •  Helm Charts  •  ArgoCD / Flux GitOps  •  AWS CDK</text>
+
+      <!-- Multi-region / HA -->
+      <rect x="1352" y="1075" width="636" height="52" rx="7" fill="#F0FDF4" stroke="#4ADE80" stroke-width="1.5"/>
+      <text x="1670" y="1094" text-anchor="middle" font-size="8.5" fill="#14532D" font-weight="700" font-family="Segoe UI,sans-serif">MULTI-REGION / HIGH AVAILABILITY</text>
+      <text x="1670" y="1109" text-anchor="middle" font-size="7.5" fill="#374151" font-family="Segoe UI,sans-serif">Active-Active / Active-Passive  •  RDS Multi-AZ  •  Global CDN  •  Disaster Recovery</text>
+      <text x="1670" y="1121" text-anchor="middle" font-size="7" fill="#64748B" font-family="Segoe UI,sans-serif">RPO: 1 hr  •  RTO: 15 min  •  SLA: 99.9%+</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  FOOTER                                            -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <line x1="30" y1="1390" x2="1990" y2="1390" stroke="#E2E8F0" stroke-width="1"/>
+      <text x="1010" y="1406" text-anchor="middle" font-size="10" fill="#94A3B8" font-family="Segoe UI,sans-serif">Aadhirai Innovations  •  Multi-Tenant SaaS Platform Architecture  •  Enterprise Edition</text>
+      <text x="1010" y="1418" text-anchor="middle" font-size="9" fill="#CBD5E1" font-family="Segoe UI,sans-serif">Confidential — For Client / Investor / Technical Discussion Only</text>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!--  VERTICAL FLOW GUIDE LINE (left margin)            -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <line x1="10" y1="85" x2="10" y2="1380" stroke="#DBEAFE" stroke-width="3" stroke-dasharray="6,5"/>
+
+    </svg>
+  </div>
+
+  <script>
+    function downloadSVG() {
+      const svg = document.getElementById('diagram');
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'aadhirai-multitenant-saas-architecture.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

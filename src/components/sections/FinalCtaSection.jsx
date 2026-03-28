@@ -24,15 +24,15 @@ function FinalCtaSection() {
           </div>
 
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl leading-[1.15]">
-            Ready to deploy AI-integrated
+            Ready to replace outdated pharmacy
             <br className="hidden sm:block" />
-            intelligence into your operations?
+            or business software?
           </h2>
 
           <p className="mt-6 max-w-xl text-base text-white/50 leading-relaxed">
-            Start with a focused technical discussion. We deliver AI-integrated
-            platforms with structured implementation, measurable outcomes, and
-            direct engineering accountability.
+            Start with a focused technical discussion. We build GST-compliant pharmacy software,
+            ERP systems, and business automation — delivered in structured phases with direct
+            engineering accountability and full post-launch support.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">

@@ -19,7 +19,7 @@ export default function MedoraPharmacyBenefitsSection() {
             </span>
           </div>
           <h2 className="text-2xl font-semibold tracking-tight text-[#0B1F3A] sm:text-3xl max-w-xl leading-[1.2]">
-            Medora+ in a real pharmacy setting.
+            Medora+ pharmacy software: a real client's experience in Tamil Nadu.
           </h2>
         </motion.div>
 

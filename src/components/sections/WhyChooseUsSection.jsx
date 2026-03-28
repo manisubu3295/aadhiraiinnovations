@@ -34,13 +34,13 @@ export default function WhyChooseUsSection() {
             <div className="flex items-center gap-3 mb-6">
               <div className="h-px w-10 bg-slate-300" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                The Reality
+                The Reality for Indian Businesses
               </span>
             </div>
             <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl leading-[1.2]">
-              Most business software fails
+              Most pharmacy & business software
               <br />
-              not at demo, but at operation.
+              fails not at demo, but at operation.
             </h2>
 
             <div className="mt-8 space-y-2.5">

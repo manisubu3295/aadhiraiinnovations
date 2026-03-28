@@ -70,7 +70,9 @@ function MedoraSpotlightSection() {
             </div>
 
             <p className="mt-6 max-w-lg text-base text-white/50 leading-relaxed">
-              Billing, inventory, compliance, and AI forecasting — tightly integrated, offline-first, and production-ready.
+              India's most complete pharmacy management software — GST-compliant billing, AI-powered stock forecasting,
+              medicine expiry alerts, and real-time inventory control. Works offline. Syncs to cloud.
+              Built specifically for Indian pharmacies.
             </p>
 
             {/* Feature 2×2 grid */}

@@ -7,9 +7,9 @@ import MedoraPharmacyBenefitsSection from '../components/sections/MedoraPharmacy
 import ResearchApproachSection from '../components/sections/ResearchApproachSection'
 import VideoSection from '../components/sections/VideoSection'
 import PartnershipsSection from '../components/sections/PartnershipsSection'
-import MediaGallerySection from '../components/sections/MediaGallerySection'
 import IndustriesCarouselSection from '../components/sections/IndustriesCarouselSection'
 import FounderPreviewSection from '../components/sections/FounderPreviewSection'
+import FaqSection from '../components/sections/FaqSection'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 
 function HomePage() {
@@ -42,14 +42,14 @@ function HomePage() {
       {/* 9. Client testimonials */}
       <PartnershipsSection />
 
-      {/* 10. Engineering principles */}
-      <MediaGallerySection />
-
-      {/* 11. Industries covered */}
+      {/* 10. Industries covered */}
       <IndustriesCarouselSection />
 
-      {/* 12. Founder authority — split-screen dark section */}
+      {/* 11. Founder authority — split-screen dark section */}
       <FounderPreviewSection />
+
+      {/* 12. FAQ — drives featured snippets + answers buyer questions */}
+      <FaqSection />
 
       {/* 13. Final CTA + Contact — dark premium with WhatsApp */}
       <FinalCtaSection />

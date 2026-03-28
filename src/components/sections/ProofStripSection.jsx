@@ -5,22 +5,22 @@ const metrics = [
   {
     value: '10+',
     label: 'Years Engineering',
-    detail: 'Enterprise & banking-grade system experience',
+    detail: 'Enterprise, pharmacy & banking-grade software systems',
   },
   {
     value: 'AI+',
     label: 'Intelligence Layer',
-    detail: 'Embedded AI in every platform we build',
+    detail: 'AI embedded in every pharmacy and business platform',
   },
   {
     value: '5-Phase',
     label: 'Delivery Framework',
-    detail: 'Structured, milestone-driven implementation',
+    detail: 'Structured delivery for ERP and custom software projects',
   },
   {
-    value: 'SaaS+',
-    label: 'Multi-Tenant Ready',
-    detail: 'Scale from 10 to 10,000 clients seamlessly',
+    value: 'GST+',
+    label: 'Compliance Ready',
+    detail: 'GST-compliant billing built for Indian pharmacies & SMEs',
   },
 ]
 

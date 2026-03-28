@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, ChevronDown, Brain, Package, Building2, Workflow } from 'lucide-react'
 import Container from '../ui/Container'
+import HeroIntelligenceAnimation from '../ui/HeroIntelligenceAnimation'
 
 /* ─── Animation variants ────────────────────────────────────── */
 const stagger = {
@@ -35,11 +36,6 @@ const capabilities = [
     title: 'Workflow Automation',
     desc: 'AI routing · decision support · 60–80% less overhead',
   },
-]
-
-const secondaryShots = [
-  { src: '/media/stock.png', label: 'Intelligent Inventory Control' },
-  { src: '/media/report.png', label: 'AI-Powered Business Reports' },
 ]
 
 /* ─── Component ─────────────────────────────────────────────── */
@@ -82,7 +78,7 @@ function HeroSection() {
             <motion.div variants={fadeUp} className="mb-8 flex items-center gap-3">
               <div className="h-px w-10 bg-white/20" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.26em] text-white/38">
-                AI-Integrated Enterprise Systems · India
+                Pharmacy Software · ERP · Business Automation · Tamil Nadu, India
               </span>
             </motion.div>
 
@@ -92,11 +88,11 @@ function HeroSection() {
               className="font-bold leading-[1.05] tracking-[-0.028em]"
               style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}
             >
-              <span className="text-gradient-ai">AI-powered</span> intelligence
+              <span className="text-gradient-ai">AI-powered</span> pharmacy software
               <br />
-              systems for pharmacies,
+              & ERP systems built for India —
               <br />
-              <span className="text-white/38">operations & enterprise.</span>
+              <span className="text-white/38">pharmacies, retail & enterprise.</span>
             </motion.h1>
 
             {/* Sub */}
@@ -171,78 +167,58 @@ function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* ── RIGHT: Product showcase ──────────────────────── */}
-          <div className="relative flex items-center lg:py-16">
+          {/* ── RIGHT: Intelligence Animation ────────────────── */}
+          <div className="relative flex items-center justify-center lg:py-16">
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.05, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-[520px] mx-auto"
             >
-              {/* Main screenshot */}
-              <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#080f1d] shadow-[0_40px_80px_rgba(0,0,0,0.7),0_0_60px_rgba(30,64,175,0.08)]">
-                <div className="flex items-center gap-2 border-b border-white/[0.06] bg-[#0b1525] px-4 py-2.5">
-                  <div className="flex gap-1.5">
-                    <div className="h-2.5 w-2.5 rounded-full bg-white/[0.08]" />
-                    <div className="h-2.5 w-2.5 rounded-full bg-white/[0.08]" />
-                    <div className="h-2.5 w-2.5 rounded-full bg-white/[0.08]" />
-                  </div>
-                  <div className="ml-3 h-4 w-28 rounded bg-white/[0.04]" />
-                  <span className="ml-auto text-[11px] text-white/24 tracking-wide">
-                    Medora+ · AI Billing Intelligence
-                  </span>
-                </div>
-                <img
-                  src="/media/billing.png"
-                  alt="Medora+ AI Billing Dashboard"
-                  className="w-full object-cover"
-                  loading="eager"
-                  draggable={false}
-                />
-              </div>
+              <HeroIntelligenceAnimation />
 
-              {/* Secondary screenshots */}
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                {secondaryShots.map((shot, i) => (
-                  <motion.div
-                    key={shot.label}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.7 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#080f1d] shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
-                  >
-                    <div className="border-b border-white/[0.06] bg-[#0b1525] px-3 py-2">
-                      <span className="text-[10px] font-medium tracking-wide text-white/24">
-                        {shot.label}
-                      </span>
-                    </div>
-                    <img
-                      src={shot.src}
-                      alt={shot.label}
-                      className="w-full object-cover"
-                      loading="eager"
-                      draggable={false}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Caption */}
+              {/* Floating product badge */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1.1 }}
-                className="mt-4 flex items-center justify-between"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64 rounded-xl border border-white/[0.1] bg-[#080f1d]/90 backdrop-blur-sm px-4 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.55)]"
               >
-                <span className="text-[10px] uppercase tracking-[0.18em] text-white/18">
-                  Medora+ — AI-Powered Pharmacy Intelligence Platform
-                </span>
-                <a
-                  href="#products"
-                  className="text-[11px] text-white/28 underline underline-offset-2 transition-colors hover:text-white/50"
-                >
-                  View demo →
-                </a>
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-lg bg-white/[0.07] flex items-center justify-center flex-none">
+                    <Brain className="h-4 w-4 text-white/50" strokeWidth={1.75} />
+                  </div>
+                  <div>
+                    <div className="text-[11px] font-semibold text-white/80 leading-tight">Medora+ · AI Billing</div>
+                    <div className="mt-0.5 text-[10px] text-white/30">GST-compliant · Offline-first</div>
+                  </div>
+                  <div className="ml-auto flex items-center gap-1.5">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.8)]" />
+                    <span className="text-[10px] font-semibold text-emerald-400">Live</span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Top-left metric chip */}
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.65, delay: 1.35, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute top-10 left-4 rounded-lg border border-white/[0.09] bg-[#080f1d]/80 backdrop-blur-sm px-3 py-2"
+              >
+                <div className="text-[17px] font-extrabold leading-none text-white">10+</div>
+                <div className="mt-0.5 text-[9px] uppercase tracking-[0.16em] text-white/30">Years building</div>
+              </motion.div>
+
+              {/* Top-right metric chip */}
+              <motion.div
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.65, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute top-10 right-4 rounded-lg border border-white/[0.09] bg-[#080f1d]/80 backdrop-blur-sm px-3 py-2 text-right"
+              >
+                <div className="text-[17px] font-extrabold leading-none text-white">AI+</div>
+                <div className="mt-0.5 text-[9px] uppercase tracking-[0.16em] text-white/30">Intelligence</div>
               </motion.div>
             </motion.div>
           </div>

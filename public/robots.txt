@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.aadhiraiinnovations.com/sitemap.xml
+
+# Crawl delay (optional, respectful to crawlers)
+Crawl-delay: 1

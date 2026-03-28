@@ -1,36 +1,74 @@
 import { motion } from 'framer-motion'
-import { PackageCheck, Building2, Workflow, Brain, Shield, MonitorCog, Database, ArrowRight } from 'lucide-react'
+import { PackageCheck, Building2, Workflow, Brain, Shield, MonitorCog, Database, ArrowRight, ScanLine, Package, ShieldCheck, CheckCircle2 } from 'lucide-react'
 import Container from '../ui/Container'
 
 /* ─── Visual diagrams ──────────────────────────────────────────────── */
 
+const billingSteps = [
+  {
+    icon: ScanLine,
+    label: 'Scan & Bill',
+    sub: 'AI anomaly detection',
+  },
+  {
+    icon: Package,
+    label: 'Stock Control',
+    sub: 'Predictive alerts',
+  },
+  {
+    icon: ShieldCheck,
+    label: 'Compliance',
+    sub: 'Auto audit trail',
+  },
+]
+
+const billingTags = [
+  { icon: CheckCircle2, label: 'GST-compliant' },
+  { icon: CheckCircle2, label: 'Real-time stock' },
+  { icon: CheckCircle2, label: 'Expiry alerts' },
+  { icon: CheckCircle2, label: 'Audit-ready' },
+]
+
 function BillingFlowDiagram() {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-7 md:p-8">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-5">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-6">
         System Flow
       </div>
-      <div className="flex items-center gap-2 mb-5">
-        {[
-          { label: 'Scan & Bill', sub: 'AI anomaly detection' },
-          { label: 'Stock Control', sub: 'Predictive alerts' },
-          { label: 'Compliance', sub: 'Auto audit trail' },
-        ].map((step, i, arr) => (
-          <div key={step.label} className="flex items-center gap-2 flex-1 min-w-0">
-            <div className="flex-1 rounded-lg border border-slate-200 bg-white p-3 text-center shadow-sm">
-              <div className="text-[11px] font-semibold text-[#0B1F3A] leading-tight">{step.label}</div>
-              <div className="mt-0.5 text-[10px] text-slate-400 leading-tight">{step.sub}</div>
+
+      {/* Flow steps with icons */}
+      <div className="flex items-stretch gap-2 mb-6">
+        {billingSteps.map((step, i, arr) => {
+          const Icon = step.icon
+          return (
+            <div key={step.label} className="flex items-center gap-2 flex-1 min-w-0">
+              <div className="flex-1 rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
+                {/* Icon */}
+                <div className="flex justify-center mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#0B1F3A]/6 border border-[#0B1F3A]/10 flex items-center justify-center">
+                    <Icon className="h-5 w-5 text-[#0B1F3A]/60" strokeWidth={1.5} />
+                  </div>
+                </div>
+                <div className="text-[11px] font-semibold text-[#0B1F3A] leading-tight">{step.label}</div>
+                <div className="mt-1 text-[10px] text-slate-400 leading-tight">{step.sub}</div>
+              </div>
+              {i < arr.length - 1 && (
+                <ArrowRight className="h-4 w-4 text-slate-300 flex-none" />
+              )}
             </div>
-            {i < arr.length - 1 && (
-              <div className="text-slate-300 text-xs flex-none">→</div>
-            )}
-          </div>
-        ))}
+          )
+        })}
       </div>
+
+      {/* Tags with check icons */}
       <div className="grid grid-cols-2 gap-2">
-        {['GST-compliant', 'Real-time stock', 'Expiry alerts', 'Audit-ready'].map(tag => (
-          <div key={tag} className="rounded-md border border-slate-200 bg-white px-3 py-2 text-[11px] font-medium text-[#0B1F3A]/60 text-center">
-            {tag}
+        {billingTags.map(({ icon: Icon, label }) => (
+          <div
+            key={label}
+            className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2"
+          >
+            <Icon className="h-3.5 w-3.5 text-[#0B1F3A]/35 flex-none" strokeWidth={2} />
+            <span className="text-[11px] font-medium text-[#0B1F3A]/60">{label}</span>
           </div>
         ))}
       </div>
@@ -83,11 +121,13 @@ function SaaSArchDiagram() {
     { label: 'Data Layer', tag: 'Tenant isolation' },
     { label: 'Infrastructure', tag: 'Cloud-optional' },
   ]
+
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-7 md:p-8">
       <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-5">
         Platform Architecture
       </div>
+
       <div className="space-y-1.5">
         {layers.map(layer => (
           <div
