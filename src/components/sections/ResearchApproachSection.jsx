@@ -199,39 +199,25 @@ function ResearchApproachSection() {
         {/* Mobile: Vertical timeline */}
         <div className="lg:hidden space-y-4">
           {steps.map((step, index) => {
-            const isActive = activeStep === index
             const StepIcon = step.icon
             return (
               <motion.div
                 key={step.title}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: index * 0.09, duration: 0.5 }}
-                onViewportEnter={() => setActiveStep(index)}
                 className="relative"
               >
                 {index < steps.length - 1 && (
                   <div className="absolute left-6 top-16 bottom-0 w-px bg-slate-200 -mb-4" />
                 )}
-                <div
-                  className={`rounded-xl border transition-all duration-300 ${
-                    isActive
-                      ? 'border-[#0B1F3A]/20 bg-white shadow-sm'
-                      : 'border-slate-200 bg-white'
-                  }`}
-                >
+                <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
                   <div className="p-5">
                     <div className="flex items-start gap-4">
-                      <div
-                        className={`flex-none w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                          isActive
-                            ? 'bg-[#0B1F3A] shadow-sm'
-                            : 'bg-slate-100'
-                        }`}
-                      >
+                      <div className="flex-none w-12 h-12 rounded-xl flex items-center justify-center bg-[#0B1F3A]">
                         <StepIcon
-                          className={`h-5 w-5 ${isActive ? 'text-white' : 'text-slate-400'}`}
+                          className="h-5 w-5 text-white"
                           strokeWidth={1.75}
                         />
                       </div>
@@ -245,22 +231,16 @@ function ResearchApproachSection() {
                         <p className="text-sm text-slate-500 leading-relaxed">
                           {step.description}
                         </p>
-                        {isActive && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            className="flex flex-wrap gap-2 mt-3"
-                          >
-                            {step.details.map((d) => (
-                              <span
-                                key={d}
-                                className="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600"
-                              >
-                                {d}
-                              </span>
-                            ))}
-                          </motion.div>
-                        )}
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {step.details.map((d) => (
+                            <span
+                              key={d}
+                              className="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600"
+                            >
+                              {d}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
