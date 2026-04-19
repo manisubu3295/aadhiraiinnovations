@@ -254,7 +254,709 @@ GST compliance isn't optional — it's mandatory. But with modern billing system
     date: 'April 17, 2026',
     readTime: '12 min read',
     category: 'Software Review',
-    content: `
+    content: `# Best Pharmacy Billing Software in 2026: Comparison Guide
+
+The pharmacy software market is crowded. This guide helps you evaluate options and choose the right software for your needs. [Learn about Medora+ — GST-compliant pharmacy billing software](https://aadhiraiinnovations.com/products/medora-plus). Key features: GST compliance (HSN codes, GSTIN validation), offline-first architecture, expiry management, real-time inventory, multi-location support. Cost: ₹5,000/month single location, ₹12,000+/month chains. [Explore pharmacy solutions by city](https://aadhiraiinnovations.com/pharmacy-billing-software/salem) — Medora+ serves Salem, Trichy, Vellore, and more.
+    `,
+    relatedLinks: [
+      { title: 'Medora+ Software', url: '/products/medora-plus' },
+      { title: 'Pharmacy Software in Trichy', url: '/pharmacy-billing-software/trichy' },
+    ],
+  },
+  'offline-first-pharmacy-software': {
+    slug: 'offline-first-pharmacy-software',
+    title: 'Why Offline-First Pharmacy Software Matters in India',
+    excerpt: 'Understanding why offline-first architecture is critical for Indian pharmacies and how it protects your business during outages.',
+    date: 'April 16, 2026',
+    readTime: '9 min read',
+    category: 'Technology',
+    content: `# Why Offline-First Pharmacy Software Matters in India
+
+India's power and internet infrastructure is improving, but outages remain common—especially in smaller cities. Pharmacy billing can't stop when internet fails. This guide explains why offline-first pharmacy software is essential.
+
+## The Reality of India's Infrastructure
+
+Power cuts and internet outages happen regularly:
+- Tamil Nadu experiences 2-3 power cuts weekly in some areas
+- Internet downtime averages 4-8 hours per month
+- Mobile networks fail during peak hours
+
+For pharmacies, this creates a dilemma: Do you stop serving customers when power fails?
+
+## What "Offline-First" Means
+
+Offline-first software works completely without internet:
+- ✓ Billing continues without connectivity
+- ✓ Inventory updates in real-time (local)
+- ✓ Data syncs when internet returns
+- ✓ No lost transactions
+
+Contrast this with cloud-only systems that fail when internet disappears.
+
+## How Offline-First Works in Practice
+
+When you use offline-first software like Medora+:
+
+1. **Customer arrives** → Scan barcode, ring up sale (all offline)
+2. **Payment received** → Invoice printed (all local)
+3. **Internet down?** → Billing continues, zero disruption
+4. **Internet returns** → All transactions sync automatically
+5. **Reports updated** → Daily reports reflect all sales
+
+## Real Impact for Your Pharmacy
+
+**Scenario 1: Cloud-Only System**
+- 2pm: Internet cuts out
+- 2:01pm: Customer arrives — "sorry, system down, can't sell"
+- 2:02pm: Customer leaves angry, visits competitor
+- 3pm: Internet returns, but business lost
+- Loss: ₹500-1000 per hour × 2-3 hours = ₹1500-3000
+
+**Scenario 2: Offline-First System**
+- 2pm: Internet cuts out
+- 2:01pm: Customer arrives — billing works normally
+- 2:30pm: 10 more customers served, all offline
+- 3pm: Internet returns, all 11 transactions sync
+- Loss: ₹0
+
+Multiply this by 20-30 internet cuts per year. Offline-first software pays for itself.
+
+## Offline-First for Multi-Location Chains
+
+If you manage multiple pharmacy locations, offline-first becomes critical:
+- Each location operates independently when internet fails
+- Central sync when connectivity returns
+- No lost sales across any location
+- Unified reporting as soon as internet is back
+
+[Read about Medora+ offline architecture](https://aadhiraiinnovations.com/products/medora-plus). Used by pharmacies in [Salem](https://aadhiraiinnovations.com/pharmacy-billing-software/salem) and [Trichy](https://aadhiraiinnovations.com/pharmacy-billing-software/trichy).
+
+## Hidden Benefits of Offline-First
+
+Beyond outage protection, offline-first systems provide:
+
+1. **Speed** — No network latency, instant transactions
+2. **Reliability** — Doesn't depend on cloud provider uptime
+3. **Privacy** — Data stays on-premises longer
+4. **Control** — Your data, your system, no cloud dependency
+5. **Cost** — No bandwidth costs for constant cloud syncing
+
+## Choosing Offline-First Software
+
+When evaluating pharmacy software, ask:
+
+1. Does it work **completely** offline or just partially?
+2. How does sync work when internet returns?
+3. What happens to data during sync conflicts?
+4. Is there a local database or cloud-only?
+5. Can you operate 100% offline for days if needed?
+
+[Explore Medora+ for your pharmacy](https://aadhiraiinnovations.com/products/medora-plus).
+
+## Summary
+
+For Indian pharmacies, offline-first isn't a nice-to-have—it's essential. It protects your revenue, serves customers consistently, and gives you peace of mind during outages.
+    `,
+    relatedLinks: [
+      { title: 'Medora+ Offline-First Software', url: '/products/medora-plus' },
+      { title: 'Pharmacy Software in Salem', url: '/pharmacy-billing-software/salem' },
+    ],
+  },
+  'inventory-tracking-pharmacies': {
+    slug: 'inventory-tracking-pharmacies',
+    title: 'Inventory Tracking for Pharmacies: Complete Guide',
+    excerpt: 'Master inventory management for pharmacies. Prevent stockouts, reduce waste, track expiry dates, and control costs.',
+    date: 'April 15, 2026',
+    readTime: '10 min read',
+    category: 'Operations',
+    content: `# Inventory Tracking for Pharmacies: Complete Guide
+
+Pharmacy inventory is complex. You manage hundreds of medicines, multiple suppliers, batch-level expiry dates, and regulatory requirements. Poor inventory management costs thousands in expired stock, stockouts, and operational inefficiency.
+
+## Why Pharmacy Inventory is Complex
+
+Unlike retail stores, pharmacy inventory involves unique challenges:
+
+**Expiry Management**
+- Every medicine has a batch-specific expiry date
+- Expired stock is legally unsellable (waste)
+- Audit penalties for selling expired medicines
+
+**Supplier Diversity**
+- Different medicines from different suppliers
+- Different delivery times (1 day to 2 weeks)
+- Multiple purchase prices for same medicine
+
+**Regulatory Requirements**
+- Complete batch history (supplier, expiry, quantity)
+- Traceability for recalls
+- GST-compliant purchase records
+
+**Demand Variability**
+- Seasonal medicines (cold/flu season)
+- Emergency high-demand items
+- Slow-moving specialty items
+
+## Manual Inventory Problems
+
+Most pharmacies still manage inventory manually (Excel, ledgers):
+
+❌ **Inaccuracy** — Manual counts often off by 5-20%
+❌ **Stockouts** — Miss reorder windows, lose sales
+❌ **Expired stock** — No visibility until customer complains
+❌ **Supplier chaos** — Multiple contacts, confusing orders
+❌ **No insights** — Can't answer "Which medicines sell most?"
+
+## Real-Time Inventory Systems
+
+Modern systems like Medora+ track inventory in real-time:
+
+✓ **Barcode-driven** — Scan during billing, stock reduces instantly
+✓ **Batch tracking** — Every medicine tracked by batch (supplier, expiry, cost)
+✓ **Low-stock alerts** — Automatic notification when stock falls below threshold
+✓ **Expiry visibility** — See expiry dates by batch, with alerts 30 days before
+✓ **Supplier tracking** — Know which supplier, cost, and delivery terms
+
+## Key Inventory Metrics
+
+Track these metrics to optimize your pharmacy:
+
+| Metric | Target | What It Means |
+|--------|--------|---------------|
+| Stock Accuracy | 95%+ | Physical count matches system |
+| Stockout Rate | <2% | Customers rarely find empty stock |
+| Expiry Loss | <1% | Minimal expired waste |
+| Turnover Rate | 8-12x/year | Stock moves efficiently |
+| Days Supply | 15-30 days | Right balance (not too much, not too little) |
+
+## Reorder System: Manual vs Automated
+
+**Manual Reordering**
+- Pharmacist manually counts stock
+- Places orders when feels low
+- Risk: Under/over-ordering, delayed delivery
+- Typical lead time: 3-5 days
+
+**Automated Reordering**
+- System suggests reorders based on sales velocity
+- Automatically calculates quantity
+- Orders trigger when threshold hit
+- Typical lead time: 1-2 days (+ system accuracy)
+
+Automated systems reduce stockouts by 50-70%.
+
+## Inventory for Multi-Location Chains
+
+Managing inventory across 5+ locations creates complexity:
+
+Without system:
+- Each location maintains separate inventory
+- No visibility of stock across locations
+- Duplicate ordering (buying same medicine separately)
+- Can't balance stock between locations
+
+With system:
+- Central visibility of all stock
+- Balance high-moving items between locations
+- Consolidated reporting
+- Better supplier negotiation (volume discounts)
+
+[Learn about Medora+ inventory management](https://aadhiraiinnovations.com/products/medora-plus).
+
+## Expiry Management Strategy
+
+Pharmacies lose ₹5,000-20,000/month to expired stock. Prevent this:
+
+1. **Track by batch** — Know exact expiry dates
+2. **Alert early** — Get alerts 30 days before expiry
+3. **Identify slow movers** — Stock items with looming expiry
+4. **Promote before expiry** — Offer discounts to move aging stock
+5. **Never sell expired** — System flags during billing
+
+## Supplier Relationship Management
+
+Good inventory requires good supplier relationships:
+
+- Negotiate payment terms (30 days vs COD)
+- Consolidate orders to reduce delivery costs
+- Build rapport for emergency supplies
+- Track supplier reliability (on-time delivery, quality)
+
+[Explore Medora+ for complete inventory management](https://aadhiraiinnovations.com/products/medora-plus).
+
+## Summary
+
+Real-time inventory tracking prevents stockouts, reduces expiry waste, improves cash flow, and gives you visibility. It's the foundation of efficient pharmacy operations.
+    `,
+    relatedLinks: [
+      { title: 'Medora+ Inventory Features', url: '/products/medora-plus' },
+      { title: 'Pharmacy Operations Guide', url: '/blog/pharmacy-billing-101' },
+    ],
+  },
+  'erp-small-business': {
+    slug: 'erp-small-business',
+    title: 'ERP for Small Business: Complete Guide to HR and Inventory',
+    excerpt: 'Understanding ERP systems for small businesses. How HR management and inventory control work together to streamline operations.',
+    date: 'April 14, 2026',
+    readTime: '11 min read',
+    category: 'Business Systems',
+    content: `# ERP for Small Business: Complete Guide to HR and Inventory
+
+"ERP" (Enterprise Resource Planning) sounds big. But small businesses need it too. Learn how integrated HR and inventory systems scale your business without chaos.
+
+## What is ERP?
+
+ERP = Integrated business system managing:
+- **People** — Employees, attendance, payroll, leave
+- **Inventory** — Stock, purchases, suppliers
+- **Finance** — Invoices, costs, profitability
+- **Operations** — Daily workflows and decisions
+
+Instead of 4 separate tools (one for each), one system connects everything.
+
+## Why Small Businesses Need ERP
+
+As you grow, disconnected tools create problems:
+- HR spreadsheet doesn't sync with payroll
+- Inventory system doesn't talk to accounting
+- Attendance records conflict with leave approval
+- No unified reporting
+
+ERP solves this by unifying data.
+
+## HR Management in ERP
+
+Core HR functions in modern systems:
+
+**Employee Records**
+- Centralized employee profiles
+- Documents (ID, certificates, contracts)
+- Employment history
+
+**Attendance & Leave**
+- Biometric or manual attendance
+- Leave requests and approvals
+- Compliance tracking
+
+**Payroll**
+- Auto-calculated from attendance
+- Deductions handled systematically
+- Statutory compliance (PF, ESI, TDS)
+
+[Learn about Workforce Manager](https://aadhiraiinnovations.com/products/workforce-manager) for complete HR management.
+
+## Inventory Management in ERP
+
+Core inventory functions:
+
+**Stock Tracking**
+- Real-time quantity visibility
+- Batch and supplier tracking
+- Multi-location support
+
+**Purchase Orders**
+- Request → Approval → Receipt workflow
+- Supplier management
+- Cost tracking
+
+**Reordering**
+- Automated low-stock alerts
+- Smart reorder quantities
+- Just-in-time supply
+
+## How HR and Inventory Connect
+
+The power of ERP is in connections:
+
+**Payroll from Attendance**
+- Attendance → Payroll automatically
+- No manual calculation
+- Error-proof
+
+**Inventory by Location**
+- Staff location determines visible inventory
+- Warehouse staff see raw materials
+- Retail staff see customer stock
+
+**Cost Allocation**
+- Labor costs allocated to inventory
+- Understand true product cost
+- Better pricing decisions
+
+[Explore HR & Inventory system](https://aadhiraiinnovations.com/products/hr-inventory).
+
+## ERP for Different Business Types
+
+**Retail Chains**
+- Manage staff across 10+ locations
+- Centralized inventory
+- Real-time P&L per store
+
+**Distributors**
+- Complex purchase orders
+- Multiple suppliers
+- Staff commissions tied to sales
+
+**Manufacturing**
+- Raw material inventory
+- Staff shift management
+- Production cost tracking
+
+## Choosing ERP for Small Business
+
+Look for:
+1. **Affordability** — ₹10,000-30,000/month (not ₹100K+)
+2. **Ease of use** — Minimal training needed
+3. **Offline support** — Doesn't require constant internet
+4. **Multi-location** — Scalable to growth
+5. **Integration** — Works with your existing tools
+
+[Compare HR & Inventory options](https://aadhiraiinnovations.com/products/hr-inventory).
+
+## Implementation Timeline
+
+Typical ERP implementation for small business:
+
+- Week 1: Setup, data import, team training
+- Week 2-3: Testing, adjustments, go-live
+- Month 2-3: Fine-tuning, optimization
+
+No reason for 6-month implementations.
+
+## ROI from ERP
+
+ERP typically pays for itself in 3-6 months:
+
+- **Payroll accuracy** — Reduce manual errors (₹2K-5K/month)
+- **Inventory efficiency** — Reduce stockouts and waste (₹5K-15K/month)
+- **Staff time** — Reduce manual data entry (₹3K-8K/month)
+- **Better decisions** — Real-time reporting improves strategy
+
+Total ROI: ₹10K-28K/month (often ₹15K+ for growing businesses).
+
+## Summary
+
+ERP isn't just for enterprises. Small businesses benefit hugely from integrated HR and inventory systems. Start simple, scale as you grow.
+
+[Explore HR & Inventory for your business](https://aadhiraiinnovations.com/products/hr-inventory).
+    `,
+    relatedLinks: [
+      { title: 'HR & Inventory Management', url: '/products/hr-inventory' },
+      { title: 'Workforce Manager', url: '/products/workforce-manager' },
+    ],
+  },
+  'digital-transformation-retail': {
+    slug: 'digital-transformation-retail',
+    title: 'Digital Transformation in Retail: 2026 Strategy',
+    excerpt: 'How retail businesses are digitizing operations, from POS systems to workforce management to customer experience.',
+    date: 'April 13, 2026',
+    readTime: '10 min read',
+    category: 'Strategy',
+    content: `# Digital Transformation in Retail: 2026 Strategy
+
+Retail is transforming. Yesterday's manual, cash-based operations are becoming digital, data-driven businesses. Here's how to modernize your retail operations.
+
+## What is Digital Transformation?
+
+Moving from:
+- Manual registers → Digital POS systems
+- Spreadsheet schedules → Workforce management software
+- Cash handling → Digital payments
+- Gut feel decisions → Data-driven insights
+
+## The Modern Retail Stack
+
+Essential systems for 2026:
+
+**1. Point of Sale (POS)**
+- Fast barcode-based billing
+- Inventory auto-update
+- Customer payment tracking
+- Real-time sales reporting
+
+[POS System for retail](https://aadhiraiinnovations.com/products/pos-system).
+
+**2. Workforce Management**
+- Staff attendance (biometric or app)
+- Shift scheduling
+- Payroll integration
+- Performance tracking
+
+[Workforce Manager](https://aadhiraiinnovations.com/products/workforce-manager).
+
+**3. Inventory**
+- Real-time stock visibility
+- Multi-location management
+- Supplier tracking
+- Automated reordering
+
+**4. Customer Management**
+- Purchase history
+- Loyalty programs
+- Promotions and discounts
+- Customer insights
+
+## Real Benefits of Digital Retail
+
+**For Operations**
+- Faster transactions (30 seconds vs 5 minutes)
+- Fewer billing errors
+- Accurate inventory
+- Compliance ready
+
+**For Customers**
+- Fast checkout
+- Loyalty rewards
+- Better service
+- Professional experience
+
+**For Business**
+- Data-driven decisions
+- Reduced waste
+- Better margins
+- Scalable growth
+
+## Implementation Strategy
+
+Phase 1 (Month 1): POS System
+- Fast payback
+- Immediate operational improvement
+
+Phase 2 (Month 2): Workforce Management
+- Eliminate scheduling chaos
+- Accurate payroll
+
+Phase 3 (Month 3): Inventory Integration
+- Real-time visibility
+- Prevent stockouts
+
+Phase 4 (Month 4+): Customer Management
+- Loyalty programs
+- Personalized marketing
+
+[Explore POS System for your retail business](https://aadhiraiinnovations.com/products/pos-system).
+
+## Technology Stack Recommendation
+
+For SME retailers (10-50 stores):
+
+Core Systems:
+1. POS System (billing + inventory)
+2. Workforce Management (staff + payroll)
+3. Accounting software (GST, financials)
+4. Customer loyalty (if applicable)
+
+Integration:
+- POS → Inventory auto-update
+- Attendance → Payroll auto-calculate
+- Sales → Accounting auto-post
+
+## Common Mistakes in Retail Transformation
+
+❌ **Over-automation** — Don't automate everything at once
+❌ **Wrong vendor** — Cloud-only when offline needed
+❌ **Poor training** — Staff don't understand new systems
+❌ **No integration** — Systems don't talk to each other
+❌ **Expensive** — Paying ₹100K/month when ₹10K would work
+
+## The Future of Retail
+
+By 2026, retail winners will have:
+- Seamless POS and inventory
+- Automated scheduling and payroll
+- Real-time business analytics
+- Integrated customer loyalty
+- Omnichannel presence (online + offline)
+
+[Start with POS System for your retail business](https://aadhiraiinnovations.com/products/pos-system).
+
+## Summary
+
+Digital transformation isn't optional for retail anymore. Start with POS, add workforce management, then inventory. Build systematically and reap the benefits.
+    `,
+    relatedLinks: [
+      { title: 'POS System for Retail', url: '/products/pos-system' },
+      { title: 'Workforce Manager', url: '/products/workforce-manager' },
+    ],
+  },
+  'staff-scheduling-best-practices': {
+    slug: 'staff-scheduling-best-practices',
+    title: 'Staff Scheduling Best Practices: Modern Workforce Planning',
+    excerpt: 'Effective staff scheduling reduces costs, improves customer service, and increases employee satisfaction. Learn the best practices.',
+    date: 'April 12, 2026',
+    readTime: '9 min read',
+    category: 'HR Management',
+    content: `# Staff Scheduling Best Practices: Modern Workforce Planning
+
+Poor scheduling creates chaos: Overstaffing costs money, understaffing angers customers, uneven shifts demotivate staff. Learn to schedule effectively.
+
+## Why Scheduling Matters
+
+Scheduling affects three things:
+- **Customer service** — Enough staff for rush hours?
+- **Labor costs** — Not overstaffing slow periods?
+- **Employee satisfaction** — Fair, predictable schedules?
+
+Get it wrong on any dimension and everything suffers.
+
+## Manual Scheduling Problems
+
+Most businesses schedule manually (printout on wall):
+- ❌ Conflicts (double-booked staff)
+- ❌ Last-minute absences (no backup plan)
+- ❌ Overtime surprises (unexpected costs)
+- ❌ No visibility (customers call, no answer)
+- ❌ Staff complaints (unfair shifts)
+
+## Modern Scheduling Best Practices
+
+### 1. Forecast Based on Demand
+
+Know your busy times:
+- What time of day is busiest?
+- What days are peak?
+- What seasons spike?
+- What events drive demand?
+
+Use historical data (last year's sales) to schedule accordingly.
+
+### 2. Plan Minimum Staffing
+
+Define minimum staff per shift:
+- **Rush hour** — 4+ staff
+- **Normal hour** — 2 staff
+- **Slow period** — 1 staff
+
+Adjust based on your business type.
+
+### 3. Build Conflict Detection
+
+Smart systems prevent double-booking:
+- ✓ No staff scheduled for two shifts simultaneously
+- ✓ No staff working beyond legal hours
+- ✓ Required rest periods between shifts
+- ✓ Leave and absences pre-accounted
+
+[Workforce Manager](https://aadhiraiinnovations.com/products/workforce-manager) handles this automatically.
+
+### 4. Rotate Fairly
+
+Fairness keeps staff happy:
+- Equal distribution of prime shifts
+- Rotate unpopular shifts
+- Respect preferences (some want mornings, some evenings)
+- Notify 2 weeks in advance when possible
+
+### 5. Build Flexibility
+
+Account for reality:
+- Have backup staff for absences
+- Floating shifts for unexpected spikes
+- Cross-training for flexibility
+- On-call system for emergencies
+
+### 6. Integrate with Payroll
+
+Make payroll automatic:
+- Scheduled hours → Payroll system auto-calculates
+- Actual attendance → Auto-adjusts for variations
+- Overtime automatically flagged
+- No manual payroll entry
+
+## Technology for Scheduling
+
+Modern systems simplify scheduling:
+
+**Shift Planning**
+- Visual calendar
+- Drag-and-drop scheduling
+- Conflict detection
+- Staff availability input
+
+**Constraint Management**
+- Max hours per week (legal)
+- Min rest between shifts
+- Holiday blocking
+- Training schedules
+
+**Absence Management**
+- Staff call in app
+- Manager approval workflow
+- Automatic backup notification
+- Audit trail for disputes
+
+[Explore Workforce Manager for scheduling](https://aadhiraiinnovations.com/products/workforce-manager).
+
+## Common Scheduling Mistakes
+
+**Mistake 1: Understaffing During Peaks**
+- Problem: Long waits, customer dissatisfaction
+- Solution: Use historical data to forecast peaks
+
+**Mistake 2: Overstaffing During Slow Periods**
+- Problem: Labor costs exceed revenue
+- Solution: Automated demand forecasting
+
+**Mistake 3: No Flexibility**
+- Problem: Unexpected absence = crisis
+- Solution: Build backup staff into schedule
+
+**Mistake 4: Last-Minute Changes**
+- Problem: Staff upset, no time to adjust
+- Solution: 2-week notice standard
+
+**Mistake 5: No Data**
+- Problem: Guessing, inefficient schedules
+- Solution: Track and analyze scheduling metrics
+
+## Scheduling Metrics
+
+Track these KPIs:
+
+| Metric | Target | What It Means |
+|--------|--------|---------------|
+| Schedule Accuracy | 95%+ | Actual vs planned staffing |
+| Absence Rate | <5% | Unplanned absences |
+| Overtime % | <5% | Unexpected extra hours |
+| Staff Satisfaction | 8/10+ | Fair, predictable schedules |
+| Customer Service | High | Adequate staff during peaks |
+
+## Implementation Steps
+
+1. **Analyze current pattern** (2 weeks)
+   - Track busy times
+   - Document absences
+   - Identify inefficiencies
+
+2. **Set baselines** (1 week)
+   - Minimum staff per shift
+   - Fair rotation policy
+   - Flexibility guidelines
+
+3. **Implement system** (1 week)
+   - Enter staff, availability, constraints
+   - Generate first schedule
+   - Test for conflicts
+
+4. **Measure and optimize** (ongoing)
+   - Track KPIs
+   - Gather staff feedback
+   - Adjust policy as needed
+
+[Implement Workforce Manager for your team](https://aadhiraiinnovations.com/products/workforce-manager).
+
+## Summary
+
+Good scheduling balances three demands: customer service, cost control, and staff satisfaction. Modern systems make this possible. Start with data, build flexibility, and measure results.
+    `,
+    relatedLinks: [
+      { title: 'Workforce Manager', url: '/products/workforce-manager' },
+      { title: 'HR & Inventory System', url: '/products/hr-inventory' },
+    ],
+  },
+}
+
+// Blog posts continue...
 # Best Pharmacy Billing Software in 2026: Comparison Guide
 
 The pharmacy software market is crowded. Some solutions are built for India, others adapted from foreign systems. This guide helps you choose the right software for your pharmacy.
@@ -386,7 +1088,6 @@ The best pharmacy software for you depends on your needs, budget, and location. 
   },
 }
 
-// Blog posts continue...
 const allBlogSlugs = Object.keys(blogPosts)
 
 export default function BlogPostPage() {
