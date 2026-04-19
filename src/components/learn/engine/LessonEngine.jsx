@@ -18,47 +18,41 @@ export default function LessonEngine({ lessonData }) {
   const [exerciseResults, setExerciseResults] = useState({})
 
   const exerciseCount = lessonData.blocks.filter(b => b.type === 'exercise').length
-  const completedCount = Object.values(exerciseResults).filter(r => r === true).length
-  const progressPercent = exerciseCount > 0 ? Math.round((completedCount / exerciseCount) * 100) : 0
+  const completedCount = Object.values(exerciseResults).filter(Boolean).length
 
   const handleExerciseComplete = (exerciseId, isCorrect) => {
     setExerciseResults(prev => ({ ...prev, [exerciseId]: isCorrect }))
   }
 
   return (
-    <div className="space-y-12">
-      {/* Progress bar */}
+    <div className="space-y-10">
+      {/* ── Progress strip ─────────────────────────────────────── */}
       {exerciseCount > 0 && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-lg bg-slate-100 p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center gap-4"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-slate-700">Progress</span>
-            <span className="text-sm font-bold text-[#0B1F3A]">
-              {completedCount} / {exerciseCount} exercises
-            </span>
-          </div>
-          <div className="h-2 bg-slate-300 rounded-full overflow-hidden">
+          <div className="flex-1 h-[3px] bg-slate-100 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${progressPercent}%` }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="h-full bg-gradient-to-r from-green-400 to-green-500"
+              animate={{ width: `${Math.round((completedCount / exerciseCount) * 100)}%` }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="h-full bg-[#0B1F3A] rounded-full"
             />
           </div>
+          <span className="text-xs font-semibold text-slate-400 whitespace-nowrap tabular-nums">
+            {completedCount} / {exerciseCount}
+          </span>
         </motion.div>
       )}
 
-      {/* Blocks */}
+      {/* ── Blocks ─────────────────────────────────────────────── */}
       {lessonData.blocks.map((block, idx) => {
-        const BlockComponent = blockComponents[block.type]
-
-        if (!BlockComponent) {
+        if (!blockComponents[block.type]) {
           return (
-            <div key={block.id} className="text-red-500">
-              Unknown block type: {block.type}
+            <div key={block.id} className="text-xs text-red-400">
+              Unknown block: {block.type}
             </div>
           )
         }
@@ -68,15 +62,13 @@ export default function LessonEngine({ lessonData }) {
             <ExerciseBlock
               key={block.id}
               exercise={block}
+              index={lessonData.blocks.slice(0, idx).filter(b => b.type === 'exercise').length + 1}
               onComplete={handleExerciseComplete}
             />
           )
         }
 
-        if (block.type === 'reflection') {
-          return <BlockComponent key={block.id} {...block} />
-        }
-
+        const BlockComponent = blockComponents[block.type]
         return <BlockComponent key={block.id} {...block} />
       })}
     </div>

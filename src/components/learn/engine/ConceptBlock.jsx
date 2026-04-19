@@ -3,22 +3,21 @@ import { motion } from 'framer-motion'
 export default function ConceptBlock({ heading, body }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="rounded-lg border border-slate-200 bg-white p-8 shadow-sm hover:shadow-md transition-shadow"
+      transition={{ duration: 0.35, ease: 'easeOut' }}
+      className="group relative pl-5"
     >
-      <div className="flex gap-3 mb-4">
-        <span className="text-3xl flex-shrink-0">💡</span>
-        <h3 className="text-2xl font-bold text-[#0B1F3A]">{heading}</h3>
-      </div>
+      {/* Left accent rule */}
+      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#0B1F3A] rounded-full" />
 
-      {/* Body with basic markdown-like formatting */}
-      <div className="prose prose-sm max-w-none text-slate-700 leading-relaxed space-y-4">
+      <h3 className="text-xl font-semibold tracking-tight text-[#0B1F3A] mb-3">
+        {heading}
+      </h3>
+
+      <div className="space-y-3 text-[15px] leading-[1.75] text-slate-600">
         {body.split('\n\n').map((para, idx) => (
-          <p key={idx} className="text-base leading-relaxed whitespace-pre-wrap">
-            {para}
-          </p>
+          <p key={idx}>{para}</p>
         ))}
       </div>
     </motion.div>

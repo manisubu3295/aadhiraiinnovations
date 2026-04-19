@@ -1,128 +1,114 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import CodeBlock from '../CodeBlock'
 
-export default function FixTheBugExercise({
-  problem,
-  code,
-  hint,
-  expectedFix,
-  onSubmit,
-}) {
+export default function FixTheBugExercise({ problem, code, hint, expectedFix, onSubmit }) {
   const [studentCode, setStudentCode] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [showHint, setShowHint] = useState(false)
-  const [feedback, setFeedback] = useState(null)
+  const [isCorrect, setIsCorrect] = useState(null)
 
   const handleSubmit = () => {
-    const isCorrect = studentCode.includes(expectedFix)
+    const correct = studentCode.includes(expectedFix)
+    setIsCorrect(correct)
     setSubmitted(true)
-    setFeedback(isCorrect)
-    onSubmit(isCorrect)
+    onSubmit(correct)
   }
 
   const handleReset = () => {
     setStudentCode('')
     setSubmitted(false)
-    setFeedback(null)
+    setIsCorrect(null)
   }
 
   return (
-    <div className="space-y-6">
-      {/* Problem statement */}
+    <div className="space-y-5">
+      {/* Problem */}
       {problem && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-red-50 border border-red-200 rounded-lg"
-        >
-          <p className="text-sm uppercase tracking-widest font-semibold text-red-600 mb-2">
+        <div className="rounded-lg bg-slate-50 border border-slate-200 px-4 py-3">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
             Problem
           </p>
-          <p className="text-base text-red-900">{problem}</p>
-        </motion.div>
+          <p className="text-[14px] text-slate-700">{problem}</p>
+        </div>
       )}
 
       {/* Buggy code */}
       <div>
-        <p className="text-xs uppercase tracking-widest font-semibold text-slate-400 mb-3">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">
           Buggy Code
         </p>
         <CodeBlock code={code} />
       </div>
 
-      {/* Hint */}
+      {/* Hint toggle */}
       {hint && (
-        <button
-          onClick={() => setShowHint(!showHint)}
-          className="text-sm text-blue-600 hover:text-blue-700 font-semibold"
-        >
-          {showHint ? '✓ Hint shown' : '💡 Show hint'}
-        </button>
+        <div>
+          <button
+            onClick={() => setShowHint(v => !v)}
+            className="text-xs font-semibold text-slate-500 hover:text-[#0B1F3A] transition-colors"
+          >
+            {showHint ? 'Hide hint ↑' : 'Show hint ↓'}
+          </button>
+          <AnimatePresence>
+            {showHint && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-2 rounded-lg bg-slate-50 border border-slate-200 px-4 py-3">
+                  <p className="text-[13px] text-slate-600">{hint}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       )}
 
-      {showHint && hint && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900"
-        >
-          {hint}
-        </motion.div>
-      )}
-
-      {/* Student input */}
+      {/* Input */}
       <div>
-        <p className="text-sm font-semibold text-slate-700 mb-2">Your Fix:</p>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+          Your Fix
+        </p>
         <textarea
           value={studentCode}
           onChange={e => !submitted && setStudentCode(e.target.value)}
           disabled={submitted}
-          placeholder="Type the corrected code or the line that fixes the bug..."
-          className={`w-full p-4 rounded-lg border-2 font-mono text-sm leading-relaxed resize-none focus:outline-none ${
-            submitted
-              ? feedback
-                ? 'border-green-500 bg-green-50'
-                : 'border-red-500 bg-red-50'
-              : 'border-slate-300 bg-white hover:border-slate-400 focus:border-blue-500'
-          } ${submitted ? 'cursor-not-allowed' : ''}`}
-          rows={4}
+          placeholder="Write the corrected line or expression..."
+          rows={3}
+          className={`
+            w-full rounded-lg border px-4 py-3 font-mono text-sm leading-relaxed resize-none
+            focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 transition-colors
+            ${submitted
+              ? isCorrect
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                : 'border-red-300 bg-red-50 text-red-800'
+              : 'border-slate-200 bg-white text-slate-800 hover:border-slate-300'
+            }
+            ${submitted ? 'cursor-default' : ''}
+          `}
         />
       </div>
 
-      {/* Submit / Reset buttons */}
-      <div className="flex gap-3">
-        {!submitted ? (
-          <button
-            onClick={handleSubmit}
-            disabled={studentCode.trim() === ''}
-            className="flex-1 py-3 rounded-lg bg-[#0B1F3A] text-white font-semibold hover:bg-[#173762] disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
-          >
-            Check Fix
-          </button>
-        ) : (
-          <button
-            onClick={handleReset}
-            className="flex-1 py-3 rounded-lg bg-slate-300 text-slate-900 font-semibold hover:bg-slate-400 transition-colors"
-          >
-            Try Again
-          </button>
-        )}
-      </div>
-
-      {/* Feedback */}
-      {submitted && feedback !== null && (
-        <div
-          className={`text-center py-3 rounded-lg text-sm font-semibold ${
-            feedback
-              ? 'bg-green-100 text-green-900'
-              : 'bg-amber-100 text-amber-900'
-          }`}
+      {/* Actions */}
+      {!submitted ? (
+        <button
+          onClick={handleSubmit}
+          disabled={!studentCode.trim()}
+          className="w-full py-2.5 rounded-lg bg-[#0B1F3A] text-sm font-semibold text-white hover:bg-[#173762] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          {feedback
-            ? '✓ Great fix!'
-            : `✗ Not quite. Your code should include: "${expectedFix}"`}
-        </div>
+          Check Fix
+        </button>
+      ) : (
+        <button
+          onClick={handleReset}
+          className="w-full py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+        >
+          Try again
+        </button>
       )}
     </div>
   )
