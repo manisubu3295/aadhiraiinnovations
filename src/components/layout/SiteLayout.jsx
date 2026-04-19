@@ -54,6 +54,15 @@ const SEO = {
       'Building reliable pharmacy software and enterprise systems for India. 10+ years of engineering experience from Tamil Nadu.',
     canonical: 'https://www.aadhiraiinnovations.com/founder',
   },
+  '/tools/gst-calculator': {
+    title: 'GST Calculator India — Add & Remove GST Online | Aadhirai Innovations',
+    description:
+      'Free GST calculator for India. Calculate GST inclusive/exclusive prices, CGST + SGST for intra-state and IGST for inter-state transactions. Supports all GST rates: 0%, 3%, 5%, 12%, 18%, 28%.',
+    ogTitle: 'GST Calculator India — CGST, SGST & IGST | Aadhirai Innovations',
+    ogDescription:
+      'Instantly calculate GST in India. Add GST or remove GST from any price. Get CGST, SGST, and IGST breakdowns for all GST slabs.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/gst-calculator',
+  },
 }
 
 const DEFAULT_SEO = SEO['/']

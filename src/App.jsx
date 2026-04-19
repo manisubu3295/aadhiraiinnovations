@@ -14,6 +14,7 @@ const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
 const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
 const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
+const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
 
 /* Spinner while lazy chunks load */
 function PageLoader() {
@@ -79,6 +80,12 @@ function App() {
         <Route
           path="/pharmacy-billing-software/:city"
           element={<Suspense fallback={<PageLoader />}><LocalSEOPage /></Suspense>}
+        />
+
+        {/* Free Tools */}
+        <Route
+          path="/tools/gst-calculator"
+          element={<Suspense fallback={<PageLoader />}><GstCalculatorPage /></Suspense>}
         />
 
         {/* Catch-all */}
