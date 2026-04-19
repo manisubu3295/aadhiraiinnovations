@@ -47,23 +47,38 @@ export default function FileUploadZone({
   })
 
   if (result) {
+    const isPrintWorkflow = result.downloadUrl === '__print_workflow__'
+
     return (
       <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-8 md:p-10 text-center">
         <div className="flex justify-center mb-4">
           <CheckCircle2 className="h-12 w-12 text-green-600" strokeWidth={1.5} />
         </div>
 
-        <h3 className="text-xl font-semibold text-green-900 mb-2">Conversion Complete!</h3>
+        <h3 className="text-xl font-semibold text-green-900 mb-2">
+          {isPrintWorkflow ? 'Ready to Save as PDF!' : 'Conversion Complete!'}
+        </h3>
         <p className="text-sm text-green-700 mb-6">{result.fileName}</p>
 
-        <a
-          href={result.downloadUrl}
-          download={result.fileName}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors mb-4"
-        >
-          <Download className="h-4 w-4" />
-          Download File
-        </a>
+        {isPrintWorkflow ? (
+          <div className="bg-white rounded-lg p-4 mb-4 border border-green-200">
+            <p className="text-sm text-green-900 font-medium mb-2">To save your PDF:</p>
+            <ol className="text-sm text-green-800 space-y-1 text-left">
+              <li>1. The print dialog has opened in a new window</li>
+              <li>2. Select "Save as PDF" as your printer</li>
+              <li>3. Click "Save" and choose your location</li>
+            </ol>
+          </div>
+        ) : (
+          <a
+            href={result.downloadUrl}
+            download={result.fileName}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors mb-4"
+          >
+            <Download className="h-4 w-4" />
+            Download File
+          </a>
+        )}
 
         <div className="mt-6">
           <button

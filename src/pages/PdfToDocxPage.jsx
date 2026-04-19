@@ -133,7 +133,7 @@ export default function PdfToDocxPage() {
       }
 
       if (!fullText.trim()) {
-        setError('No text could be extracted from this PDF. It may be a scanned image.')
+        setError('📄 No text found in this PDF. It may be a scanned image or protected. Try uploading a digital PDF (created from Word, Google Docs, or similar software).')
         setIsProcessing(false)
         return
       }
@@ -177,7 +177,14 @@ export default function PdfToDocxPage() {
         })
       })
     } catch (err) {
-      setError('Failed to convert PDF. Please check the file and try again.')
+      const errorMsg = err?.message || ''
+      if (errorMsg.includes('Invalid PDF')) {
+        setError('❌ This PDF file appears to be corrupted or invalid. Please try another PDF.')
+      } else if (errorMsg.includes('PDF header not found')) {
+        setError('❌ This file doesn\'t appear to be a valid PDF. Please check the file format.')
+      } else {
+        setError('❌ Failed to process PDF. This may be a scanned image or protected PDF. Try converting it to a digital PDF first.')
+      }
       console.error(err)
     } finally {
       setIsProcessing(false)

@@ -164,13 +164,13 @@ export default function DocxToPdfPage() {
       // Trigger print dialog
       setTimeout(() => {
         printWindow.print()
-
-        // Show success state
-        setResult({
-          fileName: file.name.replace('.docx', '.pdf'),
-          downloadUrl: null,
-        })
       }, 500)
+
+      // Set result with special flag for print workflow
+      setResult({
+        fileName: file.name.replace('.docx', '.pdf'),
+        downloadUrl: '__print_workflow__',
+      })
     } catch (err) {
       setError('Failed to convert document. Please check the file format and try again.')
       console.error(err)
