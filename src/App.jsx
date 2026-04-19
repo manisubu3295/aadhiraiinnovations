@@ -19,6 +19,9 @@ const ToolsHubPage         = lazy(() => import('./pages/ToolsHubPage'))
 const DocxToPdfPage        = lazy(() => import('./pages/DocxToPdfPage'))
 const PdfToDocxPage        = lazy(() => import('./pages/PdfToDocxPage'))
 const PdfEditorPage        = lazy(() => import('./pages/PdfEditorPage'))
+const LearnHubPage         = lazy(() => import('./pages/LearnHubPage'))
+const JavaDsaPage          = lazy(() => import('./pages/JavaDsaPage'))
+const JavaDsaArraysPage    = lazy(() => import('./pages/JavaDsaArraysPage'))
 
 /* Spinner while lazy chunks load */
 function PageLoader() {
@@ -106,6 +109,20 @@ function App() {
         <Route
           path="/tools/pdf-editor"
           element={<Suspense fallback={<PageLoader />}><PdfEditorPage /></Suspense>}
+        />
+
+        {/* Learn Section */}
+        <Route
+          path="/learn"
+          element={<Suspense fallback={<PageLoader />}><LearnHubPage /></Suspense>}
+        />
+        <Route
+          path="/learn/java-dsa"
+          element={<Suspense fallback={<PageLoader />}><JavaDsaPage /></Suspense>}
+        />
+        <Route
+          path="/learn/java-dsa/arrays"
+          element={<Suspense fallback={<PageLoader />}><JavaDsaArraysPage /></Suspense>}
         />
 
         {/* Catch-all */}

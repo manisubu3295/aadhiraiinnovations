@@ -124,6 +124,18 @@ function Footer() {
               </ul>
             </div>
 
+            {/* Learn */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">
+                Learn
+              </p>
+              <ul className="space-y-3">
+                <li><Link to="/learn" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">All Courses</Link></li>
+                <li><Link to="/learn/java-dsa" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Java DSA</Link></li>
+                <li><Link to="/learn/java-dsa/arrays" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Arrays in Java</Link></li>
+              </ul>
+            </div>
+
             {/* Reach us */}
             <div className="lg:col-span-2">
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">

@@ -99,6 +99,33 @@ const SEO = {
       'Edit PDF pages online for free. Rotate pages, delete pages, reorder pages. Browser-based, no software install.',
     canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-editor',
   },
+  '/learn': {
+    title: 'Learn Java DSA & Programming — Free Courses | Aadhirai Innovations',
+    description:
+      'Free structured learning paths for Java data structures and algorithms. Step-by-step lessons with code examples. Built for beginners and intermediate developers.',
+    ogTitle: 'Learn Java DSA Free | Aadhirai Innovations',
+    ogDescription:
+      'Step-by-step Java DSA courses, free. Arrays, linked lists, stacks, trees and more. Master real-world software engineering concepts.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn',
+  },
+  '/learn/java-dsa': {
+    title: 'Java DSA Course — Data Structures & Algorithms with Java | Aadhirai Innovations',
+    description:
+      'Complete Java DSA course covering arrays, linked lists, stacks, queues, and trees. Free, structured, practical examples in every lesson.',
+    ogTitle: 'Java Data Structures & Algorithms Course | Aadhirai Innovations',
+    ogDescription:
+      'Learn Java DSA from scratch. Structured lessons covering basics to advanced algorithms with practical code examples.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa',
+  },
+  '/learn/java-dsa/arrays': {
+    title: 'Arrays in Java — Complete DSA Guide | Aadhirai Innovations',
+    description:
+      'Master arrays in Java with real-world examples, time complexity analysis, common mistakes, and practice problems. Part of the free Java DSA course.',
+    ogTitle: 'Arrays in Java DSA | Aadhirai Innovations',
+    ogDescription:
+      'Learn arrays in Java: declaration, traversal, search, sort, time complexity, and practice problems. Foundation for all DSA.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/arrays',
+  },
 }
 
 const DEFAULT_SEO = SEO['/']

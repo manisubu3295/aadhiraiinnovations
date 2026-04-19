@@ -45,6 +45,24 @@ const toolItems = [
   },
 ]
 
+const learnItems = [
+  {
+    label: 'All Courses',
+    desc: 'Browse all learning paths',
+    href: '/learn',
+  },
+  {
+    label: 'Java DSA',
+    desc: 'Data structures & algorithms in Java',
+    href: '/learn/java-dsa',
+  },
+  {
+    label: 'Arrays in Java',
+    desc: 'First lesson — arrays, search, sort',
+    href: '/learn/java-dsa/arrays',
+  },
+]
+
 const navItems = [
   { label: 'Products',     href: '/#portfolio'    },
   { label: 'Testimonials', href: '/#testimonials' },
@@ -164,11 +182,68 @@ function ToolsDropdown() {
   )
 }
 
+/* ─── Learn dropdown ─────────────────────────────────────────────── */
+function LearnDropdown() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    function handle(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handle)
+    return () => document.removeEventListener('mousedown', handle)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        className="flex items-center gap-1 text-[13px] font-medium text-[#0B1F3A]/52 hover:text-[#0B1F3A] transition-colors"
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
+        Learn
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          strokeWidth={1.75}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.98 }}
+            transition={{ duration: 0.14, ease: 'easeOut' }}
+            className="absolute left-0 top-full mt-3 w-[260px] rounded-xl border border-slate-100 bg-white shadow-[0_8px_32px_rgba(11,31,58,0.1)] overflow-hidden"
+          >
+            {learnItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                onClick={() => setOpen(false)}
+                className="flex flex-col gap-0.5 px-4 py-3.5 hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors"
+              >
+                <span className="text-[13px] font-semibold text-[#0B1F3A]">{item.label}</span>
+                <span className="text-[11px] text-slate-400">{item.desc}</span>
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 /* ─── Header ─────────────────────────────────────────────────────── */
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [mobileSolutionsOpen, setMobileOpen] = useState(false)
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false)
+  const [mobileLearnOpen, setMobileLearnOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { pathname, hash } = useLocation()
 
@@ -176,6 +251,7 @@ function Header() {
     setIsMenuOpen(false)
     setMobileOpen(false)
     setMobileToolsOpen(false)
+    setMobileLearnOpen(false)
   }, [pathname, hash])
 
   useEffect(() => {
@@ -224,6 +300,8 @@ function Header() {
             <SolutionsDropdown />
 
             <ToolsDropdown />
+
+            <LearnDropdown />
 
             <Link
               to="/products/medora-plus"
@@ -314,6 +392,38 @@ function Header() {
                       className="overflow-hidden"
                     >
                       {toolItems.map((item) => (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          className="flex flex-col gap-0.5 rounded-md px-5 py-2.5 hover:bg-slate-50 transition-colors"
+                        >
+                          <span className="text-[13px] font-semibold text-[#0B1F3A]">{item.label}</span>
+                          <span className="text-[11px] text-slate-400">{item.desc}</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <button
+                  type="button"
+                  onClick={() => setMobileLearnOpen(v => !v)}
+                  className="flex items-center justify-between rounded-md px-3 py-2.5 text-[13px] font-medium text-[#0B1F3A]/70 hover:bg-slate-50 transition-colors w-full"
+                >
+                  Learn
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${mobileLearnOpen ? 'rotate-180' : ''}`} strokeWidth={1.75} />
+                </button>
+
+                <AnimatePresence>
+                  {mobileLearnOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="overflow-hidden"
+                    >
+                      {learnItems.map((item) => (
                         <Link
                           key={item.href}
                           to={item.href}
