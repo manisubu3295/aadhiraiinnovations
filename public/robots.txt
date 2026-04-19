@@ -1,8 +1,37 @@
+# Robots.txt for Aadhirai Innovations
+# Last updated: 2026-04-19
+
+# Allow all crawlers by default
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.env*
+Disallow: /build/
+Disallow: /node_modules/
 
-# Sitemaps
-Sitemap: https://www.aadhiraiinnovations.com/sitemap.xml
+# Sitemap location
+Sitemap: https://aadhiraiinnovations.com/sitemap.xml
 
-# Crawl delay (optional, respectful to crawlers)
+# Crawl delay (optional — tells bots to be respectful)
 Crawl-delay: 1
+
+# Common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
