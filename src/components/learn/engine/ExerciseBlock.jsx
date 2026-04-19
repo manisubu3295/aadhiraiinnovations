@@ -4,6 +4,8 @@ import PredictOutputExercise from '../exercises/PredictOutputExercise'
 import FillInCodeExercise from '../exercises/FillInCodeExercise'
 import ChooseComplexityExercise from '../exercises/ChooseComplexityExercise'
 import FixTheBugExercise from '../exercises/FixTheBugExercise'
+import TraceExercise from '../exercises/TraceExercise'
+import DragArrangeExercise from '../exercises/DragArrangeExercise'
 import FeedbackCard from './FeedbackCard'
 
 const exerciseComponents = {
@@ -11,6 +13,8 @@ const exerciseComponents = {
   'fill-in-code': FillInCodeExercise,
   'choose-complexity': ChooseComplexityExercise,
   'fix-the-bug': FixTheBugExercise,
+  'trace': TraceExercise,
+  'drag-arrange': DragArrangeExercise,
 }
 
 const exerciseLabels = {
@@ -18,6 +22,8 @@ const exerciseLabels = {
   'fill-in-code': 'Fill in Code',
   'choose-complexity': 'Complexity',
   'fix-the-bug': 'Fix the Bug',
+  'trace': 'Trace It',
+  'drag-arrange': 'Arrange',
 }
 
 export default function ExerciseBlock({ exercise, index = 1, onComplete }) {
@@ -33,7 +39,13 @@ export default function ExerciseBlock({ exercise, index = 1, onComplete }) {
     )
   }
 
-  const isCorrect = selectedAnswer === exercise.expectedAnswer
+  // trace and drag-arrange pass isCorrect boolean; others pass an answer string
+  const directResultTypes = ['trace', 'drag-arrange']
+  const usesDirectResult = directResultTypes.includes(exercise.exerciseType)
+
+  const isCorrect = usesDirectResult
+    ? selectedAnswer === true
+    : selectedAnswer === exercise.expectedAnswer
 
   const getFeedback = () =>
     isCorrect
@@ -46,16 +58,27 @@ export default function ExerciseBlock({ exercise, index = 1, onComplete }) {
         }
       : {
           variant: 'wrong',
-          title: exercise.wrongAnswerFeedback?.[selectedAnswer]?.title || 'Not quite',
-          hint: exercise.wrongAnswerFeedback?.[selectedAnswer]?.hint,
-          body: exercise.wrongAnswerFeedback?.[selectedAnswer]?.body || '',
-          misconception: exercise.wrongAnswerFeedback?.[selectedAnswer]?.misconception,
+          title: usesDirectResult
+            ? (exercise.wrongFeedback?.title || 'Not quite right')
+            : (exercise.wrongAnswerFeedback?.[selectedAnswer]?.title || 'Not quite'),
+          hint: usesDirectResult
+            ? exercise.wrongFeedback?.hint
+            : exercise.wrongAnswerFeedback?.[selectedAnswer]?.hint,
+          body: usesDirectResult
+            ? (exercise.wrongFeedback?.body || '')
+            : (exercise.wrongAnswerFeedback?.[selectedAnswer]?.body || ''),
+          misconception: usesDirectResult
+            ? exercise.wrongFeedback?.misconception
+            : exercise.wrongAnswerFeedback?.[selectedAnswer]?.misconception,
         }
 
-  const handleSubmit = (answer) => {
-    setSelectedAnswer(answer)
+  const handleSubmit = (answerOrResult) => {
+    setSelectedAnswer(answerOrResult)
     setSubmitted(true)
-    onComplete?.(exercise.id, answer === exercise.expectedAnswer)
+    const correct = usesDirectResult
+      ? answerOrResult === true
+      : answerOrResult === exercise.expectedAnswer
+    onComplete?.(exercise.id, correct)
   }
 
   const handleRetry = () => {

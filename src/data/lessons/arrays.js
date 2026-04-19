@@ -1,266 +1,314 @@
+/**
+ * Arrays in Java — Reference Lesson
+ * Uses all 7 block types: concept, visual, worked-sample,
+ * exercise (predict, fill-in, complexity, trace, drag-arrange), reflection
+ */
 export const lessonData = {
   slug: 'arrays',
   title: 'Arrays in Java',
   subtitle: 'The foundation of every data structure.',
   badge: 'Lesson 1 · Basics',
-  estimatedTime: '15 min',
+  estimatedTime: '18 min',
   blocks: [
+
+    // ── 1. Concept ──────────────────────────────────────────────────
     {
       type: 'concept',
       id: 'what-is-array',
       heading: 'What is an Array?',
-      body: `An array is a container that holds a fixed number of values of the same type. Think of it like a row of mailboxes, where each box holds one value, and each box has a unique address (index).
+      body: `An array is a container that holds multiple values of the same type in contiguous memory. Each value has an index — a position number — starting at 0.
 
-The key insight: **arrays give us instant access to any element** if we know its position. No searching needed. Just ask for the box number, and you get the value in constant time.
-
-In Java, we declare arrays like this:
-- \`int[] numbers;\` — declares an array of integers
-- \`numbers = new int[5];\` — creates space for 5 integers
-- \`int[] numbers = {10, 20, 30};\` — shorthand: declare + initialize in one line
-
-Every element has an **index** (position) that starts at 0, not 1. This is one of the biggest sources of bugs for new programmers.`,
+Think of it as a row of numbered mailboxes. Each mailbox holds exactly one value. You can reach any mailbox instantly if you know its number. That instant access is the whole point.`,
     },
 
+    // ── 2. Visual ───────────────────────────────────────────────────
     {
       type: 'visual',
-      id: 'array-intro-visual',
+      id: 'array-memory-diagram',
       component: 'ArrayVisual',
       props: { elements: [10, 25, 8, 42, 17], label: 'arr' },
-      caption: 'An array of 5 integers. Each box holds one value. The number below is the index (starting at 0).',
+      caption: 'Five integers stored in memory. The number below each box is the index, starting at 0.',
     },
 
+    // ── 3. Concept: zero-based ───────────────────────────────────────
     {
       type: 'concept',
-      id: 'indexing-pattern',
+      id: 'zero-based-indexing',
       heading: 'Zero-Based Indexing',
-      body: `In Java arrays, counting starts at 0:
+      body: `In Java, array indices start at 0, not 1.
+
 - Index 0 → first element
 - Index 1 → second element
 - Index 4 → fifth element
+- Last valid index → length - 1
 
-The last valid index is always **length - 1**. If your array has 5 elements, the valid indices are 0, 1, 2, 3, 4. Index 5 would crash the program with an \`ArrayIndexOutOfBoundsException\`.
-
-**Mental model:** Think of the index as "how many steps from the beginning," not "which position." Step 0 = first position.`,
+Accessing an index that does not exist throws ArrayIndexOutOfBoundsException. The most common mistake: using length instead of length - 1 for the last element.`,
     },
 
+    // ── 4. Exercise: Drag to arrange — concept order ─────────────────
+    {
+      type: 'exercise',
+      id: 'drag-arrange-1',
+      exerciseType: 'drag-arrange',
+      heading: 'Order the Steps',
+      prompt: 'Arrange these steps in the correct order to access an element by index:',
+      items: [
+        'Compute memory address: base + (index × element size)',
+        'Know the base address of the array',
+        'Know the index you want',
+        'Read the value at that address',
+      ],
+      correctOrder: [
+        'Know the base address of the array',
+        'Know the index you want',
+        'Compute memory address: base + (index × element size)',
+        'Read the value at that address',
+      ],
+      hint: 'Array access is a two-step calculation before the actual read.',
+      correctFeedback: {
+        title: 'Correct order',
+        body: 'This is exactly how the CPU accesses array elements. The address calculation happens in hardware — which is why array access is O(1).',
+        reinforcement: 'Understanding this memory model is what separates engineers who truly understand data structures from those who just memorize syntax.',
+      },
+      wrongFeedback: {
+        title: 'Not quite',
+        body: 'Think about what you need to know before you can calculate anything.',
+        hint: 'You need the starting address and the index before you can compute where to look.',
+      },
+    },
+
+    // ── 5. Worked Sample ─────────────────────────────────────────────
     {
       type: 'worked-sample',
       id: 'access-element-sample',
       heading: 'Accessing an Element',
       code: `int[] arr = {10, 25, 8, 42, 17};
-int x = arr[1];
-int y = arr[4];
-System.out.println(x); // prints 25
-System.out.println(y); // prints 17`,
+int x = arr[2];
+int y = arr[arr.length - 1];
+System.out.println(x);   // 8
+System.out.println(y);   // 17`,
       steps: [
-        {
-          line: '1',
-          explanation: 'Create an array with 5 values. These are stored in memory in order.',
-        },
-        {
-          line: '2',
-          explanation: 'Access arr[1] — go to index 1 (the second position). That value is 25.',
-        },
-        {
-          line: '3',
-          explanation: 'Access arr[4] — go to index 4 (the fifth position). That value is 17.',
-        },
-        {
-          line: '4-5',
-          explanation: 'Print the results. Direct array access is instant — no searching needed.',
-        },
+        { line: '1', explanation: 'Create an array of 5 integers. Java allocates 5 contiguous memory slots.' },
+        { line: '2', explanation: 'arr[2] means "jump to index 2" — the third element. This is O(1): one memory calculation, one read.' },
+        { line: '3', explanation: 'arr.length is 5. arr.length - 1 is 4. arr[4] = 17. This is the standard pattern for the last element.' },
+        { line: '4-5', explanation: 'Both accesses are instant, regardless of how large the array is.' },
       ],
-      result: 'x = 25, y = 17',
+      result: 'x = 8   |   y = 17',
     },
 
+    // ── 6. Exercise: Predict output ───────────────────────────────────
     {
       type: 'exercise',
       id: 'predict-output-1',
       exerciseType: 'predict-output',
-      heading: 'Your Turn: Predict Output',
-      prompt: 'What does this code print?',
+      heading: 'Predict Output',
+      prompt: 'What does this print?',
       code: `int[] nums = {3, 7, 2, 9};
 System.out.println(nums[2]);`,
       expectedAnswer: '2',
       options: ['7', '2', '9', '3'],
       correctFeedback: {
-        title: '✓ Exactly right!',
-        body: 'You identified that index 2 is the third element (3, 7, **2**). Your understanding of zero-based indexing is solid.',
-        reinforcement: 'This is one of the most common sources of bugs — confusing index and position. You already have the right instinct.',
+        title: 'Correct — index 2 is the third element',
+        body: 'You identified that nums[2] maps to the third slot: 3→0, 7→1, 2→2. Zero-based indexing is solid.',
+        reinforcement: 'The most common interview mistake is confusing index and position. You did not make it.',
       },
       wrongAnswerFeedback: {
         '7': {
-          title: 'Not quite — but I see your thinking',
-          hint: 'Which index is 7 at?',
-          body: '7 is at index 1, not index 2. Remember: arrays start at 0. So index 2 is the **third** slot, not the second.',
-          misconception: 'You may be counting from 1 like natural language. Java counts from 0.',
+          title: '7 is at index 1, not 2',
+          hint: 'Count from 0: index 0 → 3, index 1 → 7, index 2 → ?',
+          body: 'You might be counting from 1 naturally. Java counts from 0. Index 2 is the third slot.',
+          misconception: 'Natural counting starts at 1. Computer indexing starts at 0.',
         },
         '9': {
-          title: 'Almost, but 9 is one slot too far',
-          hint: 'Count the indices: 0, 1, 2...',
-          body: '9 is at index 3. Index 2 is one step before that — which is 2.',
-          misconception: 'Off-by-one from the right side. Re-count from index 0.',
+          title: '9 is one slot too far — that is index 3',
+          hint: 'Index 2 is the third element. Index 3 is the fourth.',
+          body: 'Off by one from the right. Re-count: 0→3, 1→7, 2→2, 3→9.',
+          misconception: 'Classic off-by-one error when going right to left.',
         },
         '3': {
-          title: 'That\'s the value at index 0',
-          hint: 'The question asks for index 2, not 0',
-          body: '3 is the first element (index 0). Index 2 is two steps forward from there.',
-          misconception: 'You may have confused index 0 with index 2. Write it out: index 0→3, 1→7, 2→2.',
+          title: '3 is at index 0 — the very first element',
+          hint: 'The question asks for index 2, not index 0.',
+          body: 'You may have read arr[0] instead of arr[2]. Start at 0 and count forward: 0→3, 1→7, 2→2.',
+          misconception: 'Make sure you are reading the index in the brackets, not assuming it.',
         },
       },
     },
 
+    // ── 7. Concept: length property ──────────────────────────────────
+    {
+      type: 'concept',
+      id: 'length-property',
+      heading: 'The .length Property',
+      body: `Every Java array has a .length property — the number of elements it holds.
+
+int[] arr = {5, 10, 15, 20};
+arr.length → 4
+
+Key facts:
+- .length is read-only. You cannot change it.
+- Valid indices are 0 through arr.length - 1.
+- Use arr.length in loops so your code adapts to any array size.
+
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+
+Hardcoding 4 instead of arr.length is a maintenance bug waiting to happen.`,
+    },
+
+    // ── 8. Exercise: Fill in code ─────────────────────────────────────
     {
       type: 'exercise',
       id: 'fill-in-code-1',
       exerciseType: 'fill-in-code',
       heading: 'Fill in the Gap',
-      prompt: 'Complete this code so it prints the LAST element of the array.',
+      prompt: 'Complete the code so it prints the LAST element of the array:',
       codeTemplate: `int[] arr = {5, 10, 15, 20};
 System.out.println(arr[___]);`,
       blanks: [{ id: 'blank1', expectedValue: '3', label: 'blank1' }],
-      hint: 'An array of length 4 has valid indices 0, 1, 2, 3. The last index is length - 1.',
+      hint: 'An array of length 4 has indices 0, 1, 2, 3. The last index is length - 1.',
       correctFeedback: {
-        title: '✓ Spot on!',
-        body: 'The last index is always length - 1. For length 4, that\'s index 3. This exact pattern — `arr[arr.length - 1]` — appears constantly in real code.',
-        suggestion: 'Bonus: try `arr[arr.length - 1]` as the dynamic version that works for any array size.',
-      },
-      wrongAnswerFeedback: {
-        '4': {
-          title: 'Close, but that\'s out of bounds',
-          body: 'Index 4 doesn\'t exist in a 4-element array (indices are 0–3). Java would throw an ArrayIndexOutOfBoundsException. The last valid index is 3.',
-          misconception: 'You may be thinking "length 4 means index 4," but remember: the last index is always length - 1.',
-        },
+        title: 'Spot on',
+        body: 'The last index is always length - 1. For length 4, that is index 3.',
+        suggestion: 'Production code usually uses arr[arr.length - 1] so it works for any array size.',
       },
     },
 
+    // ── 9. Worked Sample: Loop + Accumulate ───────────────────────────
     {
-      type: 'concept',
-      id: 'array-length-property',
-      heading: 'The .length Property',
-      body: `Every array in Java has a built-in .length property that tells you how many elements it holds. It's read-only — you can't change it after the array is created.
-
-Code example:
-int[] arr = {5, 10, 15, 20};
-System.out.println(arr.length); // prints 4
-
-This is super useful for loops. Instead of hardcoding "loop 4 times," you can loop until i < arr.length:
-
-for (int i = 0; i < arr.length; i++) {
-  System.out.println(arr[i]);
+      type: 'worked-sample',
+      id: 'loop-sample',
+      heading: 'Looping Through an Array',
+      code: `int[] scores = {85, 92, 78, 95};
+int sum = 0;
+for (int i = 0; i < scores.length; i++) {
+    sum += scores[i];
 }
-
-Now if you add an element later, your loop adapts automatically. This is a key pattern in real code.`,
+System.out.println(sum);`,
+      steps: [
+        { line: '1-2', explanation: 'Create an array and a sum accumulator.' },
+        { line: '3', explanation: 'Loop from index 0 to length - 1 (i < length, not i <= length).' },
+        { line: '4', explanation: 'Add each element to sum. After all 4 iterations: 85 + 92 + 78 + 95 = 350.' },
+        { line: '6', explanation: 'Print the total. i < scores.length guarantees we never go out of bounds.' },
+      ],
+      result: '350',
     },
 
+    // ── 10. Exercise: Trace ───────────────────────────────────────────
+    {
+      type: 'exercise',
+      id: 'trace-1',
+      exerciseType: 'trace',
+      heading: 'Trace the Execution',
+      prompt: 'Fill in the value of each variable as the code runs:',
+      code: `int[] arr = {4, 7, 2};
+int max = arr[0];
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+        max = arr[i];
+    }
+}`,
+      steps: [
+        {
+          line: '1-2',
+          description: 'arr is created. max starts as the first element.',
+          variables: { 'arr[0]': 4, 'arr[1]': 7, 'arr[2]': 2, max: 4, i: '...' },
+        },
+        {
+          line: '3 (i=1)',
+          description: 'Loop starts. i=1. Check: arr[1]=7 > max=4? Yes.',
+          variables: { 'arr[1]': 7, max: 4, i: 1, 'arr[i] > max': 'true' },
+        },
+        {
+          line: '5 (i=1)',
+          description: 'max is updated to arr[1] which is 7.',
+          variables: { i: 1, 'arr[i]': 7, max: '?' },
+        },
+        {
+          line: '3 (i=2)',
+          description: 'i=2. Check: arr[2]=2 > max=7? No, skip.',
+          variables: { i: 2, 'arr[2]': 2, max: 7, 'arr[i] > max': 'false' },
+        },
+      ],
+      blanks: [
+        { stepIndex: 2, variable: 'max', expectedValue: '7' },
+      ],
+      correctFeedback: {
+        title: 'Correct trace',
+        body: 'You correctly identified that max becomes 7 after the first iteration. The "find maximum" pattern works by updating max whenever a larger value is found.',
+        reinforcement: 'Tracing through code mentally is one of the most important debugging skills. You just practiced it.',
+      },
+      wrongFeedback: {
+        title: 'Not quite',
+        body: 'After checking arr[1]=7 > max=4 (true), max is assigned arr[1]. What is arr[1]?',
+        hint: 'max = arr[i] where i=1. arr[1] = 7.',
+        misconception: 'max stores the largest value seen so far. After visiting 7, max becomes 7.',
+      },
+    },
+
+    // ── 11. Exercise: Choose complexity ───────────────────────────────
     {
       type: 'exercise',
       id: 'choose-complexity-1',
       exerciseType: 'choose-complexity',
-      heading: 'What\'s the Time Cost?',
-      scenario: 'You know the index. You access arr[2] directly.',
-      question: 'What is the time complexity of accessing arr[2]?',
+      heading: 'Time Complexity',
+      scenario: 'You access arr[1000] directly by index in an array of 1,000,000 elements.',
+      question: 'What is the time complexity of this access?',
       options: ['O(1)', 'O(n)', 'O(log n)'],
       expectedAnswer: 'O(1)',
       correctFeedback: {
-        title: '✓ Correct — O(1)',
-        body: 'Any index access in an array is constant time, regardless of array size. The computer calculates the exact memory address directly: base + (index × element size). No searching needed.',
-        reinforcement: 'This O(1) access is what makes arrays so powerful. Any other data structure would need to search.',
+        title: 'Correct — O(1)',
+        body: 'Array index access is always constant time. The CPU computes the address in one step: base + (index × size). A 1M-element array is no slower to access than a 3-element one.',
+        reinforcement: 'This is the superpower of arrays. No other data structure gives you O(1) access by position.',
       },
       wrongAnswerFeedback: {
         'O(n)': {
-          title: 'That would be if you searched element by element',
-          body: 'O(n) is what happens when you search linearly through the array. But direct index access is instant — the CPU knows exactly where to look in memory.',
+          title: 'That is linear search — not index access',
+          body: 'O(n) would mean checking elements one by one. Array index access skips all that — it calculates the address directly.',
+          misconception: 'Index access ≠ search. You already know where you are going.',
         },
         'O(log n)': {
-          title: 'That\'s binary search, not direct access',
-          body: 'Binary search is O(log n) when finding an element in a *sorted* array. But if you already know the index, you skip all searching.',
+          title: 'That is binary search on a sorted array',
+          body: 'Binary search is O(log n) when you are searching for a value. Here you already know the index, so no searching is needed.',
+          misconception: 'O(log n) requires repeatedly halving. Direct access requires one calculation.',
         },
       },
     },
 
-    {
-      type: 'concept',
-      id: 'array-memory-layout',
-      heading: 'Why Arrays Are Fast: Memory Layout',
-      body: `Arrays are fast because they store elements **contiguously** in memory. All elements sit next to each other.
-
-When you ask for \`arr[5]\`, the CPU computes:
-\`\`\`
-memory address = base address + (5 × size of one element)
-\`\`\`
-
-For example, if an \`int\` is 4 bytes and \`arr\` starts at address 1000:
-- arr[0] is at 1000
-- arr[1] is at 1004
-- arr[2] is at 1008
-- arr[5] is at 1000 + (5 × 4) = 1020
-
-The CPU does this math instantly — **one step**. It doesn't iterate. This is why array access is O(1).
-
-Compare to a linked list, where you have to follow pointers from node to node. That's O(n) in the worst case.`,
-    },
-
-    {
-      type: 'worked-sample',
-      id: 'loop-and-print',
-      heading: 'Looping Through Arrays',
-      code: `int[] scores = {85, 92, 78, 95};
-for (int i = 0; i < scores.length; i++) {
-  System.out.println("Score: " + scores[i]);
-}`,
-      steps: [
-        {
-          line: '1',
-          explanation: 'Create an array of 4 scores.',
-        },
-        {
-          line: '2',
-          explanation: 'Loop from i = 0 to i < 4 (since length is 4).',
-        },
-        {
-          line: '3',
-          explanation: 'Each iteration prints the current score. i goes 0, 1, 2, 3.',
-        },
-      ],
-      result: `Score: 85
-Score: 92
-Score: 78
-Score: 95`,
-    },
-
+    // ── 12. Exercise: Fix the Bug ─────────────────────────────────────
     {
       type: 'exercise',
       id: 'fix-the-bug-1',
       exerciseType: 'fix-the-bug',
       heading: 'Fix the Bug',
-      problem: 'This code is supposed to print all elements, but it skips the last one. Fix it.',
+      problem: 'This loop is supposed to print all elements but skips the last one. Fix it.',
       code: `int[] data = {10, 20, 30, 40};
 for (int i = 0; i < data.length - 1; i++) {
-  System.out.println(data[i]);
+    System.out.println(data[i]);
 }`,
-      hint: 'The loop condition should visit all indices: 0, 1, 2, 3. Currently it stops at 2.',
+      hint: 'The loop should visit indices 0, 1, 2, 3. Currently it stops at 2.',
       expectedFix: 'i < data.length',
       correctFeedback: {
-        title: '✓ Nice catch!',
-        body: 'Changing `i < data.length - 1` to `i < data.length` ensures the loop runs for all indices. This is the standard pattern — always use `i < array.length` in for loops.',
-        reinforcement: 'Off-by-one errors are the #1 source of array bugs. You spotted it!',
+        title: 'Correct fix',
+        body: 'Removing the - 1 makes the loop run for all valid indices: 0, 1, 2, 3. i < data.length is the standard loop pattern.',
+        reinforcement: 'Off-by-one errors in loop conditions are the single most common array bug. You found it.',
       },
     },
 
+    // ── 13. Reflection ────────────────────────────────────────────────
     {
       type: 'reflection',
       id: 'summary',
-      heading: 'What You\'ve Built So Far',
+      heading: 'What You Have Built',
       keyInsights: [
         'Arrays use 0-based indexing — the first element is at index 0, not 1',
-        'Direct index access is O(1) — constant time, regardless of array size',
-        'The last valid index is always length - 1',
-        'Arrays store elements contiguously in memory, which is why they\'re fast',
-        'The `.length` property tells you how many elements the array holds',
-        'Off-by-one errors are the #1 source of array bugs — always double-check your indices',
+        'Direct index access is O(1) — the CPU computes the address, no searching',
+        'The last valid index is always arr.length - 1',
+        'Use arr.length in loop conditions, not a hardcoded number',
+        'Off-by-one in loop condition (< vs <=) is the most common array bug',
+        'ArrayIndexOutOfBoundsException means you accessed an index that does not exist',
       ],
-      rememberedPattern: 'Any time you see `arr[i]`, ask: "Is the index correct?" A 2-second habit prevents hours of debugging.',
+      rememberedPattern: 'Every time you write arr[i], pause and ask: is i definitely in range 0 to arr.length-1? That one-second check prevents most array bugs.',
     },
   ],
 }

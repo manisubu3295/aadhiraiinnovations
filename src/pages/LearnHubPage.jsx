@@ -1,237 +1,268 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { BookOpen, Zap, Target } from 'lucide-react'
+import { ChevronRight, Lock, CheckCircle2 } from 'lucide-react'
 import Container from '../components/ui/Container'
+import { course } from '../data/courses/javaDsaCourse'
 
 function usePageSchema() {
   useEffect(() => {
     const schema = {
       '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      'name': 'Learn Java DSA & Programming',
-      'description': 'Free structured learning paths for Java data structures and algorithms',
-      'url': 'https://www.aadhiraiinnovations.com/learn',
+      '@type': 'Course',
+      name: course.title,
+      description: course.subtitle,
+      provider: { '@type': 'Organization', name: 'Aadhirai Innovations' },
+      url: 'https://www.aadhiraiinnovations.com/learn',
+      numberOfCredits: course.totalLessons,
     }
-
     const script = document.createElement('script')
     script.type = 'application/ld+json'
-    script.setAttribute('data-schema', 'webpage')
+    script.setAttribute('data-schema', 'course-hub')
     script.text = JSON.stringify(schema)
     document.head.appendChild(script)
     return () => script.remove()
   }, [])
 }
 
+const statusBadge = {
+  live: { label: 'Live', className: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
+  soon: { label: 'Soon', className: 'text-amber-700 bg-amber-50 border-amber-200' },
+  planned: { label: 'Planned', className: 'text-slate-500 bg-slate-50 border-slate-200' },
+}
+
 export default function LearnHubPage() {
   usePageSchema()
 
-  const tracks = [
-    {
-      title: 'Java DSA',
-      description: 'Data structures and algorithms with practical Java examples',
-      topics: ['Arrays', 'Linked Lists', 'Stacks', 'Trees'],
-      badge: 'Live',
-      badgeColor: 'bg-green-100 text-green-700',
-      href: '/learn/java-dsa',
-      available: true,
-    },
-    {
-      title: 'AI for Business',
-      description: 'Building intelligent systems for enterprise workflows',
-      topics: ['ML Basics', 'Neural Networks', 'NLP', 'Deployment'],
-      badge: 'Coming Soon',
-      badgeColor: 'bg-amber-100 text-amber-700',
-      href: '#',
-      available: false,
-    },
-    {
-      title: 'System Design',
-      description: 'Scalable architecture and distributed systems',
-      topics: ['Databases', 'Caching', 'APIs', 'DevOps'],
-      badge: 'Coming Soon',
-      badgeColor: 'bg-amber-100 text-amber-700',
-      href: '#',
-      available: false,
-    },
-  ]
-
-  const benefits = [
-    {
-      icon: BookOpen,
-      title: 'Real-World Code',
-      description: 'Examples drawn from actual production systems, not toy problems',
-    },
-    {
-      icon: Zap,
-      title: 'Practical Focus',
-      description: 'Learn how to apply concepts immediately in your projects',
-    },
-    {
-      icon: Target,
-      title: 'No Fluff',
-      description: 'Clear explanations without unnecessary complexity or jargon',
-    },
-  ]
-
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[#060e1c] py-20 sm:py-28 lg:py-32">
-        <div className="absolute inset-0 grid-texture pointer-events-none" />
-        <Container className="relative z-10">
+      {/* ── Hero ───────────────────────────────────────────────────── */}
+      <section className="bg-[#0B1F3A] pt-16 pb-20">
+        <Container>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
             className="max-w-3xl"
           >
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-              Learn. Build. Scale.
+            <div className="inline-flex items-center gap-2 border border-white/20 rounded-full px-3 py-1 mb-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="text-xs font-semibold text-white/80 tracking-wide">
+                {course.liveLessons} lessons live · {course.totalLessons} total planned
+              </span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-[-0.025em] text-white leading-[1.1] mb-4">
+              {course.title}
             </h1>
-            <p className="text-lg sm:text-xl text-white/70 leading-relaxed mb-8">
-              Master real-world software engineering concepts with practical examples. No fluff, just solid fundamentals.
+            <p className="text-lg text-white/60 leading-relaxed mb-8 max-w-2xl">
+              {course.subtitle}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="/learn/java-dsa"
-                className="inline-flex items-center justify-center rounded-lg bg-white text-[#0B1F3A] px-7 py-3.5 font-semibold hover:bg-slate-50 transition-colors"
+
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/learn/java-dsa/arrays"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-[#0B1F3A] text-sm font-semibold hover:bg-slate-50 transition-colors"
               >
-                Start Learning Java DSA
-              </a>
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center rounded-lg border border-white/30 text-white px-7 py-3.5 font-semibold hover:bg-white/5 transition-colors"
+                Start with Arrays
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/course/java-dsa/arrays"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/5 transition-colors"
               >
-                Get in Touch
-              </a>
+                Premium Course Mode
+              </Link>
             </div>
           </motion.div>
         </Container>
       </section>
 
-      {/* Learning Tracks */}
-      <section className="bg-white border-b border-slate-100 py-16 md:py-24">
+      {/* ── Stats bar ──────────────────────────────────────────────── */}
+      <section className="bg-[#091528] border-b border-white/5">
         <Container>
+          <div className="grid grid-cols-3 divide-x divide-white/10 py-0">
+            {[
+              { value: `${course.totalLessons}`, label: 'Lessons planned' },
+              { value: '5', label: 'Learning levels' },
+              { value: `${course.estimatedHours}h`, label: 'Estimated total' },
+            ].map(({ value, label }) => (
+              <div key={label} className="text-center py-5">
+                <div className="text-2xl font-bold text-white">{value}</div>
+                <div className="text-xs text-white/40 mt-0.5">{label}</div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Course Roadmap ─────────────────────────────────────────── */}
+      <section className="bg-white py-14 md:py-20">
+        <Container>
+          {/* Section header */}
           <div className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-10 bg-slate-300" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Learning Paths
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#0B1F3A] leading-[1.2]">
-              Choose Your Learning Path
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-2">
+              Full Roadmap
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-[#0B1F3A]">
+              Course → Module → Lesson
             </h2>
+            <p className="text-slate-500 mt-2 text-base">
+              Each lesson is a complete interactive experience — concepts, visuals, exercises, mentor feedback.
+            </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {tracks.map((track) => (
+          {/* Levels */}
+          <div className="space-y-12">
+            {course.levels.map((level, levelIdx) => (
               <motion.div
-                key={track.title}
-                initial={{ opacity: 0, y: 20 }}
+                key={level.id}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6 }}
-                className="rounded-xl border border-slate-200 p-6 hover:border-slate-300 hover:shadow-lg transition-all"
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.4, delay: levelIdx * 0.05 }}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-semibold text-[#0B1F3A]">{track.title}</h3>
-                  <span className={`text-xs font-semibold px-3 py-1 rounded-full ${track.badgeColor}`}>
-                    {track.badge}
-                  </span>
+                {/* Level header */}
+                <div className="flex items-start gap-4 mb-6">
+                  <div
+                    className="flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center text-white text-sm font-bold"
+                    style={{ backgroundColor: level.color }}
+                  >
+                    {level.level}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#0B1F3A]">
+                      Level {level.level} — {level.title}
+                    </h3>
+                    <p className="text-sm text-slate-500 mt-0.5">{level.subtitle}</p>
+                  </div>
                 </div>
 
-                <p className="text-sm text-slate-600 mb-4">{track.description}</p>
+                {/* Modules in this level */}
+                <div className="ml-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {level.modules.map((mod) => (
+                    <div
+                      key={mod.id}
+                      className="rounded-xl border border-slate-200 bg-white overflow-hidden"
+                    >
+                      {/* Module header */}
+                      <div className="border-b border-slate-100 px-4 py-3">
+                        <h4 className="text-sm font-semibold text-[#0B1F3A]">{mod.title}</h4>
+                      </div>
 
-                <div className="mb-6 flex flex-wrap gap-2">
-                  {track.topics.map((topic) => (
-                    <span key={topic} className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-                      {topic}
-                    </span>
+                      {/* Lessons */}
+                      <div className="divide-y divide-slate-50">
+                        {mod.lessons.map((lesson) => {
+                          const badge = statusBadge[lesson.status]
+                          const isLive = lesson.status === 'live'
+
+                          return (
+                            <div key={lesson.id} className="px-4 py-3 flex items-center gap-3">
+                              {/* Status icon */}
+                              {isLive ? (
+                                <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" strokeWidth={2} />
+                              ) : (
+                                <Lock className="h-4 w-4 text-slate-300 flex-shrink-0" strokeWidth={1.75} />
+                              )}
+
+                              {/* Lesson info */}
+                              <div className="flex-1 min-w-0">
+                                {isLive ? (
+                                  <Link
+                                    to={`/learn/java-dsa/${lesson.slug}`}
+                                    className="block text-sm font-medium text-[#0B1F3A] hover:text-[#173762] truncate"
+                                  >
+                                    {lesson.title}
+                                  </Link>
+                                ) : (
+                                  <span className="block text-sm font-medium text-slate-400 truncate">
+                                    {lesson.title}
+                                  </span>
+                                )}
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  <span className="text-[10px] text-slate-400">{lesson.estimatedTime}</span>
+                                  <span className="text-slate-200">·</span>
+                                  <span className="text-[10px] text-slate-400">{lesson.exerciseCount} exercises</span>
+                                </div>
+                              </div>
+
+                              {/* Status badge */}
+                              <span className={`flex-shrink-0 text-[10px] font-bold px-2 py-0.5 rounded border ${badge.className}`}>
+                                {badge.label}
+                              </span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
                   ))}
                 </div>
-
-                {track.available ? (
-                  <Link
-                    to={track.href}
-                    className="inline-flex items-center justify-center w-full py-2 rounded-lg bg-[#0B1F3A]/5 text-[#0B1F3A] font-semibold hover:bg-[#0B1F3A]/10 transition-colors"
-                  >
-                    Start Learning →
-                  </Link>
-                ) : (
-                  <div className="inline-flex items-center justify-center w-full py-2 rounded-lg bg-slate-100 text-slate-500 font-semibold cursor-not-allowed">
-                    Coming Soon
-                  </div>
-                )}
               </motion.div>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Why Learn Here */}
-      <section className="bg-slate-50 border-b border-slate-100 py-16 md:py-24">
+      {/* ── Learning System section ─────────────────────────────────── */}
+      <section className="bg-slate-50 border-t border-slate-100 py-14 md:py-20">
         <Container>
-          <div className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-10 bg-slate-300" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Our Approach
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#0B1F3A] leading-[1.2]">
-              Why Learn Here?
+          <div className="max-w-2xl mb-10">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-2">
+              How it works
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-[#0B1F3A] mb-3">
+              Not a Tutorial. A Guided System.
             </h2>
+            <p className="text-slate-500 text-base leading-relaxed">
+              Every lesson is broken into focused interactive steps. You never read a wall of text. You understand, interact, make mistakes, get specific feedback, and move forward.
+            </p>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-3">
-            {benefits.map((benefit) => {
-              const Icon = benefit.icon
-              return (
-                <motion.div
-                  key={benefit.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6 }}
-                  className="space-y-3"
-                >
-                  <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-[#0B1F3A]/10">
-                    <Icon className="h-6 w-6 text-[#0B1F3A]" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-semibold text-[#0B1F3A] text-lg">{benefit.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{benefit.description}</p>
-                </motion.div>
-              )
-            })}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { step: '01', title: 'Concept', desc: 'Short focused explanation. One idea at a time.', icon: '💡' },
+              { step: '02', title: 'Visual', desc: 'Animated diagrams make abstract structures concrete.', icon: '🎨' },
+              { step: '03', title: 'Exercise', desc: 'Predict output, trace code, fix bugs, arrange steps.', icon: '📝' },
+              { step: '04', title: 'Feedback', desc: 'Mentor-like responses that explain the why, not just the what.', icon: '✓' },
+            ].map(({ step, title, desc, icon }) => (
+              <div key={step} className="rounded-xl border border-slate-200 bg-white p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">{icon}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{step}</span>
+                </div>
+                <h3 className="text-sm font-bold text-[#0B1F3A] mb-1">{title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
-      {/* CTA */}
-      <section className="bg-[#0B1F3A] py-16 md:py-20">
+      {/* ── CTA ────────────────────────────────────────────────────── */}
+      <section className="bg-[#0B1F3A] py-14 md:py-20">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">
-              Ready to Master DSA?
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-white mb-3">
+              Begin with Lesson 1
             </h2>
-            <p className="text-lg text-white/70 mb-8 max-w-2xl mx-auto">
-              Start with our comprehensive Java DSA course. Build strong fundamentals that power real-world systems.
+            <p className="text-white/60 mb-8">
+              Arrays in Java — 18 minutes, 5 exercises, zero prerequisites.
             </p>
-            <a
-              href="/learn/java-dsa"
-              className="inline-flex items-center justify-center rounded-lg bg-white text-[#0B1F3A] px-8 py-4 font-semibold hover:bg-slate-50 transition-colors"
-            >
-              Start Learning Java DSA →
-            </a>
-          </motion.div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/learn/java-dsa/arrays"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white text-[#0B1F3A] text-sm font-semibold hover:bg-slate-50 transition-colors"
+              >
+                Start Lesson 1 <ChevronRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/course/java-dsa/arrays"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/5 transition-colors"
+              >
+                Premium step-by-step mode
+              </Link>
+            </div>
+          </div>
         </Container>
       </section>
     </>
