@@ -137,20 +137,18 @@ System.out.println(arr[___]);`,
     {
       type: 'concept',
       id: 'array-length-property',
-      heading: 'The `.length` Property',
-      body: `Every array in Java has a built-in `.length` property that tells you how many elements it holds. It's read-only — you can't change it after the array is created.
+      heading: 'The .length Property',
+      body: `Every array in Java has a built-in .length property that tells you how many elements it holds. It's read-only — you can't change it after the array is created.
 
-\`\`\`java
+Code example:
 int[] arr = {5, 10, 15, 20};
 System.out.println(arr.length); // prints 4
-\`\`\`
 
-This is super useful for loops. Instead of hardcoding "loop 4 times," you can loop until \`i < arr.length\`:
-\`\`\`java
+This is super useful for loops. Instead of hardcoding "loop 4 times," you can loop until i < arr.length:
+
 for (int i = 0; i < arr.length; i++) {
   System.out.println(arr[i]);
 }
-\`\`\`
 
 Now if you add an element later, your loop adapts automatically. This is a key pattern in real code.`,
     },
