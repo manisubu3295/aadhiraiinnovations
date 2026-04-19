@@ -173,12 +173,45 @@ const SEO = {
   },
   '/course/java-dsa/arrays': {
     title: 'Arrays in Java — Interactive Step-Based Course | Aadhirai Innovations',
-    description:
-      'Learn arrays through an interactive, mentor-guided course. Visual explanations, step-by-step exercises, and intelligent feedback. Master zero-based indexing and O(1) access.',
+    description: 'Learn arrays through an interactive, mentor-guided course. Visual explanations, step-by-step exercises, and intelligent feedback.',
     ogTitle: 'Arrays in Java — Interactive Course | Aadhirai Innovations',
-    ogDescription:
-      'Premium step-based learning for Java arrays. Visual diagrams, guided exercises, and personalized feedback. Master the foundation of all data structures.',
+    ogDescription: 'Premium step-based learning for Java arrays. Visual diagrams, guided exercises, personalized feedback.',
     canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/arrays',
+  },
+  '/course/java-dsa/linked-list': {
+    title: 'Linked Lists in Java — Interactive Course | Aadhirai Innovations',
+    description: 'Master linked lists with visual node diagrams, traversal exercises, and guided pointer manipulation. Step-by-step interactive course.',
+    ogTitle: 'Linked Lists in Java — Interactive Course | Aadhirai Innovations',
+    ogDescription: 'Learn linked lists interactively. Nodes, pointers, O(1) insertion, reversal algorithm — with exercises and real feedback.',
+    canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/linked-list',
+  },
+  '/course/java-dsa/stack': {
+    title: 'Stacks in Java — Interactive Course | Aadhirai Innovations',
+    description: 'Master stacks (LIFO) with visual push/pop animations, balanced parentheses exercises, and undo/redo examples.',
+    ogTitle: 'Stacks in Java — Interactive Course | Aadhirai Innovations',
+    ogDescription: 'Learn stacks interactively. Push, pop, peek — all O(1). Solve bracket matching and undo operations with guided exercises.',
+    canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/stack',
+  },
+  '/course/java-dsa/queue': {
+    title: 'Queues in Java — Interactive Course | Aadhirai Innovations',
+    description: 'Master queues (FIFO) with visual diagrams, BFS connection, and job scheduling exercises. Interactive guided course.',
+    ogTitle: 'Queues in Java — Interactive Course | Aadhirai Innovations',
+    ogDescription: 'Learn queues interactively. Enqueue, dequeue — O(1). See how queues power BFS and job scheduling.',
+    canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/queue',
+  },
+  '/course/java-dsa/binary-search': {
+    title: 'Binary Search in Java — Interactive Course | Aadhirai Innovations',
+    description: 'Master binary search with visual array diagrams, overflow-safe midpoint calculation, and O(log n) complexity exercises.',
+    ogTitle: 'Binary Search in Java — Interactive Course | Aadhirai Innovations',
+    ogDescription: 'Learn binary search interactively. O(log n) search, safe midpoint formula, and loop condition edge cases — with guided exercises.',
+    canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/binary-search',
+  },
+  '/course/java-dsa/recursion': {
+    title: 'Recursion in Java — Interactive Course | Aadhirai Innovations',
+    description: 'Master recursion with call stack visualization, factorial and Fibonacci examples, memoization, and base case exercises.',
+    ogTitle: 'Recursion in Java — Interactive Course | Aadhirai Innovations',
+    ogDescription: 'Learn recursion interactively. Base case, call stack, memoization — see why naive Fibonacci is O(2^n) and how to fix it.',
+    canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/recursion',
   },
 }
 

@@ -39,6 +39,11 @@ const JavaDsaQueuePage          = lazy(() => import('./pages/JavaDsaQueuePage'))
 const JavaDsaBinarySearchPage   = lazy(() => import('./pages/JavaDsaBinarySearchPage'))
 const JavaDsaRecursionPage      = lazy(() => import('./pages/JavaDsaRecursionPage'))
 const CourseArraysPage          = lazy(() => import('./course/CourseArraysPage'))
+const CourseLinkedListPage      = lazy(() => import('./course/CourseLinkedListPage'))
+const CourseStackPage           = lazy(() => import('./course/CourseStackPage'))
+const CourseQueuePage           = lazy(() => import('./course/CourseQueuePage'))
+const CourseBinarySearchPage    = lazy(() => import('./course/CourseBinarySearchPage'))
+const CourseRecursionPage       = lazy(() => import('./course/CourseRecursionPage'))
 
 /* Spinner while lazy chunks load */
 function PageLoader() {
@@ -167,6 +172,11 @@ function App() {
 
         {/* Premium Course Section */}
         <Route path="/course/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><CourseArraysPage /></Suspense>} />
+        <Route path="/course/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><CourseLinkedListPage /></Suspense>} />
+        <Route path="/course/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><CourseStackPage /></Suspense>} />
+        <Route path="/course/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><CourseQueuePage /></Suspense>} />
+        <Route path="/course/java-dsa/binary-search" element={<Suspense fallback={<PageLoader />}><CourseBinarySearchPage /></Suspense>} />
+        <Route path="/course/java-dsa/recursion" element={<Suspense fallback={<PageLoader />}><CourseRecursionPage /></Suspense>} />
         <Route path="/learn/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><JavaDsaLinkedListPage /></Suspense>} />
         <Route path="/learn/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><JavaDsaStackPage /></Suspense>} />
         <Route path="/learn/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><JavaDsaQueuePage /></Suspense>} />
