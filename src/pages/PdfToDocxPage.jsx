@@ -120,16 +120,30 @@ export default function PdfToDocxPage() {
 
     try {
       const arrayBuffer = await file.arrayBuffer()
+
+      // Validate PDF signature
+      const view = new Uint8Array(arrayBuffer)
+      const isPdfValid = view[0] === 37 && view[1] === 80 && view[2] === 68 // %PDF
+      if (!isPdfValid) {
+        setError('❌ This file doesn\'t appear to be a valid PDF. Please check the file format.')
+        setIsProcessing(false)
+        return
+      }
+
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
 
       let fullText = ''
 
       // Extract text from all pages
       for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-        const page = await pdf.getPage(pageNum)
-        const textContent = await page.getTextContent()
-        const pageText = textContent.items.map((item) => item.str).join(' ')
-        fullText += pageText + '\n\n'
+        try {
+          const page = await pdf.getPage(pageNum)
+          const textContent = await page.getTextContent()
+          const pageText = textContent.items.map((item) => item.str).join(' ')
+          fullText += pageText + '\n\n'
+        } catch (pageErr) {
+          console.warn(`Failed to extract text from page ${pageNum}:`, pageErr)
+        }
       }
 
       if (!fullText.trim()) {
@@ -175,18 +189,25 @@ export default function PdfToDocxPage() {
           fileName: docxFileName,
           downloadUrl: url,
         })
+      }).catch((packErr) => {
+        setError('❌ Failed to create Word document. Please try another PDF.')
+        console.error('Packer error:', packErr)
+      }).finally(() => {
+        setIsProcessing(false)
       })
     } catch (err) {
       const errorMsg = err?.message || ''
-      if (errorMsg.includes('Invalid PDF')) {
-        setError('❌ This PDF file appears to be corrupted or invalid. Please try another PDF.')
-      } else if (errorMsg.includes('PDF header not found')) {
+      console.error('PDF conversion error:', err)
+
+      if (errorMsg.includes('Invalid PDF') || errorMsg.includes('PDF header')) {
         setError('❌ This file doesn\'t appear to be a valid PDF. Please check the file format.')
+      } else if (errorMsg.includes('password')) {
+        setError('❌ This PDF is password-protected. Please unlock it first and try again.')
+      } else if (errorMsg.includes('corrupted') || errorMsg.includes('Invalid')) {
+        setError('❌ This PDF file appears to be corrupted. Please try another PDF.')
       } else {
-        setError('❌ Failed to process PDF. This may be a scanned image or protected PDF. Try converting it to a digital PDF first.')
+        setError('❌ Failed to process PDF. This may be a scanned image, protected PDF, or unsupported format. Try a digital PDF instead.')
       }
-      console.error(err)
-    } finally {
       setIsProcessing(false)
     }
   }
