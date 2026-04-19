@@ -37,10 +37,11 @@ export default function JavaDsaPage() {
 
   const topics = [
     { title: 'Arrays', available: true, href: '/learn/java-dsa/arrays', icon: '📦' },
-    { title: 'Linked Lists', available: false, icon: '🔗' },
-    { title: 'Stacks', available: false, icon: '📚' },
-    { title: 'Queues', available: false, icon: '➡️' },
-    { title: 'Trees', available: false, icon: '🌳' },
+    { title: 'Linked Lists', available: true, href: '/learn/java-dsa/linked-list', icon: '🔗' },
+    { title: 'Stacks', available: true, href: '/learn/java-dsa/stack', icon: '📚' },
+    { title: 'Queues', available: true, href: '/learn/java-dsa/queue', icon: '➡️' },
+    { title: 'Binary Search', available: true, href: '/learn/java-dsa/binary-search', icon: '🔍' },
+    { title: 'Recursion', available: true, href: '/learn/java-dsa/recursion', icon: '🔄' },
   ]
 
   const outcomes = [

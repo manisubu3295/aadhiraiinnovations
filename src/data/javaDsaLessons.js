@@ -1,9 +1,10 @@
 export const javaDsaLessons = [
-  { slug: 'arrays',      title: 'Arrays',      available: true  },
-  { slug: 'linked-list', title: 'Linked List', available: false },
-  { slug: 'stack',       title: 'Stack',       available: false },
-  { slug: 'queue',       title: 'Queue',       available: false },
-  { slug: 'trees',       title: 'Trees',       available: false },
+  { slug: 'arrays',        title: 'Arrays',         available: true  },
+  { slug: 'linked-list',   title: 'Linked Lists',   available: true  },
+  { slug: 'stack',         title: 'Stacks',         available: true  },
+  { slug: 'queue',         title: 'Queues',         available: true  },
+  { slug: 'binary-search', title: 'Binary Search',  available: true  },
+  { slug: 'recursion',     title: 'Recursion',      available: true  },
 ]
 
 export const getLessonBySlug = (slug) => javaDsaLessons.find(l => l.slug === slug)

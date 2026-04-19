@@ -132,7 +132,10 @@ function Footer() {
               <ul className="space-y-3">
                 <li><Link to="/learn" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">All Courses</Link></li>
                 <li><Link to="/learn/java-dsa" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Java DSA</Link></li>
-                <li><Link to="/learn/java-dsa/arrays" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Arrays in Java</Link></li>
+                <li><Link to="/learn/java-dsa/arrays" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Arrays</Link></li>
+                <li><Link to="/learn/java-dsa/linked-list" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Linked Lists</Link></li>
+                <li><Link to="/learn/java-dsa/stack" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Stacks</Link></li>
+                <li><Link to="/learn/java-dsa/queue" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Queues</Link></li>
               </ul>
             </div>
 

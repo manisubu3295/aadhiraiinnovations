@@ -126,6 +126,51 @@ const SEO = {
       'Learn arrays in Java: declaration, traversal, search, sort, time complexity, and practice problems. Foundation for all DSA.',
     canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/arrays',
   },
+  '/learn/java-dsa/linked-list': {
+    title: 'Linked Lists in Java — Complete DSA Guide | Aadhirai Innovations',
+    description:
+      'Master linked lists with singly and doubly linked implementations. Learn nodes, pointers, traversal, reversal, and solve real-world problems efficiently.',
+    ogTitle: 'Linked Lists in Java DSA | Aadhirai Innovations',
+    ogDescription:
+      'Learn linked lists: nodes, singly vs doubly, insertion, deletion, and reversal. Dynamic data structure for efficient operations.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/linked-list',
+  },
+  '/learn/java-dsa/stack': {
+    title: 'Stacks in Java — Complete DSA Guide | Aadhirai Innovations',
+    description:
+      'Master stacks with LIFO principle. Learn push, pop, real-world applications like balanced parentheses, undo operations, and function call stack.',
+    ogTitle: 'Stacks in Java DSA | Aadhirai Innovations',
+    ogDescription:
+      'Learn stacks: LIFO, push/pop operations, balanced parentheses, undo/redo, and solving classic problems with O(1) operations.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/stack',
+  },
+  '/learn/java-dsa/queue': {
+    title: 'Queues in Java — Complete DSA Guide | Aadhirai Innovations',
+    description:
+      'Master queues with FIFO principle. Learn enqueue, dequeue, BFS traversal, job scheduling, and real-world queue implementations.',
+    ogTitle: 'Queues in Java DSA | Aadhirai Innovations',
+    ogDescription:
+      'Learn queues: FIFO, enqueue/dequeue, BFS, job scheduling, and solving problems with O(1) operations. Opposite of stacks.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/queue',
+  },
+  '/learn/java-dsa/binary-search': {
+    title: 'Binary Search in Java — Complete DSA Guide | Aadhirai Innovations',
+    description:
+      'Master binary search with O(log n) complexity. Learn iterative and recursive approaches, find boundaries, and solve variants on sorted arrays.',
+    ogTitle: 'Binary Search in Java DSA | Aadhirai Innovations',
+    ogDescription:
+      'Learn binary search: O(log n) time, divide-and-conquer strategy, find first/last occurrence, and avoid common off-by-one errors.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/binary-search',
+  },
+  '/learn/java-dsa/recursion': {
+    title: 'Recursion in Java — Complete DSA Guide | Aadhirai Innovations',
+    description:
+      'Master recursion with base case, recursive case, and call stack visualization. Learn memoization to optimize factorial, Fibonacci, and more.',
+    ogTitle: 'Recursion in Java DSA | Aadhirai Innovations',
+    ogDescription:
+      'Learn recursion: base case, call stack, memoization, and solving divide-and-conquer problems. Foundation for trees, graphs, and backtracking.',
+    canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/recursion',
+  },
 }
 
 const DEFAULT_SEO = SEO['/']

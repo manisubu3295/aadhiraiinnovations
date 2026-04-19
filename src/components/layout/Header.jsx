@@ -57,9 +57,34 @@ const learnItems = [
     href: '/learn/java-dsa',
   },
   {
-    label: 'Arrays in Java',
-    desc: 'First lesson — arrays, search, sort',
+    label: 'Arrays',
+    desc: 'Foundation — search, sort, complexity',
     href: '/learn/java-dsa/arrays',
+  },
+  {
+    label: 'Linked Lists',
+    desc: 'Nodes, pointers, reversal',
+    href: '/learn/java-dsa/linked-list',
+  },
+  {
+    label: 'Stacks',
+    desc: 'LIFO — balanced brackets, undo ops',
+    href: '/learn/java-dsa/stack',
+  },
+  {
+    label: 'Queues',
+    desc: 'FIFO — BFS, job scheduling',
+    href: '/learn/java-dsa/queue',
+  },
+  {
+    label: 'Binary Search',
+    desc: 'O(log n) search on sorted data',
+    href: '/learn/java-dsa/binary-search',
+  },
+  {
+    label: 'Recursion',
+    desc: 'Call stack, base case, Fibonacci',
+    href: '/learn/java-dsa/recursion',
   },
 ]
 
