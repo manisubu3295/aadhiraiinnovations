@@ -138,6 +138,13 @@ function Header() {
             <SolutionsDropdown />
 
             <Link
+              to="/tools"
+              className="text-[13px] font-medium text-[#0B1F3A]/52 hover:text-[#0B1F3A] transition-colors"
+            >
+              Tools
+            </Link>
+
+            <Link
               to="/products/medora-plus"
               className="text-[13px] font-medium text-[#0B1F3A]/52 hover:text-[#0B1F3A] transition-colors"
             >
@@ -206,6 +213,13 @@ function Header() {
                     </motion.div>
                   )}
                 </AnimatePresence>
+
+                <Link
+                  to="/tools"
+                  className="rounded-md px-3 py-2.5 text-[13px] font-medium text-[#0B1F3A]/70 hover:bg-slate-50 hover:text-[#0B1F3A] transition-colors"
+                >
+                  Tools
+                </Link>
 
                 <Link
                   to="/products/medora-plus"
