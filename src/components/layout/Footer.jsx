@@ -1,8 +1,45 @@
+import { useEffect } from 'react'
 import Container from '../ui/Container'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 
 function Footer() {
+  useEffect(() => {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      'name': 'Aadhirai Innovations',
+      'url': 'https://aadhiraiinnovations.com',
+      'logo': 'https://aadhiraiinnovations.com/logo.png',
+      'description': 'Business software built for pharmacies, schools, and serious daily operations.',
+      'sameAs': [
+        'https://www.linkedin.com/company/aadhirai-innovations',
+        'https://twitter.com/aadhirai',
+      ],
+      'contactPoint': {
+        '@type': 'ContactPoint',
+        'contactType': 'Customer Support',
+        'telephone': '+91-8508716957',
+        'email': 'info@aadhiraiinnovations.com',
+        'areaServed': 'IN',
+        'availableLanguage': ['en', 'ta'],
+      },
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': 'Peravurani & Chennai',
+        'addressRegion': 'Tamil Nadu',
+        'addressCountry': 'IN',
+      },
+    }
+
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.setAttribute('data-schema', 'organization')
+    script.text = JSON.stringify(schema)
+    document.head.appendChild(script)
+    return () => script.remove()
+  }, [])
+
   return (
     <footer className="bg-white">
 
@@ -70,6 +107,20 @@ function Footer() {
                 <li><a href="/#portfolio" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Products</a></li>
                 <li><a href="/#testimonials" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Client feedback</a></li>
                 <li><a href="/#contact" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Contact</a></li>
+              </ul>
+            </div>
+
+            {/* Tools */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">
+                Free Tools
+              </p>
+              <ul className="space-y-3">
+                <li><Link to="/tools" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">All Tools</Link></li>
+                <li><Link to="/tools/gst-calculator" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">GST Calculator</Link></li>
+                <li><Link to="/tools/docx-to-pdf-converter" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">DOCX to PDF</Link></li>
+                <li><Link to="/tools/pdf-to-docx-converter" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">PDF to DOCX</Link></li>
+                <li><Link to="/tools/pdf-editor" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">PDF Editor</Link></li>
               </ul>
             </div>
 

@@ -954,9 +954,14 @@ Good scheduling balances three demands: customer service, cost control, and staf
       { title: 'HR & Inventory System', url: '/products/hr-inventory' },
     ],
   },
-}
-
-// Blog posts continue...
+  'pharmacy-billing-comparison': {
+    slug: 'pharmacy-billing-comparison',
+    title: 'Best Pharmacy Billing Software in 2026: Comparison Guide',
+    excerpt: 'Compare pharmacy billing software options. What makes good pharmacy software? How to choose between generic, adapted, and purpose-built systems.',
+    date: 'April 15, 2026',
+    readTime: '10 min read',
+    category: 'Pharmacy Operations',
+    content: `
 # Best Pharmacy Billing Software in 2026: Comparison Guide
 
 The pharmacy software market is crowded. Some solutions are built for India, others adapted from foreign systems. This guide helps you choose the right software for your pharmacy.

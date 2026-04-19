@@ -72,7 +72,7 @@ const cityPageData = {
       sections: [
         {
           title: 'Made by Local Founders',
-          detail: 'Aadhirai Innovations is based right here in Peravurani. We understand Tamil Nadu's business environment, compliance requirements, and operational challenges. Your support team speaks Tamil and understands your context.',
+          detail: 'Aadhirai Innovations is based right here in Peravurani. We understand Tamil Nadu\'s business environment, compliance requirements, and operational challenges. Your support team speaks Tamil and understands your context.',
         },
         {
           title: 'Compliance Ready from Day One',

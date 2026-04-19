@@ -54,6 +54,15 @@ const SEO = {
       'Building reliable pharmacy software and enterprise systems for India. 10+ years of engineering experience from Tamil Nadu.',
     canonical: 'https://www.aadhiraiinnovations.com/founder',
   },
+  '/tools': {
+    title: 'Free Document Tools Online — PDF & DOCX Utilities | Aadhirai Innovations',
+    description:
+      'Free online document tools: convert DOCX to PDF, convert PDF to Word, and edit PDF files online. Fast, browser-based tools for offices, students, and businesses.',
+    ogTitle: 'Free PDF & Document Tools | Aadhirai Innovations',
+    ogDescription:
+      'Free browser-based document tools. Convert Word to PDF, PDF to Word, edit PDFs online. No signup required.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools',
+  },
   '/tools/gst-calculator': {
     title: 'GST Calculator India — Add & Remove GST Online | Aadhirai Innovations',
     description:
@@ -62,6 +71,33 @@ const SEO = {
     ogDescription:
       'Instantly calculate GST in India. Add GST or remove GST from any price. Get CGST, SGST, and IGST breakdowns for all GST slabs.',
     canonical: 'https://www.aadhiraiinnovations.com/tools/gst-calculator',
+  },
+  '/tools/docx-to-pdf-converter': {
+    title: 'DOCX to PDF Converter — Convert Word to PDF Online | Aadhirai Innovations',
+    description:
+      'Free online DOCX to PDF converter. Convert Word documents to PDF in seconds. No signup, no file limit. Works in browser.',
+    ogTitle: 'DOCX to PDF Converter Online | Aadhirai Innovations',
+    ogDescription:
+      'Convert Word documents (.docx) to PDF for free. No account needed. Instant browser-based conversion.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/docx-to-pdf-converter',
+  },
+  '/tools/pdf-to-docx-converter': {
+    title: 'PDF to DOCX Converter — Convert PDF to Word Online | Aadhirai Innovations',
+    description:
+      'Free online PDF to Word converter. Extract editable text from PDF and get a DOCX file. Works in browser, no signup required.',
+    ogTitle: 'PDF to DOCX Converter Online | Aadhirai Innovations',
+    ogDescription:
+      'Convert PDF to editable Word documents online for free. No account needed. Works for text-based PDFs.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-to-docx-converter',
+  },
+  '/tools/pdf-editor': {
+    title: 'PDF Editor Online — Rotate, Delete & Reorder PDF Pages | Aadhirai Innovations',
+    description:
+      'Free online PDF editor. Rotate, delete, and reorder PDF pages in your browser. No account required. Download edited PDF instantly.',
+    ogTitle: 'Free PDF Editor Online | Aadhirai Innovations',
+    ogDescription:
+      'Edit PDF pages online for free. Rotate pages, delete pages, reorder pages. Browser-based, no software install.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-editor',
   },
 }
 

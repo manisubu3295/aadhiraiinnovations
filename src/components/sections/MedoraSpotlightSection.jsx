@@ -63,7 +63,7 @@ function MedoraSpotlightSection() {
               </span>
               <div className="flex items-center gap-1.5 rounded-full border border-blue-400/20 bg-blue-400/[0.07] px-3 py-1">
                 <Brain className="h-3 w-3 text-blue-400/60" strokeWidth={1.75} />
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-400/60">
+                <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-blue-400/60 whitespace-nowrap">
                   AI-Powered
                 </span>
               </div>

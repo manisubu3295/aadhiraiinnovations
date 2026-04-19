@@ -15,6 +15,10 @@ const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
 const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
 const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
+const ToolsHubPage         = lazy(() => import('./pages/ToolsHubPage'))
+const DocxToPdfPage        = lazy(() => import('./pages/DocxToPdfPage'))
+const PdfToDocxPage        = lazy(() => import('./pages/PdfToDocxPage'))
+const PdfEditorPage        = lazy(() => import('./pages/PdfEditorPage'))
 
 /* Spinner while lazy chunks load */
 function PageLoader() {
@@ -84,8 +88,24 @@ function App() {
 
         {/* Free Tools */}
         <Route
+          path="/tools"
+          element={<Suspense fallback={<PageLoader />}><ToolsHubPage /></Suspense>}
+        />
+        <Route
           path="/tools/gst-calculator"
           element={<Suspense fallback={<PageLoader />}><GstCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/docx-to-pdf-converter"
+          element={<Suspense fallback={<PageLoader />}><DocxToPdfPage /></Suspense>}
+        />
+        <Route
+          path="/tools/pdf-to-docx-converter"
+          element={<Suspense fallback={<PageLoader />}><PdfToDocxPage /></Suspense>}
+        />
+        <Route
+          path="/tools/pdf-editor"
+          element={<Suspense fallback={<PageLoader />}><PdfEditorPage /></Suspense>}
         />
 
         {/* Catch-all */}

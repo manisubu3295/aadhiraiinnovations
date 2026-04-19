@@ -8,7 +8,11 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(xargs grep *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(node -c src/components/sections/LocalSEOPageTemplate.jsx)",
+      "Bash(curl -s http://localhost:5173/tools/gst-calculator)"
     ]
   }
 }

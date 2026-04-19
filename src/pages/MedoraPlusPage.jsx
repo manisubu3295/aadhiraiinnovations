@@ -7,6 +7,7 @@ import {
   ShieldCheck, Cloud, Wifi, BarChart3, ClipboardList, Database,
 } from 'lucide-react'
 import Container from '../components/ui/Container'
+import Breadcrumbs from '../components/ui/Breadcrumbs'
 
 /* ─── Schema ─────────────────────────────────────────────────────────── */
 function usePageSchema() {
@@ -126,13 +127,9 @@ export default function MedoraPlusPage() {
         />
 
         <Container className="relative z-10">
-          <Link
-            to="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-white/40 transition-colors hover:text-white/70"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Link>
+          <div className="mb-8 text-white">
+            <Breadcrumbs items={[{ label: 'Products', href: '/#portfolio' }, { label: 'Medora+' }]} isDark={true} />
+          </div>
 
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
             {/* Left: copy */}
