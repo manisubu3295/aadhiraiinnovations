@@ -51,7 +51,16 @@ const cityList = [
   'thanjavur',
   'aranthangi',
   'alangudi',
-  // TODO: Add remaining cities as implemented
+  'salem',
+  'trichy',
+  'tirunelveli',
+  'erode',
+  'visakhapatnam',
+  'kancheepuram',
+  'vellore',
+  'nagercoil',
+  'thoothukudi',
+  'dindigul',
 ]
 
 const cityPages = cityList.map(citySlug => ({
