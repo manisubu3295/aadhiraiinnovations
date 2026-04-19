@@ -6,7 +6,9 @@
       "Bash(cd D:\\\\\\\\Aadhirai-web\\\\\\\\website)",
       "Bash(node generate-sitemap.js)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(cat)",
+      "Read(//tmp/**)"
     ]
   }
 }

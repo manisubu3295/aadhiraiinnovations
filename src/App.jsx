@@ -11,6 +11,7 @@ const MedoraPlusPage       = lazy(() => import('./pages/MedoraPlusPage'))
 const HrInventoryPage      = lazy(() => import('./pages/HrInventoryPage'))
 const WorkforceManagerPage = lazy(() => import('./pages/WorkforceManagerPage'))
 const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
+const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
 const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
 
@@ -65,6 +66,12 @@ function App() {
         <Route
           path="/products/:slug"
           element={<Suspense fallback={<PageLoader />}><ProductPage /></Suspense>}
+        />
+
+        {/* Blog posts */}
+        <Route
+          path="/blog/:slug"
+          element={<Suspense fallback={<PageLoader />}><BlogPostPage /></Suspense>}
         />
 
         {/* Local SEO city pages — pharmacy software in {city} */}
