@@ -38,6 +38,7 @@ const JavaDsaStackPage          = lazy(() => import('./pages/JavaDsaStackPage'))
 const JavaDsaQueuePage          = lazy(() => import('./pages/JavaDsaQueuePage'))
 const JavaDsaBinarySearchPage   = lazy(() => import('./pages/JavaDsaBinarySearchPage'))
 const JavaDsaRecursionPage      = lazy(() => import('./pages/JavaDsaRecursionPage'))
+const CourseArraysPage          = lazy(() => import('./course/CourseArraysPage'))
 
 /* Spinner while lazy chunks load */
 function PageLoader() {
@@ -163,6 +164,9 @@ function App() {
         <Route path="/learn" element={<Suspense fallback={<PageLoader />}><LearnHubPage /></Suspense>} />
         <Route path="/learn/java-dsa" element={<Suspense fallback={<PageLoader />}><JavaDsaPage /></Suspense>} />
         <Route path="/learn/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><JavaDsaArraysInteractivePage /></Suspense>} />
+
+        {/* Premium Course Section */}
+        <Route path="/course/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><CourseArraysPage /></Suspense>} />
         <Route path="/learn/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><JavaDsaLinkedListPage /></Suspense>} />
         <Route path="/learn/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><JavaDsaStackPage /></Suspense>} />
         <Route path="/learn/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><JavaDsaQueuePage /></Suspense>} />

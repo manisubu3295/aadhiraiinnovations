@@ -171,6 +171,15 @@ const SEO = {
       'Learn recursion: base case, call stack, memoization, and solving divide-and-conquer problems. Foundation for trees, graphs, and backtracking.',
     canonical: 'https://www.aadhiraiinnovations.com/learn/java-dsa/recursion',
   },
+  '/course/java-dsa/arrays': {
+    title: 'Arrays in Java — Interactive Step-Based Course | Aadhirai Innovations',
+    description:
+      'Learn arrays through an interactive, mentor-guided course. Visual explanations, step-by-step exercises, and intelligent feedback. Master zero-based indexing and O(1) access.',
+    ogTitle: 'Arrays in Java — Interactive Course | Aadhirai Innovations',
+    ogDescription:
+      'Premium step-based learning for Java arrays. Visual diagrams, guided exercises, and personalized feedback. Master the foundation of all data structures.',
+    canonical: 'https://www.aadhiraiinnovations.com/course/java-dsa/arrays',
+  },
 }
 
 const DEFAULT_SEO = SEO['/']
