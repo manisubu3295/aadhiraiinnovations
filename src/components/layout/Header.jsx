@@ -25,8 +25,7 @@ const NAV = [
       {
         items: [
           { label: 'Medora+', desc: 'AI pharmacy management system', href: '/products/medora-plus' },
-          { label: 'Invoice Generator', desc: 'Create GST invoices, print, save', href: '/invoice-generator' },
-          { label: 'Quotation Builder', desc: 'Generate quotations, print, save', href: '/quotation-builder' },
+          { label: 'Invoice/Quotation Builder', desc: 'Edit, print, and save invoices or quotations', href: '/document-builder' },
         ],
       },
     ],
@@ -60,13 +59,14 @@ const NAV = [
           { label: 'DOCX to PDF', desc: 'Convert Word to PDF', href: '/tools/docx-to-pdf-converter' },
           { label: 'PDF to DOCX', desc: 'Extract text, create Word docs', href: '/tools/pdf-to-docx-converter' },
           { label: 'PDF Editor', desc: 'Rotate, delete, reorder pages', href: '/tools/pdf-editor' },
+          { label: 'JSON Formatter', desc: 'Format and beautify JSON', href: '/tools/json-formatter' },
+          { label: 'Text Formatter', desc: 'Clean, beautify, and format text', href: '/tools/text-formatter' },
         ],
       },
       {
         heading: 'Business Tools',
         items: [
-          { label: 'Invoice Generator', desc: 'GST-ready invoices', href: '/invoice-generator' },
-          { label: 'Quotation Builder', desc: 'Professional quotations', href: '/quotation-builder' },
+          { label: 'Invoice/Quotation Builder', desc: 'Edit, print, and save invoices or quotations', href: '/document-builder' },
         ],
       },
     ],

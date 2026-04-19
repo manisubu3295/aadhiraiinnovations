@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Editor from '../components/devtools/Editor';
 import ToolLayout from '../components/devtools/ToolLayout';
 import { xmlToJson } from '../utils/conversionUtils';
+import RelatedTools from '../components/devtools/RelatedTools';
+import ToolFooter from '../components/devtools/ToolFooter';
 
 export default function XmlToJsonPage() {
   const [input, setInput] = useState('');
@@ -53,6 +55,8 @@ export default function XmlToJsonPage() {
           </div>
         }
       />
+      <RelatedTools current="/tools/xml-to-json" />
+      <ToolFooter />
     </div>
   );
 }

@@ -1,0 +1,27 @@
+/* Inline Document Builder Styles */
+.editable-text, .editable-input, .editable-textarea {
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.editable-text:hover, .editable-input:focus, .editable-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #1e293b33;
+  border-color: #1e293b;
+}
+.editable-input, .editable-textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: inherit;
+  font-family: inherit;
+  background: #fff;
+}
+.editable-textarea {
+  resize: vertical;
+}
+@media print {
+  body * { visibility: hidden !important; }
+  .print-area, .print-area * { visibility: visible !important; }
+  .print-area { position: absolute; left: 0; top: 0; width: 100vw; background: #fff; }
+  .print-area button, .print-area .no-print { display: none !important; }
+  .print-hidden { display: none !important; }
+}

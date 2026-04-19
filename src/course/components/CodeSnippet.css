@@ -1,0 +1,10 @@
+.code-snippet {
+  background: #f1f5fa;
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  color: #0b1f3a;
+  margin: 24px 0 0 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', 'Fira Mono', 'Menlo', monospace;
+}

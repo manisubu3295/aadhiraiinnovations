@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Editor from '../components/devtools/Editor';
 import ToolLayout from '../components/devtools/ToolLayout';
 import { formatText, minifyText, toUpperCase, toLowerCase, capitalizeWords, removeLineBreaks, countWordsAndChars } from '../utils/textUtils';
+import RelatedTools from '../components/devtools/RelatedTools';
+import ToolFooter from '../components/devtools/ToolFooter';
 
 export default function TextFormatterPage() {
   const [input, setInput] = useState('');
@@ -63,6 +65,8 @@ export default function TextFormatterPage() {
           </div>
         }
       />
+      <RelatedTools current="/tools/text-formatter" />
+      <ToolFooter />
     </div>
   );
 }

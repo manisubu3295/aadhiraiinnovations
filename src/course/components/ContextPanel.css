@@ -1,0 +1,31 @@
+.context-panel {
+  width: 260px;
+  background: #f8fafc;
+  border-left: 1px solid #e5e7eb;
+  padding: 32px 20px 24px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.context-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0b1f3a;
+  margin-bottom: 18px;
+}
+.context-panel ul {
+  list-style: disc inside;
+  color: #334155;
+  font-size: 1rem;
+  margin: 0 0 12px 0;
+  padding-left: 16px;
+}
+@media (max-width: 900px) {
+  .context-panel {
+    width: 100%;
+    min-height: unset;
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+    padding: 12px 8px;
+  }
+}

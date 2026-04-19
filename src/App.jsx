@@ -3,8 +3,12 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import SiteLayout from './components/layout/SiteLayout'
 import HomePage from './pages/HomePage'
 import FounderPage from './pages/FounderPage'
+import LessonLayout from './course/components/LessonLayout';
+import StepFlow from './course/components/StepFlow';
 
 /* Lazy-load all sub-pages — keeps initial bundle small */
+// Business Tools
+const BusinessToolsHubPage = lazy(() => import('./business-tools/BusinessToolsHubPage'));
 const PharmacySoftwarePage = lazy(() => import('./pages/PharmacySoftwarePage'))
 const ErpAutomationPage    = lazy(() => import('./pages/ErpAutomationPage'))
 const MedoraPlusPage       = lazy(() => import('./pages/MedoraPlusPage'))
@@ -19,6 +23,7 @@ const ToolsHubPage         = lazy(() => import('./pages/ToolsHubPage'))
 const DocxToPdfPage        = lazy(() => import('./pages/DocxToPdfPage'))
 const PdfToDocxPage        = lazy(() => import('./pages/PdfToDocxPage'))
 const PdfEditorPage        = lazy(() => import('./pages/PdfEditorPage'))
+const InlineDocumentBuilderPage = lazy(() => import('./business-tools/InlineDocumentBuilderPage'))
 // Developer Tools
 const JsonFormatterPage    = lazy(() => import('./pages/JsonFormatterPage'))
 const XmlFormatterPage     = lazy(() => import('./pages/XmlFormatterPage'))
@@ -27,7 +32,7 @@ const JsonToXmlPage        = lazy(() => import('./pages/JsonToXmlPage'))
 const XmlToJsonPage        = lazy(() => import('./pages/XmlToJsonPage'))
 const LearnHubPage              = lazy(() => import('./pages/LearnHubPage'))
 const JavaDsaPage               = lazy(() => import('./pages/JavaDsaPage'))
-const JavaDsaArraysPage         = lazy(() => import('./pages/JavaDsaArraysPage'))
+const JavaDsaArraysInteractivePage = lazy(() => import('./pages/JavaDsaArraysInteractivePage'))
 const JavaDsaLinkedListPage     = lazy(() => import('./pages/JavaDsaLinkedListPage'))
 const JavaDsaStackPage          = lazy(() => import('./pages/JavaDsaStackPage'))
 const JavaDsaQueuePage          = lazy(() => import('./pages/JavaDsaQueuePage'))
@@ -51,6 +56,16 @@ function App() {
         {/* Core pages */}
         <Route path="/" element={<HomePage />} />
         <Route path="/founder" element={<FounderPage />} />
+
+        {/* Business Tools */}
+        <Route
+          path="/business-tools"
+          element={<Suspense fallback={<PageLoader />}><BusinessToolsHubPage /></Suspense>}
+        />
+        <Route
+          path="/document-builder"
+          element={<Suspense fallback={<PageLoader />}><InlineDocumentBuilderPage /></Suspense>}
+        />
 
         {/* Solution pages */}
         <Route
@@ -147,12 +162,22 @@ function App() {
         {/* Learn Section */}
         <Route path="/learn" element={<Suspense fallback={<PageLoader />}><LearnHubPage /></Suspense>} />
         <Route path="/learn/java-dsa" element={<Suspense fallback={<PageLoader />}><JavaDsaPage /></Suspense>} />
-        <Route path="/learn/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><JavaDsaArraysPage /></Suspense>} />
+        <Route path="/learn/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><JavaDsaArraysInteractivePage /></Suspense>} />
         <Route path="/learn/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><JavaDsaLinkedListPage /></Suspense>} />
         <Route path="/learn/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><JavaDsaStackPage /></Suspense>} />
         <Route path="/learn/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><JavaDsaQueuePage /></Suspense>} />
         <Route path="/learn/java-dsa/binary-search" element={<Suspense fallback={<PageLoader />}><JavaDsaBinarySearchPage /></Suspense>} />
         <Route path="/learn/java-dsa/recursion" element={<Suspense fallback={<PageLoader />}><JavaDsaRecursionPage /></Suspense>} />
+
+        {/* Course pages */}
+        <Route
+          path="/course/arrays"
+          element={
+            <LessonLayout>
+              <StepFlow />
+            </LessonLayout>
+          }
+        />
 
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />

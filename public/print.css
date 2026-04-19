@@ -1,0 +1,28 @@
+@media print {
+  body {
+    background: #fff !important;
+    color: #222 !important;
+  }
+  .no-print, [data-no-print] {
+    display: none !important;
+  }
+  input, textarea, button, select, label {
+    display: none !important;
+  }
+  a {
+    color: #222 !important;
+    text-decoration: none !important;
+  }
+  table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  div, section, article {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  @page {
+    size: A4;
+    margin: 24mm 12mm 24mm 12mm;
+  }
+}
