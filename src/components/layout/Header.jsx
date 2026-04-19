@@ -17,6 +17,34 @@ const solutionItems = [
   },
 ]
 
+const toolItems = [
+  {
+    label: 'All Tools',
+    desc: 'View all free tools',
+    href: '/tools',
+  },
+  {
+    label: 'GST Calculator',
+    desc: 'Add/remove GST, CGST/SGST/IGST',
+    href: '/tools/gst-calculator',
+  },
+  {
+    label: 'DOCX to PDF',
+    desc: 'Convert Word to PDF',
+    href: '/tools/docx-to-pdf-converter',
+  },
+  {
+    label: 'PDF to DOCX',
+    desc: 'Extract text, create Word docs',
+    href: '/tools/pdf-to-docx-converter',
+  },
+  {
+    label: 'PDF Editor',
+    desc: 'Rotate, delete, reorder pages',
+    href: '/tools/pdf-editor',
+  },
+]
+
 const navItems = [
   { label: 'Products',     href: '/#portfolio'    },
   { label: 'Testimonials', href: '/#testimonials' },
@@ -80,16 +108,74 @@ function SolutionsDropdown() {
   )
 }
 
+/* ─── Tools dropdown ──────────────────────────────────────────────── */
+function ToolsDropdown() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    function handle(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handle)
+    return () => document.removeEventListener('mousedown', handle)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        className="flex items-center gap-1 text-[13px] font-medium text-[#0B1F3A]/52 hover:text-[#0B1F3A] transition-colors"
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
+        Tools
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          strokeWidth={1.75}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.98 }}
+            transition={{ duration: 0.14, ease: 'easeOut' }}
+            className="absolute left-0 top-full mt-3 w-[260px] rounded-xl border border-slate-100 bg-white shadow-[0_8px_32px_rgba(11,31,58,0.1)] overflow-hidden"
+          >
+            {toolItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                onClick={() => setOpen(false)}
+                className="flex flex-col gap-0.5 px-4 py-3.5 hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors"
+              >
+                <span className="text-[13px] font-semibold text-[#0B1F3A]">{item.label}</span>
+                <span className="text-[11px] text-slate-400">{item.desc}</span>
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 /* ─── Header ─────────────────────────────────────────────────────── */
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [mobileSolutionsOpen, setMobileOpen] = useState(false)
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { pathname, hash } = useLocation()
 
   useEffect(() => {
     setIsMenuOpen(false)
     setMobileOpen(false)
+    setMobileToolsOpen(false)
   }, [pathname, hash])
 
   useEffect(() => {
@@ -137,12 +223,7 @@ function Header() {
           <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
             <SolutionsDropdown />
 
-            <Link
-              to="/tools"
-              className="text-[13px] font-medium text-[#0B1F3A]/52 hover:text-[#0B1F3A] transition-colors"
-            >
-              Tools
-            </Link>
+            <ToolsDropdown />
 
             <Link
               to="/products/medora-plus"
@@ -214,12 +295,37 @@ function Header() {
                   )}
                 </AnimatePresence>
 
-                <Link
-                  to="/tools"
-                  className="rounded-md px-3 py-2.5 text-[13px] font-medium text-[#0B1F3A]/70 hover:bg-slate-50 hover:text-[#0B1F3A] transition-colors"
+                <button
+                  type="button"
+                  onClick={() => setMobileToolsOpen(v => !v)}
+                  className="flex items-center justify-between rounded-md px-3 py-2.5 text-[13px] font-medium text-[#0B1F3A]/70 hover:bg-slate-50 transition-colors"
                 >
                   Tools
-                </Link>
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} strokeWidth={1.75} />
+                </button>
+
+                <AnimatePresence>
+                  {mobileToolsOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="overflow-hidden"
+                    >
+                      {toolItems.map((item) => (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          className="flex flex-col gap-0.5 rounded-md px-5 py-2.5 hover:bg-slate-50 transition-colors"
+                        >
+                          <span className="text-[13px] font-semibold text-[#0B1F3A]">{item.label}</span>
+                          <span className="text-[11px] text-slate-400">{item.desc}</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <Link
                   to="/products/medora-plus"
