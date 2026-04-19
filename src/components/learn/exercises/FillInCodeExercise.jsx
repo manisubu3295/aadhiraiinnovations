@@ -35,106 +35,83 @@ export default function FillInCodeExercise({
     setFeedback(null)
   }
 
-  // Render code template with input blanks
-  const renderCode = () => {
-    let result = codeTemplate
-    blanks.forEach(blank => {
-      const inputId = `blank-${blank.id}`
-      const inputValue = blankValues[blank.id]
-      const isCorrect = submitted && inputValue.trim() === blank.expectedValue
-
-      result = result.replace(
-        '___',
-        `<input
-          type="text"
-          id="${inputId}"
-          value="${inputValue}"
-          onChange={(e) => window.__handleBlankChange('${blank.id}', e.target.value)}
-          placeholder="___"
-          class="px-2 py-1 border-b-2 ${
-            submitted
-              ? isCorrect
-                ? 'border-green-500 bg-green-50'
-                : 'border-red-500 bg-red-50'
-              : 'border-slate-300 focus:border-blue-500'
-          } font-mono text-sm focus:outline-none ${submitted ? 'cursor-not-allowed' : ''}"
-          disabled="${submitted}"
-        />`
-      )
-    })
-    return result
-  }
-
-  // Inject handler into window for the rendered code
-  window.__handleBlankChange = handleChange
-
   return (
     <div className="space-y-6">
       {/* Prompt */}
       <p className="text-lg font-medium text-[#0B1F3A]">{prompt}</p>
 
-      {/* Code template with blanks */}
+      {/* Code template display with interactive blanks */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="p-4 bg-slate-900 text-slate-100 rounded-lg font-mono text-sm leading-relaxed overflow-x-auto"
       >
         {codeTemplate.split('\n').map((line, idx) => {
-          let renderedLine = line
-          let hasBlank = false
+          const parts = []
+          let currentPos = 0
+          let blankIndex = 0
 
-          blanks.forEach(blank => {
-            if (line.includes('___')) {
-              hasBlank = true
-              const blankId = blank.id
-              const value = blankValues[blankId]
-              const isCorrect = submitted && value.trim() === blank.expectedValue
+          const blankRegex = /___/g
+          let match
 
-              renderedLine = renderedLine.replace(
-                '___',
-                <input
-                  key={blankId}
-                  type="text"
-                  value={value}
-                  onChange={e => handleChange(blankId, e.target.value)}
-                  onBlur={e => handleChange(blankId, e.target.value.trim())}
-                  placeholder="___"
-                  disabled={submitted}
-                  className={`px-2 py-1 border-b-2 font-mono text-sm bg-slate-800 text-slate-100 focus:outline-none w-16 ${
-                    submitted
-                      ? isCorrect
-                        ? 'border-green-500'
-                        : 'border-red-500'
-                      : 'border-slate-500 focus:border-blue-400'
-                  }`}
-                />
-              )
+          while ((match = blankRegex.exec(line)) !== null) {
+            if (match.index > currentPos) {
+              parts.push({ type: 'text', content: line.substring(currentPos, match.index) })
             }
-          })
+
+            const blank = blanks[blankIndex]
+            const value = blankValues[blank.id]
+            const isCorrect = submitted && value.trim() === blank.expectedValue
+
+            parts.push({
+              type: 'input',
+              blankId: blank.id,
+              value,
+              isCorrect,
+            })
+
+            currentPos = match.index + 3
+            blankIndex++
+          }
+
+          if (currentPos < line.length) {
+            parts.push({ type: 'text', content: line.substring(currentPos) })
+          }
 
           return (
             <div key={idx} className="flex">
-              <span className="text-slate-500 mr-4 select-none w-8">{idx + 1}</span>
-              <span>{renderedLine}</span>
+              <span className="text-slate-500 mr-4 select-none w-8 flex-shrink-0">{idx + 1}</span>
+              <span>
+                {parts.length === 0 ? (
+                  line
+                ) : (
+                  parts.map((part, pidx) =>
+                    part.type === 'text' ? (
+                      <span key={pidx}>{part.content}</span>
+                    ) : (
+                      <input
+                        key={pidx}
+                        type="text"
+                        value={part.value}
+                        onChange={e => !submitted && handleChange(part.blankId, e.target.value)}
+                        disabled={submitted}
+                        placeholder="___"
+                        className={`px-2 py-1 border-b-2 font-mono text-sm bg-slate-800 text-slate-100 focus:outline-none w-12 ${
+                          submitted
+                            ? part.isCorrect
+                              ? 'border-green-500'
+                              : 'border-red-500'
+                            : 'border-slate-500 focus:border-blue-400'
+                        }`}
+                      />
+                    )
+                  )
+                )}
+              </span>
             </div>
           )
         })}
       </motion.div>
-
-      {/* Simpler code display version */}
-      <div className="p-4 bg-slate-900 text-slate-100 rounded-lg font-mono text-sm leading-relaxed overflow-x-auto">
-        {codeTemplate.split('\n').map((line, idx) => {
-          let displayLine = line
-          blanks.forEach(blank => {
-            displayLine = displayLine.replace('___', `[${blank.id}]`)
-          })
-          return (
-            <div key={idx}>
-              <span className="text-slate-500">{idx + 1}</span> {displayLine}
-            </div>
-          )
-        })}
-      </div>
 
       {/* Input fields for each blank */}
       <div className="space-y-3">
