@@ -197,17 +197,25 @@ export default function PdfToDocxPage() {
       })
     } catch (err) {
       const errorMsg = err?.message || ''
-      console.error('PDF conversion error:', err)
+      const errorName = err?.name || 'Unknown'
+      console.error('🔴 PDF Conversion Error Details:')
+      console.error('  Error Name:', errorName)
+      console.error('  Error Message:', errorMsg)
+      console.error('  Full Error:', err)
 
-      if (errorMsg.includes('Invalid PDF') || errorMsg.includes('PDF header')) {
-        setError('❌ This file doesn\'t appear to be a valid PDF. Please check the file format.')
-      } else if (errorMsg.includes('password')) {
-        setError('❌ This PDF is password-protected. Please unlock it first and try again.')
+      let userMessage = '❌ Failed to process PDF. This may be a scanned image, protected PDF, or unsupported format. Try a digital PDF instead.'
+
+      if (errorMsg.includes('Invalid PDF') || errorMsg.includes('PDF header') || errorName.includes('InvalidPDF')) {
+        userMessage = '❌ This file doesn\'t appear to be a valid PDF. Please check the file format.'
+      } else if (errorMsg.includes('password') || errorMsg.includes('encrypted')) {
+        userMessage = '❌ This PDF is password-protected. Please unlock it first and try again.'
       } else if (errorMsg.includes('corrupted') || errorMsg.includes('Invalid')) {
-        setError('❌ This PDF file appears to be corrupted. Please try another PDF.')
-      } else {
-        setError('❌ Failed to process PDF. This may be a scanned image, protected PDF, or unsupported format. Try a digital PDF instead.')
+        userMessage = '❌ This PDF file appears to be corrupted. Please try another PDF.'
+      } else if (errorMsg.includes('worker') || errorMsg.includes('Worker')) {
+        userMessage = '⚠️ PDF worker not loaded properly. Please refresh the page and try again.'
       }
+
+      setError(userMessage)
       setIsProcessing(false)
     }
   }
