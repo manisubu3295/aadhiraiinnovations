@@ -9,8 +9,9 @@ import FileUploadZone from '../components/tools/FileUploadZone'
 import ToolFaqSection from '../components/tools/ToolFaqSection'
 import ToolCta from '../components/tools/ToolCta'
 
-// Set up pdfjs worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+// Set up pdfjs worker — use proper HTTPS URL for reliability
+const pdfjsVersion = pdfjsLib.version || '4.3.136'
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion}/pdf.worker.min.js`
 
 /* ─── Schema Injection ──────────────────────────────────────────────────── */
 function usePageSchema() {
