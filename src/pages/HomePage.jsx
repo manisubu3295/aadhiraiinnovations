@@ -1,57 +1,29 @@
 import HeroSection from '../components/sections/HeroSection'
 import ProofStripSection from '../components/sections/ProofStripSection'
-import WhyChooseUsSection from '../components/sections/WhyChooseUsSection'
-import WhatWeBuildSection from '../components/sections/WhatWeBuildSection'
-import MedoraSpotlightSection from '../components/sections/MedoraSpotlightSection'
-import MedoraPharmacyBenefitsSection from '../components/sections/MedoraPharmacyBenefitsSection'
-import ResearchApproachSection from '../components/sections/ResearchApproachSection'
-import VideoSection from '../components/sections/VideoSection'
+import ProductPortfolioSection from '../components/sections/ProductPortfolioSection'
 import PartnershipsSection from '../components/sections/PartnershipsSection'
-import IndustriesCarouselSection from '../components/sections/IndustriesCarouselSection'
 import FounderPreviewSection from '../components/sections/FounderPreviewSection'
-import FaqSection from '../components/sections/FaqSection'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 
 function HomePage() {
   return (
     <>
-      {/* 1. Cinematic hero — authority & positioning */}
+      {/* 1. Hero */}
       <HeroSection />
 
-      {/* 2. Authority band — key trust signals on dark background */}
+      {/* 2. Proof strip */}
       <ProofStripSection />
 
-      {/* 3. Problem vs solution — editorial split storytelling */}
-      <WhyChooseUsSection />
+      {/* 3. Product portfolio */}
+      <ProductPortfolioSection />
 
-      {/* 4. What we build — alternating editorial solution blocks */}
-      <WhatWeBuildSection />
-
-      {/* 5. Flagship product — Medora+ dark showcase */}
-      <MedoraSpotlightSection />
-
-      {/* 6. Medora client testimonial video */}
-      <MedoraPharmacyBenefitsSection />
-
-      {/* 7. Delivery methodology — 5-phase process */}
-      <ResearchApproachSection />
-
-      {/* 8. Company overview video */}
-      <VideoSection />
-
-      {/* 9. Client testimonials */}
+      {/* 4. Testimonials */}
       <PartnershipsSection />
 
-      {/* 10. Industries covered */}
-      <IndustriesCarouselSection />
-
-      {/* 11. Founder authority — split-screen dark section */}
+      {/* 5. Founder */}
       <FounderPreviewSection />
 
-      {/* 12. FAQ — drives featured snippets + answers buyer questions */}
-      <FaqSection />
-
-      {/* 13. Final CTA + Contact — dark premium with WhatsApp */}
+      {/* 6. CTA */}
       <FinalCtaSection />
     </>
   )

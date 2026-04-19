@@ -144,7 +144,7 @@ function ContactSection() {
               <li className="flex items-start gap-2">
                 <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3A]" />
                 <a href="https://wa.me/6590356479" target="_blank" rel="noreferrer" className="min-w-0 break-words hover:text-[#0B1F3A]">
-                  WhatsApp (Singapore): +65 90356479
+                  WhatsApp (International): +65 90356479
                 </a>
               </li>
               <li className="flex items-start gap-2">

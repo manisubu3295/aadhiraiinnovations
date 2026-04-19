@@ -1,100 +1,127 @@
 import Container from '../ui/Container'
 import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 
 function Footer() {
   return (
-    <footer className="border-t border-slate-100 bg-white py-12 md:py-14">
-      <Container>
-        <div className="grid gap-8 md:grid-cols-4">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <p className="text-xs font-semibold tracking-[0.18em] text-[#0B1F3A] uppercase">
-              Aadhirai Innovations
-            </p>
-            <p className="mt-2 text-sm text-slate-500 leading-relaxed max-w-xs">
-              AI-powered intelligence systems for pharmacies, enterprise operations, and serious businesses across India and globally.
-            </p>
-            <p className="mt-3 text-xs text-slate-400">
-              Peravurani & Chennai, Tamil Nadu, India
-            </p>
-          </div>
+    <footer className="bg-white">
 
-          {/* Navigation */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-400 mb-4">
-              Navigation
-            </p>
-            <ul className="space-y-2.5 text-sm text-slate-500">
-              <li>
-                <a href="/#build" className="hover:text-[#0B1F3A] transition-colors">
-                  Solutions
-                </a>
-              </li>
-              <li>
-                <a href="/#products" className="hover:text-[#0B1F3A] transition-colors">
-                  Medora+
-                </a>
-              </li>
-              <li>
-                <a href="/#approach" className="hover:text-[#0B1F3A] transition-colors">
-                  Process
-                </a>
-              </li>
-              <li>
-                <Link to="/founder" className="hover:text-[#0B1F3A] transition-colors">
-                  Founder
-                </Link>
-              </li>
-            </ul>
-          </div>
+      {/* ── Brand statement — editorial, not a widget ──────────────────── */}
+      <div className="border-t border-slate-100 pt-16 md:pt-20 pb-12 md:pb-16">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="text-[10.5px] font-bold uppercase tracking-[0.26em] text-slate-400 mb-7">
+                Aadhirai Innovations
+              </p>
+              <p
+                className="font-semibold text-[#0B1F3A] leading-[1.22] tracking-[-0.025em] max-w-[22ch]"
+                style={{ fontSize: 'clamp(1.55rem, 2.6vw, 2.2rem)' }}
+              >
+                Business software built for pharmacies, schools,
+                and serious daily operations.
+              </p>
+            </div>
 
-          {/* Contact */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-400 mb-4">
-              Contact
-            </p>
-            <ul className="space-y-2.5 text-sm text-slate-500">
-              <li>
+            <a
+              href="/#contact"
+              className="group inline-flex items-center gap-2 text-[13px] font-semibold text-[#0B1F3A] self-end border-b-2 border-[#0B1F3A]/18 pb-0.5 hover:border-[#0B1F3A] transition-colors whitespace-nowrap"
+            >
+              Start a conversation
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+            </a>
+          </div>
+        </Container>
+      </div>
+
+      {/* ── Navigation ────────────────────────────────────────────────── */}
+      <div className="border-t border-slate-100 py-10 md:py-12">
+        <Container>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+            {/* Solutions */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">
+                Solutions
+              </p>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Pharmacy Software', href: '/solutions/pharmacy-software', router: true },
+                  { label: 'Business Operations', href: '/solutions/erp-automation', router: true },
+                  { label: 'Medora+', href: '/products/medora-plus', router: true },
+                ].map(({ label, href, router }) => (
+                  <li key={label}>
+                    {router
+                      ? <Link to={href} className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">{label}</Link>
+                      : <a href={href} className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">{label}</a>
+                    }
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">
+                Company
+              </p>
+              <ul className="space-y-3">
+                <li><Link to="/founder" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">About us</Link></li>
+                <li><a href="/#portfolio" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Products</a></li>
+                <li><a href="/#testimonials" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Client feedback</a></li>
+                <li><a href="/#contact" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Contact</a></li>
+              </ul>
+            </div>
+
+            {/* Reach us */}
+            <div className="lg:col-span-2">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">
+                Reach us
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
                 <a
                   href="https://wa.me/918508716957"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-[#0B1F3A] transition-colors"
+                  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors"
                 >
-                  +91 8508716957 (India)
+                  +91 8508716957 · India
                 </a>
-              </li>
-              <li>
                 <a
                   href="https://wa.me/6590356479"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-[#0B1F3A] transition-colors"
+                  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors"
                 >
-                  +65 90356479 (Singapore)
+                  +65 90356479 · International
                 </a>
-              </li>
-              <li className="break-all">
                 <a
                   href="mailto:info@aadhiraiinnovations.com"
-                  className="hover:text-[#0B1F3A] transition-colors"
+                  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors sm:col-span-2"
                 >
                   info@aadhiraiinnovations.com
                 </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+              </div>
+            </div>
 
-        <div className="mt-10 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-xs text-slate-400">
-            © {new Date().getFullYear()} Aadhirai Innovations. All rights reserved.
-          </p>
-          <p className="text-xs text-slate-400">
-            Enterprise Systems & Automation · Tamil Nadu, India
-          </p>
-        </div>
-      </Container>
+          </div>
+        </Container>
+      </div>
+
+      {/* ── Legal ─────────────────────────────────────────────────────── */}
+      <div className="border-t border-slate-100 py-5">
+        <Container>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-[11.5px] text-slate-400">
+              © {new Date().getFullYear()} Aadhirai Innovations. All rights reserved.
+            </p>
+            <p className="text-[11.5px] text-slate-400">
+              Peravurani & Chennai, Tamil Nadu · Serving globally
+            </p>
+          </div>
+        </Container>
+      </div>
+
     </footer>
   )
 }

@@ -54,7 +54,7 @@ function EnterpriseExposureSection() {
         <SectionHeading
           eyebrow="Enterprise Exposure"
           title="Applied engineering discipline"
-          description="Engineering exposure to enterprise and banking technology environments in Singapore."
+          description="Engineering exposure to enterprise and banking technology environments internationally."
         />
 
         <motion.p

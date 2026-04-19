@@ -419,11 +419,11 @@ function FounderPreviewSection() {
               final product feels engineered instead of merely delivered.
             </p>
 
-            <div className="mt-8 space-y-3">
+            <div className="mt-8 space-y-4">
               {deliverySignals.map((signal) => (
-                <div key={signal} className="flex items-start gap-3 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3.5 backdrop-blur-sm">
-                  <span className="mt-1.5 h-2 w-2 rounded-full bg-[#f2c572]" />
-                  <p className="text-sm leading-6 text-white/62">{signal}</p>
+                <div key={signal} className="flex items-start gap-4">
+                  <span className="mt-[8px] h-1.5 w-1.5 flex-none rounded-full bg-[#f2c572]" />
+                  <p className="text-[14.5px] leading-[1.75] text-white/52">{signal}</p>
                 </div>
               ))}
             </div>
@@ -448,7 +448,8 @@ function FounderPreviewSection() {
           </motion.div>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        {/* Team — editorial, no card containers */}
+        <div className="mt-14 border-t border-white/[0.07] grid md:grid-cols-2">
           {team.map((member, i) => (
             <motion.article
               key={member.name}
@@ -457,47 +458,35 @@ function FounderPreviewSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              className="group relative overflow-hidden rounded-[1.75rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(15,31,57,0.96),rgba(7,15,27,0.96))] p-5"
+              className={`flex items-start gap-5 py-10 ${
+                i === 0
+                  ? 'md:border-r md:pr-10 border-white/[0.07]'
+                  : 'md:pl-10 border-t border-white/[0.07] md:border-t-0'
+              }`}
             >
-              <div
-                className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-14 blur-3xl"
-                style={{ background: member.accent }}
-              />
-
-              <div className="flex items-center gap-4">
-                <div className="relative h-20 w-20 overflow-hidden rounded-2xl border border-white/10 bg-[#091321]">
-                  <img
-                    src={member.photo}
-                    alt={member.name}
-                    className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                </div>
-
-                <div>
-                  <span
-                    className="inline-flex rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em]"
-                    style={{
-                      color: member.accent,
-                      background: member.accent + '14',
-                      border: `1px solid ${member.accent}32`,
-                    }}
-                  >
-                    {member.role}
-                  </span>
-                  <h3 className="mt-3 text-lg font-semibold text-white">{member.name}</h3>
-                  <p className="mt-1 max-w-md text-sm leading-6 text-white/52">{member.note}</p>
-                </div>
+              {/* Photo */}
+              <div className="h-[60px] w-[60px] flex-none overflow-hidden rounded-xl border border-white/10">
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                {member.credentials.map((credential) => (
-                  <span
-                    key={credential}
-                    className="rounded-full border border-white/9 bg-white/[0.03] px-3 py-1.5 text-[11px] font-medium text-white/48"
-                  >
-                    {credential}
-                  </span>
-                ))}
+              {/* Content */}
+              <div className="min-w-0">
+                <span
+                  className="text-[10px] font-bold uppercase tracking-[0.22em] block mb-2"
+                  style={{ color: member.accent }}
+                >
+                  {member.role}
+                </span>
+                <h3 className="text-[15px] font-semibold text-white leading-tight">
+                  {member.name}
+                </h3>
+                <p className="mt-2 text-[13.5px] leading-[1.7] text-white/42 max-w-sm">
+                  {member.note}
+                </p>
               </div>
             </motion.article>
           ))}

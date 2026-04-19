@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Where is Aadhirai Innovations based, and which areas do you serve?',
-    a: 'We are based in Peravurani and Chennai, Tamil Nadu, India. We serve pharmacies and businesses across Tamil Nadu, India, and internationally including Singapore. Our software is used by clients across Thanjavur district, Chennai, and other cities.',
+    a: 'We are based in Peravurani and Chennai, Tamil Nadu, India. We serve pharmacies and businesses across Tamil Nadu, India, and internationally. Our software is used by clients across Thanjavur district, Chennai, and other cities.',
   },
 ]
 

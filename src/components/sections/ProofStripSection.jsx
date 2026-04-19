@@ -2,61 +2,38 @@ import { motion } from 'framer-motion'
 import Container from '../ui/Container'
 
 const metrics = [
-  {
-    value: '10+',
-    label: 'Years Engineering',
-    detail: 'Enterprise, pharmacy & banking-grade software systems',
-  },
-  {
-    value: 'AI+',
-    label: 'Intelligence Layer',
-    detail: 'AI embedded in every pharmacy and business platform',
-  },
-  {
-    value: '5-Phase',
-    label: 'Delivery Framework',
-    detail: 'Structured delivery for ERP and custom software projects',
-  },
-  {
-    value: 'GST+',
-    label: 'Compliance Ready',
-    detail: 'GST-compliant billing built for Indian pharmacies & SMEs',
-  },
+  { value: '10+',         label: 'Years of experience'  },
+  { value: '13',          label: 'Active products'       },
+  { value: 'AI-powered',  label: 'Billing & analytics'  },
+  { value: 'Global',      label: 'Reach'                 },
 ]
 
 function ProofStripSection() {
   return (
-    <section
-      id="capabilities"
-      className="bg-[#0B1F3A] border-b border-white/5 py-12 md:py-16 scroll-mt-24"
-    >
+    <section id="capabilities" className="bg-[#0B1F3A] py-12 md:py-14 scroll-mt-24">
       <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.65 }}
-          className="grid grid-cols-2 gap-8 md:gap-0 md:grid-cols-4 divide-y-2 md:divide-y-0 md:divide-x divide-white/8"
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4">
           {metrics.map((m, i) => (
             <motion.div
               key={m.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.09 }}
-              className="flex flex-col items-start py-4 md:py-0 md:px-8 first:md:pl-0 last:md:pr-0"
+              className="flex flex-col py-8 md:py-2 md:border-r border-white/[0.07] last:border-0 md:px-10 first:md:pl-0 last:md:pr-0"
             >
-              <div className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+              <span
+                className="font-bold text-white tracking-tight leading-none"
+                style={{ fontSize: 'clamp(1.7rem, 3vw, 2.8rem)' }}
+              >
                 {m.value}
-              </div>
-              <div className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+              </span>
+              <span className="mt-2.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/30">
                 {m.label}
-              </div>
-              <div className="mt-2 text-xs text-white/28 leading-relaxed">{m.detail}</div>
+              </span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </Container>
     </section>
   )

@@ -1,111 +1,111 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Download, Brain, PackageCheck, Database, Cloud } from 'lucide-react'
+import { ExternalLink, Download, Brain, ScanLine, Package, ShieldCheck, BarChart3 } from 'lucide-react'
 import Container from '../ui/Container'
 
-const featureGrid = [
+const features = [
   {
     icon: Brain,
-    title: 'AI Forecasting',
-    sub: 'Demand prediction · Stock optimisation',
+    label: 'AI-Powered Billing',
+    detail: 'Smart billing with anomaly detection and demand forecasting',
   },
   {
-    icon: PackageCheck,
-    title: 'Smart Billing',
-    sub: 'GST-compliant · Anomaly detection',
+    icon: ScanLine,
+    label: 'GST-Compliant Billing',
+    detail: 'HSN codes · GSTIN validation · Audit-ready records',
   },
   {
-    icon: Database,
-    title: 'Inventory Control',
-    sub: 'Batch tracking · Expiry alerts',
+    icon: Package,
+    label: 'Intelligent Stock Control',
+    detail: 'Real-time inventory · Expiry alerts · Auto-reorder signals',
   },
   {
-    icon: Cloud,
-    title: 'Cloud Intelligence',
-    sub: 'Optional sync · Central analytics',
+    icon: BarChart3,
+    label: 'Business Intelligence',
+    detail: 'Sales visibility · Profit reports · Daily performance insights',
+  },
+  {
+    icon: ShieldCheck,
+    label: 'Compliance & Audit Ready',
+    detail: 'Full audit trail · Role-based access · Offline-first operation',
   },
 ]
 
 function MedoraSpotlightSection() {
   return (
-    <section id="products" className="relative scroll-mt-24 overflow-hidden bg-[#060e1c] py-16 md:py-20 lg:py-24">
-      {/* Grid texture */}
+    <section
+      id="products"
+      className="relative scroll-mt-24 overflow-hidden bg-[#060e1c] py-20 md:py-24 lg:py-32"
+    >
       <div className="absolute inset-0 grid-texture pointer-events-none" />
-
-      {/* Subtle glow */}
       <div
-        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full opacity-[0.04] blur-3xl"
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full opacity-[0.04] blur-3xl"
         style={{ background: 'radial-gradient(circle, #6366f1, transparent 70%)' }}
+      />
+      <div
+        className="pointer-events-none absolute left-0 bottom-0 h-[400px] w-[400px] rounded-full opacity-[0.03] blur-3xl"
+        style={{ background: 'radial-gradient(circle, #2563eb, transparent 70%)' }}
       />
 
       <Container className="relative z-10">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:items-center">
+        <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:items-center">
 
-          {/* Left: content */}
+          {/* Left: copy */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center gap-3 mb-7">
-              <div className="h-px w-10 bg-white/18" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-[10.5px] font-bold uppercase tracking-[0.24em] text-white/30">
                 Flagship Product
               </span>
+              <div className="flex items-center gap-1.5 rounded-full border border-blue-400/20 bg-blue-400/[0.07] px-3 py-1">
+                <Brain className="h-3 w-3 text-blue-400/60" strokeWidth={1.75} />
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-400/60">
+                  AI-Powered
+                </span>
+              </div>
             </div>
 
-            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Medora<span className="text-white/35">+</span>
+            {/* Product name */}
+            <h2 className="font-bold tracking-[-0.04em] text-white leading-none mb-3"
+              style={{ fontSize: 'clamp(3rem, 5.5vw, 4.5rem)' }}
+            >
+              Medora<span className="text-white/22">+</span>
             </h2>
-            <p className="mt-2 text-sm uppercase tracking-widest text-white/30">
-              AI-Powered Pharmacy Intelligence Platform
+
+            <p className="text-[13px] uppercase tracking-[0.2em] text-white/24 mb-7">
+              AI Pharmacy Management · Built for Indian operations
             </p>
 
-            {/* AI badge */}
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5">
-              <Brain className="h-3.5 w-3.5 text-white/45" strokeWidth={1.75} />
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-white/45">
-                AI Intelligence Layer Included
-              </span>
-            </div>
-
-            <p className="mt-6 max-w-lg text-base text-white/50 leading-relaxed">
-              India's most complete pharmacy management software — GST-compliant billing, AI-powered stock forecasting,
-              medicine expiry alerts, and real-time inventory control. Works offline. Syncs to cloud.
-              Built specifically for Indian pharmacies.
+            <p className="text-[15.5px] text-white/45 leading-[1.85] max-w-[42ch] mb-10">
+              India's most complete pharmacy management platform — AI-assisted billing,
+              intelligent stock control, expiry management, and business insights.
+              Works without internet. Syncs when connectivity returns.
             </p>
 
-            {/* Feature 2×2 grid */}
-            <div className="mt-8 grid grid-cols-2 gap-3">
-              {featureGrid.map((feature, i) => {
-                const Icon = feature.icon
-                return (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.07 }}
-                    className="rounded-xl border border-white/8 bg-white/5 p-4"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-7 h-7 rounded-md border border-white/10 bg-white/8 flex items-center justify-center flex-none">
-                        <Icon className="h-3.5 w-3.5 text-white/55" strokeWidth={1.75} />
-                      </div>
-                      <span className="text-[12px] font-semibold text-white/80">{feature.title}</span>
-                    </div>
-                    <p className="text-[10px] text-white/32 leading-relaxed">{feature.sub}</p>
-                  </motion.div>
-                )
-              })}
+            {/* Feature list — flat rows, no boxes */}
+            <div className="divide-y divide-white/[0.06] mb-10">
+              {features.map(({ icon: Icon, label, detail }) => (
+                <div key={label} className="flex items-center gap-4 py-3.5">
+                  <Icon className="h-4 w-4 text-white/30 flex-none" strokeWidth={1.75} />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[13.5px] font-semibold text-white/68">{label}</span>
+                    <span className="hidden sm:inline text-[12px] text-white/26 ml-3">{detail}</span>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3">
               <a
                 href="https://demo.aadhiraiinnovations.com"
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex items-center gap-2.5 rounded-sm bg-white px-6 py-3 text-sm font-semibold tracking-wide text-[#060e1c] transition-all hover:bg-white/92"
+                className="inline-flex items-center gap-2.5 rounded-sm bg-white px-6 py-3 text-[13px] font-bold tracking-wide text-[#060e1c] transition-all hover:bg-white/92"
               >
                 Launch Demo
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -114,28 +114,36 @@ function MedoraSpotlightSection() {
                 href="/media/Medora-brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-sm border border-white/16 px-6 py-3 text-sm font-medium tracking-wide text-white/62 transition-all hover:border-white/32 hover:text-white"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/14 px-6 py-3 text-[13px] font-medium text-white/50 transition-all hover:border-white/28 hover:text-white/80"
               >
                 <Download className="h-3.5 w-3.5" />
-                View Brochure
+                Brochure
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-sm border border-white/16 px-6 py-3 text-sm font-medium tracking-wide text-white/62 transition-all hover:border-white/32 hover:text-white"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/14 px-6 py-3 text-[13px] font-medium text-white/50 transition-all hover:border-white/28 hover:text-white/80"
               >
-                Request Pilot
+                Request pilot
               </a>
             </div>
           </motion.div>
 
-          {/* Right: video */}
+          {/* Right: product video */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="overflow-hidden rounded-xl border border-white/8 shadow-2xl">
+            {/* AI billing signal — above video */}
+            <div className="mb-4 flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3">
+              <div className="h-2 w-2 rounded-full bg-emerald-400 flex-none shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+              <span className="text-[12px] font-semibold text-white/55">
+                AI billing detects pricing anomalies before every invoice
+              </span>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-white/[0.07] shadow-[0_32px_80px_rgba(0,0,0,0.55)]">
               <div className="aspect-video">
                 <iframe
                   className="h-full w-full"
@@ -148,6 +156,11 @@ function MedoraSpotlightSection() {
                 />
               </div>
             </div>
+
+            {/* Bottom trust line */}
+            <p className="mt-4 text-[11.5px] text-white/24 text-center">
+              Used by pharmacies across Tamil Nadu · Offline-first · 10-min setup
+            </p>
           </motion.div>
 
         </div>

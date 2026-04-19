@@ -1,21 +1,21 @@
 import { motion } from 'framer-motion'
-import { Brain, Layers, Shield, WifiOff, Headphones, X } from 'lucide-react'
+import { WifiOff, ReceiptIndianRupee, BookOpen, Headphones, Settings2, X, CheckCircle2 } from 'lucide-react'
 import Container from '../ui/Container'
 
-const failureModes = [
-  'Demo-only reliability',
-  'No AI intelligence layer',
-  'Stalled deployments',
-  'Zero access control',
-  'No post-launch support',
+const problems = [
+  'Too complex — staff needs training for every small task',
+  'Stops working the moment internet goes down',
+  'Not built for India\'s GST billing and compliance',
+  'Support disappears after the software is installed',
+  'Generic — not designed for your type of business',
 ]
 
-const capabilities = [
-  { icon: Brain,      label: 'AI-Native from Day 1' },
-  { icon: Layers,     label: '5-Phase Delivery' },
-  { icon: Shield,     label: 'Enterprise Security' },
-  { icon: WifiOff,    label: 'Offline-First Core' },
-  { icon: Headphones, label: 'Post-Deployment Support' },
+const strengths = [
+  { icon: BookOpen,           label: 'Simple enough for any staff to use from day one' },
+  { icon: WifiOff,            label: 'Works fully offline — internet is optional' },
+  { icon: ReceiptIndianRupee, label: 'GST-compliant and India-ready out of the box' },
+  { icon: Headphones,         label: 'Support available after every launch' },
+  { icon: Settings2,          label: 'Built specifically for your industry' },
 ]
 
 export default function WhyChooseUsSection() {
@@ -24,7 +24,7 @@ export default function WhyChooseUsSection() {
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 lg:items-start">
 
-          {/* Left: The Reality */}
+          {/* Left: The common problem */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -34,35 +34,35 @@ export default function WhyChooseUsSection() {
             <div className="flex items-center gap-3 mb-6">
               <div className="h-px w-10 bg-slate-300" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                The Reality for Indian Businesses
+                The Common Problem
               </span>
             </div>
             <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl leading-[1.2]">
-              Most pharmacy & business software
+              Most business software looks good
               <br />
-              fails not at demo, but at operation.
+              in a demo. Then fails at the counter.
             </h2>
 
             <div className="mt-8 space-y-2.5">
-              {failureModes.map((item, i) => (
+              {problems.map((item, i) => (
                 <motion.div
                   key={item}
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.07 }}
-                  className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3"
+                  className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3"
                 >
-                  <div className="flex-none w-5 h-5 rounded-full border border-red-200 bg-red-50 flex items-center justify-center">
+                  <div className="flex-none mt-0.5 w-5 h-5 rounded-full border border-red-200 bg-red-50 flex items-center justify-center">
                     <X className="h-3 w-3 text-red-400" strokeWidth={2.5} />
                   </div>
-                  <span className="text-sm text-slate-500">{item}</span>
+                  <span className="text-[13.5px] text-slate-500 leading-snug">{item}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Right: Our Approach */}
+          {/* Right: What we do differently */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -73,33 +73,32 @@ export default function WhyChooseUsSection() {
             <div className="flex items-center gap-3 mb-6">
               <div className="h-px w-10 bg-[#0B1F3A]/22" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0B1F3A]/42">
-                Our Approach
+                How We Are Different
               </span>
             </div>
             <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl leading-[1.2]">
-              AI-integrated engineering
+              Built for real daily work,
               <br />
-              applied to real outcomes.
+              not for product demos.
             </h2>
 
-            <div className="mt-8 grid grid-cols-2 gap-3">
-              {capabilities.map((cap, i) => {
-                const Icon = cap.icon
+            <div className="mt-8 space-y-2.5">
+              {strengths.map((s, i) => {
+                const Icon = s.icon
                 return (
                   <motion.div
-                    key={cap.label}
-                    initial={{ opacity: 0, y: 12 }}
+                    key={s.label}
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.08 + 0.15 }}
-                    className={`flex items-center gap-3 rounded-lg border border-[#0B1F3A]/8 bg-[#0B1F3A]/3 px-4 py-3.5 ${
-                      i === capabilities.length - 1 && capabilities.length % 2 !== 0 ? 'col-span-2' : ''
-                    }`}
+                    transition={{ duration: 0.38, delay: i * 0.07 + 0.1 }}
+                    className="flex items-center gap-3 rounded-lg border border-[#0B1F3A]/7 bg-[#0B1F3A]/[0.025] px-4 py-3.5"
                   >
-                    <div className="flex-none w-7 h-7 rounded-md border border-[#0B1F3A]/10 bg-[#0B1F3A]/6 flex items-center justify-center">
-                      <Icon className="h-3.5 w-3.5 text-[#0B1F3A]/55" strokeWidth={1.75} />
+                    <div className="flex-none w-7 h-7 rounded-md border border-[#0B1F3A]/10 bg-[#0B1F3A]/5 flex items-center justify-center">
+                      <Icon className="h-3.5 w-3.5 text-[#0B1F3A]/50" strokeWidth={1.75} />
                     </div>
-                    <span className="text-sm font-medium text-[#0B1F3A]/75">{cap.label}</span>
+                    <span className="text-[13.5px] font-medium text-[#0B1F3A]/72">{s.label}</span>
+                    <CheckCircle2 className="ml-auto h-4 w-4 flex-none text-emerald-500/60" strokeWidth={1.75} />
                   </motion.div>
                 )
               })}

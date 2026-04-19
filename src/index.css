@@ -120,6 +120,16 @@ section {
   mix-blend-mode: overlay;
 }
 
+/* ─── Marquee animation ─────────────────────────────────────── */
+@keyframes marquee-slide {
+  from { transform: translateX(0) }
+  to   { transform: translateX(-50%) }
+}
+
+/* ─── Hide scrollbar utility ────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* ─── Section utilities ─────────────────────────────────────── */
 .section-rule {
   display: inline-block;

@@ -346,6 +346,146 @@ export default function MedoraPlusPage() {
         </Container>
       </section>
 
+      {/* ── FAQ Section ───────────────────────────────────────────────── */}
+      <section className="bg-slate-50 border-y border-slate-100 py-16 md:py-20 lg:py-24">
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65 }}
+            className="mb-12"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-10 bg-slate-300" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                FAQ
+              </span>
+            </div>
+            <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl max-w-xl leading-[1.2]">
+              Frequently Asked Questions about Medora+
+            </h2>
+          </motion.div>
+
+          <div
+            itemScope
+            itemType="https://schema.org/FAQPage"
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 max-w-3xl"
+          >
+            {[
+              {
+                q: 'How does Medora+ work without internet?',
+                a: 'Medora+ is built on an offline-first architecture. All billing, inventory, and reporting features work completely offline. When internet is available, data automatically syncs to the cloud.',
+              },
+              {
+                q: 'Is Medora+ GST-compliant?',
+                a: 'Yes, Medora+ is fully GST-compliant with HSN code management, GSTIN validation, automatic tax calculations, and audit-ready invoices. Every transaction is GST-ready for compliance and tax filing.',
+              },
+              {
+                q: 'What is the pricing model for Medora+?',
+                a: 'Medora+ pricing starts at ₹5,000/month for single pharmacy locations and ₹12,000/month for multi-location chains. A free 30-day trial is available. Pricing varies based on features and number of locations.',
+              },
+              {
+                q: 'How long does implementation take?',
+                a: 'Most pharmacies go live with Medora+ within 1-2 weeks. Implementation includes setup, data migration from existing systems, staff training, and go-live support. We minimize disruption to your daily operations.',
+              },
+              {
+                q: 'Can Medora+ track medicine expiry dates?',
+                a: 'Yes. Medora+ tracks batch-level expiry dates automatically. You receive alerts 30 days before expiry, and expired items are flagged during billing to prevent accidental sales.',
+              },
+              {
+                q: 'Does Medora+ support multiple pharmacy locations?',
+                a: 'Yes. Medora+ supports unlimited locations with centralized reporting. Each location has its own user login, but all data syncs to a single dashboard for branch-wide visibility and reporting.',
+              },
+              {
+                q: 'What reports does Medora+ generate?',
+                a: 'Medora+ generates daily sales summaries, profit margin analysis, stock turnover reports, top-selling medicines, supplier performance reports, and automated business analytics — all without manual work.',
+              },
+              {
+                q: 'Can I migrate my existing pharmacy data to Medora+?',
+                a: 'Yes. We help migrate your existing stock lists, customer records, and historical data. Data migration is included in the implementation process.',
+              },
+            ].map((faq, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.5 }}
+                itemScope
+                itemProp="mainEntity"
+                itemType="https://schema.org/Question"
+                className="rounded-lg border border-slate-200 bg-white p-6"
+              >
+                <h3 itemProp="name" className="text-sm font-semibold text-[#0B1F3A] mb-3">
+                  {faq.q}
+                </h3>
+                <div itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                  <p itemProp="text" className="text-sm text-slate-600 leading-relaxed">
+                    {faq.a}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── City Pages Links ──────────────────────────────────────────── */}
+      <section className="bg-white border-t border-slate-100 py-16 md:py-20 lg:py-24">
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65 }}
+            className="mb-12"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-10 bg-slate-300" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                Medora+ in Your City
+              </span>
+            </div>
+            <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl max-w-xl leading-[1.2]">
+              Pharmacy billing software for your city.
+            </h2>
+            <p className="mt-4 text-base text-slate-600 leading-relaxed max-w-2xl">
+              Medora+ is used by pharmacies across Tamil Nadu and South India. Explore how Medora+ fits your city's pharmacy operations.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {[
+              { city: 'Salem', slug: 'salem' },
+              { city: 'Trichy', slug: 'trichy' },
+              { city: 'Vellore', slug: 'vellore' },
+              { city: 'Tirunelveli', slug: 'tirunelveli' },
+              { city: 'Erode', slug: 'erode' },
+            ].map((location) => (
+              <motion.div
+                key={location.slug}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <Link
+                  to={`/pharmacy-billing-software/${location.slug}`}
+                  className="block rounded-lg border border-slate-200 bg-slate-50 p-6 text-center hover:bg-slate-100 hover:border-slate-300 transition-all"
+                >
+                  <h3 className="text-sm font-semibold text-[#0B1F3A]">{location.city}</h3>
+                  <p className="mt-2 text-xs text-slate-500">Pharmacy billing software</p>
+                  <div className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-[#0B1F3A]/60 group-hover:text-[#0B1F3A]">
+                    Learn more <ArrowRight className="h-3 w-3" />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
       {/* ── Testimonial ───────────────────────────────────────────────── */}
       <section className="bg-white border-t border-slate-100 py-16 md:py-20">
         <Container>

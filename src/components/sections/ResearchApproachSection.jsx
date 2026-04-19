@@ -7,31 +7,31 @@ const steps = [
   {
     icon: Search,
     title: 'Understand',
-    description: 'Deep operational study before any design decisions.',
+    description: 'We study how your business actually works before any design decisions.',
     details: ['Stakeholder interviews', 'Process mapping', 'Pain point analysis'],
   },
   {
     icon: MapPin,
     title: 'Map',
-    description: 'Architecture follows discovery, not assumptions.',
+    description: 'The system design follows discovery — not assumptions made at a desk.',
     details: ['Workflow documentation', 'Bottleneck identification', 'Efficiency baseline'],
   },
   {
     icon: Layers,
     title: 'Architect',
-    description: 'System design for scale, maintainability, and team readiness.',
+    description: 'We design the system to grow with your business without breaking.',
     details: ['System design', 'Scalability planning', 'Tech stack selection'],
   },
   {
     icon: Rocket,
     title: 'Build in Phases',
-    description: 'Controlled, phased delivery with quality checkpoints.',
+    description: 'Delivery happens in controlled stages with clear checkpoints at each step.',
     details: ['Milestone-driven delivery', 'Risk mitigation', 'Quality assurance'],
   },
   {
     icon: TrendingUp,
     title: 'Support & Improve',
-    description: 'Structured post-launch support with continuous improvement.',
+    description: 'We stay after launch — monitoring, fixing, and improving what matters.',
     details: ['Performance monitoring', 'User feedback loop', 'Ongoing optimisation'],
   },
 ]
@@ -55,7 +55,6 @@ function ResearchApproachSection() {
       id="approach"
       className="relative border-y border-slate-100 bg-slate-50 py-14 md:py-20 lg:py-24 scroll-mt-24 overflow-hidden"
     >
-      {/* Subtle dot pattern */}
       <div
         className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
@@ -77,23 +76,20 @@ function ResearchApproachSection() {
           <div className="flex items-center gap-3 mb-5">
             <div className="h-px w-10 bg-slate-300" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-              Research-Driven Delivery
+              How We Work
             </span>
           </div>
           <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl max-w-xl leading-[1.2]">
-            A proven methodology for
+            From first conversation to live system —
             <br />
-            complex system implementations.
+            a clear 5-step process.
           </h2>
         </motion.div>
 
         {/* Desktop: Horizontal interactive timeline */}
         <div className="hidden lg:block">
-          {/* Step buttons */}
           <div className="relative flex items-center justify-between mb-10">
-            {/* Track */}
             <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-200 -translate-y-1/2" />
-            {/* Active progress */}
             <motion.div
               className="absolute top-1/2 left-0 h-px bg-[#0B1F3A]/35 -translate-y-1/2 origin-left"
               animate={{ scaleX: (activeStep + 1) / steps.length }}
@@ -140,7 +136,6 @@ function ResearchApproachSection() {
             })}
           </div>
 
-          {/* Active step detail card */}
           <motion.div
             key={activeStep}
             initial={{ opacity: 0, y: 16 }}
@@ -157,11 +152,9 @@ function ResearchApproachSection() {
               </div>
               <div className="flex-1">
                 <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-2">
-                  Phase {activeStep + 1} of {steps.length}
+                  Step {activeStep + 1} of {steps.length}
                 </div>
-                <h3 className="text-xl font-semibold text-[#0B1F3A] mb-3">
-                  {active.title}
-                </h3>
+                <h3 className="text-xl font-semibold text-[#0B1F3A] mb-3">{active.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed max-w-2xl mb-5">
                   {active.description}
                 </p>
@@ -178,16 +171,13 @@ function ResearchApproachSection() {
               </div>
             </div>
 
-            {/* Progress indicator */}
             <div className="flex gap-1.5 mt-8">
               {steps.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveStep(i)}
                   className={`h-1 rounded-full transition-all duration-300 focus:outline-none ${
-                    activeStep === i
-                      ? 'w-8 bg-[#0B1F3A]'
-                      : 'w-1.5 bg-slate-200 hover:bg-slate-300'
+                    activeStep === i ? 'w-8 bg-[#0B1F3A]' : 'w-1.5 bg-slate-200 hover:bg-slate-300'
                   }`}
                   aria-label={`Go to step ${i + 1}`}
                 />
@@ -216,21 +206,14 @@ function ResearchApproachSection() {
                   <div className="p-5">
                     <div className="flex items-start gap-4">
                       <div className="flex-none w-12 h-12 rounded-xl flex items-center justify-center bg-[#0B1F3A]">
-                        <StepIcon
-                          className="h-5 w-5 text-white"
-                          strokeWidth={1.75}
-                        />
+                        <StepIcon className="h-5 w-5 text-white" strokeWidth={1.75} />
                       </div>
                       <div className="flex-1">
                         <div className="text-[11px] text-slate-400 uppercase tracking-wider mb-1">
-                          Phase {index + 1}
+                          Step {index + 1}
                         </div>
-                        <h3 className="text-base font-semibold text-[#0B1F3A] mb-1">
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-slate-500 leading-relaxed">
-                          {step.description}
-                        </p>
+                        <h3 className="text-base font-semibold text-[#0B1F3A] mb-1">{step.title}</h3>
+                        <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
                         <div className="flex flex-wrap gap-2 mt-3">
                           {step.details.map((d) => (
                             <span

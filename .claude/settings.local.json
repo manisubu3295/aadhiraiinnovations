@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npm install *)",
+      "Bash(cd D:\\\\\\\\Aadhirai-web\\\\\\\\website)",
+      "Bash(node generate-sitemap.js)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
