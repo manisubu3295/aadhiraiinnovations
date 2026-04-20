@@ -11,7 +11,7 @@ export const course = {
   title: 'Java DSA — Data Structures & Algorithms',
   subtitle: 'A complete mentor-guided system. From your first array to dynamic programming.',
   totalLessons: 45,
-  liveLessons: 6,
+  liveLessons: 12,
   estimatedHours: 60,
 
   levels: [
@@ -27,7 +27,7 @@ export const course = {
           title: 'First Principles',
           lessons: [
             { id: 'arrays', title: 'Arrays in Java', slug: 'arrays', status: 'live', estimatedTime: '15 min', exerciseCount: 4 },
-            { id: 'strings', title: 'Strings in Java', slug: 'strings', status: 'soon', estimatedTime: '12 min', exerciseCount: 3 },
+            { id: 'strings', title: 'Strings in Java', slug: 'strings', status: 'live', estimatedTime: '12 min', exerciseCount: 3 },
             { id: 'math-basics', title: 'Math for DSA', slug: 'math-basics', status: 'planned', estimatedTime: '10 min', exerciseCount: 3 },
           ],
         },
@@ -35,7 +35,7 @@ export const course = {
           id: 'm2',
           title: 'Complexity',
           lessons: [
-            { id: 'big-o', title: 'Big O Notation', slug: 'big-o', status: 'soon', estimatedTime: '14 min', exerciseCount: 4 },
+            { id: 'big-o', title: 'Big O Notation', slug: 'big-o', status: 'live', estimatedTime: '14 min', exerciseCount: 4 },
             { id: 'space-complexity', title: 'Space Complexity', slug: 'space-complexity', status: 'planned', estimatedTime: '10 min', exerciseCount: 3 },
             { id: 'complexity-patterns', title: 'Common Complexity Patterns', slug: 'complexity-patterns', status: 'planned', estimatedTime: '12 min', exerciseCount: 3 },
           ],
@@ -72,8 +72,8 @@ export const course = {
           id: 'm5',
           title: 'Sorting',
           lessons: [
-            { id: 'bubble-sort', title: 'Bubble Sort', slug: 'bubble-sort', status: 'planned', estimatedTime: '12 min', exerciseCount: 3 },
-            { id: 'merge-sort', title: 'Merge Sort', slug: 'merge-sort', status: 'planned', estimatedTime: '18 min', exerciseCount: 4 },
+            { id: 'bubble-sort', title: 'Bubble Sort', slug: 'bubble-sort', status: 'live', estimatedTime: '12 min', exerciseCount: 3 },
+            { id: 'merge-sort', title: 'Merge Sort', slug: 'merge-sort', status: 'live', estimatedTime: '18 min', exerciseCount: 4 },
             { id: 'quick-sort', title: 'Quick Sort', slug: 'quick-sort', status: 'planned', estimatedTime: '18 min', exerciseCount: 4 },
           ],
         },
@@ -109,7 +109,7 @@ export const course = {
           id: 'm8',
           title: 'Hashing',
           lessons: [
-            { id: 'hash-maps', title: 'HashMaps in Java', slug: 'hash-maps', status: 'soon', estimatedTime: '16 min', exerciseCount: 4 },
+            { id: 'hash-maps', title: 'HashMaps in Java', slug: 'hash-maps', status: 'live', estimatedTime: '16 min', exerciseCount: 4 },
             { id: 'hash-sets', title: 'HashSets & Deduplication', slug: 'hash-sets', status: 'planned', estimatedTime: '12 min', exerciseCount: 3 },
             { id: 'frequency-counting', title: 'Frequency Counting Pattern', slug: 'frequency-counting', status: 'planned', estimatedTime: '14 min', exerciseCount: 4 },
           ],
@@ -146,7 +146,7 @@ export const course = {
           id: 'm11',
           title: 'Trees',
           lessons: [
-            { id: 'binary-trees', title: 'Binary Trees', slug: 'binary-trees', status: 'soon', estimatedTime: '20 min', exerciseCount: 4 },
+            { id: 'binary-trees', title: 'Binary Trees', slug: 'binary-trees', status: 'live', estimatedTime: '20 min', exerciseCount: 4 },
             { id: 'tree-traversal', title: 'Tree Traversal (DFS / BFS)', slug: 'tree-traversal', status: 'planned', estimatedTime: '18 min', exerciseCount: 4 },
             { id: 'bst', title: 'Binary Search Trees', slug: 'bst', status: 'planned', estimatedTime: '18 min', exerciseCount: 4 },
           ],

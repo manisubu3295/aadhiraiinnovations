@@ -44,6 +44,19 @@ const CourseStackPage           = lazy(() => import('./course/CourseStackPage'))
 const CourseQueuePage           = lazy(() => import('./course/CourseQueuePage'))
 const CourseBinarySearchPage    = lazy(() => import('./course/CourseBinarySearchPage'))
 const CourseRecursionPage       = lazy(() => import('./course/CourseRecursionPage'))
+// New DSA lessons
+const JavaDsaBigOPage           = lazy(() => import('./pages/JavaDsaBigOPage'))
+const JavaDsaStringsPage        = lazy(() => import('./pages/JavaDsaStringsPage'))
+const JavaDsaHashMapsPage       = lazy(() => import('./pages/JavaDsaHashMapsPage'))
+const JavaDsaBubbleSortPage     = lazy(() => import('./pages/JavaDsaBubbleSortPage'))
+const JavaDsaMergeSortPage      = lazy(() => import('./pages/JavaDsaMergeSortPage'))
+const JavaDsaBinaryTreesPage    = lazy(() => import('./pages/JavaDsaBinaryTreesPage'))
+const CourseBigOPage            = lazy(() => import('./course/CourseBigOPage'))
+const CourseStringsPage         = lazy(() => import('./course/CourseStringsPage'))
+const CourseHashMapsPage        = lazy(() => import('./course/CourseHashMapsPage'))
+const CourseBubbleSortPage      = lazy(() => import('./course/CourseBubbleSortPage'))
+const CourseMergeSortPage       = lazy(() => import('./course/CourseMergeSortPage'))
+const CourseBinaryTreesPage     = lazy(() => import('./course/CourseBinaryTreesPage'))
 
 /* Spinner while lazy chunks load */
 function PageLoader() {
@@ -165,23 +178,35 @@ function App() {
           element={<Suspense fallback={<PageLoader />}><XmlToJsonPage /></Suspense>}
         />
 
-        {/* Learn Section */}
+        {/* Learn Section — all lessons */}
         <Route path="/learn" element={<Suspense fallback={<PageLoader />}><LearnHubPage /></Suspense>} />
         <Route path="/learn/java-dsa" element={<Suspense fallback={<PageLoader />}><JavaDsaPage /></Suspense>} />
         <Route path="/learn/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><JavaDsaArraysInteractivePage /></Suspense>} />
+        <Route path="/learn/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><JavaDsaLinkedListPage /></Suspense>} />
+        <Route path="/learn/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><JavaDsaStackPage /></Suspense>} />
+        <Route path="/learn/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><JavaDsaQueuePage /></Suspense>} />
+        <Route path="/learn/java-dsa/binary-search" element={<Suspense fallback={<PageLoader />}><JavaDsaBinarySearchPage /></Suspense>} />
+        <Route path="/learn/java-dsa/recursion" element={<Suspense fallback={<PageLoader />}><JavaDsaRecursionPage /></Suspense>} />
+        <Route path="/learn/java-dsa/big-o" element={<Suspense fallback={<PageLoader />}><JavaDsaBigOPage /></Suspense>} />
+        <Route path="/learn/java-dsa/strings" element={<Suspense fallback={<PageLoader />}><JavaDsaStringsPage /></Suspense>} />
+        <Route path="/learn/java-dsa/hash-maps" element={<Suspense fallback={<PageLoader />}><JavaDsaHashMapsPage /></Suspense>} />
+        <Route path="/learn/java-dsa/bubble-sort" element={<Suspense fallback={<PageLoader />}><JavaDsaBubbleSortPage /></Suspense>} />
+        <Route path="/learn/java-dsa/merge-sort" element={<Suspense fallback={<PageLoader />}><JavaDsaMergeSortPage /></Suspense>} />
+        <Route path="/learn/java-dsa/binary-trees" element={<Suspense fallback={<PageLoader />}><JavaDsaBinaryTreesPage /></Suspense>} />
 
-        {/* Premium Course Section */}
+        {/* Course mode — all lessons */}
         <Route path="/course/java-dsa/arrays" element={<Suspense fallback={<PageLoader />}><CourseArraysPage /></Suspense>} />
         <Route path="/course/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><CourseLinkedListPage /></Suspense>} />
         <Route path="/course/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><CourseStackPage /></Suspense>} />
         <Route path="/course/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><CourseQueuePage /></Suspense>} />
         <Route path="/course/java-dsa/binary-search" element={<Suspense fallback={<PageLoader />}><CourseBinarySearchPage /></Suspense>} />
         <Route path="/course/java-dsa/recursion" element={<Suspense fallback={<PageLoader />}><CourseRecursionPage /></Suspense>} />
-        <Route path="/learn/java-dsa/linked-list" element={<Suspense fallback={<PageLoader />}><JavaDsaLinkedListPage /></Suspense>} />
-        <Route path="/learn/java-dsa/stack" element={<Suspense fallback={<PageLoader />}><JavaDsaStackPage /></Suspense>} />
-        <Route path="/learn/java-dsa/queue" element={<Suspense fallback={<PageLoader />}><JavaDsaQueuePage /></Suspense>} />
-        <Route path="/learn/java-dsa/binary-search" element={<Suspense fallback={<PageLoader />}><JavaDsaBinarySearchPage /></Suspense>} />
-        <Route path="/learn/java-dsa/recursion" element={<Suspense fallback={<PageLoader />}><JavaDsaRecursionPage /></Suspense>} />
+        <Route path="/course/java-dsa/big-o" element={<Suspense fallback={<PageLoader />}><CourseBigOPage /></Suspense>} />
+        <Route path="/course/java-dsa/strings" element={<Suspense fallback={<PageLoader />}><CourseStringsPage /></Suspense>} />
+        <Route path="/course/java-dsa/hash-maps" element={<Suspense fallback={<PageLoader />}><CourseHashMapsPage /></Suspense>} />
+        <Route path="/course/java-dsa/bubble-sort" element={<Suspense fallback={<PageLoader />}><CourseBubbleSortPage /></Suspense>} />
+        <Route path="/course/java-dsa/merge-sort" element={<Suspense fallback={<PageLoader />}><CourseMergeSortPage /></Suspense>} />
+        <Route path="/course/java-dsa/binary-trees" element={<Suspense fallback={<PageLoader />}><CourseBinaryTreesPage /></Suspense>} />
 
         {/* Course pages */}
         <Route

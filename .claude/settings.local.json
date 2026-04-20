@@ -21,7 +21,12 @@
       "Bash(curl -s http://localhost:5193/learn/java-dsa/arrays)",
       "Bash(pkill -f \"vite\")",
       "Bash(taskkill /F /IM node.exe)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(sed -i \"s/{ id: 'strings', title: 'Strings in Java', slug: 'strings', status: 'soon'/{ id: 'strings', title: 'Strings in Java', slug: 'strings', status: 'live'/\" src/data/courses/javaDsaCourse.js)",
+      "Bash(sed -i \"s/{ id: 'big-o', title: 'Big O Notation', slug: 'big-o', status: 'soon'/{ id: 'big-o', title: 'Big O Notation', slug: 'big-o', status: 'live'/\" src/data/courses/javaDsaCourse.js)",
+      "Bash(sed -i \"s/{ id: 'hash-maps', title: 'HashMaps in Java', slug: 'hash-maps', status: 'soon'/{ id: 'hash-maps', title: 'HashMaps in Java', slug: 'hash-maps', status: 'live'/\" src/data/courses/javaDsaCourse.js)",
+      "Bash(sed -i \"s/{ id: 'binary-trees', title: 'Binary Trees', slug: 'binary-trees', status: 'soon'/{ id: 'binary-trees', title: 'Binary Trees', slug: 'binary-trees', status: 'live'/\" src/data/courses/javaDsaCourse.js)",
+      "Bash(sed -i \"s/{ id: 'bubble-sort', title: 'Bubble Sort', slug: 'bubble-sort', status: 'planned'/{ id: 'bubble-sort', title: 'Bubble Sort', slug: 'bubble-sort', status: 'live'/\" src/data/courses/javaDsaCourse.js)"
     ]
   }
 }
