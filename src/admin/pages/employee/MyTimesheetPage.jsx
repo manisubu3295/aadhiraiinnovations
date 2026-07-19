@@ -106,6 +106,7 @@ export default function MyTimesheetPage() {
       </form>
 
       <div className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
@@ -150,6 +151,7 @@ export default function MyTimesheetPage() {
             </tfoot>
           )}
         </table>
+        </div>
       </div>
     </div>
   )

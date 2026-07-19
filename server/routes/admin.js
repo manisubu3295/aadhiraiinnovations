@@ -701,4 +701,85 @@ router.put('/expenses/:id', async (req, res) => {
   res.json({ success: true, expense })
 })
 
+// ---------- Business expenses (GST, hosting, domains, salaries paid out) ----------
+
+const BUSINESS_EXPENSE_CATEGORIES = ['GST', 'SERVER', 'DOMAIN', 'SALARY', 'SOFTWARE', 'OTHER']
+
+router.get('/business-expenses', async (req, res) => {
+  const { category, from, to } = req.query
+  const where = {}
+  if (category) where.category = String(category)
+  if (from || to) {
+    where.paidOn = {}
+    if (from) where.paidOn.gte = new Date(String(from))
+    if (to) where.paidOn.lte = new Date(String(to))
+  }
+  const expenses = await prisma.businessExpense.findMany({
+    where,
+    orderBy: { paidOn: 'desc' },
+    include: { createdBy: { select: { id: true, name: true } } },
+  })
+  const total = expenses.reduce((sum, exp) => sum + toNumber(exp.amount), 0)
+  res.json({ success: true, expenses, total })
+})
+
+router.post('/business-expenses', async (req, res) => {
+  const { category, amount, paidOn, paidTo, description } = req.body ?? {}
+  if (!BUSINESS_EXPENSE_CATEGORIES.includes(category)) {
+    return res.status(400).json({ success: false, message: 'Invalid category.' })
+  }
+  const numericAmount = Number(amount)
+  if (!(numericAmount > 0)) {
+    return res.status(400).json({ success: false, message: 'Amount must be greater than zero.' })
+  }
+  const expense = await prisma.businessExpense.create({
+    data: {
+      category,
+      amount: numericAmount,
+      paidOn: paidOn ? new Date(paidOn) : new Date(),
+      paidTo: paidTo ? String(paidTo).trim() : null,
+      description: description ? String(description).trim() : null,
+      createdById: req.user.id,
+    },
+    include: { createdBy: { select: { id: true, name: true } } },
+  })
+  res.status(201).json({ success: true, expense })
+})
+
+router.put('/business-expenses/:id', async (req, res) => {
+  const existing = await prisma.businessExpense.findUnique({ where: { id: req.params.id } })
+  if (!existing) return res.status(404).json({ success: false, message: 'Expense not found.' })
+
+  const { category, amount, paidOn, paidTo, description } = req.body ?? {}
+  const data = {}
+  if (category !== undefined) {
+    if (!BUSINESS_EXPENSE_CATEGORIES.includes(category)) {
+      return res.status(400).json({ success: false, message: 'Invalid category.' })
+    }
+    data.category = category
+  }
+  if (amount !== undefined) {
+    const numericAmount = Number(amount)
+    if (!(numericAmount > 0)) {
+      return res.status(400).json({ success: false, message: 'Amount must be greater than zero.' })
+    }
+    data.amount = numericAmount
+  }
+  if (paidOn !== undefined) data.paidOn = new Date(paidOn)
+  if (paidTo !== undefined) data.paidTo = paidTo ? String(paidTo).trim() : null
+  if (description !== undefined) data.description = description ? String(description).trim() : null
+
+  const expense = await prisma.businessExpense.update({
+    where: { id: req.params.id },
+    data,
+    include: { createdBy: { select: { id: true, name: true } } },
+  })
+  res.json({ success: true, expense })
+})
+
+router.delete('/business-expenses/:id', async (req, res) => {
+  await prisma.businessExpense.delete({ where: { id: req.params.id } })
+  res.json({ success: true })
+})
+
 export default router

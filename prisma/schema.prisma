@@ -86,6 +86,15 @@ enum ExpenseStatus {
   REIMBURSED
 }
 
+enum BusinessExpenseCategory {
+  GST
+  SERVER
+  DOMAIN
+  SALARY
+  SOFTWARE
+  OTHER
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -103,6 +112,7 @@ model User {
   timesheets        Timesheet[]
   expenseClaims     ExpenseClaim[] @relation("ExpenseClaimant")
   approvedExpenses  ExpenseClaim[] @relation("ExpenseApprovedBy")
+  businessExpenses  BusinessExpense[] @relation("BusinessExpenseCreatedBy")
 
   clientId String?
   client   Client? @relation(fields: [clientId], references: [id])
@@ -226,6 +236,23 @@ model ExpenseClaim {
   project   Project? @relation(fields: [projectId], references: [id])
 
   @@map("expense_claims")
+}
+
+// Recurring/one-off business overheads (GST, hosting, domains, salaries paid out) —
+// distinct from ExpenseClaim, which is employee reimbursement requests.
+model BusinessExpense {
+  id          String                   @id @default(cuid())
+  category    BusinessExpenseCategory  @default(OTHER)
+  amount      Decimal                  @db.Decimal(12, 2)
+  paidOn      DateTime                 @default(now())
+  paidTo      String?
+  description String?
+  createdAt   DateTime                 @default(now())
+
+  createdById String?
+  createdBy   User?   @relation("BusinessExpenseCreatedBy", fields: [createdById], references: [id])
+
+  @@map("business_expenses")
 }
 
 model Payment {

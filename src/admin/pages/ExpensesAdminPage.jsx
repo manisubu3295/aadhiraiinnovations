@@ -83,6 +83,7 @@ export default function ExpensesAdminPage() {
             <h2 className="text-sm font-semibold text-slate-700">What you owe employees</h2>
             <span className="text-sm font-semibold text-amber-600">{formatMoney(totalOwed)}</span>
           </div>
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-left text-slate-500">
               <tr>
@@ -103,6 +104,7 @@ export default function ExpensesAdminPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -124,6 +126,7 @@ export default function ExpensesAdminPage() {
       {error && <div className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
 
       <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
@@ -185,6 +188,7 @@ export default function ExpensesAdminPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       <Modal open={!!reimbursing} title="Mark reimbursed" onClose={() => setReimbursing(null)}>

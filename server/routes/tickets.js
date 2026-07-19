@@ -2,7 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { saveAttachments, attachmentDiskPath } from '../ticketUtils.js'
+import { nextTicketNumber, saveAttachments, attachmentDiskPath } from '../ticketUtils.js'
 import { sendMail } from '../mailer.js'
 
 const router = express.Router()
@@ -38,6 +38,65 @@ router.get('/', async (req, res) => {
     include: ticketListInclude,
   })
   res.json({ success: true, tickets })
+})
+
+// Staff/admin picker for the assignment dropdown — must come before /:id or "assignable-users" would match as an id.
+router.get('/assignable-users', async (req, res) => {
+  const users = await prisma.user.findMany({
+    where: { role: { in: ['ADMIN', 'STAFF'] } },
+    orderBy: { name: 'asc' },
+    select: { id: true, name: true, email: true },
+  })
+  res.json({ success: true, users })
+})
+
+router.post('/', upload.array('attachments', 5), async (req, res) => {
+  const { subject = '', description = '', priority, clientId, projectId, assignedToId } = req.body ?? {}
+  const trimmedSubject = String(subject).trim()
+  const trimmedDescription = String(description).trim()
+
+  if (!trimmedSubject || !trimmedDescription) {
+    return res.status(400).json({ success: false, message: 'Subject and description are required.' })
+  }
+  if (!clientId) {
+    return res.status(400).json({ success: false, message: 'Client is required.' })
+  }
+  if (priority && !PRIORITIES.includes(priority)) {
+    return res.status(400).json({ success: false, message: 'Invalid priority.' })
+  }
+  const client = await prisma.client.findUnique({ where: { id: clientId } })
+  if (!client) return res.status(400).json({ success: false, message: 'Invalid client.' })
+
+  if (projectId) {
+    const project = await prisma.project.findUnique({ where: { id: projectId } })
+    if (!project || project.clientId !== clientId) {
+      return res.status(400).json({ success: false, message: 'Invalid project.' })
+    }
+  }
+  if (assignedToId) {
+    const assignee = await prisma.user.findUnique({ where: { id: assignedToId } })
+    if (!assignee || !['ADMIN', 'STAFF'].includes(assignee.role)) {
+      return res.status(400).json({ success: false, message: 'Invalid assignee.' })
+    }
+  }
+
+  const ticketNumber = await nextTicketNumber()
+  const ticket = await prisma.ticket.create({
+    data: {
+      ticketNumber,
+      subject: trimmedSubject,
+      description: trimmedDescription,
+      priority: priority || undefined,
+      clientId,
+      projectId: projectId || undefined,
+      assignedToId: assignedToId || undefined,
+      createdById: req.user.id,
+    },
+    include: ticketListInclude,
+  })
+  await saveAttachments({ files: req.files, ticketId: ticket.id, uploadedById: req.user.id })
+
+  res.status(201).json({ success: true, ticket })
 })
 
 router.get('/:id', async (req, res) => {
@@ -80,6 +139,12 @@ router.put('/:id', async (req, res) => {
     data.priority = priority
   }
   if (assignedToId !== undefined) {
+    if (assignedToId) {
+      const assignee = await prisma.user.findUnique({ where: { id: assignedToId } })
+      if (!assignee || !['ADMIN', 'STAFF'].includes(assignee.role)) {
+        return res.status(400).json({ success: false, message: 'Invalid assignee.' })
+      }
+    }
     data.assignedToId = assignedToId || null
   }
 

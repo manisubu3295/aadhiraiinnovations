@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom'
 import { api } from '../api'
 import { formatDate } from '../format'
 import { StatusBadge } from './ProjectsPage'
-import { useAuth } from '../AuthContext'
 
 const STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
@@ -29,8 +28,8 @@ function AttachmentList({ attachments, ticketId }) {
 
 export default function TicketDetailPage() {
   const { id } = useParams()
-  const { user } = useAuth()
   const [ticket, setTicket] = useState(null)
+  const [assignableUsers, setAssignableUsers] = useState([])
   const [error, setError] = useState('')
   const [reply, setReply] = useState('')
   const [files, setFiles] = useState([])
@@ -45,6 +44,9 @@ export default function TicketDetailPage() {
   }
 
   useEffect(load, [id])
+  useEffect(() => {
+    api.get('/tickets/assignable-users').then((data) => setAssignableUsers(data.users)).catch(() => {})
+  }, [])
 
   async function updateField(field, value) {
     setSavingField(field)
@@ -116,16 +118,18 @@ export default function TicketDetailPage() {
       </div>
 
       <div className="mt-2 flex items-center gap-2 text-sm text-slate-600">
-        <span>Assigned to: {ticket.assignedTo?.name || 'Unassigned'}</span>
-        {ticket.assignedTo?.id === user?.id ? (
-          <button onClick={() => updateField('assignedToId', '')} className="text-[#0B1F3A] hover:underline">
-            Unassign
-          </button>
-        ) : (
-          <button onClick={() => updateField('assignedToId', user?.id)} className="text-[#0B1F3A] hover:underline">
-            Assign to me
-          </button>
-        )}
+        <span>Assigned to:</span>
+        <select
+          value={ticket.assignedTo?.id || ''}
+          disabled={savingField === 'assignedToId'}
+          onChange={(e) => updateField('assignedToId', e.target.value)}
+          className="rounded-md border border-slate-300 px-2 py-1 text-sm"
+        >
+          <option value="">Unassigned</option>
+          {assignableUsers.map((u) => (
+            <option key={u.id} value={u.id}>{u.name}</option>
+          ))}
+        </select>
       </div>
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}

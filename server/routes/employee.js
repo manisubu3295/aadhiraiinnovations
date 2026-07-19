@@ -15,6 +15,15 @@ router.get('/projects', async (req, res) => {
   res.json({ success: true, projects })
 })
 
+// Lightweight client picker — needed so staff can raise a ticket on a client's behalf.
+router.get('/clients', async (req, res) => {
+  const clients = await prisma.client.findMany({
+    orderBy: { name: 'asc' },
+    select: { id: true, name: true, company: true },
+  })
+  res.json({ success: true, clients })
+})
+
 // ---------- Timesheets (own entries only) ----------
 
 router.get('/timesheets', async (req, res) => {

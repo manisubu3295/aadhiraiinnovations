@@ -105,6 +105,7 @@ export default function ProjectDetailPage() {
       )}
 
       <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
@@ -147,6 +148,7 @@ export default function ProjectDetailPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       <div className="mt-8 flex items-center justify-between">
@@ -160,6 +162,7 @@ export default function ProjectDetailPage() {
       </div>
 
       <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
@@ -187,6 +190,7 @@ export default function ProjectDetailPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
