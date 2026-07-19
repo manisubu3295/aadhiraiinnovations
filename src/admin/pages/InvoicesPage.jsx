@@ -17,7 +17,7 @@ export default function InvoicesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-[#0B1F3A]">Invoices</h1>
         <Link
           to="/admin/invoices/new"

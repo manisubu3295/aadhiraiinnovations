@@ -69,14 +69,14 @@ export default function TicketDetailPage() {
     <div>
       <Link to="/portal/tickets" className="text-sm text-[#0B1F3A] hover:underline">← My tickets</Link>
 
-      <div className="mt-3 flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-[#0B1F3A]">{ticket.subject}</h1>
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold text-[#0B1F3A] break-words">{ticket.subject}</h1>
           <div className="mt-1 text-sm text-slate-500">
             {ticket.ticketNumber} · opened {formatDate(ticket.createdAt)}
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex shrink-0 gap-2">
           <StatusBadge status={ticket.priority} />
           <StatusBadge status={ticket.status} />
         </div>
@@ -120,17 +120,17 @@ export default function TicketDetailPage() {
             placeholder="Write a reply…"
             className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30"
           />
-          <div className="mt-2 flex items-center justify-between">
+          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <input
               type="file"
               multiple
               onChange={(e) => setFiles(Array.from(e.target.files || []))}
-              className="text-xs text-slate-500"
+              className="max-w-full text-xs text-slate-500"
             />
             <button
               type="submit"
               disabled={sending || !reply.trim()}
-              className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+              className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60 sm:shrink-0"
             >
               {sending ? 'Sending…' : 'Send reply'}
             </button>

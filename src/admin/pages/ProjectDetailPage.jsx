@@ -62,12 +62,12 @@ export default function ProjectDetailPage() {
 
   return (
     <div>
-      <div className="flex items-start justify-between">
-        <div>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
           <Link to="/admin/projects" className="text-sm text-slate-500 hover:underline">
             ← Projects
           </Link>
-          <h1 className="mt-1 text-2xl font-semibold text-[#0B1F3A]">{project.name}</h1>
+          <h1 className="mt-1 text-2xl font-semibold text-[#0B1F3A] break-words">{project.name}</h1>
           <p className="mt-1 text-sm text-slate-500">{project.client?.name}</p>
         </div>
         <StatusBadge status={project.status} />
@@ -83,7 +83,7 @@ export default function ProjectDetailPage() {
         />
       </div>
 
-      <div className="mt-8 flex items-center justify-between">
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-[#0B1F3A]">Milestones</h2>
         <button
           onClick={() => setMilestoneModalOpen(true)}
@@ -151,7 +151,7 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      <div className="mt-8 flex items-center justify-between">
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-[#0B1F3A]">Payments</h2>
         <button
           onClick={() => setModalOpen(true)}

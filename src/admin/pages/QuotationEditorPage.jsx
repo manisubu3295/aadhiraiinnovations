@@ -158,7 +158,7 @@ export default function QuotationEditorPage() {
       <Link to="/admin/quotations" className="text-sm text-slate-500 hover:underline">
         ← Quotations
       </Link>
-      <div className="mt-1 flex items-center justify-between">
+      <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-[#0B1F3A]">
           {isNew ? 'New quotation' : quotationNumber}
         </h1>

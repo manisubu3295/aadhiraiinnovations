@@ -146,7 +146,7 @@ export default function InvoiceEditorPage() {
       <Link to="/admin/invoices" className="text-sm text-slate-500 hover:underline">
         ← Invoices
       </Link>
-      <div className="mt-1 flex items-center justify-between">
+      <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-[#0B1F3A]">{isNew ? 'New invoice' : invoiceNumber}</h1>
         {!isNew && projectId && (
           <button

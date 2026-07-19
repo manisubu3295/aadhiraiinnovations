@@ -14,7 +14,8 @@ export default function ItemTable({ items, onChange, onAdd, onRemove, billingTyp
   };
   return (
     <div style={{ margin: '24px 0' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff' }}>
+      <div style={{ overflowX: 'auto' }}>
+      <table style={{ width: '100%', minWidth: 480, borderCollapse: 'collapse', background: '#fff' }}>
         <thead>
           <tr style={{ background: '#f1f5f9' }}>
             <th>{labels.description}</th>
@@ -42,6 +43,7 @@ export default function ItemTable({ items, onChange, onAdd, onRemove, billingTyp
           ))}
         </tbody>
       </table>
+      </div>
       <button onClick={onAdd} style={{ marginTop: 12, background: '#0B1F3A', color: '#fff', padding: '6px 16px', borderRadius: 6, border: 'none', fontWeight: 600, cursor: 'pointer' }}>{labels.add}</button>
     </div>
   );
