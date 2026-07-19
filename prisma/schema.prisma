@@ -1,0 +1,387 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+  CLIENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ProjectStatus {
+  PROPOSED
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  UPI
+  CARD
+  OTHER
+}
+
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum ProjectBillingType {
+  MILESTONE
+  HOURLY
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ExpenseCategory {
+  TRAVEL
+  FOOD
+  SOFTWARE_TOOLS
+  EQUIPMENT
+  OTHER
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REIMBURSED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(STAFF)
+  createdAt    DateTime @default(now())
+
+  createdClients    Client[]    @relation("ClientCreatedBy")
+  createdProjects   Project[]   @relation("ProjectCreatedBy")
+  recordedPayments  Payment[]   @relation("PaymentRecordedBy")
+  createdQuotations Quotation[] @relation("QuotationCreatedBy")
+  createdInvoices   Invoice[]   @relation("InvoiceCreatedBy")
+  timesheets        Timesheet[]
+  expenseClaims     ExpenseClaim[] @relation("ExpenseClaimant")
+  approvedExpenses  ExpenseClaim[] @relation("ExpenseApprovedBy")
+
+  clientId String?
+  client   Client? @relation(fields: [clientId], references: [id])
+
+  createdTickets     Ticket[]        @relation("TicketCreatedBy")
+  assignedTickets    Ticket[]        @relation("TicketAssignedTo")
+  ticketMessages     TicketMessage[]
+  ticketAttachments  TicketAttachment[]
+
+  @@map("users")
+}
+
+model Client {
+  id         String   @id @default(cuid())
+  name       String
+  company    String?
+  email      String?
+  phone      String?
+  address    String?
+  gstNumber  String?
+  createdAt  DateTime @default(now())
+
+  createdById String?
+  createdBy   User?   @relation("ClientCreatedBy", fields: [createdById], references: [id])
+
+  projects   Project[]
+  quotations Quotation[]
+  invoices   Invoice[]
+  users      User[]
+  tickets    Ticket[]
+
+  @@map("clients")
+}
+
+model Project {
+  id          String             @id @default(cuid())
+  name        String
+  description String?
+  status      ProjectStatus      @default(PROPOSED)
+  billingType ProjectBillingType @default(MILESTONE)
+  hourlyRate  Decimal?           @db.Decimal(12, 2)
+  totalValue  Decimal            @default(0) @db.Decimal(12, 2)
+  currency    String             @default("INR")
+  startDate   DateTime?
+  endDate     DateTime?
+  notes       String?
+  createdAt   DateTime           @default(now())
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("ProjectCreatedBy", fields: [createdById], references: [id])
+
+  payments   Payment[]
+  quotations Quotation[]
+  invoices   Invoice[]
+  milestones ProjectMilestone[]
+  timesheets Timesheet[]
+  expenseClaims ExpenseClaim[]
+  tickets    Ticket[]
+
+  @@map("projects")
+}
+
+model ProjectMilestone {
+  id          String          @id @default(cuid())
+  title       String
+  description String?
+  amount      Decimal         @db.Decimal(12, 2)
+  sequence    Int             @default(0)
+  dueDate     DateTime?
+  status      MilestoneStatus @default(PENDING)
+  completedAt DateTime?
+  createdAt   DateTime        @default(now())
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  invoices Invoice[]
+
+  @@map("project_milestones")
+}
+
+model Timesheet {
+  id              String   @id @default(cuid())
+  date            DateTime @default(now())
+  hours           Decimal  @db.Decimal(5, 2)
+  taskDescription String
+  billable        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@map("timesheets")
+}
+
+model ExpenseClaim {
+  id          String          @id @default(cuid())
+  category    ExpenseCategory @default(OTHER)
+  amount      Decimal         @db.Decimal(12, 2)
+  expenseDate DateTime        @default(now())
+  description String
+  status      ExpenseStatus   @default(PENDING)
+  approvedAt  DateTime?
+  reimbursedAt     DateTime?
+  reimbursedAmount Decimal?   @db.Decimal(12, 2)
+  createdAt   DateTime        @default(now())
+
+  userId String
+  user   User   @relation("ExpenseClaimant", fields: [userId], references: [id])
+
+  approvedById String?
+  approvedBy   User?   @relation("ExpenseApprovedBy", fields: [approvedById], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  @@map("expense_claims")
+}
+
+model Payment {
+  id        String        @id @default(cuid())
+  amount    Decimal       @db.Decimal(12, 2)
+  paidOn    DateTime      @default(now())
+  method    PaymentMethod @default(BANK_TRANSFER)
+  reference String?
+  notes     String?
+  createdAt DateTime      @default(now())
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  invoiceId String?
+  invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+
+  recordedById String?
+  recordedBy   User?   @relation("PaymentRecordedBy", fields: [recordedById], references: [id])
+
+  @@map("payments")
+}
+
+model Quotation {
+  id              String             @id @default(cuid())
+  quotationNumber String             @unique
+  issueDate       DateTime           @default(now())
+  validUntil      DateTime?
+  subject         String?
+  billingType     ProjectBillingType @default(MILESTONE)
+  items           Json
+  discount        Decimal            @default(0) @db.Decimal(12, 2)
+  notes           String?
+  terms           String?
+  scopeOfWork     String?
+  outOfScope      String?
+  assumptions     String?
+  revisionPolicy  String?
+  warrantyPeriod  String?
+  ipOwnership     String?
+  techStack       String?
+  status          QuotationStatus    @default(DRAFT)
+  currency        String             @default("INR")
+  createdAt       DateTime           @default(now())
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("QuotationCreatedBy", fields: [createdById], references: [id])
+
+  invoices Invoice[]
+
+  @@map("quotations")
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  issueDate     DateTime      @default(now())
+  dueDate       DateTime?
+  items         Json
+  discount      Decimal       @default(0) @db.Decimal(12, 2)
+  notes         String?
+  terms         String?
+  tdsApplicable Boolean       @default(false)
+  tdsRate       Decimal       @default(10.00) @db.Decimal(5, 2)
+  status        InvoiceStatus @default(DRAFT)
+  currency      String        @default("INR")
+  createdAt     DateTime      @default(now())
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  quotationId String?
+  quotation   Quotation? @relation(fields: [quotationId], references: [id])
+
+  milestoneId String?
+  milestone   ProjectMilestone? @relation(fields: [milestoneId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("InvoiceCreatedBy", fields: [createdById], references: [id])
+
+  payments Payment[]
+
+  @@map("invoices")
+}
+
+model Ticket {
+  id           String         @id @default(cuid())
+  ticketNumber String         @unique
+  subject      String
+  description  String
+  status       TicketStatus   @default(OPEN)
+  priority     TicketPriority @default(MEDIUM)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  resolvedAt   DateTime?
+  closedAt     DateTime?
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  createdById String
+  createdBy   User   @relation("TicketCreatedBy", fields: [createdById], references: [id])
+
+  assignedToId String?
+  assignedTo   User?   @relation("TicketAssignedTo", fields: [assignedToId], references: [id])
+
+  messages    TicketMessage[]
+  attachments TicketAttachment[]
+
+  @@map("tickets")
+}
+
+model TicketMessage {
+  id        String   @id @default(cuid())
+  body      String
+  createdAt DateTime @default(now())
+
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  attachments TicketAttachment[]
+
+  @@map("ticket_messages")
+}
+
+model TicketAttachment {
+  id        String   @id @default(cuid())
+  fileName  String
+  filePath  String
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+
+  ticketId String?
+  ticket   Ticket? @relation(fields: [ticketId], references: [id])
+
+  messageId String?
+  message   TicketMessage? @relation(fields: [messageId], references: [id])
+
+  uploadedById String
+  uploadedBy   User   @relation(fields: [uploadedById], references: [id])
+
+  @@map("ticket_attachments")
+}

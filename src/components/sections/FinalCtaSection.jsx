@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, MessageCircle, Mail } from 'lucide-react'
+import { ArrowRight, Mail } from 'lucide-react'
 import Container from '../ui/Container'
 
 function FinalCtaSection() {
@@ -22,34 +22,34 @@ function FinalCtaSection() {
             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           >
             <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/30">
-              Get started
+              Ready to talk?
             </span>
 
             <h2
               className="mt-6 font-semibold tracking-[-0.04em] text-white leading-[1.08]"
               style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}
             >
-              Ready to see how it
+              Engagements are limited.
               <br />
-              works in your business?
+              Let's see if we're a fit.
             </h2>
 
             <p className="mt-7 text-[16px] text-white/40 leading-[1.85] max-w-[40ch]">
-              Pharmacy, school, or operations team — tell us what you run.
-              We'll show you how Aadhirai fits into your daily work.
+              If you're a CTO or VP Engineering at a growth-stage software company and
+              you've been putting off a serious look at your backend architecture —
+              this is a good time.
             </p>
 
             <p className="mt-5 text-[13px] italic text-white/22">
-              No commitment. Just a real conversation.
+              We respond to all enquiries within one business day.
             </p>
 
-            {/* Location line — small, honest, grounding */}
             <p className="mt-14 text-[11.5px] text-white/20 tracking-wide">
-              Peravurani & Chennai, Tamil Nadu · Serving globally
+              Serving growth-stage software companies globally
             </p>
           </motion.div>
 
-          {/* Right: contact — plain rows, no card box */}
+          {/* Right: contact */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -61,40 +61,7 @@ function FinalCtaSection() {
               Reach us directly
             </p>
 
-            {/* Contact rows — no box wrappers */}
             <div className="space-y-1">
-              <a
-                href="https://wa.me/918508716957"
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center justify-between py-4 border-t border-white/[0.07] hover:border-white/[0.18] transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <MessageCircle className="h-4 w-4 text-white/35 flex-none" strokeWidth={1.75} />
-                  <div>
-                    <div className="text-[14px] font-semibold text-white/75">WhatsApp India</div>
-                    <div className="text-[11.5px] text-white/32 mt-0.5">+91 8508716957</div>
-                  </div>
-                </div>
-                <ArrowRight className="h-4 w-4 text-white/20 group-hover:text-white/55 group-hover:translate-x-0.5 transition-all" strokeWidth={1.75} />
-              </a>
-
-              <a
-                href="https://wa.me/6590356479"
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center justify-between py-4 border-t border-white/[0.07] hover:border-white/[0.18] transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <MessageCircle className="h-4 w-4 text-white/35 flex-none" strokeWidth={1.75} />
-                  <div>
-                    <div className="text-[14px] font-semibold text-white/75">WhatsApp International</div>
-                    <div className="text-[11.5px] text-white/32 mt-0.5">+65 90356479</div>
-                  </div>
-                </div>
-                <ArrowRight className="h-4 w-4 text-white/20 group-hover:text-white/55 group-hover:translate-x-0.5 transition-all" strokeWidth={1.75} />
-              </a>
-
               <a
                 href="mailto:info@aadhiraiinnovations.com"
                 className="group flex items-center justify-between py-4 border-t border-white/[0.07] border-b border-b-white/[0.07] hover:border-white/[0.18] transition-colors"
@@ -110,14 +77,11 @@ function FinalCtaSection() {
               </a>
             </div>
 
-            {/* Demo CTA — full width, clear primary action */}
             <a
-              href="https://demo.aadhiraiinnovations.com/"
-              target="_blank"
-              rel="noreferrer"
+              href="/contact"
               className="mt-8 flex items-center justify-center gap-2.5 rounded-sm bg-white py-4 text-[13.5px] font-bold text-[#0B1F3A] tracking-wide shadow-[0_4px_24px_rgba(0,0,0,0.3)] transition-all hover:bg-white/93 hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
             >
-              View live demo
+              Book a Production Readiness Audit
               <ArrowRight className="h-4 w-4" strokeWidth={2} />
             </a>
           </motion.div>

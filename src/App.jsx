@@ -3,8 +3,13 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import SiteLayout from './components/layout/SiteLayout'
 import HomePage from './pages/HomePage'
 import FounderPage from './pages/FounderPage'
+const ServicesPage = lazy(() => import('./pages/ServicesPage'))
+const AboutPage    = lazy(() => import('./pages/AboutPage'))
+const ContactPage  = lazy(() => import('./pages/ContactPage'))
 import LessonLayout from './course/components/LessonLayout';
 import StepFlow from './course/components/StepFlow';
+const AdminApp = lazy(() => import('./admin/AdminApp'))
+const ClientApp = lazy(() => import('./client/ClientApp'))
 
 /* Lazy-load all sub-pages — keeps initial bundle small */
 // Business Tools
@@ -70,11 +75,20 @@ function PageLoader() {
 function App() {
   return (
     <Routes>
+      {/* Admin — gated, own layout, deliberately outside SiteLayout's public Header/Footer/SEO */}
+      <Route path="/admin/*" element={<Suspense fallback={<PageLoader />}><AdminApp /></Suspense>} />
+
+      {/* Client portal — gated, own layout, outside SiteLayout */}
+      <Route path="/portal/*" element={<Suspense fallback={<PageLoader />}><ClientApp /></Suspense>} />
+
       <Route element={<SiteLayout />}>
 
         {/* Core pages */}
         <Route path="/" element={<HomePage />} />
         <Route path="/founder" element={<FounderPage />} />
+        <Route path="/services" element={<Suspense fallback={<PageLoader />}><ServicesPage /></Suspense>} />
+        <Route path="/about" element={<Suspense fallback={<PageLoader />}><AboutPage /></Suspense>} />
+        <Route path="/contact" element={<Suspense fallback={<PageLoader />}><ContactPage /></Suspense>} />
 
         {/* Business Tools */}
         <Route

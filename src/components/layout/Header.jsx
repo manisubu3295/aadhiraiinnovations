@@ -7,25 +7,14 @@ import Container from '../ui/Container'
 /* ─── Navigation structure ───────────────────────────────────────────── */
 const NAV = [
   {
-    key: 'solutions',
-    label: 'Solutions',
+    key: 'services',
+    label: 'Services',
     groups: [
       {
         items: [
-          { label: 'Pharmacy Software', desc: 'Billing · Stock · GST · Expiry alerts', href: '/solutions/pharmacy-software' },
-          { label: 'Business Operations', desc: 'ERP · Workflow · Inventory · Reporting', href: '/solutions/erp-automation' },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'products',
-    label: 'Products',
-    groups: [
-      {
-        items: [
-          { label: 'Medora+', desc: 'AI pharmacy management system', href: '/products/medora-plus' },
-          { label: 'Invoice/Quotation Builder', desc: 'Edit, print, and save invoices or quotations', href: '/document-builder' },
+          { label: 'Production Readiness Audit', desc: '3-week assessment · ₹4–6 lakh · written report', href: '/services#audit' },
+          { label: 'Architecture Advisory Retainer', desc: 'Monthly senior guidance as you scale', href: '/services#retainer' },
+          { label: 'Fixed-Scope Engineering', desc: 'Senior implementation on a defined project', href: '/services#engineering' },
         ],
       },
     ],
@@ -77,9 +66,8 @@ const NAV = [
     groups: [
       {
         items: [
-          { label: 'About', desc: 'Our story and founder', href: '/founder' },
-          { label: 'Client Feedback', desc: 'See what our clients say', href: '/#testimonials', isAnchor: true },
-          { label: 'Contact', desc: 'Start a conversation', href: '/#contact', isAnchor: true },
+          { label: 'About', desc: 'Our story and approach', href: '/about' },
+          { label: 'Contact', desc: 'Start a conversation', href: '/contact' },
         ],
       },
     ],
@@ -202,10 +190,10 @@ function Header() {
           {/* Right side: CTA + Mobile toggle */}
           <div className="flex items-center gap-4 flex-shrink-0">
             <a
-              href="/#contact"
+              href="/contact"
               className="hidden lg:inline-flex rounded-md bg-[#0B1F3A] px-5 py-2 text-[13px] font-semibold text-white transition-colors duration-150 hover:bg-[#173762] whitespace-nowrap"
             >
-              Get in Touch
+              Book an Audit
             </a>
 
             {/* Mobile menu button */}
@@ -289,11 +277,11 @@ function Header() {
 
                 {/* Mobile CTA */}
                 <a
-                  href="/#contact"
+                  href="/contact"
                   onClick={() => setIsMenuOpen(false)}
                   className="mt-2 rounded-md bg-[#0B1F3A] px-3 py-3 text-[13px] font-semibold text-white text-center transition-colors hover:bg-[#173762] w-full"
                 >
-                  Get in Touch
+                  Book an Audit
                 </a>
               </div>
             </motion.nav>

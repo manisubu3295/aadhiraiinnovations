@@ -1,31 +1,34 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import express from 'express'
 import cors from 'cors'
-import nodemailer from 'nodemailer'
+import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
+import authRoutes from './server/routes/auth.js'
+import adminRoutes from './server/routes/admin.js'
+import employeeRoutes from './server/routes/employee.js'
+import ticketRoutes from './server/routes/tickets.js'
+import clientRoutes from './server/routes/client.js'
+import { sendMail, mailerReady } from './server/mailer.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 8787
 
-app.use(cors())
+const corsOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',').map((s) => s.trim())
+
+app.use(cors({ origin: corsOrigins, credentials: true }))
 app.use(express.json())
+app.use(cookieParser())
 
-const requiredEnv = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'ENQUIRY_TO_EMAIL']
-
-const missingEnv = requiredEnv.filter((key) => !process.env[key])
-
-const transporter = missingEnv.length
-  ? null
-  : nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: Number(process.env.SMTP_PORT) === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
+app.use('/api/auth', authRoutes)
+app.use('/api/admin', adminRoutes)
+app.use('/api/employee', employeeRoutes)
+app.use('/api/tickets', ticketRoutes)
+app.use('/api/client', clientRoutes)
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' })
@@ -33,10 +36,10 @@ app.get('/api/health', (req, res) => {
 
 app.post('/api/enquiry', async (req, res) => {
   try {
-    if (!transporter) {
+    if (!mailerReady || !process.env.ENQUIRY_TO_EMAIL) {
       return res.status(500).json({
         success: false,
-        message: `Missing SMTP configuration: ${missingEnv.join(', ')}`,
+        message: 'Missing SMTP configuration.',
       })
     }
 
@@ -74,8 +77,7 @@ app.post('/api/enquiry', async (req, res) => {
       <p>${trimmedMessage.replace(/\n/g, '<br/>')}</p>
     `
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_FROM || process.env.SMTP_USER,
+    await sendMail({
       to: process.env.ENQUIRY_TO_EMAIL,
       replyTo: process.env.ENQUIRY_REPLY_TO || undefined,
       subject,
@@ -90,6 +92,23 @@ app.post('/api/enquiry', async (req, res) => {
   }
 })
 
+// On a self-hosted Linux server (not Vercel), this process also serves the built SPA
+// so nginx/PM2 only need to point at one Node process. Run `npm run build` first.
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, 'dist')
+  app.use(express.static(distPath))
+  app.get(/^(?!\/api\/).*/, (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'))
+  })
+}
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err)
+  if (res.headersSent) return next(err)
+  res.status(500).json({ success: false, message: 'Internal server error.' })
+})
+
 app.listen(port, () => {
-  console.log(`Enquiry API running on http://localhost:${port}`)
+  console.log(`Server running on http://localhost:${port}`)
 })

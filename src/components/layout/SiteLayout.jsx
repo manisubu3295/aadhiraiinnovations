@@ -1,6 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { MessageCircle } from 'lucide-react'
 import Header from './Header'
 import Footer from './Footer'
 
@@ -10,13 +9,40 @@ import Footer from './Footer'
 ──────────────────────────────────────────────────────────────────────── */
 const SEO = {
   '/': {
-    title: 'Pharmacy Software & ERP Systems India | Aadhirai Innovations',
+    title: 'Backend Architecture for Growth-Stage Software Companies | Aadhirai Innovations',
     description:
-      'AI-powered pharmacy billing software, ERP, and business automation for Indian pharmacies and SMEs. GST-compliant. Offline-first. Tamil Nadu-based, serving India & globally.',
-    ogTitle: 'Pharmacy Software & Business Automation | Aadhirai Innovations',
+      'Senior backend architecture services for Series A and B software companies. Production Readiness Audits, architecture advisory, and fixed-scope engineering engagements.',
+    ogTitle: 'Backend Architecture for Series A & B | Aadhirai Innovations',
     ogDescription:
-      'GST-compliant pharmacy billing, AI inventory forecasting, and custom ERP for Indian businesses. Trusted by pharmacies and SMEs across Tamil Nadu.',
+      'We help growth-stage software companies build backend infrastructure that scales. Banking-grade systems experience. Production Readiness Audit from ₹4–6 lakh.',
     canonical: 'https://www.aadhiraiinnovations.com/',
+  },
+  '/services': {
+    title: 'Services — Backend Architecture Engagements | Aadhirai Innovations',
+    description:
+      'Production Readiness Audit (₹4–6 lakh, 3 weeks), Architecture Advisory Retainer, and Fixed-Scope Engineering for Series A and B software companies.',
+    ogTitle: 'Services | Aadhirai Innovations',
+    ogDescription:
+      'Three ways to engage: Production Readiness Audit, Architecture Advisory Retainer, Fixed-Scope Engineering. Backend architecture specialists for growth-stage companies.',
+    canonical: 'https://www.aadhiraiinnovations.com/services',
+  },
+  '/about': {
+    title: 'About Aadhirai Innovations — Backend Architecture Specialists',
+    description:
+      'Aadhirai Innovations was founded to help funded Indian startups build backend infrastructure that scales. Senior architect with enterprise-grade financial systems experience.',
+    ogTitle: 'About | Aadhirai Innovations',
+    ogDescription:
+      'Senior backend architecture for funded Indian startups. Founded by Arthi Manikandan. Senior architect with 8+ years experience in high-availability systems.',
+    canonical: 'https://www.aadhiraiinnovations.com/about',
+  },
+  '/contact': {
+    title: 'Contact Aadhirai Innovations — Book a Production Readiness Audit',
+    description:
+      'Get in touch with Aadhirai Innovations to discuss a Production Readiness Audit, Architecture Advisory Retainer, or Fixed-Scope Engineering engagement.',
+    ogTitle: 'Contact | Aadhirai Innovations',
+    ogDescription:
+      'Book a Production Readiness Audit or discuss an architecture engagement. We respond within one business day.',
+    canonical: 'https://www.aadhiraiinnovations.com/contact',
   },
   '/solutions/pharmacy-software': {
     title: 'Pharmacy Management Software India — Medora+ | Aadhirai Innovations',
@@ -314,18 +340,7 @@ function SiteLayout() {
         <Outlet />
       </main>
 
-      {/* Persistent WhatsApp button */}
-      <a
-        href="https://wa.me/918508716957"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat with Aadhirai Innovations on WhatsApp"
-        className="fixed bottom-4 right-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_12px_28px_rgba(37,211,102,0.45)] transition-transform duration-200 hover:scale-105 sm:bottom-5 sm:right-5 sm:h-14 sm:w-14"
-      >
-        <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={2.3} />
-      </a>
-
-      <Footer />
+<Footer />
     </div>
   )
 }
