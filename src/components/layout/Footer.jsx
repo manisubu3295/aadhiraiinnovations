@@ -79,8 +79,8 @@ function Footer() {
               <ul className="space-y-3">
                 <li><Link to="/about"   className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">About</Link></li>
                 <li><Link to="/contact" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Contact</Link></li>
-                <li><Link to="/portal/login" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Client Portal</Link></li>
-                <li><Link to="/admin/login"  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Team Login</Link></li>
+                <li><a href="https://support.aadhiraiinnovations.com/portal/login" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Client Portal</a></li>
+                <li><a href="https://support.aadhiraiinnovations.com/admin/login"  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Team Login</a></li>
               </ul>
             </div>
 

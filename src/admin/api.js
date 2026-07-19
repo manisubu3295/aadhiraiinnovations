@@ -1,4 +1,6 @@
-const BASE = '/api'
+import { API_BASE } from '../lib/apiBase'
+
+const BASE = `${API_BASE}/api`
 
 async function request(path, options = {}) {
   const { body, headers, ...rest } = options

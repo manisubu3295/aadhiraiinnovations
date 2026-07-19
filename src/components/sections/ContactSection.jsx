@@ -3,6 +3,7 @@ import { Mail, MessageCircle, MapPin } from 'lucide-react'
 import MotionSection from '../ui/MotionSection'
 import Container from '../ui/Container'
 import SectionHeading from '../ui/SectionHeading'
+import { API_BASE } from '../../lib/apiBase'
 
 function ContactSection() {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ function ContactSection() {
       setIsSubmitting(true)
       setStatus({ type: 'idle', message: '' })
 
-      const response = await fetch('/api/enquiry', {
+      const response = await fetch(`${API_BASE}/api/enquiry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

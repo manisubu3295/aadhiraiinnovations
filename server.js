@@ -2,7 +2,9 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import express from 'express'
 import cors from 'cors'
+import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
+import rateLimit from 'express-rate-limit'
 import dotenv from 'dotenv'
 import authRoutes from './server/routes/auth.js'
 import adminRoutes from './server/routes/admin.js'
@@ -15,11 +17,25 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 dotenv.config()
 
+const requiredEnv = ['JWT_SECRET', 'DATABASE_URL']
+const missingRequiredEnv = requiredEnv.filter((key) => !process.env[key])
+if (missingRequiredEnv.length) {
+  console.error(`Missing required environment variable(s): ${missingRequiredEnv.join(', ')}. See .env.example.`)
+  process.exit(1)
+}
+
 const app = express()
 const port = process.env.PORT || 8787
 
+// Behind nginx/a reverse proxy in production — needed so express-rate-limit sees the
+// real client IP (not the proxy's) instead of rate-limiting every visitor as one.
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1)
+}
+
 const corsOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',').map((s) => s.trim())
 
+app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors({ origin: corsOrigins, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
@@ -34,7 +50,15 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' })
 })
 
-app.post('/api/enquiry', async (req, res) => {
+const enquiryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many enquiries from this address. Try again later.' },
+})
+
+app.post('/api/enquiry', enquiryLimiter, async (req, res) => {
   try {
     if (!mailerReady || !process.env.ENQUIRY_TO_EMAIL) {
       return res.status(500).json({
@@ -102,7 +126,6 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err)
   if (res.headersSent) return next(err)
