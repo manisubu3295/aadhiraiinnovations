@@ -2,8 +2,10 @@ import express from 'express'
 import multer from 'multer'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { nextTicketNumber, saveAttachments, attachmentDiskPath } from '../ticketUtils.js'
+import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails } from '../ticketUtils.js'
 import { sendMail } from '../mailer.js'
+import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
+import { sendWhatsApp } from '../whatsapp.js'
 
 const router = express.Router()
 // Ticket handling is shared by ADMIN and STAFF — clients use /api/client instead.
@@ -51,7 +53,7 @@ router.get('/assignable-users', async (req, res) => {
 })
 
 router.post('/', upload.array('attachments', 5), async (req, res) => {
-  const { subject = '', description = '', priority, clientId, projectId, assignedToId } = req.body ?? {}
+  const { subject = '', description = '', priority, clientId, projectId, assignedToId, ccEmails } = req.body ?? {}
   const trimmedSubject = String(subject).trim()
   const trimmedDescription = String(description).trim()
 
@@ -79,6 +81,12 @@ router.post('/', upload.array('attachments', 5), async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid assignee.' })
     }
   }
+  let parsedCcEmails
+  try {
+    parsedCcEmails = parseCcEmails(ccEmails)
+  } catch (err) {
+    return res.status(400).json({ success: false, message: err.message })
+  }
 
   const ticketNumber = await nextTicketNumber()
   const ticket = await prisma.ticket.create({
@@ -91,6 +99,7 @@ router.post('/', upload.array('attachments', 5), async (req, res) => {
       projectId: projectId || undefined,
       assignedToId: assignedToId || undefined,
       createdById: req.user.id,
+      ccEmails: parsedCcEmails,
     },
     include: ticketListInclude,
   })
@@ -119,8 +128,8 @@ router.get('/:id', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
-  const { status, priority, assignedToId } = req.body ?? {}
-  const ticket = await prisma.ticket.findUnique({ where: { id: req.params.id }, include: { createdBy: true } })
+  const { status, priority, assignedToId, ccEmails } = req.body ?? {}
+  const ticket = await prisma.ticket.findUnique({ where: { id: req.params.id }, include: { createdBy: true, client: true } })
   if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found.' })
 
   const data = {}
@@ -147,6 +156,13 @@ router.put('/:id', async (req, res) => {
     }
     data.assignedToId = assignedToId || null
   }
+  if (ccEmails !== undefined) {
+    try {
+      data.ccEmails = parseCcEmails(ccEmails)
+    } catch (err) {
+      return res.status(400).json({ success: false, message: err.message })
+    }
+  }
 
   const updated = await prisma.ticket.update({
     where: { id: req.params.id },
@@ -155,11 +171,31 @@ router.put('/:id', async (req, res) => {
   })
 
   if (status !== undefined && status !== ticket.status && ticket.createdBy?.email) {
+    const tpl = await getTemplate('TICKET_STATUS_CHANGED')
+    const { subject: renderedSubject, html } = renderTemplate(tpl, {
+      ticketNumber: ticket.ticketNumber,
+      subject: ticket.subject,
+      status,
+    })
     sendMail({
       to: ticket.createdBy.email,
-      subject: `[${ticket.ticketNumber}] Status updated: ${status}`,
-      text: `Your ticket "${ticket.subject}" (${ticket.ticketNumber}) status changed to ${status}.`,
-      html: `<p>Your ticket <strong>${ticket.subject}</strong> (${ticket.ticketNumber}) status changed to <strong>${status}</strong>.</p>`,
+      cc: ticket.ccEmails.length ? ticket.ccEmails : undefined,
+      subject: renderedSubject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_STATUS_CHANGED', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+
+  if (status !== undefined && status !== ticket.status && ticket.client?.phone) {
+    const whatsappKey = status === 'RESOLVED' ? 'TICKET_RESOLVED_CLIENT' : 'TICKET_STATUS_UPDATED_CLIENT'
+    sendWhatsApp({
+      to: ticket.client.phone,
+      templateKey: whatsappKey,
+      components: whatsappKey === 'TICKET_RESOLVED_CLIENT'
+        ? [ticket.client.name, ticket.ticketNumber]
+        : [ticket.client.name, ticket.ticketNumber, status],
+      meta: { relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
 
@@ -187,11 +223,19 @@ router.post('/:id/messages', upload.array('attachments', 5), async (req, res) =>
   })
 
   if (ticket.createdBy?.email) {
+    const tpl = await getTemplate('TICKET_STAFF_REPLY')
+    const { subject, html } = renderTemplate(tpl, {
+      ticketNumber: ticket.ticketNumber,
+      subject: ticket.subject,
+      body: trimmedBody.replace(/\n/g, '<br/>'),
+    })
     sendMail({
       to: ticket.createdBy.email,
-      subject: `[${ticket.ticketNumber}] New reply on your ticket`,
-      text: `A new reply was posted on your ticket "${ticket.subject}" (${ticket.ticketNumber}):\n\n${trimmedBody}`,
-      html: `<p>A new reply was posted on your ticket <strong>${ticket.subject}</strong> (${ticket.ticketNumber}):</p><p>${trimmedBody.replace(/\n/g, '<br/>')}</p>`,
+      cc: ticket.ccEmails.length ? ticket.ccEmails : undefined,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_STAFF_REPLY', relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
 

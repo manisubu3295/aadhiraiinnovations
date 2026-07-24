@@ -3,6 +3,13 @@ import bcrypt from 'bcryptjs'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { calculateTotals, calculateTds } from '../../shared/pricing.js'
+import { getSettings, updateSettings } from '../settings.js'
+import { sendTestMail, sendMail, deliverMail } from '../mailer.js'
+import { getTemplate, renderTemplate, htmlToText, DEFAULT_TEMPLATES } from '../emailTemplates.js'
+import { renderDocumentHtml } from '../documentRenderer.js'
+import { htmlToPdfBuffer } from '../pdfRenderer.js'
+import { deliverWhatsApp, normalizeWhatsAppNumber } from '../whatsapp.js'
+import { paramsForKey, DEFAULT_TEMPLATES as DEFAULT_WHATSAPP_TEMPLATES } from '../whatsappTemplates.js'
 
 const router = express.Router()
 // Everything under /api/admin is ADMIN-only — staff use /api/employee instead.
@@ -438,6 +445,76 @@ router.post('/quotations/:id/convert-to-invoice', async (req, res) => {
   res.status(201).json({ success: true, invoice })
 })
 
+function sellerFromSettings(settings) {
+  return {
+    businessName: settings.businessName,
+    contactPerson: settings.businessContactPerson,
+    address: settings.businessAddress,
+    phone: settings.businessPhone,
+    email: settings.emailFrom,
+    gst: settings.businessGst,
+    bankName: settings.bankName,
+    accountNumber: settings.bankAccountNumber,
+    ifsc: settings.bankIfsc,
+    upiId: settings.upiId,
+  }
+}
+
+function customerFromClient(client) {
+  return { name: client.name, company: client.company, address: client.address, phone: client.phone, email: client.email, gst: client.gstNumber }
+}
+
+router.post('/quotations/:id/send', async (req, res) => {
+  const quotation = await prisma.quotation.findUnique({ where: { id: req.params.id }, include: { client: true } })
+  if (!quotation) return res.status(404).json({ success: false, message: 'Quotation not found.' })
+  if (!quotation.client.email) return res.status(400).json({ success: false, message: 'Client has no email on file.' })
+
+  const settings = await getSettings()
+  const totals = calculateTotals(quotation.items, quotation.discount)
+  const html = renderDocumentHtml({
+    type: 'quotation',
+    seller: sellerFromSettings(settings),
+    customer: customerFromClient(quotation.client),
+    details: { quotationNumber: quotation.quotationNumber, issueDate: quotation.issueDate?.toLocaleDateString(), validUntil: quotation.validUntil?.toLocaleDateString() },
+    items: quotation.items,
+    totals,
+    billingType: quotation.billingType,
+    notes: quotation.notes,
+    terms: quotation.terms,
+    sow: {
+      scopeOfWork: quotation.scopeOfWork, outOfScope: quotation.outOfScope, assumptions: quotation.assumptions,
+      revisionPolicy: quotation.revisionPolicy, warrantyPeriod: quotation.warrantyPeriod, ipOwnership: quotation.ipOwnership, techStack: quotation.techStack,
+    },
+  })
+
+  try {
+    const pdfBuffer = await htmlToPdfBuffer(html)
+    const tpl = await getTemplate('QUOTATION_SENT')
+    const { subject, html: coverHtml } = renderTemplate(tpl, {
+      clientName: quotation.client.name,
+      quotationNumber: quotation.quotationNumber,
+      currency: quotation.currency,
+      amount: totals.grandTotal.toFixed(2),
+      validUntil: quotation.validUntil ? quotation.validUntil.toLocaleDateString() : '-',
+      businessName: settings.businessName,
+    })
+    await deliverMail({
+      to: quotation.client.email,
+      subject,
+      text: htmlToText(coverHtml),
+      html: coverHtml,
+      attachments: [{ filename: `${quotation.quotationNumber}.pdf`, content: pdfBuffer }],
+      meta: { templateKey: 'QUOTATION_SENT', relatedType: 'QUOTATION', relatedId: quotation.id },
+    })
+    if (quotation.status === 'DRAFT') {
+      await prisma.quotation.update({ where: { id: quotation.id }, data: { status: 'SENT' } })
+    }
+    res.json({ success: true, message: `Quotation emailed to ${quotation.client.email}.` })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message || 'Failed to send quotation.' })
+  }
+})
+
 // ---------- Invoices ----------
 
 function withInvoiceTotals(invoice, payments) {
@@ -521,6 +598,55 @@ router.delete('/invoices/:id', async (req, res) => {
   res.json({ success: true })
 })
 
+router.post('/invoices/:id/send', async (req, res) => {
+  const invoice = await prisma.invoice.findUnique({ where: { id: req.params.id }, include: { client: true } })
+  if (!invoice) return res.status(404).json({ success: false, message: 'Invoice not found.' })
+  if (!invoice.client.email) return res.status(400).json({ success: false, message: 'Client has no email on file.' })
+
+  const settings = await getSettings()
+  const totals = calculateTotals(invoice.items, invoice.discount)
+  const tds = invoice.tdsApplicable ? calculateTds(totals.grandTotal, invoice.tdsRate) : null
+  const html = renderDocumentHtml({
+    type: 'invoice',
+    seller: sellerFromSettings(settings),
+    customer: customerFromClient(invoice.client),
+    details: { invoiceNumber: invoice.invoiceNumber, issueDate: invoice.issueDate?.toLocaleDateString(), dueDate: invoice.dueDate?.toLocaleDateString() },
+    items: invoice.items,
+    totals,
+    tds: tds ? { ...tds, applicable: true } : null,
+    notes: invoice.notes,
+    terms: invoice.terms,
+    bankDetails: { bankName: settings.bankName, accountNumber: settings.bankAccountNumber, ifsc: settings.bankIfsc, upiId: settings.upiId },
+  })
+
+  try {
+    const pdfBuffer = await htmlToPdfBuffer(html)
+    const tpl = await getTemplate('INVOICE_SENT')
+    const { subject, html: coverHtml } = renderTemplate(tpl, {
+      clientName: invoice.client.name,
+      invoiceNumber: invoice.invoiceNumber,
+      currency: invoice.currency,
+      amount: (tds ? tds.netPayable : totals.grandTotal).toFixed(2),
+      dueDate: invoice.dueDate ? invoice.dueDate.toLocaleDateString() : '-',
+      businessName: settings.businessName,
+    })
+    await deliverMail({
+      to: invoice.client.email,
+      subject,
+      text: htmlToText(coverHtml),
+      html: coverHtml,
+      attachments: [{ filename: `${invoice.invoiceNumber}.pdf`, content: pdfBuffer }],
+      meta: { templateKey: 'INVOICE_SENT', relatedType: 'INVOICE', relatedId: invoice.id },
+    })
+    if (invoice.status === 'DRAFT') {
+      await prisma.invoice.update({ where: { id: invoice.id }, data: { status: 'SENT' } })
+    }
+    res.json({ success: true, message: `Invoice emailed to ${invoice.client.email}.` })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message || 'Failed to send invoice.' })
+  }
+})
+
 // ---------- Dashboard ----------
 
 router.get('/dashboard/summary', async (req, res) => {
@@ -546,6 +672,10 @@ router.get('/dashboard/summary', async (req, res) => {
 
   const activeProjects = projects.filter((p) => p.status === 'ACTIVE').length
 
+  const dueFollowUps = await prisma.lead.count({
+    where: { nextFollowUpAt: { lte: now }, status: { notIn: ['WON', 'LOST'] } },
+  })
+
   res.json({
     success: true,
     summary: {
@@ -556,6 +686,7 @@ router.get('/dashboard/summary', async (req, res) => {
       overdueInvoices: overdueCount,
       totalProjects: projects.length,
       totalClients: await prisma.client.count(),
+      dueFollowUps,
     },
   })
 })
@@ -637,6 +768,28 @@ router.get('/timesheets', async (req, res) => {
   res.json({ success: true, timesheets })
 })
 
+router.post('/timesheets/remind', async (req, res) => {
+  const userId = String(req.body?.userId ?? '')
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (!user) return res.status(404).json({ success: false, message: 'User not found.' })
+
+  const settings = await getSettings()
+  const tpl = await getTemplate('TIMESHEET_REMINDER')
+  const { subject, html } = renderTemplate(tpl, { userName: user.name, businessName: settings.businessName })
+  try {
+    await deliverMail({
+      to: user.email,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TIMESHEET_REMINDER', relatedType: 'TIMESHEET', relatedId: user.id },
+    })
+    res.json({ success: true, message: `Reminder sent to ${user.name}.` })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message || 'Failed to send reminder.' })
+  }
+})
+
 // ---------- Expense claims (admin review) ----------
 
 router.get('/expenses', async (req, res) => {
@@ -674,12 +827,18 @@ router.get('/expenses/summary', async (req, res) => {
   res.json({ success: true, summary })
 })
 
+const EXPENSE_STATUS_TEMPLATE_KEY = {
+  APPROVED: 'EXPENSE_APPROVED',
+  REJECTED: 'EXPENSE_REJECTED',
+  REIMBURSED: 'EXPENSE_REIMBURSED',
+}
+
 router.put('/expenses/:id', async (req, res) => {
   const { status, reimbursedAmount } = req.body ?? {}
   if (!['APPROVED', 'REJECTED', 'REIMBURSED'].includes(status)) {
     return res.status(400).json({ success: false, message: 'Invalid status.' })
   }
-  const existing = await prisma.expenseClaim.findUnique({ where: { id: req.params.id } })
+  const existing = await prisma.expenseClaim.findUnique({ where: { id: req.params.id }, include: { user: true } })
   if (!existing) return res.status(404).json({ success: false, message: 'Expense claim not found.' })
 
   const data = { status }
@@ -698,6 +857,26 @@ router.put('/expenses/:id', async (req, res) => {
     data.reimbursedAmount = amount
   }
   const expense = await prisma.expenseClaim.update({ where: { id: req.params.id }, data })
+
+  if (existing.user?.email) {
+    const settings = await getSettings()
+    const tpl = await getTemplate(EXPENSE_STATUS_TEMPLATE_KEY[status])
+    const { subject, html } = renderTemplate(tpl, {
+      userName: existing.user.name,
+      currency: 'INR',
+      amount: toNumber(status === 'REIMBURSED' ? expense.reimbursedAmount : expense.amount).toFixed(2),
+      description: existing.description,
+      businessName: settings.businessName,
+    })
+    sendMail({
+      to: existing.user.email,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: EXPENSE_STATUS_TEMPLATE_KEY[status], relatedType: 'EXPENSE', relatedId: expense.id },
+    })
+  }
+
   res.json({ success: true, expense })
 })
 
@@ -780,6 +959,443 @@ router.put('/business-expenses/:id', async (req, res) => {
 router.delete('/business-expenses/:id', async (req, res) => {
   await prisma.businessExpense.delete({ where: { id: req.params.id } })
   res.json({ success: true })
+})
+
+// ---------- Leads ----------
+
+const LEAD_STATUSES = ['NEW', 'CONTACTED', 'FOLLOW_UP', 'QUALIFIED', 'WON', 'LOST']
+
+const leadListInclude = {
+  createdBy: { select: { id: true, name: true } },
+  assignedTo: { select: { id: true, name: true } },
+}
+
+router.get('/leads', async (req, res) => {
+  const { status, assignedToId, dueFollowUps } = req.query
+  const where = {}
+  if (status && LEAD_STATUSES.includes(status)) where.status = status
+  if (assignedToId) where.assignedToId = String(assignedToId)
+  if (dueFollowUps === 'true') {
+    where.nextFollowUpAt = { lte: new Date() }
+    where.status = { notIn: ['WON', 'LOST'] }
+  }
+  const leads = await prisma.lead.findMany({
+    where,
+    orderBy: [{ nextFollowUpAt: 'asc' }, { createdAt: 'desc' }],
+    include: leadListInclude,
+  })
+  res.json({ success: true, leads })
+})
+
+router.get('/leads/reminders/count', async (req, res) => {
+  const count = await prisma.lead.count({
+    where: { nextFollowUpAt: { lte: new Date() }, status: { notIn: ['WON', 'LOST'] } },
+  })
+  res.json({ success: true, count })
+})
+
+router.post('/leads', async (req, res) => {
+  const { name, company, email, phone, source, notes, assignedToId } = req.body ?? {}
+  const trimmedName = String(name ?? '').trim()
+  if (!trimmedName) return res.status(400).json({ success: false, message: 'Name is required.' })
+
+  const lead = await prisma.lead.create({
+    data: {
+      name: trimmedName,
+      company: company ? String(company).trim() : null,
+      email: email ? String(email).trim() : null,
+      phone: phone ? String(phone).trim() : null,
+      source: source ? String(source).trim() : null,
+      notes: notes ? String(notes).trim() : null,
+      assignedToId: assignedToId || undefined,
+      createdById: req.user.id,
+    },
+    include: leadListInclude,
+  })
+  res.status(201).json({ success: true, lead })
+})
+
+router.get('/leads/:id', async (req, res) => {
+  const lead = await prisma.lead.findUnique({
+    where: { id: req.params.id },
+    include: {
+      ...leadListInclude,
+      calls: { orderBy: { calledAt: 'desc' }, include: { createdBy: { select: { id: true, name: true } } } },
+    },
+  })
+  if (!lead) return res.status(404).json({ success: false, message: 'Lead not found.' })
+  res.json({ success: true, lead })
+})
+
+router.put('/leads/:id', async (req, res) => {
+  const { name, company, email, phone, source, notes, status, assignedToId } = req.body ?? {}
+  const lead = await prisma.lead.findUnique({ where: { id: req.params.id } })
+  if (!lead) return res.status(404).json({ success: false, message: 'Lead not found.' })
+
+  const data = {}
+  if (name !== undefined) {
+    const trimmed = String(name).trim()
+    if (!trimmed) return res.status(400).json({ success: false, message: 'Name is required.' })
+    data.name = trimmed
+  }
+  if (company !== undefined) data.company = company ? String(company).trim() : null
+  if (email !== undefined) data.email = email ? String(email).trim() : null
+  if (phone !== undefined) data.phone = phone ? String(phone).trim() : null
+  if (source !== undefined) data.source = source ? String(source).trim() : null
+  if (notes !== undefined) data.notes = notes ? String(notes).trim() : null
+  if (status !== undefined) {
+    if (!LEAD_STATUSES.includes(status)) return res.status(400).json({ success: false, message: 'Invalid status.' })
+    data.status = status
+  }
+  if (assignedToId !== undefined) data.assignedToId = assignedToId || null
+
+  const updated = await prisma.lead.update({ where: { id: req.params.id }, data, include: leadListInclude })
+  res.json({ success: true, lead: updated })
+})
+
+router.delete('/leads/:id', async (req, res) => {
+  await prisma.lead.delete({ where: { id: req.params.id } })
+  res.json({ success: true })
+})
+
+router.post('/leads/:id/convert', async (req, res) => {
+  const lead = await prisma.lead.findUnique({ where: { id: req.params.id } })
+  if (!lead) return res.status(404).json({ success: false, message: 'Lead not found.' })
+
+  const client = await prisma.client.create({
+    data: {
+      name: lead.name,
+      company: lead.company,
+      email: lead.email,
+      phone: lead.phone,
+      createdById: req.user.id,
+    },
+  })
+  await prisma.lead.update({ where: { id: lead.id }, data: { status: 'WON' } })
+  res.status(201).json({ success: true, client })
+})
+
+router.post('/leads/:id/calls', async (req, res) => {
+  const { calledAt, durationMinutes, notes, followUpNeeded, followUpAt } = req.body ?? {}
+  const lead = await prisma.lead.findUnique({ where: { id: req.params.id } })
+  if (!lead) return res.status(404).json({ success: false, message: 'Lead not found.' })
+
+  const trimmedNotes = String(notes ?? '').trim()
+  if (!trimmedNotes) return res.status(400).json({ success: false, message: 'Call notes are required.' })
+  if (followUpNeeded && !followUpAt) {
+    return res.status(400).json({ success: false, message: 'Pick a follow-up date/time.' })
+  }
+
+  const calledAtDate = calledAt ? new Date(calledAt) : new Date()
+  const call = await prisma.leadCall.create({
+    data: {
+      leadId: lead.id,
+      calledAt: calledAtDate,
+      durationMinutes: durationMinutes ? Number(durationMinutes) : null,
+      notes: trimmedNotes,
+      followUpNeeded: Boolean(followUpNeeded),
+      followUpAt: followUpNeeded ? new Date(followUpAt) : null,
+      createdById: req.user.id,
+    },
+  })
+
+  const nextStatus = lead.status === 'NEW' ? 'CONTACTED' : lead.status
+  await prisma.lead.update({
+    where: { id: lead.id },
+    data: {
+      lastContactedAt: !lead.lastContactedAt || calledAtDate > lead.lastContactedAt ? calledAtDate : undefined,
+      nextFollowUpAt: followUpNeeded ? call.followUpAt : lead.nextFollowUpAt,
+      status: followUpNeeded ? 'FOLLOW_UP' : nextStatus,
+    },
+  })
+
+  res.status(201).json({ success: true, call })
+})
+
+router.put('/leads/:id/calls/:callId', async (req, res) => {
+  const { followUpDone } = req.body ?? {}
+  const call = await prisma.leadCall.findUnique({ where: { id: req.params.callId } })
+  if (!call || call.leadId !== req.params.id) return res.status(404).json({ success: false, message: 'Call not found.' })
+
+  const updated = await prisma.leadCall.update({
+    where: { id: call.id },
+    data: { followUpDone: Boolean(followUpDone) },
+  })
+
+  if (followUpDone) {
+    // Recompute the lead's next reminder from whatever pending follow-ups remain.
+    const nextPending = await prisma.leadCall.findFirst({
+      where: { leadId: req.params.id, followUpNeeded: true, followUpDone: false },
+      orderBy: { followUpAt: 'asc' },
+    })
+    await prisma.lead.update({
+      where: { id: req.params.id },
+      data: { nextFollowUpAt: nextPending?.followUpAt ?? null },
+    })
+  }
+
+  res.json({ success: true, call: updated })
+})
+
+// ---------- Settings (SMTP + notification emails) ----------
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+router.get('/settings', async (req, res) => {
+  const settings = await getSettings()
+  const { smtpPass, whatsappAccessToken, ...rest } = settings
+  res.json({
+    success: true,
+    settings: { ...rest, smtpPassSet: Boolean(smtpPass), whatsappAccessTokenSet: Boolean(whatsappAccessToken) },
+  })
+})
+
+const BUSINESS_PROFILE_FIELDS = [
+  'businessName', 'businessContactPerson', 'businessAddress', 'businessPhone', 'businessGst',
+  'bankName', 'bankAccountNumber', 'bankIfsc', 'upiId', 'logoUrl',
+]
+
+const WHATSAPP_TEXT_FIELDS = ['whatsappPhoneNumberId', 'whatsappBusinessAccountId', 'whatsappApiVersion']
+
+router.put('/settings', async (req, res) => {
+  const {
+    smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo,
+    whatsappEnabled, whatsappAccessToken, whatsappStaffNotifyNumber,
+  } = req.body ?? {}
+
+  const data = {}
+  if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim() || null
+  if (smtpPort !== undefined) {
+    const port = smtpPort === '' || smtpPort === null ? null : Number(smtpPort)
+    if (port !== null && (!Number.isInteger(port) || port <= 0 || port > 65535)) {
+      return res.status(400).json({ success: false, message: 'Invalid SMTP port.' })
+    }
+    data.smtpPort = port
+  }
+  if (smtpSecure !== undefined) data.smtpSecure = Boolean(smtpSecure)
+  if (smtpUser !== undefined) data.smtpUser = String(smtpUser).trim() || null
+  // Empty string means "leave the stored password alone" — the frontend never re-displays it,
+  // so a blank field on save should not wipe out a previously configured password.
+  if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass)
+
+  for (const [key, value] of Object.entries({ emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo })) {
+    if (value === undefined) continue
+    const trimmed = String(value).trim()
+    if (trimmed && !EMAIL_RE.test(trimmed)) {
+      return res.status(400).json({ success: false, message: `Invalid email: ${trimmed}` })
+    }
+    data[key] = trimmed || null
+  }
+
+  for (const key of BUSINESS_PROFILE_FIELDS) {
+    if (req.body?.[key] === undefined) continue
+    data[key] = String(req.body[key]).trim() || null
+  }
+
+  if (whatsappEnabled !== undefined) data.whatsappEnabled = Boolean(whatsappEnabled)
+  for (const key of WHATSAPP_TEXT_FIELDS) {
+    if (req.body?.[key] === undefined) continue
+    data[key] = String(req.body[key]).trim() || null
+  }
+  // Same "empty string = leave alone" rule as smtpPass — the frontend never re-displays it.
+  if (whatsappAccessToken !== undefined && whatsappAccessToken !== '') data.whatsappAccessToken = String(whatsappAccessToken)
+  if (whatsappStaffNotifyNumber !== undefined) {
+    const trimmed = String(whatsappStaffNotifyNumber).trim()
+    if (trimmed && !normalizeWhatsAppNumber(trimmed)) {
+      return res.status(400).json({ success: false, message: `Invalid WhatsApp number: ${trimmed}` })
+    }
+    data.whatsappStaffNotifyNumber = trimmed || null
+  }
+
+  await updateSettings(data)
+  const settings = await getSettings()
+  const { smtpPass: _pass, whatsappAccessToken: _token, ...rest } = settings
+  res.json({
+    success: true,
+    settings: { ...rest, smtpPassSet: Boolean(settings.smtpPass), whatsappAccessTokenSet: Boolean(settings.whatsappAccessToken) },
+  })
+})
+
+router.post('/settings/test-email', async (req, res) => {
+  const to = String(req.body?.to ?? '').trim()
+  if (!EMAIL_RE.test(to)) {
+    return res.status(400).json({ success: false, message: 'Enter a valid email to send the test to.' })
+  }
+  try {
+    await sendTestMail(to)
+    res.json({ success: true, message: `Test email sent to ${to}.` })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message || 'Failed to send test email.' })
+  }
+})
+
+// ---------- Email templates ----------
+
+const SAMPLE_VARS = {
+  ticketNumber: 'TKT-2026-0001',
+  subject: 'Sample ticket subject',
+  status: 'RESOLVED',
+  clientName: 'Jane Doe',
+  description: 'This is a sample ticket description.',
+  body: 'This is a sample reply body.',
+  name: 'Jane Doe',
+  company: 'Acme Co',
+  city: 'Chennai',
+  message: 'This is a sample enquiry message.',
+  invoiceNumber: 'INV-2026-0001',
+  quotationNumber: 'QUO-2026-0001',
+  currency: 'INR',
+  amount: '25000.00',
+  dueDate: '31/12/2026',
+  validUntil: '31/12/2026',
+  businessName: 'Aadhirai Innovations',
+  userName: 'Sample Staff',
+}
+
+const VARIABLES_BY_KEY = Object.fromEntries(DEFAULT_TEMPLATES.map((t) => [t.key, t.variables]))
+
+router.get('/email-templates', async (req, res) => {
+  const templates = await prisma.emailTemplate.findMany({ orderBy: [{ category: 'asc' }, { label: 'asc' }] })
+  res.json({ success: true, templates: templates.map((t) => ({ ...t, variables: VARIABLES_BY_KEY[t.key] || [] })) })
+})
+
+router.put('/email-templates/:key', async (req, res) => {
+  const { subject, bodyHtml } = req.body ?? {}
+  const trimmedSubject = String(subject ?? '').trim()
+  const trimmedBody = String(bodyHtml ?? '').trim()
+  if (!trimmedSubject || !trimmedBody) {
+    return res.status(400).json({ success: false, message: 'Subject and body are required.' })
+  }
+  const template = await prisma.emailTemplate.update({
+    where: { key: req.params.key },
+    data: { subject: trimmedSubject, bodyHtml: trimmedBody },
+  })
+  res.json({ success: true, template })
+})
+
+router.post('/email-templates/:key/test', async (req, res) => {
+  const to = String(req.body?.to ?? '').trim()
+  if (!EMAIL_RE.test(to)) {
+    return res.status(400).json({ success: false, message: 'Enter a valid email to send the test to.' })
+  }
+  try {
+    const tpl = await getTemplate(req.params.key)
+    const { subject, html } = renderTemplate(tpl, SAMPLE_VARS)
+    await deliverMail({
+      to,
+      subject: `[TEST] ${subject}`,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: tpl.key, relatedType: 'TEST' },
+    })
+    res.json({ success: true, message: `Test email sent to ${to}.` })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message || 'Failed to send test email.' })
+  }
+})
+
+// ---------- Email log ----------
+
+router.get('/email-logs', async (req, res) => {
+  const { status, relatedType, search, page = '1', pageSize = '50' } = req.query
+  const where = {}
+  if (status) where.status = String(status)
+  if (relatedType) where.relatedType = String(relatedType)
+  if (search) {
+    where.OR = [
+      { subject: { contains: String(search), mode: 'insensitive' } },
+      { to: { has: String(search) } },
+    ]
+  }
+  const take = Math.min(Number(pageSize) || 50, 200)
+  const skip = (Math.max(Number(page) || 1, 1) - 1) * take
+
+  const [logs, total] = await Promise.all([
+    prisma.emailLog.findMany({ where, orderBy: { sentAt: 'desc' }, skip, take }),
+    prisma.emailLog.count({ where }),
+  ])
+  res.json({ success: true, logs, total, page: Number(page) || 1, pageSize: take })
+})
+
+// ---------- WhatsApp templates ----------
+
+router.get('/whatsapp-templates', async (req, res) => {
+  const rows = await prisma.whatsAppTemplate.findMany({ orderBy: { label: 'asc' } })
+  const byKey = Object.fromEntries(rows.map((r) => [r.key, r]))
+  const templates = DEFAULT_WHATSAPP_TEMPLATES.map((t) => ({
+    key: t.key,
+    label: t.label,
+    templateName: byKey[t.key]?.templateName ?? null,
+    language: byKey[t.key]?.language ?? 'en_US',
+    params: paramsForKey(t.key),
+  }))
+  res.json({ success: true, templates })
+})
+
+router.put('/whatsapp-templates/:key', async (req, res) => {
+  if (!paramsForKey(req.params.key).length) {
+    return res.status(404).json({ success: false, message: 'Unknown WhatsApp template key.' })
+  }
+  const { templateName, language } = req.body ?? {}
+  const template = await prisma.whatsAppTemplate.upsert({
+    where: { key: req.params.key },
+    create: {
+      key: req.params.key,
+      label: DEFAULT_WHATSAPP_TEMPLATES.find((t) => t.key === req.params.key)?.label || req.params.key,
+      templateName: String(templateName ?? '').trim() || null,
+      language: String(language ?? '').trim() || 'en_US',
+    },
+    update: {
+      templateName: String(templateName ?? '').trim() || null,
+      language: String(language ?? '').trim() || 'en_US',
+    },
+  })
+  res.json({ success: true, template })
+})
+
+router.post('/whatsapp-templates/:key/test', async (req, res) => {
+  const to = String(req.body?.to ?? '').trim()
+  if (!normalizeWhatsAppNumber(to)) {
+    return res.status(400).json({ success: false, message: 'Enter a valid WhatsApp number to send the test to.' })
+  }
+  const params = paramsForKey(req.params.key)
+  if (!params.length) {
+    return res.status(404).json({ success: false, message: 'Unknown WhatsApp template key.' })
+  }
+  try {
+    await deliverWhatsApp({
+      to,
+      templateKey: req.params.key,
+      components: params.map((p) => SAMPLE_VARS[p] ?? ''),
+      meta: { relatedType: 'TEST' },
+    })
+    res.json({ success: true, message: `Test WhatsApp message sent to ${to}.` })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message || 'Failed to send test WhatsApp message.' })
+  }
+})
+
+// ---------- WhatsApp log ----------
+
+router.get('/whatsapp-logs', async (req, res) => {
+  const { status, relatedType, search, page = '1', pageSize = '50' } = req.query
+  const where = {}
+  if (status) where.status = String(status)
+  if (relatedType) where.relatedType = String(relatedType)
+  if (search) {
+    where.OR = [
+      { to: { contains: String(search), mode: 'insensitive' } },
+      { templateKey: { contains: String(search), mode: 'insensitive' } },
+    ]
+  }
+  const take = Math.min(Number(pageSize) || 50, 200)
+  const skip = (Math.max(Number(page) || 1, 1) - 1) * take
+
+  const [logs, total] = await Promise.all([
+    prisma.whatsAppLog.findMany({ where, orderBy: { sentAt: 'desc' }, skip, take }),
+    prisma.whatsAppLog.count({ where }),
+  ])
+  res.json({ success: true, logs, total, page: Number(page) || 1, pageSize: take })
 })
 
 export default router

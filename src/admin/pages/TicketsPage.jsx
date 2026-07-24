@@ -8,7 +8,7 @@ import Modal from '../components/Modal'
 const STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
 
-const emptyForm = { clientId: '', subject: '', description: '', priority: 'MEDIUM', assignedToId: '' }
+const emptyForm = { clientId: '', subject: '', description: '', priority: 'MEDIUM', assignedToId: '', ccEmails: '' }
 
 export default function TicketsPage() {
   const [tickets, setTickets] = useState([])
@@ -200,6 +200,15 @@ export default function TicketsPage() {
                 <option key={u.id} value={u.id}>{u.name}</option>
               ))}
             </select>
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">CC emails (optional)</label>
+            <input
+              value={form.ccEmails}
+              onChange={(e) => setForm({ ...form, ccEmails: e.target.value })}
+              placeholder="comma-separated, e.g. manager@client.com"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30"
+            />
           </div>
           <button
             type="submit"

@@ -28,7 +28,15 @@
       "Bash(sed -i \"s/{ id: 'binary-trees', title: 'Binary Trees', slug: 'binary-trees', status: 'soon'/{ id: 'binary-trees', title: 'Binary Trees', slug: 'binary-trees', status: 'live'/\" src/data/courses/javaDsaCourse.js)",
       "Bash(sed -i \"s/{ id: 'bubble-sort', title: 'Bubble Sort', slug: 'bubble-sort', status: 'planned'/{ id: 'bubble-sort', title: 'Bubble Sort', slug: 'bubble-sort', status: 'live'/\" src/data/courses/javaDsaCourse.js)",
       "Bash(xargs -I {} basename {})",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(awk -F: '{sum+=$2} END {print \"tables:\", sum}')",
+      "Bash(awk -F: '{sum+=$2} END {print \"wrappers:\", sum}')",
+      "Bash(npx eslint *)",
+      "Bash(npx vite *)",
+      "Bash(git push *)",
+      "Bash(node --check server/routes/tickets.js)",
+      "Bash(node --check server/routes/client.js)",
+      "Bash(node --check server/ticketUtils.js)"
     ]
   }
 }

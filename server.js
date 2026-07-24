@@ -11,7 +11,9 @@ import adminRoutes from './server/routes/admin.js'
 import employeeRoutes from './server/routes/employee.js'
 import ticketRoutes from './server/routes/tickets.js'
 import clientRoutes from './server/routes/client.js'
-import { sendMail, mailerReady } from './server/mailer.js'
+import { deliverMail } from './server/mailer.js'
+import { getSettings } from './server/settings.js'
+import { getTemplate, renderTemplate, htmlToText } from './server/emailTemplates.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -60,7 +62,8 @@ const enquiryLimiter = rateLimit({
 
 app.post('/api/enquiry', enquiryLimiter, async (req, res) => {
   try {
-    if (!mailerReady || !process.env.ENQUIRY_TO_EMAIL) {
+    const settings = await getSettings()
+    if (!settings.smtpHost || !settings.enquiryNotifyEmail) {
       return res.status(500).json({
         success: false,
         message: 'Missing SMTP configuration.',
@@ -81,32 +84,21 @@ app.post('/api/enquiry', enquiryLimiter, async (req, res) => {
       })
     }
 
-    const subject = `New Enquiry - ${trimmedName}`
+    const tpl = await getTemplate('ENQUIRY_STAFF_NOTIFY')
+    const { subject, html } = renderTemplate(tpl, {
+      name: trimmedName,
+      company: trimmedCompany || '-',
+      city: trimmedCity || '-',
+      message: trimmedMessage.replace(/\n/g, '<br/>'),
+    })
 
-    const textBody = [
-      `Name: ${trimmedName}`,
-      `Company: ${trimmedCompany || '-'}`,
-      `City: ${trimmedCity || '-'}`,
-      '',
-      'Message:',
-      trimmedMessage,
-    ].join('\n')
-
-    const htmlBody = `
-      <h2>New Website Enquiry</h2>
-      <p><strong>Name:</strong> ${trimmedName}</p>
-      <p><strong>Company:</strong> ${trimmedCompany || '-'}</p>
-      <p><strong>City:</strong> ${trimmedCity || '-'}</p>
-      <p><strong>Message:</strong></p>
-      <p>${trimmedMessage.replace(/\n/g, '<br/>')}</p>
-    `
-
-    await sendMail({
-      to: process.env.ENQUIRY_TO_EMAIL,
-      replyTo: process.env.ENQUIRY_REPLY_TO || undefined,
+    await deliverMail({
+      to: settings.enquiryNotifyEmail,
+      replyTo: settings.enquiryReplyTo || undefined,
       subject,
-      text: textBody,
-      html: htmlBody,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'ENQUIRY_STAFF_NOTIFY', relatedType: 'ENQUIRY' },
     })
 
     res.status(200).json({ success: true, message: 'Enquiry sent successfully.' })

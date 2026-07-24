@@ -95,6 +95,34 @@ enum BusinessExpenseCategory {
   OTHER
 }
 
+enum LeadStatus {
+  NEW
+  CONTACTED
+  FOLLOW_UP
+  QUALIFIED
+  WON
+  LOST
+}
+
+enum EmailTemplateCategory {
+  TICKET
+  INVOICE
+  QUOTATION
+  TIMESHEET
+  EXPENSE
+  ENQUIRY
+}
+
+enum EmailStatus {
+  SENT
+  FAILED
+}
+
+enum WhatsAppStatus {
+  SENT
+  FAILED
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -121,6 +149,10 @@ model User {
   assignedTickets    Ticket[]        @relation("TicketAssignedTo")
   ticketMessages     TicketMessage[]
   ticketAttachments  TicketAttachment[]
+
+  createdLeads  Lead[]     @relation("LeadCreatedBy")
+  assignedLeads Lead[]     @relation("LeadAssignedTo")
+  leadCalls     LeadCall[]
 
   @@map("users")
 }
@@ -354,6 +386,7 @@ model Ticket {
   description  String
   status       TicketStatus   @default(OPEN)
   priority     TicketPriority @default(MEDIUM)
+  ccEmails     String[]       @default([])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   resolvedAt   DateTime?
@@ -411,4 +444,142 @@ model TicketAttachment {
   uploadedBy   User   @relation(fields: [uploadedById], references: [id])
 
   @@map("ticket_attachments")
+}
+
+// Single-row table (id is always "singleton") holding admin-configurable settings
+// that would otherwise require an .env edit + redeploy to change.
+model Setting {
+  id                 String   @id @default("singleton")
+  smtpHost           String?
+  smtpPort           Int?
+  smtpSecure         Boolean  @default(false)
+  smtpUser           String?
+  smtpPass           String?
+  emailFrom          String?
+  ticketNotifyEmail  String?
+  enquiryNotifyEmail String?
+  enquiryReplyTo     String?
+
+  // Business profile used as the "seller" on invoice/quotation PDFs — previously only
+  // stored client-side in localStorage, so it didn't survive across machines/browsers.
+  businessName        String?
+  businessContactPerson String?
+  businessAddress     String?
+  businessPhone       String?
+  businessGst         String?
+  bankName            String?
+  bankAccountNumber   String?
+  bankIfsc            String?
+  upiId               String?
+  logoUrl             String?
+
+  // WhatsApp Cloud API (Meta) — mirrors the SMTP block above. Outbound messages must use a
+  // pre-approved Message Template (see WhatsAppTemplate), so there's no "body" to store here.
+  whatsappEnabled           Boolean  @default(false)
+  whatsappPhoneNumberId     String?
+  whatsappAccessToken       String?
+  whatsappBusinessAccountId String?
+  whatsappApiVersion        String?
+  whatsappStaffNotifyNumber String?
+
+  updatedAt          DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model Lead {
+  id              String     @id @default(cuid())
+  name            String
+  company         String?
+  email           String?
+  phone           String?
+  source          String?
+  status          LeadStatus @default(NEW)
+  notes           String?
+  lastContactedAt DateTime?
+  nextFollowUpAt  DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  createdById  String?
+  createdBy    User?   @relation("LeadCreatedBy", fields: [createdById], references: [id])
+  assignedToId String?
+  assignedTo   User?   @relation("LeadAssignedTo", fields: [assignedToId], references: [id])
+
+  calls LeadCall[]
+
+  @@map("leads")
+}
+
+model LeadCall {
+  id              String    @id @default(cuid())
+  calledAt        DateTime  @default(now())
+  durationMinutes Int?
+  notes           String
+  followUpNeeded  Boolean   @default(false)
+  followUpAt      DateTime?
+  followUpDone    Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+
+  @@map("lead_calls")
+}
+
+model EmailTemplate {
+  id        String                @id @default(cuid())
+  key       String                @unique
+  category  EmailTemplateCategory
+  label     String
+  subject   String
+  bodyHtml  String
+  updatedAt DateTime              @updatedAt
+
+  @@map("email_templates")
+}
+
+model EmailLog {
+  id           String      @id @default(cuid())
+  to           String[]    @default([])
+  cc           String[]    @default([])
+  subject      String
+  templateKey  String?
+  relatedType  String?
+  relatedId    String?
+  status       EmailStatus
+  errorMessage String?
+  sentAt       DateTime    @default(now())
+
+  @@map("email_logs")
+}
+
+// Which Meta-approved WhatsApp Message Template to use per notification key. Unlike
+// EmailTemplate, the wording itself lives in Meta Business Manager, not here — this only
+// records the registered template name + language so a send knows what to ask Meta for.
+model WhatsAppTemplate {
+  id           String   @id @default(cuid())
+  key          String   @unique
+  label        String
+  templateName String?
+  language     String   @default("en_US")
+  updatedAt    DateTime @updatedAt
+
+  @@map("whatsapp_templates")
+}
+
+model WhatsAppLog {
+  id           String         @id @default(cuid())
+  to           String
+  templateKey  String?
+  status       WhatsAppStatus
+  errorMessage String?
+  relatedType  String?
+  relatedId    String?
+  sentAt       DateTime       @default(now())
+
+  @@map("whatsapp_logs")
 }

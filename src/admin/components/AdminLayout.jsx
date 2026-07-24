@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
+import { api } from '../api'
 
 const adminNavItems = [
   { to: '/admin/dashboard', label: 'Dashboard' },
   { to: '/admin/clients', label: 'Clients' },
   { to: '/admin/projects', label: 'Projects' },
+  { to: '/admin/leads', label: 'Leads' },
   { to: '/admin/tickets', label: 'Tickets' },
   { to: '/admin/quotations', label: 'Quotations' },
   { to: '/admin/invoices', label: 'Invoices' },
@@ -13,6 +15,7 @@ const adminNavItems = [
   { to: '/admin/expenses', label: 'Expense Claims' },
   { to: '/admin/business-expenses', label: 'Business Expenses' },
   { to: '/admin/users', label: 'Users' },
+  { to: '/admin/settings', label: 'Settings' },
 ]
 
 const staffNavItems = [
@@ -31,7 +34,18 @@ function linkClasses({ isActive }) {
 export default function AdminLayout() {
   const { user, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [dueFollowUps, setDueFollowUps] = useState(0)
   const navItems = user?.role === 'ADMIN' ? adminNavItems : staffNavItems
+
+  useEffect(() => {
+    if (user?.role !== 'ADMIN') return
+    function poll() {
+      api.get('/admin/leads/reminders/count').then((data) => setDueFollowUps(data.count)).catch(() => {})
+    }
+    poll()
+    const interval = setInterval(poll, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [user?.role])
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 md:flex">
@@ -76,7 +90,14 @@ export default function AdminLayout() {
         <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
-              {item.label}
+              <span className="flex items-center justify-between">
+                {item.label}
+                {item.to === '/admin/leads' && dueFollowUps > 0 && (
+                  <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-[#0B1F3A]">
+                    {dueFollowUps}
+                  </span>
+                )}
+              </span>
             </NavLink>
           ))}
         </nav>

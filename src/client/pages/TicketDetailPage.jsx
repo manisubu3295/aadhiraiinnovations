@@ -30,15 +30,33 @@ export default function TicketDetailPage() {
   const [reply, setReply] = useState('')
   const [files, setFiles] = useState([])
   const [sending, setSending] = useState(false)
+  const [ccInput, setCcInput] = useState('')
+  const [savingCc, setSavingCc] = useState(false)
 
   function load() {
     api
       .get(`/client/tickets/${id}`)
-      .then((data) => setTicket(data.ticket))
+      .then((data) => {
+        setTicket(data.ticket)
+        setCcInput((data.ticket.ccEmails || []).join(', '))
+      })
       .catch((err) => setError(err.message))
   }
 
   useEffect(load, [id])
+
+  async function handleSaveCc() {
+    setSavingCc(true)
+    setError('')
+    try {
+      const data = await api.put(`/client/tickets/${id}/cc-emails`, { ccEmails: ccInput })
+      setTicket((prev) => ({ ...prev, ccEmails: data.ticket.ccEmails }))
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSavingCc(false)
+    }
+  }
 
   async function handleReply(e) {
     e.preventDefault()
@@ -80,6 +98,23 @@ export default function TicketDetailPage() {
           <StatusBadge status={ticket.priority} />
           <StatusBadge status={ticket.status} />
         </div>
+      </div>
+
+      <div className="mt-2 flex flex-col gap-2 text-sm text-slate-600 sm:flex-row sm:items-center">
+        <span className="shrink-0">CC emails:</span>
+        <input
+          value={ccInput}
+          onChange={(e) => setCcInput(e.target.value)}
+          placeholder="comma-separated, e.g. manager@yourcompany.com"
+          className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm sm:max-w-xs"
+        />
+        <button
+          onClick={handleSaveCc}
+          disabled={savingCc}
+          className="shrink-0 rounded-md border border-slate-300 px-3 py-1 text-sm hover:bg-slate-50 disabled:opacity-60"
+        >
+          {savingCc ? 'Saving…' : 'Save'}
+        </button>
       </div>
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}

@@ -4,6 +4,23 @@ import crypto from 'crypto'
 import { prisma } from './prismaClient.js'
 
 const UPLOAD_ROOT = path.join(process.cwd(), 'uploads', 'tickets')
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MAX_CC_EMAILS = 5
+
+// Accepts an array or a comma/semicolon/newline-separated string; throws on invalid input.
+export function parseCcEmails(input) {
+  if (input === undefined || input === null || input === '') return []
+  const raw = Array.isArray(input) ? input : String(input).split(/[,;\n]/)
+  const emails = []
+  for (const entry of raw) {
+    const email = String(entry).trim().toLowerCase()
+    if (!email) continue
+    if (!EMAIL_RE.test(email)) throw new Error(`Invalid CC email: ${email}`)
+    if (!emails.includes(email)) emails.push(email)
+  }
+  if (emails.length > MAX_CC_EMAILS) throw new Error(`No more than ${MAX_CC_EMAILS} CC emails allowed.`)
+  return emails
+}
 
 export async function nextTicketNumber() {
   const year = new Date().getFullYear()

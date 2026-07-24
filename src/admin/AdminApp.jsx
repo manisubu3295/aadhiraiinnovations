@@ -13,6 +13,9 @@ const QuotationEditorPage = lazy(() => import('./pages/QuotationEditorPage'))
 const InvoicesPage = lazy(() => import('./pages/InvoicesPage'))
 const InvoiceEditorPage = lazy(() => import('./pages/InvoiceEditorPage'))
 const UsersPage = lazy(() => import('./pages/UsersPage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
+const LeadsPage = lazy(() => import('./pages/LeadsPage'))
+const LeadDetailPage = lazy(() => import('./pages/LeadDetailPage'))
 const TimesheetsAdminPage = lazy(() => import('./pages/TimesheetsAdminPage'))
 const ExpensesAdminPage = lazy(() => import('./pages/ExpensesAdminPage'))
 const BusinessExpensesPage = lazy(() => import('./pages/BusinessExpensesPage'))
@@ -89,6 +92,9 @@ function AdminRoutes() {
         <Route path="expenses" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><ExpensesAdminPage /></Suspense></RequireAdmin>} />
         <Route path="business-expenses" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><BusinessExpensesPage /></Suspense></RequireAdmin>} />
         <Route path="users" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><UsersPage /></Suspense></RequireAdmin>} />
+        <Route path="leads" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><LeadsPage /></Suspense></RequireAdmin>} />
+        <Route path="leads/:id" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><LeadDetailPage /></Suspense></RequireAdmin>} />
+        <Route path="settings" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><SettingsPage /></Suspense></RequireAdmin>} />
 
         {/* Available to both roles: employee self-service + tickets */}
         <Route path="tickets" element={<Suspense fallback={<AdminLoader />}><TicketsPage /></Suspense>} />

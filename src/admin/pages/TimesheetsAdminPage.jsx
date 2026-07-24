@@ -9,6 +9,8 @@ export default function TimesheetsAdminPage() {
   const [userId, setUserId] = useState('')
   const [projectId, setProjectId] = useState('')
   const [error, setError] = useState('')
+  const [reminding, setReminding] = useState(false)
+  const [remindResult, setRemindResult] = useState(null)
 
   useEffect(() => {
     api.get('/admin/users').then((data) => setUsers(data.users)).catch(() => {})
@@ -28,6 +30,19 @@ export default function TimesheetsAdminPage() {
   useEffect(load, [userId, projectId])
 
   const totalHours = timesheets.reduce((sum, t) => sum + (Number(t.hours) || 0), 0)
+
+  async function handleRemind() {
+    setReminding(true)
+    setRemindResult(null)
+    try {
+      const data = await api.post('/admin/timesheets/remind', { userId })
+      setRemindResult({ ok: true, message: data.message })
+    } catch (err) {
+      setRemindResult({ ok: false, message: err.message })
+    } finally {
+      setReminding(false)
+    }
+  }
 
   return (
     <div>
@@ -58,7 +73,22 @@ export default function TimesheetsAdminPage() {
             </option>
           ))}
         </select>
+        {userId && (
+          <button
+            onClick={handleRemind}
+            disabled={reminding}
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+          >
+            {reminding ? 'Sending…' : `Send reminder to ${users.find((u) => u.id === userId)?.name || 'employee'}`}
+          </button>
+        )}
       </div>
+
+      {remindResult && (
+        <div className={`mt-3 rounded-md px-3 py-2 text-sm ${remindResult.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>
+          {remindResult.message}
+        </div>
+      )}
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
 

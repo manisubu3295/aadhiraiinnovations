@@ -234,6 +234,12 @@ export function StatusBadge({ status }) {
     MEDIUM: 'bg-blue-100 text-blue-700',
     HIGH: 'bg-amber-100 text-amber-700',
     URGENT: 'bg-red-100 text-red-700',
+    NEW: 'bg-slate-100 text-slate-600',
+    CONTACTED: 'bg-blue-100 text-blue-700',
+    FOLLOW_UP: 'bg-amber-100 text-amber-700',
+    QUALIFIED: 'bg-indigo-100 text-indigo-700',
+    WON: 'bg-emerald-100 text-emerald-700',
+    LOST: 'bg-red-100 text-red-700',
   }
   return (
     <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${styles[status] || 'bg-slate-100 text-slate-600'}`}>

@@ -49,6 +49,8 @@ export default function InvoiceEditorPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendResult, setSendResult] = useState(null)
 
   useEffect(() => {
     api.get('/admin/clients').then((data) => setClients(data.clients)).catch(() => {})
@@ -136,6 +138,20 @@ export default function InvoiceEditorPage() {
       setError(err.message)
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleSend() {
+    setSending(true)
+    setSendResult(null)
+    try {
+      const data = await api.post(`/admin/invoices/${id}/send`, {})
+      setSendResult({ ok: true, message: data.message })
+      load()
+    } catch (err) {
+      setSendResult({ ok: false, message: err.message })
+    } finally {
+      setSending(false)
     }
   }
 
@@ -324,9 +340,24 @@ export default function InvoiceEditorPage() {
           }
           right={
             <>
-              <div className="mb-4 flex justify-end">
+              <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
+                {!isNew && (
+                  <button
+                    type="button"
+                    onClick={handleSend}
+                    disabled={sending}
+                    className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+                  >
+                    {sending ? 'Sending…' : 'Send to client'}
+                  </button>
+                )}
                 <PrintButton targetId="invoice-preview" />
               </div>
+              {sendResult && (
+                <div className={`mb-4 rounded-md px-3 py-2 text-sm ${sendResult.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>
+                  {sendResult.message}
+                </div>
+              )}
               <PrintView>
                 <div id="invoice-preview">
                   <DocumentPreview

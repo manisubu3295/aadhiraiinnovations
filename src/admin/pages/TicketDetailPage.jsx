@@ -35,11 +35,15 @@ export default function TicketDetailPage() {
   const [files, setFiles] = useState([])
   const [sending, setSending] = useState(false)
   const [savingField, setSavingField] = useState('')
+  const [ccInput, setCcInput] = useState('')
 
   function load() {
     api
       .get(`/tickets/${id}`)
-      .then((data) => setTicket(data.ticket))
+      .then((data) => {
+        setTicket(data.ticket)
+        setCcInput((data.ticket.ccEmails || []).join(', '))
+      })
       .catch((err) => setError(err.message))
   }
 
@@ -59,6 +63,10 @@ export default function TicketDetailPage() {
     } finally {
       setSavingField('')
     }
+  }
+
+  async function handleSaveCc() {
+    await updateField('ccEmails', ccInput)
   }
 
   async function handleReply(e) {
@@ -130,6 +138,23 @@ export default function TicketDetailPage() {
             <option key={u.id} value={u.id}>{u.name}</option>
           ))}
         </select>
+      </div>
+
+      <div className="mt-2 flex flex-col gap-2 text-sm text-slate-600 sm:flex-row sm:items-center">
+        <span className="shrink-0">CC emails:</span>
+        <input
+          value={ccInput}
+          onChange={(e) => setCcInput(e.target.value)}
+          placeholder="comma-separated, e.g. manager@client.com"
+          className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm sm:max-w-xs"
+        />
+        <button
+          onClick={handleSaveCc}
+          disabled={savingField === 'ccEmails'}
+          className="shrink-0 rounded-md border border-slate-300 px-3 py-1 text-sm hover:bg-slate-50 disabled:opacity-60"
+        >
+          {savingField === 'ccEmails' ? 'Saving…' : 'Save'}
+        </button>
       </div>
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}

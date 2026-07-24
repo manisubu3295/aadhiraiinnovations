@@ -11,6 +11,7 @@ export default function NewTicketPage() {
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState('MEDIUM')
   const [projectId, setProjectId] = useState('')
+  const [ccEmails, setCcEmails] = useState('')
   const [files, setFiles] = useState([])
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -29,6 +30,7 @@ export default function NewTicketPage() {
       form.set('description', description)
       form.set('priority', priority)
       if (projectId) form.set('projectId', projectId)
+      if (ccEmails) form.set('ccEmails', ccEmails)
       files.forEach((f) => form.append('attachments', f))
       const data = await api.postForm('/client/tickets', form)
       navigate(`/portal/tickets/${data.ticket.id}`, { replace: true })
@@ -89,6 +91,16 @@ export default function NewTicketPage() {
               </select>
             </div>
           )}
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-slate-700">CC emails (optional)</label>
+          <input
+            value={ccEmails}
+            onChange={(e) => setCcEmails(e.target.value)}
+            placeholder="comma-separated, e.g. manager@yourcompany.com"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30"
+          />
+          <p className="mt-1 text-xs text-slate-400">These people will be copied on ticket updates.</p>
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-slate-700">Attachments (optional)</label>

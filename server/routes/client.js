@@ -2,20 +2,26 @@ import express from 'express'
 import multer from 'multer'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { nextTicketNumber, saveAttachments, attachmentDiskPath } from '../ticketUtils.js'
+import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails } from '../ticketUtils.js'
 import { sendMail } from '../mailer.js'
+import { getSettings } from '../settings.js'
+import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
+import { sendWhatsApp } from '../whatsapp.js'
 
 const router = express.Router()
 router.use(requireAuth)
 router.use(requireRole('CLIENT'))
 
 // Client sessions only carry { id, role } — load the linked client + email once per request.
+// The client relation is also loaded here (not just clientId) since WhatsApp notifications
+// send to the company-level Client.phone, not a per-user number.
 router.use(async (req, res, next) => {
-  const user = await prisma.user.findUnique({ where: { id: req.user.id } })
+  const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { client: true } })
   if (!user?.clientId) {
     return res.status(403).json({ success: false, message: 'No client account linked to this login.' })
   }
   req.clientUser = user
+  req.client = user.client
   next()
 })
 
@@ -71,7 +77,7 @@ router.get('/tickets/:id', async (req, res) => {
 })
 
 router.post('/tickets', upload.array('attachments', 5), async (req, res) => {
-  const { subject = '', description = '', priority, projectId } = req.body ?? {}
+  const { subject = '', description = '', priority, projectId, ccEmails } = req.body ?? {}
   const trimmedSubject = String(subject).trim()
   const trimmedDescription = String(description).trim()
 
@@ -87,6 +93,12 @@ router.post('/tickets', upload.array('attachments', 5), async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid project.' })
     }
   }
+  let parsedCcEmails
+  try {
+    parsedCcEmails = parseCcEmails(ccEmails)
+  } catch (err) {
+    return res.status(400).json({ success: false, message: err.message })
+  }
 
   const ticketNumber = await nextTicketNumber()
   const ticket = await prisma.ticket.create({
@@ -98,29 +110,76 @@ router.post('/tickets', upload.array('attachments', 5), async (req, res) => {
       clientId: req.clientUser.clientId,
       projectId: projectId || undefined,
       createdById: req.clientUser.id,
+      ccEmails: parsedCcEmails,
     },
   })
   await saveAttachments({ files: req.files, ticketId: ticket.id, uploadedById: req.clientUser.id })
 
-  const notifyTo = process.env.TICKET_NOTIFY_EMAIL || process.env.ENQUIRY_TO_EMAIL
-  if (notifyTo) {
+  const settings = await getSettings()
+  if (settings.ticketNotifyEmail) {
+    const tpl = await getTemplate('TICKET_NEW_STAFF_NOTIFY')
+    const { subject, html } = renderTemplate(tpl, {
+      ticketNumber,
+      subject: trimmedSubject,
+      clientName: req.clientUser.name,
+      description: trimmedDescription.replace(/\n/g, '<br/>'),
+    })
     sendMail({
-      to: notifyTo,
-      subject: `New ticket ${ticketNumber}: ${trimmedSubject}`,
-      text: `${req.clientUser.name} raised a new ticket (${ticketNumber}):\n\n${trimmedDescription}`,
-      html: `<p><strong>${req.clientUser.name}</strong> raised a new ticket (${ticketNumber}):</p><p>${trimmedDescription.replace(/\n/g, '<br/>')}</p>`,
+      to: settings.ticketNotifyEmail,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_NEW_STAFF_NOTIFY', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+  if (settings.whatsappStaffNotifyNumber) {
+    sendWhatsApp({
+      to: settings.whatsappStaffNotifyNumber,
+      templateKey: 'TICKET_CREATED_STAFF',
+      components: [req.client?.name || req.clientUser.name, ticketNumber, trimmedSubject],
+      meta: { relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
   if (req.clientUser.email) {
+    const tpl = await getTemplate('TICKET_CLIENT_ACK')
+    const { subject, html } = renderTemplate(tpl, { ticketNumber, subject: trimmedSubject })
     sendMail({
       to: req.clientUser.email,
-      subject: `We received your ticket ${ticketNumber}`,
-      text: `Thanks — we've received your ticket "${trimmedSubject}" (${ticketNumber}) and will respond soon.`,
-      html: `<p>Thanks — we've received your ticket <strong>${trimmedSubject}</strong> (${ticketNumber}) and will respond soon.</p>`,
+      cc: parsedCcEmails.length ? parsedCcEmails : undefined,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_CLIENT_ACK', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+  if (req.client?.phone) {
+    sendWhatsApp({
+      to: req.client.phone,
+      templateKey: 'TICKET_CREATED_CLIENT',
+      components: [req.client.name, ticketNumber, trimmedSubject],
+      meta: { relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
 
   res.status(201).json({ success: true, ticket })
+})
+
+router.put('/tickets/:id/cc-emails', async (req, res) => {
+  const ticket = await prisma.ticket.findUnique({ where: { id: req.params.id } })
+  if (!ticket || ticket.clientId !== req.clientUser.clientId) {
+    return res.status(404).json({ success: false, message: 'Ticket not found.' })
+  }
+  let parsedCcEmails
+  try {
+    parsedCcEmails = parseCcEmails(req.body?.ccEmails)
+  } catch (err) {
+    return res.status(400).json({ success: false, message: err.message })
+  }
+  const updated = await prisma.ticket.update({
+    where: { id: ticket.id },
+    data: { ccEmails: parsedCcEmails },
+  })
+  res.json({ success: true, ticket: updated })
 })
 
 router.post('/tickets/:id/messages', upload.array('attachments', 5), async (req, res) => {
@@ -145,13 +204,29 @@ router.post('/tickets/:id/messages', upload.array('attachments', 5), async (req,
     include: { author: { select: { id: true, name: true, role: true } }, attachments: true },
   })
 
-  const notifyTo = process.env.TICKET_NOTIFY_EMAIL || process.env.ENQUIRY_TO_EMAIL
-  if (notifyTo) {
+  const settings = await getSettings()
+  if (settings.ticketNotifyEmail) {
+    const tpl = await getTemplate('TICKET_CLIENT_REPLIED_STAFF_NOTIFY')
+    const { subject, html } = renderTemplate(tpl, {
+      ticketNumber: ticket.ticketNumber,
+      subject: ticket.subject,
+      clientName: req.clientUser.name,
+      body: trimmedBody.replace(/\n/g, '<br/>'),
+    })
     sendMail({
-      to: notifyTo,
-      subject: `[${ticket.ticketNumber}] Client replied`,
-      text: `${req.clientUser.name} replied on ticket "${ticket.subject}" (${ticket.ticketNumber}):\n\n${trimmedBody}`,
-      html: `<p><strong>${req.clientUser.name}</strong> replied on ticket <strong>${ticket.subject}</strong> (${ticket.ticketNumber}):</p><p>${trimmedBody.replace(/\n/g, '<br/>')}</p>`,
+      to: settings.ticketNotifyEmail,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_CLIENT_REPLIED_STAFF_NOTIFY', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+  if (settings.whatsappStaffNotifyNumber) {
+    sendWhatsApp({
+      to: settings.whatsappStaffNotifyNumber,
+      templateKey: 'TICKET_CLIENT_REPLIED_STAFF',
+      components: [req.client?.name || req.clientUser.name, ticket.ticketNumber, ticket.subject],
+      meta: { relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
 

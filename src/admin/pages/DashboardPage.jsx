@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { formatMoney } from '../format'
 
@@ -35,6 +36,17 @@ export default function DashboardPage() {
             <div className="mt-1 text-2xl font-semibold text-[#0B1F3A]">{card.value}</div>
           </div>
         ))}
+        <Link
+          to="/admin/leads"
+          className={`rounded-xl border p-5 shadow-sm transition ${
+            summary.dueFollowUps > 0 ? 'border-amber-200 bg-amber-50 hover:bg-amber-100' : 'border-slate-200 bg-white'
+          }`}
+        >
+          <div className="text-sm text-slate-500">Follow-ups due</div>
+          <div className={`mt-1 text-2xl font-semibold ${summary.dueFollowUps > 0 ? 'text-amber-700' : 'text-[#0B1F3A]'}`}>
+            {summary.dueFollowUps}
+          </div>
+        </Link>
       </div>
     </div>
   )
