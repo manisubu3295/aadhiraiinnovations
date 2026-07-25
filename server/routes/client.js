@@ -6,7 +6,7 @@ import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails } 
 import { sendMail } from '../mailer.js'
 import { getSettings } from '../settings.js'
 import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
-import { sendWhatsApp } from '../whatsapp.js'
+import { sendWhatsApp, getStaffNotifyNumbers } from '../whatsapp.js'
 
 const router = express.Router()
 router.use(requireAuth)
@@ -132,9 +132,11 @@ router.post('/tickets', upload.array('attachments', 5), async (req, res) => {
       meta: { templateKey: 'TICKET_NEW_STAFF_NOTIFY', relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
-  if (settings.whatsappStaffNotifyNumber) {
+  const newTicketStaffNumbers = new Set(await getStaffNotifyNumbers())
+  if (settings.whatsappStaffNotifyNumber) newTicketStaffNumbers.add(settings.whatsappStaffNotifyNumber)
+  for (const number of newTicketStaffNumbers) {
     sendWhatsApp({
-      to: settings.whatsappStaffNotifyNumber,
+      to: number,
       templateKey: 'TICKET_CREATED_STAFF',
       components: [req.client?.name || req.clientUser.name, ticketNumber, trimmedSubject],
       meta: { relatedType: 'TICKET', relatedId: ticket.id },
@@ -221,9 +223,11 @@ router.post('/tickets/:id/messages', upload.array('attachments', 5), async (req,
       meta: { templateKey: 'TICKET_CLIENT_REPLIED_STAFF_NOTIFY', relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
-  if (settings.whatsappStaffNotifyNumber) {
+  const replyStaffNumbers = new Set(await getStaffNotifyNumbers())
+  if (settings.whatsappStaffNotifyNumber) replyStaffNumbers.add(settings.whatsappStaffNotifyNumber)
+  for (const number of replyStaffNumbers) {
     sendWhatsApp({
-      to: settings.whatsappStaffNotifyNumber,
+      to: number,
       templateKey: 'TICKET_CLIENT_REPLIED_STAFF',
       components: [req.client?.name || req.clientUser.name, ticket.ticketNumber, ticket.subject],
       meta: { relatedType: 'TICKET', relatedId: ticket.id },

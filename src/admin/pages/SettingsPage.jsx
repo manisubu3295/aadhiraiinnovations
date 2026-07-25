@@ -407,6 +407,10 @@ function MyWhatsAppTab() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  const [notifyNumber, setNotifyNumber] = useState('')
+  const [savingNotifyNumber, setSavingNotifyNumber] = useState(false)
+  const [notifyNumberResult, setNotifyNumberResult] = useState(null)
+
   const [testTo, setTestTo] = useState('')
   const [testMessage, setTestMessage] = useState('Test message from Aadhirai Admin — your WhatsApp integration is working.')
   const [testing, setTesting] = useState(false)
@@ -424,12 +428,28 @@ function MyWhatsAppTab() {
           webhookVerifyToken: s?.webhookVerifyToken || '',
         })
         setAccessTokenMasked(s?.accessTokenMasked || null)
+        setNotifyNumber(s?.whatsappNumber || '')
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }
 
   useEffect(load, [])
+
+  async function handleSaveNotifyNumber(e) {
+    e.preventDefault()
+    setSavingNotifyNumber(true)
+    setNotifyNumberResult(null)
+    try {
+      const data = await api.put('/whatsapp/settings', { whatsappNumber: notifyNumber })
+      setNotifyNumber(data.settings?.whatsappNumber || '')
+      setNotifyNumberResult({ ok: true, message: 'Saved.' })
+    } catch (err) {
+      setNotifyNumberResult({ ok: false, message: err.message })
+    } finally {
+      setSavingNotifyNumber(false)
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -472,6 +492,36 @@ function MyWhatsAppTab() {
 
   return (
     <>
+      <form onSubmit={handleSaveNotifyNumber} className="mb-6 space-y-3 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-800">Get ticket notifications on WhatsApp</h2>
+          <p className="mt-1 text-xs text-slate-400">
+            Personal number for new-ticket and client-reply alerts — separate from the Business API setup below,
+            no Meta account needed. Sent from the shared business number configured on the "WhatsApp" tab.
+          </p>
+        </div>
+        <Field label="Your WhatsApp number" hint="E.164 format, e.g. 919876543210.">
+          <input
+            value={notifyNumber}
+            onChange={(e) => setNotifyNumber(e.target.value)}
+            placeholder="919876543210"
+            className={`${inputClass} sm:max-w-xs`}
+          />
+        </Field>
+        <button
+          type="submit"
+          disabled={savingNotifyNumber}
+          className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+        >
+          {savingNotifyNumber ? 'Saving…' : 'Save'}
+        </button>
+        {notifyNumberResult && (
+          <div className={`text-sm ${notifyNumberResult.ok ? 'text-green-700' : 'text-red-600'}`}>
+            {notifyNumberResult.message}
+          </div>
+        )}
+      </form>
+
       {error && <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
       {success && <div className="mb-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>}
 

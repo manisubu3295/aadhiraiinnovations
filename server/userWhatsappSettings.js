@@ -56,20 +56,15 @@ export async function getDecryptedAccessTokenForUser(userId) {
   return decrypt(row.accessTokenEncrypted)
 }
 
-// Plain-text message, not a Message Template — only works if the recipient has an open 24-hour
-// session with this number (e.g. they messaged it first), or is a verified test recipient in
-// Meta's dashboard. That's fine for a manual "does this integration work" check; a real
-// business-initiated send to a cold number still needs an approved template (see server/whatsapp.js).
-export async function sendTestMessage(userId, { to, message }) {
+// Low-level Meta call shared by sendTestMessage and sendConversationMessage — plain text, not a
+// Message Template, so it only delivers if the recipient has an open 24-hour session with this
+// number (they messaged it first) or is a verified test recipient in Meta's dashboard. A cold
+// business-initiated send still needs an approved template (see server/whatsapp.js).
+async function callMetaSendText(userId, number, message) {
   const settings = await getForUser(userId)
   if (!settings?.accessTokenEncrypted || !settings.phoneNumberId) {
     throw new Error('Save your Phone Number ID and access token first.')
   }
-  const number = normalizeWhatsAppNumber(to)
-  if (!number) {
-    throw new Error(`Not a valid WhatsApp number: ${to}`)
-  }
-
   const accessToken = decrypt(settings.accessTokenEncrypted)
   const url = `https://graph.facebook.com/${API_VERSION}/${settings.phoneNumberId}/messages`
 
@@ -88,4 +83,52 @@ export async function sendTestMessage(userId, { to, message }) {
     throw new Error(data?.error?.message || `WhatsApp API request failed (${response.status}).`)
   }
   return data
+}
+
+export async function sendTestMessage(userId, { to, message }) {
+  const number = normalizeWhatsAppNumber(to)
+  if (!number) {
+    throw new Error(`Not a valid WhatsApp number: ${to}`)
+  }
+  return callMetaSendText(userId, number, message)
+}
+
+// The single place that sends an outbound conversation message AND persists it — used by both
+// the human-reply route (server/routes/conversations.js) and the bot engine (chatFlowEngine.js),
+// so there is exactly one place that talks to Meta and writes WhatsAppMessage rows for outbound.
+// Always records the attempt (even on failure, as a FAILED row) before rethrowing, so a failed
+// send is visible in the thread rather than silently vanishing.
+export async function sendConversationMessage(conversation, body, { sentByUserId, sentByBot = false } = {}) {
+  try {
+    const data = await callMetaSendText(conversation.userId, conversation.contactNumber, body)
+    const metaMessageId = data?.messages?.[0]?.id || null
+    const message = await prisma.whatsAppMessage.create({
+      data: {
+        conversationId: conversation.id,
+        direction: 'OUTBOUND',
+        body,
+        metaMessageId,
+        sentByUserId: sentByUserId || null,
+        sentByBot,
+        status: 'SENT',
+      },
+    })
+    await prisma.whatsAppConversation.update({
+      where: { id: conversation.id },
+      data: { lastMessageAt: new Date(), lastMessagePreview: body.slice(0, 120) },
+    })
+    return message
+  } catch (error) {
+    await prisma.whatsAppMessage.create({
+      data: {
+        conversationId: conversation.id,
+        direction: 'OUTBOUND',
+        body,
+        sentByUserId: sentByUserId || null,
+        sentByBot,
+        status: 'FAILED',
+      },
+    })
+    throw error
+  }
 }

@@ -9,6 +9,8 @@ const adminNavItems = [
   { to: '/admin/projects', label: 'Projects' },
   { to: '/admin/leads', label: 'Leads' },
   { to: '/admin/tickets', label: 'Tickets' },
+  { to: '/admin/whatsapp', label: 'WhatsApp' },
+  { to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
   { to: '/admin/quotations', label: 'Quotations' },
   { to: '/admin/invoices', label: 'Invoices' },
   { to: '/admin/timesheets', label: 'Timesheets' },
@@ -20,6 +22,8 @@ const adminNavItems = [
 
 const staffNavItems = [
   { to: '/admin/tickets', label: 'Tickets' },
+  { to: '/admin/whatsapp', label: 'WhatsApp' },
+  { to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
   { to: '/admin/my-timesheet', label: 'My Timesheet' },
   { to: '/admin/my-expenses', label: 'My Expenses' },
   { to: '/admin/my-projects', label: 'Projects' },

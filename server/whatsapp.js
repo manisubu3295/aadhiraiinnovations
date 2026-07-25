@@ -1,3 +1,4 @@
+import { prisma } from './prismaClient.js'
 import { getSettings } from './settings.js'
 import { getWhatsAppTemplate } from './whatsappTemplates.js'
 import { logWhatsApp } from './whatsappLog.js'
@@ -83,4 +84,15 @@ export async function deliverWhatsApp({ to, templateKey, components = [], meta }
 // existing callers don't await/catch this; failures are logged via deliverWhatsApp, not thrown.
 export function sendWhatsApp(options) {
   deliverWhatsApp(options).catch(() => {})
+}
+
+// Every ADMIN/STAFF user who's set a personal notification number (Settings > My WhatsApp) —
+// used to broadcast ticket-lifecycle notifications to each of them individually, in addition to
+// (not instead of) the single shared Setting.whatsappStaffNotifyNumber.
+export async function getStaffNotifyNumbers() {
+  const users = await prisma.user.findMany({
+    where: { role: { in: ['ADMIN', 'STAFF'] }, whatsappNumber: { not: null } },
+    select: { whatsappNumber: true },
+  })
+  return users.map((u) => u.whatsappNumber).filter(Boolean)
 }

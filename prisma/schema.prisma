@@ -132,6 +132,11 @@ model User {
   role         UserRole @default(STAFF)
   createdAt    DateTime @default(now())
 
+  // Personal WhatsApp number for ticket notifications (new ticket, client reply) — distinct
+  // from UserWhatsAppSettings.phoneNumberId, which is a Meta API identifier for sending, not
+  // a dialable number. Self-service, set from Settings > My WhatsApp.
+  whatsappNumber String?
+
   createdClients    Client[]    @relation("ClientCreatedBy")
   createdProjects   Project[]   @relation("ProjectCreatedBy")
   recordedPayments  Payment[]   @relation("PaymentRecordedBy")
@@ -156,6 +161,10 @@ model User {
 
   whatsappSettings UserWhatsAppSettings?
 
+  whatsappConversations WhatsAppConversation[]
+  sentWhatsAppMessages  WhatsAppMessage[]
+  chatFlows             ChatFlow[]
+
   @@map("users")
 }
 
@@ -178,6 +187,163 @@ model UserWhatsAppSettings {
   @@map("user_whatsapp_settings")
 }
 
+// ---------- WhatsApp conversation inbox + chatbot flow builder ----------
+// One WhatsAppConversation per (owning user, contact number) — inbound/outbound message thread.
+// Scoped generically per-user (like UserWhatsAppSettings) even though only ADMIN uses it today.
+
+enum WhatsAppMessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum WhatsAppMessageType {
+  TEXT
+  IMAGE
+  DOCUMENT
+  AUDIO
+  VIDEO
+  LOCATION
+  INTERACTIVE
+  OTHER
+}
+
+model WhatsAppConversation {
+  id                 String   @id @default(cuid())
+  contactNumber      String
+  lastMessageAt      DateTime @default(now())
+  lastMessagePreview String?
+  unreadCount        Int      @default(0)
+  createdAt          DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  clientId String?
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  messages     WhatsAppMessage[]
+  flowSessions ChatFlowSession[]
+
+  @@unique([userId, contactNumber])
+  @@index([userId, lastMessageAt])
+  @@map("whatsapp_conversations")
+}
+
+// metaMessageId dedups against Meta's webhook retries and correlates later status callbacks
+// (SENT/DELIVERED/READ/FAILED) back to the outbound message that was sent.
+model WhatsAppMessage {
+  id             String                   @id @default(cuid())
+  direction      WhatsAppMessageDirection
+  messageType    WhatsAppMessageType      @default(TEXT)
+  body           String?
+  rawPayload     Json?
+  metaMessageId  String?                  @unique
+  sentByBot      Boolean                  @default(false)
+  status         String?
+  createdAt      DateTime                 @default(now())
+
+  conversationId String
+  conversation   WhatsAppConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  sentByUserId String?
+  sentByUser   User?   @relation(fields: [sentByUserId], references: [id], onDelete: SetNull)
+
+  @@index([conversationId, createdAt])
+  @@map("whatsapp_messages")
+}
+
+enum ChatFlowTriggerType {
+  ANY_MESSAGE
+  KEYWORD
+}
+
+enum ChatFlowNodeType {
+  MESSAGE
+  QUESTION
+  CONDITION
+  END
+}
+
+model ChatFlow {
+  id              String              @id @default(cuid())
+  name            String
+  isActive        Boolean             @default(false)
+  archivedAt      DateTime?
+  triggerType     ChatFlowTriggerType @default(ANY_MESSAGE)
+  triggerKeywords String[]            @default([])
+  startNodeId     String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  nodes    ChatFlowNode[]
+  edges    ChatFlowEdge[]
+  sessions ChatFlowSession[]
+
+  @@index([userId, isActive])
+  @@map("chat_flows")
+}
+
+// data shape varies by type — MESSAGE:{message}; QUESTION:{message,variableName};
+// CONDITION:{conditions:[{matchType,value,nextNodeId}],defaultNextNodeId}; END:{}
+model ChatFlowNode {
+  id        String           @id @default(cuid())
+  type      ChatFlowNodeType
+  data      Json
+  positionX Float
+  positionY Float
+
+  flowId String
+  flow   ChatFlow @relation(fields: [flowId], references: [id], onDelete: Cascade)
+
+  @@map("chat_flow_nodes")
+}
+
+model ChatFlowEdge {
+  id         String  @id @default(cuid())
+  fromNodeId String
+  toNodeId   String
+  label      String?
+
+  flowId String
+  flow   ChatFlow @relation(fields: [flowId], references: [id], onDelete: Cascade)
+
+  @@map("chat_flow_edges")
+}
+
+enum ChatFlowSessionStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+  PAUSED
+}
+
+// No unique constraint on conversationId — a contact can complete one flow and trigger another
+// later; history is kept, not overwritten. "At most one ACTIVE session per conversation" is an
+// application invariant enforced by chatFlowEngine.js under an advisory lock, not a DB constraint.
+model ChatFlowSession {
+  id            String                @id @default(cuid())
+  currentNodeId String?
+  variables     Json                  @default("{}")
+  status        ChatFlowSessionStatus @default(ACTIVE)
+  startedAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  conversationId String
+  conversation   WhatsAppConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  flowId String
+  flow   ChatFlow @relation(fields: [flowId], references: [id], onDelete: Restrict)
+
+  @@index([conversationId, status])
+  @@map("chat_flow_sessions")
+}
+
 model Client {
   id         String   @id @default(cuid())
   name       String
@@ -196,6 +362,7 @@ model Client {
   invoices   Invoice[]
   users      User[]
   tickets    Ticket[]
+  whatsappConversations WhatsAppConversation[]
 
   @@map("clients")
 }
@@ -528,6 +695,7 @@ model Lead {
   assignedTo   User?   @relation("LeadAssignedTo", fields: [assignedToId], references: [id])
 
   calls LeadCall[]
+  whatsappConversations WhatsAppConversation[]
 
   @@map("leads")
 }
