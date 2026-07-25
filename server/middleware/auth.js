@@ -34,10 +34,12 @@ export function requireAuth(req, res, next) {
   }
 }
 
+// SUPER_ADMIN always passes, regardless of which roles a given route lists — it's the one
+// account meant to have unrestricted access everywhere (see prisma/schema.prisma UserRole).
 export function requireRole(role) {
   const allowed = Array.isArray(role) ? role : [role]
   return (req, res, next) => {
-    if (!allowed.includes(req.user?.role)) {
+    if (req.user?.role !== 'SUPER_ADMIN' && !allowed.includes(req.user?.role)) {
       return res.status(403).json({ success: false, message: 'Not authorized.' })
     }
     next()

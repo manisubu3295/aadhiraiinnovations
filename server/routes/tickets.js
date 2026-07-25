@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 // Staff/admin picker for the assignment dropdown — must come before /:id or "assignable-users" would match as an id.
 router.get('/assignable-users', async (req, res) => {
   const users = await prisma.user.findMany({
-    where: { role: { in: ['ADMIN', 'STAFF'] } },
+    where: { role: { in: ['ADMIN', 'STAFF', 'SUPER_ADMIN'] } },
     orderBy: { name: 'asc' },
     select: { id: true, name: true, email: true },
   })
@@ -77,7 +77,7 @@ router.post('/', upload.array('attachments', 5), async (req, res) => {
   }
   if (assignedToId) {
     const assignee = await prisma.user.findUnique({ where: { id: assignedToId } })
-    if (!assignee || !['ADMIN', 'STAFF'].includes(assignee.role)) {
+    if (!assignee || !['ADMIN', 'STAFF', 'SUPER_ADMIN'].includes(assignee.role)) {
       return res.status(400).json({ success: false, message: 'Invalid assignee.' })
     }
   }
@@ -150,7 +150,7 @@ router.put('/:id', async (req, res) => {
   if (assignedToId !== undefined) {
     if (assignedToId) {
       const assignee = await prisma.user.findUnique({ where: { id: assignedToId } })
-      if (!assignee || !['ADMIN', 'STAFF'].includes(assignee.role)) {
+      if (!assignee || !['ADMIN', 'STAFF', 'SUPER_ADMIN'].includes(assignee.role)) {
         return res.status(400).json({ success: false, message: 'Invalid assignee.' })
       }
     }

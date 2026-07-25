@@ -91,7 +91,7 @@ export function sendWhatsApp(options) {
 // (not instead of) the single shared Setting.whatsappStaffNotifyNumber.
 export async function getStaffNotifyNumbers() {
   const users = await prisma.user.findMany({
-    where: { role: { in: ['ADMIN', 'STAFF'] }, whatsappNumber: { not: null } },
+    where: { role: { in: ['ADMIN', 'STAFF', 'SUPER_ADMIN'] }, whatsappNumber: { not: null } },
     select: { whatsappNumber: true },
   })
   return users.map((u) => u.whatsappNumber).filter(Boolean)

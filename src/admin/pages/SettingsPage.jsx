@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { formatDateTime } from '../format'
 import { useAuth } from '../AuthContext'
+import { ADMIN_MENU_ITEMS, STAFF_MENU_ITEMS } from '../menuConfig'
 
 const emptyForm = {
   smtpHost: '',
@@ -44,10 +45,13 @@ function Field({ label, hint, children }) {
 const inputClass =
   'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30'
 
-const TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
+const BASE_TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
 
 export default function SettingsPage() {
+  const { user } = useAuth()
   const [tab, setTab] = useState('SMTP')
+  // Only the fixed super admin account can change what Admin/Staff see in their sidebar.
+  const tabs = user?.role === 'SUPER_ADMIN' ? [...BASE_TABS, 'Menu Access'] : BASE_TABS
 
   return (
     <div className="max-w-3xl">
@@ -57,7 +61,7 @@ export default function SettingsPage() {
       </p>
 
       <div className="mt-4 flex gap-1 border-b border-slate-200">
-        {TABS.map((t) => (
+        {tabs.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -77,6 +81,7 @@ export default function SettingsPage() {
         {tab === 'WhatsApp Templates' && <WhatsAppTemplatesTab />}
         {tab === 'Email Log' && <EmailLogTab />}
         {tab === 'WhatsApp Log' && <WhatsAppLogTab />}
+        {tab === 'Menu Access' && user?.role === 'SUPER_ADMIN' && <MenuAccessTab />}
       </div>
     </div>
   )
@@ -621,6 +626,110 @@ function MyWhatsAppTab() {
         </form>
       )}
     </>
+  )
+}
+
+function MenuAccessTab() {
+  const [permissions, setPermissions] = useState({ adminMenuKeys: [], staffMenuKeys: [] })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  function load() {
+    setLoading(true)
+    api
+      .get('/menu-permissions')
+      .then((data) => setPermissions(data.permissions))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(load, [])
+
+  function toggleKey(listName, key) {
+    setPermissions((prev) => {
+      const current = prev[listName] || []
+      const isRestricting = current.length > 0
+      const allKeys = (listName === 'adminMenuKeys' ? ADMIN_MENU_ITEMS : STAFF_MENU_ITEMS).map((i) => i.key)
+      // Empty list means "show everything" — the first uncheck on a fully-open list needs to
+      // start from the full set, not from nothing, or unchecking one item would hide all others too.
+      const base = isRestricting ? current : allKeys
+      const next = base.includes(key) ? base.filter((k) => k !== key) : [...base, key]
+      return { ...prev, [listName]: next }
+    })
+  }
+
+  async function handleSave() {
+    setSaving(true)
+    setError('')
+    setSuccess('')
+    try {
+      const data = await api.put('/menu-permissions', permissions)
+      setPermissions(data.permissions)
+      setSuccess('Menu access saved.')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  function resetToAll(listName) {
+    setPermissions((prev) => ({ ...prev, [listName]: [] }))
+  }
+
+  function isChecked(listName, key) {
+    const current = permissions[listName] || []
+    return current.length === 0 || current.includes(key)
+  }
+
+  if (loading) return <div className="text-slate-400">Loading…</div>
+
+  return (
+    <div className="space-y-6">
+      {error && <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
+      {success && <div className="rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>}
+      <p className="text-xs text-slate-400">
+        Controls what shows up in the sidebar for Admin and Staff — it doesn't block direct access to a page's
+        URL, it just declutters the menu. You (the super admin) always see everything, regardless of these lists.
+      </p>
+
+      {[
+        { title: 'Admin menu', listName: 'adminMenuKeys', items: ADMIN_MENU_ITEMS },
+        { title: 'Staff menu', listName: 'staffMenuKeys', items: STAFF_MENU_ITEMS },
+      ].map(({ title, listName, items }) => (
+        <div key={listName} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-slate-800">{title}</h2>
+            <button onClick={() => resetToAll(listName)} className="text-xs font-medium text-[#0B1F3A] hover:underline">
+              Show all
+            </button>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {items.map((item) => (
+              <label key={item.key} className="flex items-center gap-2 text-sm text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={isChecked(listName, item.key)}
+                  onChange={() => toggleKey(listName, item.key)}
+                  className="rounded border-slate-300"
+                />
+                {item.label}
+              </label>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <button
+        onClick={handleSave}
+        disabled={saving}
+        className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+      >
+        {saving ? 'Saving…' : 'Save menu access'}
+      </button>
+    </div>
   )
 }
 

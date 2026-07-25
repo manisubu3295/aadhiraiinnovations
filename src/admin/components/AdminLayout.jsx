@@ -2,32 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { api } from '../api'
-
-const adminNavItems = [
-  { to: '/admin/dashboard', label: 'Dashboard' },
-  { to: '/admin/clients', label: 'Clients' },
-  { to: '/admin/projects', label: 'Projects' },
-  { to: '/admin/leads', label: 'Leads' },
-  { to: '/admin/tickets', label: 'Tickets' },
-  { to: '/admin/whatsapp', label: 'WhatsApp' },
-  { to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
-  { to: '/admin/quotations', label: 'Quotations' },
-  { to: '/admin/invoices', label: 'Invoices' },
-  { to: '/admin/timesheets', label: 'Timesheets' },
-  { to: '/admin/expenses', label: 'Expense Claims' },
-  { to: '/admin/business-expenses', label: 'Business Expenses' },
-  { to: '/admin/users', label: 'Users' },
-  { to: '/admin/settings', label: 'Settings' },
-]
-
-const staffNavItems = [
-  { to: '/admin/tickets', label: 'Tickets' },
-  { to: '/admin/whatsapp', label: 'WhatsApp' },
-  { to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
-  { to: '/admin/my-timesheet', label: 'My Timesheet' },
-  { to: '/admin/my-expenses', label: 'My Expenses' },
-  { to: '/admin/my-projects', label: 'Projects' },
-]
+import { ADMIN_MENU_ITEMS, STAFF_MENU_ITEMS, filterMenuItems } from '../menuConfig'
 
 function linkClasses({ isActive }) {
   return `block rounded-md px-3 py-2 text-sm font-medium transition ${
@@ -39,17 +14,30 @@ export default function AdminLayout() {
   const { user, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [dueFollowUps, setDueFollowUps] = useState(0)
-  const navItems = user?.role === 'ADMIN' ? adminNavItems : staffNavItems
+  const [permissions, setPermissions] = useState({ adminMenuKeys: [], staffMenuKeys: [] })
+  const isAdminTier = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN'
 
   useEffect(() => {
-    if (user?.role !== 'ADMIN') return
+    api.get('/menu-permissions').then((data) => setPermissions(data.permissions)).catch(() => {})
+  }, [])
+
+  // SUPER_ADMIN is never restricted by the configured menu lists — only ADMIN/STAFF are.
+  const navItems =
+    user?.role === 'SUPER_ADMIN'
+      ? ADMIN_MENU_ITEMS
+      : isAdminTier
+        ? filterMenuItems(ADMIN_MENU_ITEMS, permissions.adminMenuKeys)
+        : filterMenuItems(STAFF_MENU_ITEMS, permissions.staffMenuKeys)
+
+  useEffect(() => {
+    if (!isAdminTier) return
     function poll() {
       api.get('/admin/leads/reminders/count').then((data) => setDueFollowUps(data.count)).catch(() => {})
     }
     poll()
     const interval = setInterval(poll, 5 * 60 * 1000)
     return () => clearInterval(interval)
-  }, [user?.role])
+  }, [isAdminTier])
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 md:flex">

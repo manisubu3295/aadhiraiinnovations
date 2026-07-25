@@ -7,7 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// SUPER_ADMIN has unrestricted access everywhere ADMIN does (see requireRole in
+// server/middleware/auth.js) and is meant to stay a single fixed account (see prisma/seed.js) —
+// it's never selectable in the regular user create/edit UI (src/admin/pages/UsersPage.jsx).
+// ADMIN and STAFF each have a super-admin-configurable, sidebar-visibility-only menu list
+// (Setting.adminMenuKeys/staffMenuKeys) — see src/admin/menuConfig.js.
 enum UserRole {
+  SUPER_ADMIN
   ADMIN
   STAFF
   CLIENT
@@ -669,6 +675,14 @@ model Setting {
   whatsappBusinessAccountId String?
   whatsappApiVersion        String?
   whatsappStaffNotifyNumber String?
+
+  // Sidebar-visibility-only menu selection for ADMIN/STAFF, configured by SUPER_ADMIN
+  // (src/admin/pages/SettingsPage.jsx "Menu Access" tab). Empty array means "not configured yet
+  // — show everything" (see src/admin/components/AdminLayout.jsx), so this never locks anyone
+  // out of a menu just because it was never explicitly set. SUPER_ADMIN always sees every menu
+  // regardless of these lists — they aren't restrictable by this mechanism.
+  adminMenuKeys String[] @default([])
+  staffMenuKeys String[] @default([])
 
   updatedAt          DateTime @updatedAt
 

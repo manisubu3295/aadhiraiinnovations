@@ -46,13 +46,14 @@ function RequireAuth({ children }) {
 
 function RequireAdmin({ children }) {
   const { user } = useAuth()
-  if (user?.role !== 'ADMIN') return <Navigate to="/admin/my-timesheet" replace />
+  if (user?.role !== 'ADMIN' && user?.role !== 'SUPER_ADMIN') return <Navigate to="/admin/my-timesheet" replace />
   return children
 }
 
 function HomeRedirect() {
   const { user } = useAuth()
-  return <Navigate to={user?.role === 'ADMIN' ? '/admin/dashboard' : '/admin/my-timesheet'} replace />
+  const isAdminTier = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN'
+  return <Navigate to={isAdminTier ? '/admin/dashboard' : '/admin/my-timesheet'} replace />
 }
 
 function AdminRoutes() {

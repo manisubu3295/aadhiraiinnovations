@@ -26,9 +26,9 @@ async function seedAdmin() {
 
   const passwordHash = await bcrypt.hash(password, 12)
   await prisma.user.create({
-    data: { name, username, email, passwordHash, role: 'ADMIN' },
+    data: { name, username, email, passwordHash, role: 'SUPER_ADMIN' },
   })
-  console.log(`Created admin user "${username}". You can now log in at /admin.`)
+  console.log(`Created super admin user "${username}". You can now log in at /admin.`)
 }
 
 // update: {} so re-running the seed never clobbers an admin's edited template copy —

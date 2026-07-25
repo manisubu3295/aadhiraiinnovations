@@ -14,6 +14,7 @@ import clientRoutes from './server/routes/client.js'
 import whatsappSettingsRoutes from './server/routes/whatsappSettings.js'
 import conversationRoutes from './server/routes/conversations.js'
 import chatFlowRoutes from './server/routes/chatFlows.js'
+import menuPermissionRoutes from './server/routes/menuPermissions.js'
 import { deliverMail } from './server/mailer.js'
 import { getSettings } from './server/settings.js'
 import { getTemplate, renderTemplate, htmlToText } from './server/emailTemplates.js'
@@ -53,6 +54,7 @@ app.use('/api/client', clientRoutes)
 app.use('/api/whatsapp', whatsappSettingsRoutes)
 app.use('/api/whatsapp/conversations', conversationRoutes)
 app.use('/api/whatsapp/flows', chatFlowRoutes)
+app.use('/api/menu-permissions', menuPermissionRoutes)
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' })

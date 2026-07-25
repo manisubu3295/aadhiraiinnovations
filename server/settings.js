@@ -35,6 +35,9 @@ export async function getSettings() {
     whatsappBusinessAccountId: row?.whatsappBusinessAccountId || process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || '',
     whatsappApiVersion: row?.whatsappApiVersion || process.env.WHATSAPP_API_VERSION || 'v21.0',
     whatsappStaffNotifyNumber: row?.whatsappStaffNotifyNumber || process.env.WHATSAPP_STAFF_NOTIFY_NUMBER || '',
+
+    adminMenuKeys: row?.adminMenuKeys || [],
+    staffMenuKeys: row?.staffMenuKeys || [],
   }
 }
 
