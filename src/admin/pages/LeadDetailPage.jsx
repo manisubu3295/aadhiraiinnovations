@@ -4,6 +4,7 @@ import { api } from '../api'
 import { formatDateTime } from '../format'
 
 const STATUSES = ['NEW', 'CONTACTED', 'FOLLOW_UP', 'QUALIFIED', 'WON', 'LOST']
+const LICENSE_PLAN_LABELS = { THREE_MONTH: '3 Months', SIX_MONTH: '6 Months', ONE_YEAR: '1 Year' }
 
 function toDatetimeLocal(date) {
   const pad = (n) => String(n).padStart(2, '0')
@@ -30,6 +31,9 @@ export default function LeadDetailPage() {
   const [callForm, setCallForm] = useState(emptyCallForm)
   const [loggingCall, setLoggingCall] = useState(false)
   const [callError, setCallError] = useState('')
+
+  const [generatingLicense, setGeneratingLicense] = useState(false)
+  const [licenseError, setLicenseError] = useState('')
 
   function load() {
     api.get(`/admin/leads/${id}`).then((data) => setLead(data.lead)).catch((err) => setError(err.message))
@@ -85,6 +89,20 @@ export default function LeadDetailPage() {
       setCallError(err.message)
     } finally {
       setLoggingCall(false)
+    }
+  }
+
+  async function handleGenerateLicense() {
+    setGeneratingLicense(true)
+    setLicenseError('')
+    try {
+      const data = await api.post(`/admin/leads/${id}/license/generate`, {})
+      setLead((prev) => ({ ...prev, licenseRequest: data.licenseRequest, status: 'WON' }))
+    } catch (err) {
+      setLicenseError(err.message)
+      load()
+    } finally {
+      setGeneratingLicense(false)
     }
   }
 
@@ -170,6 +188,50 @@ export default function LeadDetailPage() {
           </div>
         )}
       </div>
+
+      {lead.licenseRequest && (
+        <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-sm font-semibold text-slate-800">Offline License Request</h2>
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                lead.licenseRequest.status === 'FULFILLED'
+                  ? 'bg-emerald-100 text-emerald-700'
+                  : lead.licenseRequest.status === 'FAILED'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-amber-100 text-amber-700'
+              }`}
+            >
+              {lead.licenseRequest.status}
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+            <div><span className="text-slate-500">Plan:</span> {LICENSE_PLAN_LABELS[lead.licenseRequest.plan] || lead.licenseRequest.plan}</div>
+            <div><span className="text-slate-500">Machine ID:</span> {lead.licenseRequest.machineId}</div>
+            {lead.licenseRequest.status === 'FULFILLED' && (
+              <>
+                <div><span className="text-slate-500">License ID:</span> {lead.licenseRequest.licenseId || '—'}</div>
+                <div><span className="text-slate-500">Expires:</span> {formatDateTime(lead.licenseRequest.expiresAt)}</div>
+              </>
+            )}
+          </div>
+
+          {lead.licenseRequest.status === 'FAILED' && lead.licenseRequest.errorMessage && (
+            <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{lead.licenseRequest.errorMessage}</div>
+          )}
+          {licenseError && <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{licenseError}</div>}
+
+          {lead.licenseRequest.status !== 'FULFILLED' && (
+            <button
+              onClick={handleGenerateLicense}
+              disabled={generatingLicense}
+              className="mt-4 rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+            >
+              {generatingLicense ? 'Generating…' : lead.licenseRequest.status === 'FAILED' ? 'Retry' : 'Generate & Send License'}
+            </button>
+          )}
+        </div>
+      )}
 
       <h2 className="mt-6 text-sm font-semibold text-slate-800">Call history</h2>
       <div className="mt-2 space-y-3">

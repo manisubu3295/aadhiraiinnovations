@@ -30,6 +30,13 @@ const emptyForm = {
   whatsappBusinessAccountId: '',
   whatsappApiVersion: 'v21.0',
   whatsappStaffNotifyNumber: '',
+  licenseApiUrl: '',
+  licenseApiKey: '',
+  licenseDownloadUrl: '',
+  licenseInstallGuideUrl: '',
+  licensePlan3MoPrice: '',
+  licensePlan6MoPrice: '',
+  licensePlan1YrPrice: '',
 }
 
 function Field({ label, hint, children }) {
@@ -45,7 +52,7 @@ function Field({ label, hint, children }) {
 const inputClass =
   'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30'
 
-const BASE_TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
+const BASE_TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Offline Licensing', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
 
 export default function SettingsPage() {
   const { user } = useAuth()
@@ -75,7 +82,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="mt-6">
-        {(tab === 'SMTP' || tab === 'Business Profile' || tab === 'WhatsApp') && <SettingsForm activeTab={tab} />}
+        {(tab === 'SMTP' || tab === 'Business Profile' || tab === 'WhatsApp' || tab === 'Offline Licensing') && <SettingsForm activeTab={tab} />}
         {tab === 'My WhatsApp' && <MyWhatsAppTab />}
         {tab === 'Email Templates' && <EmailTemplatesTab />}
         {tab === 'WhatsApp Templates' && <WhatsAppTemplatesTab />}
@@ -91,6 +98,7 @@ function SettingsForm({ activeTab }) {
   const [form, setForm] = useState(emptyForm)
   const [smtpPassSet, setSmtpPassSet] = useState(false)
   const [whatsappTokenSet, setWhatsappTokenSet] = useState(false)
+  const [licenseApiKeySet, setLicenseApiKeySet] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -105,10 +113,11 @@ function SettingsForm({ activeTab }) {
     api
       .get('/admin/settings')
       .then((data) => {
-        const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, ...rest } = data.settings
-        setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '' })
+        const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, licenseApiKeySet: keySet, ...rest } = data.settings
+        setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '', licenseApiKey: '' })
         setSmtpPassSet(passSet)
         setWhatsappTokenSet(tokenSet)
+        setLicenseApiKeySet(keySet)
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
@@ -123,10 +132,11 @@ function SettingsForm({ activeTab }) {
     setSuccess('')
     try {
       const data = await api.put('/admin/settings', form)
-      const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, ...rest } = data.settings
-      setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '' })
+      const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, licenseApiKeySet: keySet, ...rest } = data.settings
+      setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '', licenseApiKey: '' })
       setSmtpPassSet(passSet)
       setWhatsappTokenSet(tokenSet)
+      setLicenseApiKeySet(keySet)
       setSuccess('Settings saved.')
     } catch (err) {
       setError(err.message)
@@ -349,6 +359,85 @@ function SettingsForm({ activeTab }) {
                 <input
                   value={form.whatsappStaffNotifyNumber}
                   onChange={(e) => setForm({ ...form, whatsappStaffNotifyNumber: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'Offline Licensing' && (
+          <div>
+            <h2 className="text-sm font-semibold text-slate-800">License-generation API</h2>
+            <p className="mt-1 text-xs text-slate-400">
+              The separately-deployed service that generates .lic files for the Medora Offline product page's
+              "Generate &amp; Send License" action. Never exposed to the frontend.
+            </p>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field label="License API URL" hint="e.g. https://license.yourdomain.com">
+                <input
+                  value={form.licenseApiUrl}
+                  onChange={(e) => setForm({ ...form, licenseApiUrl: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+              <Field
+                label="License API key"
+                hint={licenseApiKeySet ? 'A key is already saved — leave blank to keep it.' : 'No key saved yet.'}
+              >
+                <input
+                  type="password"
+                  value={form.licenseApiKey}
+                  onChange={(e) => setForm({ ...form, licenseApiKey: e.target.value })}
+                  placeholder={licenseApiKeySet ? '••••••••' : ''}
+                  className={inputClass}
+                />
+              </Field>
+            </div>
+
+            <h2 className="mt-5 text-sm font-semibold text-slate-800">Offline product page</h2>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field label="Installer download URL">
+                <input
+                  value={form.licenseDownloadUrl}
+                  onChange={(e) => setForm({ ...form, licenseDownloadUrl: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+              <Field label="Installation guide PDF URL">
+                <input
+                  value={form.licenseInstallGuideUrl}
+                  onChange={(e) => setForm({ ...form, licenseInstallGuideUrl: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+            </div>
+            <h3 className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Plan prices (₹)</h3>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <Field label="3 Months">
+                <input
+                  type="number"
+                  min="0"
+                  value={form.licensePlan3MoPrice}
+                  onChange={(e) => setForm({ ...form, licensePlan3MoPrice: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+              <Field label="6 Months">
+                <input
+                  type="number"
+                  min="0"
+                  value={form.licensePlan6MoPrice}
+                  onChange={(e) => setForm({ ...form, licensePlan6MoPrice: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+              <Field label="1 Year">
+                <input
+                  type="number"
+                  min="0"
+                  value={form.licensePlan1YrPrice}
+                  onChange={(e) => setForm({ ...form, licensePlan1YrPrice: e.target.value })}
                   className={inputClass}
                 />
               </Field>
@@ -740,6 +829,7 @@ const CATEGORY_LABELS = {
   TIMESHEET: 'Timesheet',
   EXPENSE: 'Expense',
   ENQUIRY: 'Website enquiry',
+  LICENSE: 'Offline license',
 }
 
 function EmailTemplatesTab() {
@@ -1016,8 +1106,8 @@ function WhatsAppTemplateRow({ template, onSaved }) {
 }
 
 const STATUS_OPTIONS = ['SENT', 'FAILED']
-const RELATED_TYPE_OPTIONS = ['TICKET', 'INVOICE', 'QUOTATION', 'TIMESHEET', 'EXPENSE', 'ENQUIRY', 'TEST']
-const WHATSAPP_RELATED_TYPE_OPTIONS = ['TICKET', 'TEST']
+const RELATED_TYPE_OPTIONS = ['TICKET', 'INVOICE', 'QUOTATION', 'TIMESHEET', 'EXPENSE', 'ENQUIRY', 'LEAD', 'TEST']
+const WHATSAPP_RELATED_TYPE_OPTIONS = ['TICKET', 'LEAD', 'TEST']
 
 function EmailLogTab() {
   const [logs, setLogs] = useState([])

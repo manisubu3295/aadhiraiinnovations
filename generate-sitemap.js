@@ -20,6 +20,7 @@ const staticPages = [
   { path: '/solutions/pharmacy-software', lastmod: today, priority: '0.9', changefreq: 'monthly' },
   { path: '/solutions/erp-automation', lastmod: today, priority: '0.9', changefreq: 'monthly' },
   { path: '/products/medora-plus', lastmod: today, priority: '0.9', changefreq: 'monthly' },
+  { path: '/products/medora-offline', lastmod: today, priority: '0.9', changefreq: 'monthly' },
 ]
 
 // Product pages (from products.js data)

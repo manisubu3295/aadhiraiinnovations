@@ -17,6 +17,7 @@ const BusinessToolsHubPage = lazy(() => import('./business-tools/BusinessToolsHu
 const PharmacySoftwarePage = lazy(() => import('./pages/PharmacySoftwarePage'))
 const ErpAutomationPage    = lazy(() => import('./pages/ErpAutomationPage'))
 const MedoraPlusPage       = lazy(() => import('./pages/MedoraPlusPage'))
+const MedoraOfflinePage    = lazy(() => import('./pages/MedoraOfflinePage'))
 const HrInventoryPage      = lazy(() => import('./pages/HrInventoryPage'))
 const WorkforceManagerPage = lazy(() => import('./pages/WorkforceManagerPage'))
 const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
@@ -114,6 +115,10 @@ function App() {
         <Route
           path="/products/medora-plus"
           element={<Suspense fallback={<PageLoader />}><MedoraPlusPage /></Suspense>}
+        />
+        <Route
+          path="/products/medora-offline"
+          element={<Suspense fallback={<PageLoader />}><MedoraOfflinePage /></Suspense>}
         />
         <Route
           path="/products/hr-inventory"

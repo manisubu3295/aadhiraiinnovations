@@ -117,6 +117,7 @@ enum EmailTemplateCategory {
   TIMESHEET
   EXPENSE
   ENQUIRY
+  LICENSE
 }
 
 enum EmailStatus {
@@ -684,6 +685,18 @@ model Setting {
   adminMenuKeys String[] @default([])
   staffMenuKeys String[] @default([])
 
+  // Offline (desktop) license fulfillment — see server/licenseApi.js and
+  // src/pages/MedoraOfflinePage.jsx. licenseApiKey follows the same plaintext-but-hidden-from-API
+  // convention as smtpPass/whatsappAccessToken above (never returned by GET /admin/settings).
+  // Empty prices/URL mean "not configured yet" — the public page shows a fallback instead of ₹0.
+  licenseApiUrl        String?
+  licenseApiKey        String?
+  licenseDownloadUrl   String?
+  licenseInstallGuideUrl String?
+  licensePlan3MoPrice  Int?
+  licensePlan6MoPrice  Int?
+  licensePlan1YrPrice  Int?
+
   updatedAt          DateTime @updatedAt
 
   @@map("settings")
@@ -710,8 +723,43 @@ model Lead {
 
   calls LeadCall[]
   whatsappConversations WhatsAppConversation[]
+  licenseRequest LicenseRequest?
 
   @@map("leads")
+}
+
+enum LicensePlan {
+  THREE_MONTH
+  SIX_MONTH
+  ONE_YEAR
+}
+
+enum LicenseRequestStatus {
+  PENDING
+  FULFILLED
+  FAILED
+}
+
+// Created alongside a Lead when someone submits the offline-license subscribe form
+// (public /api/offline-license/subscribe) — one per Lead. Fulfilled via the admin
+// "Generate & Send License" action (server/licenseApi.js), which calls a separately-deployed
+// external license-generation service.
+model LicenseRequest {
+  id           String   @id @default(cuid())
+  plan         LicensePlan
+  machineId    String
+  status       LicenseRequestStatus @default(PENDING)
+  licenseId    String?
+  issuedAt     DateTime?
+  expiresAt    DateTime?
+  errorMessage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  leadId String @unique
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("license_requests")
 }
 
 model LeadCall {

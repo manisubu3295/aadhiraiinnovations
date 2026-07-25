@@ -10,6 +10,7 @@ import { renderDocumentHtml } from '../documentRenderer.js'
 import { htmlToPdfBuffer } from '../pdfRenderer.js'
 import { deliverWhatsApp, normalizeWhatsAppNumber } from '../whatsapp.js'
 import { paramsForKey, DEFAULT_TEMPLATES as DEFAULT_WHATSAPP_TEMPLATES } from '../whatsappTemplates.js'
+import { generateLicense, PLAN_API_KEYS } from '../licenseApi.js'
 
 const router = express.Router()
 // Everything under /api/admin is ADMIN-only — staff use /api/employee instead.
@@ -1021,6 +1022,7 @@ router.get('/leads/:id', async (req, res) => {
     include: {
       ...leadListInclude,
       calls: { orderBy: { calledAt: 'desc' }, include: { createdBy: { select: { id: true, name: true } } } },
+      licenseRequest: true,
     },
   })
   if (!lead) return res.status(404).json({ success: false, message: 'Lead not found.' })
@@ -1137,16 +1139,85 @@ router.put('/leads/:id/calls/:callId', async (req, res) => {
   res.json({ success: true, call: updated })
 })
 
+// Calls the external license-generation service (server/licenseApi.js) and emails the resulting
+// .lic file to the lead — the one-click fulfillment action from the offline-license build spec.
+// On failure, records the error on LicenseRequest (visible in the UI for a retry) but leaves
+// Lead.status untouched so a misconfigured API key doesn't silently mark a real sale as lost.
+router.post('/leads/:id/license/generate', async (req, res) => {
+  const lead = await prisma.lead.findUnique({ where: { id: req.params.id }, include: { licenseRequest: true } })
+  if (!lead || !lead.licenseRequest) {
+    return res.status(404).json({ success: false, message: 'This lead has no license request.' })
+  }
+  if (lead.licenseRequest.status === 'FULFILLED') {
+    return res.status(400).json({ success: false, message: 'A license has already been sent for this lead.' })
+  }
+
+  try {
+    if (!lead.email) {
+      throw new Error('This lead has no email address to send the license to.')
+    }
+
+    const data = await generateLicense({
+      machineId: lead.licenseRequest.machineId,
+      plan: PLAN_API_KEYS[lead.licenseRequest.plan],
+      customerName: lead.company || lead.name,
+    })
+
+    const settings = await getSettings()
+    const tpl = await getTemplate('LICENSE_DELIVERY')
+    const { subject, html } = renderTemplate(tpl, {
+      customerName: lead.company || lead.name,
+      plan: lead.licenseRequest.plan,
+      expiresAt: data.expiresAt ? new Date(data.expiresAt).toLocaleDateString() : '-',
+      businessName: settings.businessName,
+    })
+
+    await deliverMail({
+      to: lead.email,
+      subject,
+      text: htmlToText(html),
+      html,
+      attachments: [{ filename: 'license.lic', content: Buffer.from(data.fileContents, 'utf-8') }],
+      meta: { templateKey: 'LICENSE_DELIVERY', relatedType: 'LEAD', relatedId: lead.id },
+    })
+
+    const updatedRequest = await prisma.licenseRequest.update({
+      where: { id: lead.licenseRequest.id },
+      data: {
+        status: 'FULFILLED',
+        licenseId: data.licenseId || null,
+        issuedAt: data.issuedAt ? new Date(data.issuedAt) : new Date(),
+        expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
+        errorMessage: null,
+      },
+    })
+    await prisma.lead.update({ where: { id: lead.id }, data: { status: 'WON' } })
+
+    res.json({ success: true, licenseRequest: updatedRequest })
+  } catch (error) {
+    const updatedRequest = await prisma.licenseRequest.update({
+      where: { id: lead.licenseRequest.id },
+      data: { status: 'FAILED', errorMessage: error.message },
+    })
+    res.status(400).json({ success: false, message: error.message || 'Failed to generate license.', licenseRequest: updatedRequest })
+  }
+})
+
 // ---------- Settings (SMTP + notification emails) ----------
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 router.get('/settings', async (req, res) => {
   const settings = await getSettings()
-  const { smtpPass, whatsappAccessToken, ...rest } = settings
+  const { smtpPass, whatsappAccessToken, licenseApiKey, ...rest } = settings
   res.json({
     success: true,
-    settings: { ...rest, smtpPassSet: Boolean(smtpPass), whatsappAccessTokenSet: Boolean(whatsappAccessToken) },
+    settings: {
+      ...rest,
+      smtpPassSet: Boolean(smtpPass),
+      whatsappAccessTokenSet: Boolean(whatsappAccessToken),
+      licenseApiKeySet: Boolean(licenseApiKey),
+    },
   })
 })
 
@@ -1157,10 +1228,13 @@ const BUSINESS_PROFILE_FIELDS = [
 
 const WHATSAPP_TEXT_FIELDS = ['whatsappPhoneNumberId', 'whatsappBusinessAccountId', 'whatsappApiVersion']
 
+const LICENSE_PRICE_FIELDS = ['licensePlan3MoPrice', 'licensePlan6MoPrice', 'licensePlan1YrPrice']
+
 router.put('/settings', async (req, res) => {
   const {
     smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo,
     whatsappEnabled, whatsappAccessToken, whatsappStaffNotifyNumber,
+    licenseApiUrl, licenseApiKey, licenseDownloadUrl, licenseInstallGuideUrl,
   } = req.body ?? {}
 
   const data = {}
@@ -1207,12 +1281,32 @@ router.put('/settings', async (req, res) => {
     data.whatsappStaffNotifyNumber = trimmed || null
   }
 
+  if (licenseApiUrl !== undefined) data.licenseApiUrl = String(licenseApiUrl).trim() || null
+  // Same "empty string = leave alone" rule as smtpPass/whatsappAccessToken above.
+  if (licenseApiKey !== undefined && licenseApiKey !== '') data.licenseApiKey = String(licenseApiKey)
+  if (licenseDownloadUrl !== undefined) data.licenseDownloadUrl = String(licenseDownloadUrl).trim() || null
+  if (licenseInstallGuideUrl !== undefined) data.licenseInstallGuideUrl = String(licenseInstallGuideUrl).trim() || null
+  for (const key of LICENSE_PRICE_FIELDS) {
+    if (req.body?.[key] === undefined) continue
+    const raw = req.body[key]
+    const price = raw === '' || raw === null ? null : Number(raw)
+    if (price !== null && (!Number.isInteger(price) || price < 0)) {
+      return res.status(400).json({ success: false, message: `Invalid price for ${key}.` })
+    }
+    data[key] = price
+  }
+
   await updateSettings(data)
   const settings = await getSettings()
-  const { smtpPass: _pass, whatsappAccessToken: _token, ...rest } = settings
+  const { smtpPass: _pass, whatsappAccessToken: _token, licenseApiKey: _licenseKey, ...rest } = settings
   res.json({
     success: true,
-    settings: { ...rest, smtpPassSet: Boolean(settings.smtpPass), whatsappAccessTokenSet: Boolean(settings.whatsappAccessToken) },
+    settings: {
+      ...rest,
+      smtpPassSet: Boolean(settings.smtpPass),
+      whatsappAccessTokenSet: Boolean(settings.whatsappAccessToken),
+      licenseApiKeySet: Boolean(settings.licenseApiKey),
+    },
   })
 })
 

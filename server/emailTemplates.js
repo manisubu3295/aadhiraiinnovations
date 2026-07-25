@@ -108,6 +108,33 @@ export const DEFAULT_TEMPLATES = [
     bodyHtml:
       '<p>Hi {{userName}},</p><p>Your expense claim for "{{description}}" has been reimbursed: <strong>{{currency}} {{amount}}</strong>.</p><p>Regards,<br/>{{businessName}}</p>',
   },
+  {
+    key: 'OFFLINE_LICENSE_LEAD_STAFF_NOTIFY',
+    category: 'ENQUIRY',
+    label: 'Offline license subscription request (to staff)',
+    variables: ['name', 'email', 'whatsapp', 'businessName', 'machineId', 'plan'],
+    subject: 'New offline license request — {{name}} ({{plan}})',
+    bodyHtml:
+      '<h2>New Offline License Subscription</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>WhatsApp:</strong> {{whatsapp}}</p><p><strong>Business:</strong> {{businessName}}</p><p><strong>Plan:</strong> {{plan}}</p><p><strong>Machine ID:</strong> {{machineId}}</p><p>Review and fulfill this from the Leads page.</p>',
+  },
+  {
+    key: 'OFFLINE_ENTERPRISE_LEAD_STAFF_NOTIFY',
+    category: 'ENQUIRY',
+    label: 'Offline enterprise/guided setup inquiry (to staff)',
+    variables: ['name', 'email', 'whatsapp', 'businessName', 'message'],
+    subject: 'New enterprise/guided setup inquiry — {{name}}',
+    bodyHtml:
+      '<h2>New Enterprise / Guided Setup Inquiry</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>WhatsApp:</strong> {{whatsapp}}</p><p><strong>Business:</strong> {{businessName}}</p><p><strong>Requirements:</strong></p><p>{{message}}</p><p>Review and follow up from the Leads page.</p>',
+  },
+  {
+    key: 'LICENSE_DELIVERY',
+    category: 'LICENSE',
+    label: 'License delivered (to customer)',
+    variables: ['customerName', 'plan', 'expiresAt', 'businessName'],
+    subject: 'Your {{businessName}} offline license',
+    bodyHtml:
+      '<p>Dear {{customerName}},</p><p>Thanks for subscribing! Your <strong>{{plan}}</strong> license is attached to this email as <code>license.lic</code>, valid until <strong>{{expiresAt}}</strong>.</p><p>To activate: open the app, go to the Activate screen, and import this file (file picker or paste its contents). See the installation guide on our website for step-by-step instructions.</p><p>Regards,<br/>{{businessName}}</p>',
+  },
 ]
 
 const DEFAULTS_BY_KEY = Object.fromEntries(DEFAULT_TEMPLATES.map((t) => [t.key, t]))

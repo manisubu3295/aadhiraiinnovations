@@ -15,6 +15,11 @@ dist-ssr
 .env.*
 uploads
 
+# Installer binaries — too large for git (100MB+); deploy these to the server's public/offline/
+# directory directly (e.g. scp) rather than committing. The install guide PDF is small enough
+# to track normally.
+public/offline/*.exe
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

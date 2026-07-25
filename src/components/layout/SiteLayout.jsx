@@ -71,6 +71,15 @@ const SEO = {
       'Complete pharmacy management: GST billing, AI forecasting, expiry alerts, offline operation with cloud sync. Built for Indian pharmacies.',
     canonical: 'https://www.aadhiraiinnovations.com/products/medora-plus',
   },
+  '/products/medora-offline': {
+    title: 'Offline Pharmacy Billing Software India — Medora Pharma (Windows) | Aadhirai Innovations',
+    description:
+      'Offline pharmacy management software for India and Tamil Nadu. No internet, no monthly server costs — GST billing, FEFO inventory, and reports run entirely on your own Windows computer. Free 30-day trial.',
+    ogTitle: 'Offline Pharmacy Software India — Medora Pharma | Aadhirai Innovations',
+    ogDescription:
+      'The offline pharmacy billing and inventory system built for Indian pharmacies — GST-compliant, works with zero internet after install, data never leaves your computer. Free trial.',
+    canonical: 'https://www.aadhiraiinnovations.com/products/medora-offline',
+  },
   '/founder': {
     title: 'Founder | Aadhirai Innovations — Enterprise Software Company, Tamil Nadu',
     description:

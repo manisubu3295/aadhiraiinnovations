@@ -7,6 +7,18 @@ import Container from '../ui/Container'
 /* ─── Navigation structure ───────────────────────────────────────────── */
 const NAV = [
   {
+    key: 'products',
+    label: 'Products',
+    groups: [
+      {
+        items: [
+          { label: 'Medora+', desc: 'AI-powered pharmacy management, cloud-synced', href: '/products/medora-plus' },
+          { label: 'Medora Offline', desc: 'Fully offline pharmacy software — one-time license, no internet needed', href: '/products/medora-offline' },
+        ],
+      },
+    ],
+  },
+  {
     key: 'services',
     label: 'Services',
     groups: [

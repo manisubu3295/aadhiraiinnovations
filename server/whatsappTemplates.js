@@ -30,6 +30,16 @@ export const DEFAULT_TEMPLATES = [
     label: 'Client replied (to staff)',
     params: ['clientName', 'ticketNumber', 'subject'],
   },
+  {
+    key: 'OFFLINE_LICENSE_LEAD_STAFF',
+    label: 'Offline license subscription request (to staff)',
+    params: ['name', 'plan', 'machineId'],
+  },
+  {
+    key: 'OFFLINE_ENTERPRISE_LEAD_STAFF',
+    label: 'Offline enterprise/guided setup inquiry (to staff)',
+    params: ['name', 'businessName', 'whatsapp'],
+  },
 ]
 
 const DEFAULTS_BY_KEY = Object.fromEntries(DEFAULT_TEMPLATES.map((t) => [t.key, t]))
