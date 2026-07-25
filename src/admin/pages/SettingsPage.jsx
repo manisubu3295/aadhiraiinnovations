@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { formatDateTime } from '../format'
+import { useAuth } from '../AuthContext'
+import { API_BASE } from '../../lib/apiBase'
 
 const emptyForm = {
   smtpHost: '',
@@ -43,7 +45,7 @@ function Field({ label, hint, children }) {
 const inputClass =
   'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30'
 
-const TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
+const TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
 
 export default function SettingsPage() {
   const [tab, setTab] = useState('SMTP')
@@ -71,6 +73,7 @@ export default function SettingsPage() {
 
       <div className="mt-6">
         {(tab === 'SMTP' || tab === 'Business Profile' || tab === 'WhatsApp') && <SettingsForm activeTab={tab} />}
+        {tab === 'My WhatsApp' && <MyWhatsAppTab />}
         {tab === 'Email Templates' && <EmailTemplatesTab />}
         {tab === 'WhatsApp Templates' && <WhatsAppTemplatesTab />}
         {tab === 'Email Log' && <EmailLogTab />}
@@ -392,6 +395,115 @@ function SettingsForm({ activeTab }) {
           )}
         </form>
       )}
+    </>
+  )
+}
+
+function MyWhatsAppTab() {
+  const { user } = useAuth()
+  const [form, setForm] = useState({ phoneNumberId: '', accessToken: '', webhookVerifyToken: '' })
+  const [accessTokenMasked, setAccessTokenMasked] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  function load() {
+    setLoading(true)
+    api
+      .get('/whatsapp/settings')
+      .then((data) => {
+        const s = data.settings
+        setForm({
+          phoneNumberId: s?.phoneNumberId || '',
+          accessToken: '',
+          webhookVerifyToken: s?.webhookVerifyToken || '',
+        })
+        setAccessTokenMasked(s?.accessTokenMasked || null)
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(load, [])
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setSaving(true)
+    setError('')
+    setSuccess('')
+    try {
+      const data = await api.put('/whatsapp/settings', form)
+      const s = data.settings
+      setForm({ phoneNumberId: s?.phoneNumberId || '', accessToken: '', webhookVerifyToken: s?.webhookVerifyToken || '' })
+      setAccessTokenMasked(s?.accessTokenMasked || null)
+      setSuccess('WhatsApp settings saved.')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) return <div className="text-slate-400">Loading…</div>
+
+  const webhookUrl = user ? `${API_BASE}/api/whatsapp/webhook/${user.id}` : ''
+
+  return (
+    <>
+      {error && <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
+      {success && <div className="mb-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>}
+
+      <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-800">Your WhatsApp Business number</h2>
+          <p className="mt-1 text-xs text-slate-400">
+            Personal to your login — send/receive WhatsApp using your own Meta Business number instead of the
+            shared one on the "WhatsApp" tab. Requires a Meta app with the WhatsApp product added and a permanent
+            system-user access token.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Phone Number ID" hint="From the Meta Developer Dashboard.">
+            <input
+              value={form.phoneNumberId}
+              onChange={(e) => setForm({ ...form, phoneNumberId: e.target.value })}
+              className={inputClass}
+            />
+          </Field>
+          <Field
+            label="Access token"
+            hint={accessTokenMasked ? `Saved: ${accessTokenMasked} — leave blank to keep it.` : 'No token saved yet.'}
+          >
+            <input
+              type="password"
+              value={form.accessToken}
+              onChange={(e) => setForm({ ...form, accessToken: e.target.value })}
+              placeholder={accessTokenMasked || ''}
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Webhook verify token" hint="Any string you choose — enter the same value in Meta's webhook setup.">
+            <input
+              value={form.webhookVerifyToken}
+              onChange={(e) => setForm({ ...form, webhookVerifyToken: e.target.value })}
+              className={inputClass}
+            />
+          </Field>
+        </div>
+        {webhookUrl && (
+          <Field label="Webhook callback URL" hint="Paste this into Meta's App Dashboard → WhatsApp → Configuration → Webhook.">
+            <input readOnly value={webhookUrl} onFocus={(e) => e.target.select()} className={`${inputClass} bg-slate-50 text-slate-500`} />
+          </Field>
+        )}
+        <button
+          type="submit"
+          disabled={saving}
+          className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+        >
+          {saving ? 'Saving…' : 'Save WhatsApp settings'}
+        </button>
+      </form>
     </>
   )
 }

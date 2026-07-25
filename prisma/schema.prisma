@@ -154,7 +154,28 @@ model User {
   assignedLeads Lead[]     @relation("LeadAssignedTo")
   leadCalls     LeadCall[]
 
+  whatsappSettings UserWhatsAppSettings?
+
   @@map("users")
+}
+
+// Per-user Meta WhatsApp Business API credentials (ADMIN/STAFF self-service, distinct from the
+// single global Setting.whatsapp* block used for ticket notifications) — each staff member can
+// send from their own WhatsApp Business number. accessToken is encrypted at rest (server/crypto.js);
+// accessTokenLast4 exists purely so the settings UI can show a masked value without ever decrypting.
+model UserWhatsAppSettings {
+  id                   String   @id @default(cuid())
+  phoneNumberId        String
+  accessTokenEncrypted String
+  accessTokenLast4     String?
+  webhookVerifyToken   String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_whatsapp_settings")
 }
 
 model Client {
