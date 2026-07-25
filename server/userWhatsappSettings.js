@@ -1,5 +1,8 @@
 import { prisma } from './prismaClient.js'
 import { encrypt, decrypt } from './crypto.js'
+import { normalizeWhatsAppNumber } from './whatsapp.js'
+
+const API_VERSION = 'v21.0'
 
 function mask(last4) {
   return last4 ? `••••••••••••${last4}` : null
@@ -51,4 +54,38 @@ export async function getDecryptedAccessTokenForUser(userId) {
   const row = await getForUser(userId)
   if (!row?.accessTokenEncrypted) return null
   return decrypt(row.accessTokenEncrypted)
+}
+
+// Plain-text message, not a Message Template — only works if the recipient has an open 24-hour
+// session with this number (e.g. they messaged it first), or is a verified test recipient in
+// Meta's dashboard. That's fine for a manual "does this integration work" check; a real
+// business-initiated send to a cold number still needs an approved template (see server/whatsapp.js).
+export async function sendTestMessage(userId, { to, message }) {
+  const settings = await getForUser(userId)
+  if (!settings?.accessTokenEncrypted || !settings.phoneNumberId) {
+    throw new Error('Save your Phone Number ID and access token first.')
+  }
+  const number = normalizeWhatsAppNumber(to)
+  if (!number) {
+    throw new Error(`Not a valid WhatsApp number: ${to}`)
+  }
+
+  const accessToken = decrypt(settings.accessTokenEncrypted)
+  const url = `https://graph.facebook.com/${API_VERSION}/${settings.phoneNumberId}/messages`
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to: number,
+      type: 'text',
+      text: { body: message },
+    }),
+  })
+  const data = await response.json().catch(() => ({}))
+  if (!response.ok || data.error) {
+    throw new Error(data?.error?.message || `WhatsApp API request failed (${response.status}).`)
+  }
+  return data
 }

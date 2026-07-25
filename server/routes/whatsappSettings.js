@@ -1,6 +1,6 @@
 import express from 'express'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { getForUser, saveForUser, toPublicShape } from '../userWhatsappSettings.js'
+import { getForUser, saveForUser, sendTestMessage, toPublicShape } from '../userWhatsappSettings.js'
 
 const router = express.Router()
 
@@ -54,6 +54,22 @@ router.put('/settings', async (req, res) => {
     res.json({ success: true, settings: toPublicShape(row) })
   } catch (error) {
     res.status(400).json({ success: false, message: error.message || 'Failed to save WhatsApp settings.' })
+  }
+})
+
+router.post('/settings/test', async (req, res) => {
+  const { to, message } = req.body ?? {}
+  if (!String(to || '').trim()) {
+    return res.status(400).json({ success: false, message: 'Enter a recipient WhatsApp number.' })
+  }
+  if (!String(message || '').trim()) {
+    return res.status(400).json({ success: false, message: 'Enter a message to send.' })
+  }
+  try {
+    await sendTestMessage(req.user.id, { to, message })
+    res.json({ success: true, message: `Test WhatsApp message sent to ${to}.` })
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message || 'Failed to send WhatsApp message.' })
   }
 })
 

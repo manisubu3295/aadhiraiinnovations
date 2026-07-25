@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { formatDateTime } from '../format'
 import { useAuth } from '../AuthContext'
-import { API_BASE } from '../../lib/apiBase'
 
 const emptyForm = {
   smtpHost: '',
@@ -408,6 +407,11 @@ function MyWhatsAppTab() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  const [testTo, setTestTo] = useState('')
+  const [testMessage, setTestMessage] = useState('Test message from Aadhirai Admin — your WhatsApp integration is working.')
+  const [testing, setTesting] = useState(false)
+  const [testResult, setTestResult] = useState(null)
+
   function load() {
     setLoading(true)
     api
@@ -445,9 +449,26 @@ function MyWhatsAppTab() {
     }
   }
 
+  async function handleTest(e) {
+    e.preventDefault()
+    setTesting(true)
+    setTestResult(null)
+    try {
+      const data = await api.post('/whatsapp/settings/test', { to: testTo, message: testMessage })
+      setTestResult({ ok: true, message: data.message })
+    } catch (err) {
+      setTestResult({ ok: false, message: err.message })
+    } finally {
+      setTesting(false)
+    }
+  }
+
   if (loading) return <div className="text-slate-400">Loading…</div>
 
-  const webhookUrl = user ? `${API_BASE}/api/whatsapp/webhook/${user.id}` : ''
+  // Absolute, not API_BASE-relative — this is meant to be pasted into Meta's dashboard, not
+  // fetched by this app, and the admin panel is always served same-origin with this API in
+  // production (see server.js), so window.location.origin is the right base here.
+  const webhookUrl = user ? `${window.location.origin}/api/whatsapp/webhook/${user.id}` : ''
 
   return (
     <>
@@ -504,6 +525,51 @@ function MyWhatsAppTab() {
           {saving ? 'Saving…' : 'Save WhatsApp settings'}
         </button>
       </form>
+
+      {accessTokenMasked && (
+        <form onSubmit={handleTest} className="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-800">Send a test message</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Plain text, not a Message Template — only delivers if the recipient has messaged your WhatsApp Business
+            number in the last 24 hours, or is a verified test recipient in the Meta dashboard.
+          </p>
+          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Field label="To" hint="E.164 format, e.g. 919876543210.">
+              <input
+                required
+                value={testTo}
+                onChange={(e) => setTestTo(e.target.value)}
+                placeholder="919876543210"
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Message">
+              <input
+                required
+                value={testMessage}
+                onChange={(e) => setTestMessage(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+          </div>
+          <button
+            type="submit"
+            disabled={testing}
+            className="mt-3 rounded-md border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 disabled:opacity-60"
+          >
+            {testing ? 'Sending…' : 'Send test message'}
+          </button>
+          {testResult && (
+            <div
+              className={`mt-3 rounded-md px-3 py-2 text-sm ${
+                testResult.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'
+              }`}
+            >
+              {testResult.message}
+            </div>
+          )}
+        </form>
+      )}
     </>
   )
 }
