@@ -38,7 +38,7 @@ function FeaturedCitiesSection() {
     {
       name: 'Salem',
       slug: 'salem',
-      description: 'Pharmacy billing software for Salem\'s 50+ pharmacies using Medora+',
+      description: 'Pharmacy billing software for medical shops and chains in Salem',
     },
     {
       name: 'Vellore',
@@ -117,7 +117,7 @@ function FeaturedCitiesSection() {
           className="mt-8 text-center"
         >
           <p className="text-sm text-slate-500 mb-4">
-            Medora+ serves 15+ cities across Tamil Nadu
+            Medora+ is built for pharmacies across Tamil Nadu
           </p>
           <Link
             to="/pharmacy-billing-software/salem"

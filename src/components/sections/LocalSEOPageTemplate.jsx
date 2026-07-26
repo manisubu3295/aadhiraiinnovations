@@ -316,7 +316,7 @@ const cityPageData = {
     intro: {
       headline: 'Pharmacy Billing Software in Thanjavur',
       subheading: 'For Medical Shops, Pharmacies & Retail Chains',
-      body: `Thanjavur's pharmacy sector is busy—medical shops across the city serving residents and patients from nearby areas. Managing high-volume billing, tracking inventory across multiple medicine categories, and ensuring GST compliance is a daily operational challenge. Most pharmacy owners in Thanjavur use manual systems or spreadsheets, losing efficiency and facing compliance risks.\n\nMedora+ is a pharmacy management software built specifically for Indian pharmacies. Designed to work in your environment: offline-first (works even during power cuts), GST-ready billing, batch-level expiry tracking, and real-time inventory. Made by Aadhirai Innovations (based in Tamil Nadu). Used by 200+ pharmacies across Tamil Nadu, including several in Thanjavur.`,
+      body: `Thanjavur's pharmacy sector is busy—medical shops across the city serving residents and patients from nearby areas. Managing high-volume billing, tracking inventory across multiple medicine categories, and ensuring GST compliance is a daily operational challenge. Most pharmacy owners in Thanjavur use manual systems or spreadsheets, losing efficiency and facing compliance risks.\n\nMedora+ is a pharmacy management software built specifically for Indian pharmacies. Designed to work in your environment: offline-first (works even during power cuts), GST-ready billing, batch-level expiry tracking, and real-time inventory. Made by Aadhirai Innovations (based in Tamil Nadu), built specifically for pharmacies like yours in Thanjavur.`,
     },
 
     whatProductDoes: {
@@ -457,7 +457,7 @@ const cityPageData = {
     intro: {
       headline: 'Pharmacy Billing Software in Aranthangi',
       subheading: 'For Medical Shops, Pharmacies & Retail Chains',
-      body: `Aranthangi's pharmacy and retail sector is growing—medical shops serving local residents and visitors. Managing daily billing manually, tracking inventory accurately, and staying GST-compliant is time-consuming and error-prone. Most pharmacy owners in Aranthangi still use manual registers or basic spreadsheets, losing hours to manual work and risking compliance violations.\n\nMedora+ is pharmacy billing software built for Indian pharmacies by Aadhirai Innovations (Peravurani-based). It's designed for your context: works offline (no internet dependency), GST-ready billing, expiry tracking, and real-time stock management. Used by 200+ pharmacies across Tamil Nadu.`,
+      body: `Aranthangi's pharmacy and retail sector is growing—medical shops serving local residents and visitors. Managing daily billing manually, tracking inventory accurately, and staying GST-compliant is time-consuming and error-prone. Most pharmacy owners in Aranthangi still use manual registers or basic spreadsheets, losing hours to manual work and risking compliance violations.\n\nMedora+ is pharmacy billing software built for Indian pharmacies by Aadhirai Innovations (Peravurani-based). It's designed for your context: works offline (no internet dependency), GST-ready billing, expiry tracking, and real-time stock management.`,
     },
 
     whatProductDoes: {
@@ -594,7 +594,7 @@ const cityPageData = {
     intro: {
       headline: 'Pharmacy Billing Software in Pudukkottai',
       subheading: 'For Medical Shops, Pharmacies & Retail Chains',
-      body: `Pudukkottai's pharmacy and retail sector serves a wide mix of town and rural customers, and most medical shops here still rely on manual registers or basic spreadsheets for billing and stock — losing hours to manual work and risking GST compliance violations.\n\nMedora+ is pharmacy billing software built for Indian pharmacies by Aadhirai Innovations (Peravurani-based, serving all of Thanjavur, Pudukkottai and Tiruchirappalli districts). It's designed for your context: works offline (no internet dependency), GST-ready billing, expiry tracking, and real-time stock management. Used by 200+ pharmacies across Tamil Nadu.`,
+      body: `Pudukkottai's pharmacy and retail sector serves a wide mix of town and rural customers, and most medical shops here still rely on manual registers or basic spreadsheets for billing and stock — losing hours to manual work and risking GST compliance violations.\n\nMedora+ is pharmacy billing software built for Indian pharmacies by Aadhirai Innovations (Peravurani-based, serving all of Thanjavur, Pudukkottai and Tiruchirappalli districts). It's designed for your context: works offline (no internet dependency), GST-ready billing, expiry tracking, and real-time stock management.`,
     },
 
     whatProductDoes: {
@@ -731,7 +731,7 @@ const cityPageData = {
     intro: {
       headline: 'Pharmacy Billing Software in Alangudi',
       subheading: 'For Medical Shops, Pharmacies & Retail Chains',
-      body: `Alangudi's pharmacy business is active—medical shops serving local residents with daily healthcare needs. Managing billing accuracy, tracking medicine inventory, and ensuring GST compliance is essential but time-consuming with manual systems. Most pharmacy owners in Alangudi still use handwritten registers or spreadsheets, losing efficiency and risking compliance violations.\n\nMedora+ is pharmacy management software built for Indian pharmacies by Aadhirai Innovations. Works offline (critical for Alangudi), GST-ready billing, batch-level expiry tracking, and real-time inventory. Used by 200+ pharmacies across Tamil Nadu, including several in Alangudi.`,
+      body: `Alangudi's pharmacy business is active—medical shops serving local residents with daily healthcare needs. Managing billing accuracy, tracking medicine inventory, and ensuring GST compliance is essential but time-consuming with manual systems. Most pharmacy owners in Alangudi still use handwritten registers or spreadsheets, losing efficiency and risking compliance violations.\n\nMedora+ is pharmacy management software built for Indian pharmacies by Aadhirai Innovations. Works offline (critical for Alangudi), GST-ready billing, batch-level expiry tracking, and real-time inventory — built specifically for pharmacies like yours in Alangudi.`,
     },
 
     whatProductDoes: {
@@ -858,13 +858,13 @@ const cityPageData = {
 
     meta: {
       title: 'Pharmacy Billing Software in Salem | Medora+ by Aadhirai',
-      description: 'Best pharmacy billing software in Salem for medical shops and chains. GST-compliant, offline-first, expiry tracking. Trusted by 50+ pharmacies in Salem district.',
+      description: 'Best pharmacy billing software in Salem for medical shops and chains. GST-compliant, offline-first, expiry tracking, built for Tamil Nadu pharmacies.',
     },
 
     intro: {
       headline: 'Pharmacy Billing Software in Salem',
       subheading: 'For Medical Shops, Pharmacies & Retail Chains',
-      body: `Salem is one of Tamil Nadu's busiest pharmaceutical hubs. With hundreds of medical shops serving Salem city, industrial areas, and surrounding towns, billing accuracy and stock control are critical. Yet most pharmacy owners in Salem still use outdated systems or manual registers—leading to billing errors, inventory losses, and compliance issues.\n\nMedora+ is pharmacy billing software built for Indian pharmacies, used by 50+ pharmacies across Salem district. It's designed for your business: offline-first operation (works when internet cuts out), GST-ready billing, batch-level expiry tracking, and real-time inventory. Made by Aadhirai Innovations, with dedicated support for Salem-based pharmacies.`,
+      body: `Salem is one of Tamil Nadu's busiest pharmaceutical hubs. With hundreds of medical shops serving Salem city, industrial areas, and surrounding towns, billing accuracy and stock control are critical. Yet most pharmacy owners in Salem still use outdated systems or manual registers—leading to billing errors, inventory losses, and compliance issues.\n\nMedora+ is pharmacy billing software built for Indian pharmacies. It's designed for your business: offline-first operation (works when internet cuts out), GST-ready billing, batch-level expiry tracking, and real-time inventory. Made by Aadhirai Innovations, with dedicated support for Salem-based pharmacies.`,
     },
 
     whatProductDoes: {
@@ -985,7 +985,7 @@ const cityPageData = {
     ],
 
     cta: {
-      heading: 'Join 50+ Salem Pharmacies Using Medora+',
+      heading: 'Upgrade Your Salem Pharmacy to Medora+',
       subheading: 'Stop manual billing. Start working with real data.',
       buttons: [
         { text: 'Talk to Us', href: 'https://wa.me/918508716957', variant: 'primary' },

@@ -15,8 +15,6 @@ const stagger  = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 
 /* ─── Data ──────────────────────────────────────────────────────────────── */
 const metrics = [
-  { value: '200+',  sup: '',      label: 'Pharmacies using\nMedora' },
-  { value: '15+',   sup: '',      label: 'Tamil Nadu cities\nserved' },
   { value: '10+',   sup: '',      label: 'Custom software\nproducts built' },
   { value: '8+',    sup: 'yrs',   label: 'Software engineering\nexperience' },
 ]
@@ -94,7 +92,7 @@ function HomePage() {
       {/* ── Metrics ───────────────────────────────────────────────────────── */}
       <section className="bg-[#0B1F3A]">
         <Container>
-          <div className="grid grid-cols-2 divide-x divide-y divide-white/[0.06] md:grid-cols-4 md:divide-y-0">
+          <div className="mx-auto grid max-w-md grid-cols-2 divide-x divide-white/[0.06]">
             {metrics.map((m, i) => (
               <motion.div
                 key={m.label}
@@ -158,7 +156,7 @@ function HomePage() {
             </motion.div>
 
             <motion.p variants={fadeUp} className="mt-6 max-w-[62ch] text-[15px] text-slate-500 leading-[1.85]">
-              GST-compliant billing, AI stock forecasting, and expiry alerts — used by 200+ pharmacies
+              GST-compliant billing, AI stock forecasting, and expiry alerts — built for pharmacies
               from Peravurani and Pattukkottai to Thanjavur, Pudukkottai, Trichy, and beyond. Works fully
               offline, so unreliable connectivity never stops your billing counter.
             </motion.p>

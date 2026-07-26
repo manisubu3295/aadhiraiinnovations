@@ -14,7 +14,7 @@ const SEO = {
       'GST-compliant pharmacy billing software for Tamil Nadu pharmacies — Peravurani, Pattukkottai, Thanjavur, Pudukkottai, Trichy, Aranthangi and beyond. Offline-first, AI stock forecasting. We also build custom business software and backend engineering.',
     ogTitle: 'Pharmacy Software for Tamil Nadu | Aadhirai Innovations',
     ogDescription:
-      'Medora+ and Medora Offline — GST-ready billing, expiry alerts, and offline-first pharmacy management. Used by 200+ pharmacies across Tamil Nadu. Custom software and backend engineering also available.',
+      'Medora+ and Medora Offline — GST-ready billing, expiry alerts, and offline-first pharmacy management, built for Tamil Nadu pharmacies. Custom software and backend engineering also available.',
     canonical: 'https://www.aadhiraiinnovations.com/',
   },
   '/services': {

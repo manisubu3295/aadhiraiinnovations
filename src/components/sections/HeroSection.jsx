@@ -85,7 +85,7 @@ function HeroSection() {
             <motion.div variants={fadeUp} className="mt-8 flex items-center gap-5">
               <div className="h-px flex-1 bg-white/[0.07]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/22">
-                200+ Pharmacies · 15+ TN Cities Served
+                GST-Compliant · Offline-First · Tamil Nadu Built
               </span>
               <div className="h-px flex-1 bg-white/[0.07]" />
             </motion.div>
@@ -121,8 +121,8 @@ function HeroSection() {
               <HeroIntelligenceAnimation />
 
               <FloatingBadge
-                value="200+"
-                label="Pharmacies Served"
+                value="TN"
+                label="Tamil Nadu Built"
                 glowColor="rgba(147, 197, 253, 0.25)"
                 floatAmount={-10}
                 floatDuration={8}
