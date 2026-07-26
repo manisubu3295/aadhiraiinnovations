@@ -136,7 +136,6 @@ router.post('/:id/generate', async (req, res) => {
       machineId: license.machineId,
       plan: PLAN_API_KEYS[license.plan],
       customerName: license.businessName || license.customerName,
-      email: license.email,
       activationDate,
     })
   } catch (error) {
