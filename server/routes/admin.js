@@ -10,6 +10,7 @@ import { renderDocumentHtml } from '../documentRenderer.js'
 import { htmlToPdfBuffer } from '../pdfRenderer.js'
 import { deliverWhatsApp, normalizeWhatsAppNumber } from '../whatsapp.js'
 import { paramsForKey, DEFAULT_TEMPLATES as DEFAULT_WHATSAPP_TEMPLATES } from '../whatsappTemplates.js'
+import { nextDocumentNumber, sellerFromSettings, customerFromClient } from '../documentHelpers.js'
 
 const router = express.Router()
 // Everything under /api/admin is ADMIN-only — staff use /api/employee instead.
@@ -22,14 +23,6 @@ function toNumber(value) {
 
 function sumPayments(payments) {
   return payments.reduce((total, payment) => total + toNumber(payment.amount), 0)
-}
-
-async function nextDocumentNumber(model, prefix) {
-  const year = new Date().getFullYear()
-  const count = await model.count({
-    where: { [prefix === 'QUO' ? 'quotationNumber' : 'invoiceNumber']: { startsWith: `${prefix}-${year}-` } },
-  })
-  return `${prefix}-${year}-${String(count + 1).padStart(4, '0')}`
 }
 
 // ---------- Clients ----------
@@ -444,25 +437,6 @@ router.post('/quotations/:id/convert-to-invoice', async (req, res) => {
 
   res.status(201).json({ success: true, invoice })
 })
-
-function sellerFromSettings(settings) {
-  return {
-    businessName: settings.businessName,
-    contactPerson: settings.businessContactPerson,
-    address: settings.businessAddress,
-    phone: settings.businessPhone,
-    email: settings.emailFrom,
-    gst: settings.businessGst,
-    bankName: settings.bankName,
-    accountNumber: settings.bankAccountNumber,
-    ifsc: settings.bankIfsc,
-    upiId: settings.upiId,
-  }
-}
-
-function customerFromClient(client) {
-  return { name: client.name, company: client.company, address: client.address, phone: client.phone, email: client.email, gst: client.gstNumber }
-}
 
 router.post('/quotations/:id/send', async (req, res) => {
   const quotation = await prisma.quotation.findUnique({ where: { id: req.params.id }, include: { client: true } })
@@ -1144,13 +1118,15 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 router.get('/settings', async (req, res) => {
   const settings = await getSettings()
-  const { smtpPass, whatsappAccessToken, ...rest } = settings
+  const { smtpPass, whatsappAccessToken, razorpayKeySecret, razorpayWebhookSecret, ...rest } = settings
   res.json({
     success: true,
     settings: {
       ...rest,
       smtpPassSet: Boolean(smtpPass),
       whatsappAccessTokenSet: Boolean(whatsappAccessToken),
+      razorpayKeySecretSet: Boolean(razorpayKeySecret),
+      razorpayWebhookSecretSet: Boolean(razorpayWebhookSecret),
     },
   })
 })
@@ -1169,6 +1145,7 @@ router.put('/settings', async (req, res) => {
     smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo,
     whatsappEnabled, whatsappAccessToken, whatsappStaffNotifyNumber,
     licenseDownloadUrl, licenseInstallGuideUrl,
+    razorpayKeyId, razorpayKeySecret, razorpayWebhookSecret,
   } = req.body ?? {}
 
   const data = {}
@@ -1227,15 +1204,22 @@ router.put('/settings', async (req, res) => {
     data[key] = price
   }
 
+  if (razorpayKeyId !== undefined) data.razorpayKeyId = String(razorpayKeyId).trim() || null
+  // Same "empty string = leave alone" rule as smtpPass/whatsappAccessToken above.
+  if (razorpayKeySecret !== undefined && razorpayKeySecret !== '') data.razorpayKeySecret = String(razorpayKeySecret)
+  if (razorpayWebhookSecret !== undefined && razorpayWebhookSecret !== '') data.razorpayWebhookSecret = String(razorpayWebhookSecret)
+
   await updateSettings(data)
   const settings = await getSettings()
-  const { smtpPass: _pass, whatsappAccessToken: _token, ...rest } = settings
+  const { smtpPass: _pass, whatsappAccessToken: _token, razorpayKeySecret: _rzpKey, razorpayWebhookSecret: _rzpWebhook, ...rest } = settings
   res.json({
     success: true,
     settings: {
       ...rest,
       smtpPassSet: Boolean(settings.smtpPass),
       whatsappAccessTokenSet: Boolean(settings.whatsappAccessToken),
+      razorpayKeySecretSet: Boolean(settings.razorpayKeySecret),
+      razorpayWebhookSecretSet: Boolean(settings.razorpayWebhookSecret),
     },
   })
 })

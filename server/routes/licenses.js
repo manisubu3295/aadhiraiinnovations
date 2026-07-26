@@ -1,10 +1,8 @@
 import express from 'express'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { getSettings } from '../settings.js'
-import { deliverMail } from '../mailer.js'
-import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
-import { generateLicense, PLAN_API_KEYS } from '../licenseApi.js'
+import { PLAN_API_KEYS } from '../licenseApi.js'
+import { mintLicense, emailLicense, invoiceLicense } from '../licenseFulfillment.js'
 
 const router = express.Router()
 // License handling is a Support function, shared by ADMIN and STAFF — same access level as Tickets.
@@ -35,6 +33,9 @@ const PUBLIC_SELECT = {
   updatedAt: true,
   leadId: true,
   lead: { select: { id: true, name: true } },
+  paymentStatus: true,
+  amountPaid: true,
+  paidAt: true,
 }
 
 router.get('/', async (req, res) => {
@@ -87,36 +88,10 @@ router.get('/:id', async (req, res) => {
   res.json({ success: true, license })
 })
 
-async function sendLicenseEmail(license) {
-  const settings = await getSettings()
-  const tpl = await getTemplate('LICENSE_DELIVERY')
-  const { subject, html } = renderTemplate(tpl, {
-    customerName: license.businessName || license.customerName,
-    plan: license.plan,
-    expiresAt: license.expiresAt ? new Date(license.expiresAt).toLocaleDateString() : '-',
-    businessName: settings.businessName,
-  })
-
-  await deliverMail({
-    to: license.email,
-    subject,
-    text: htmlToText(html),
-    html,
-    attachments: [{ filename: 'license.lic', content: Buffer.from(license.fileContents, 'utf-8') }],
-    meta: { templateKey: 'LICENSE_DELIVERY', relatedType: 'LICENSE_REQUEST', relatedId: license.id },
-  })
-}
-
-// Mints the license via server/licenseApi.js and stores it — deliberately does NOT email it.
-// Sending is a separate, explicit action (POST /:id/send) so staff can generate, double-check
-// details, and only then decide to send — never automatic.
+// Mints the license (server/licenseFulfillment.js, shared with the automatic Razorpay webhook
+// path) — deliberately does NOT email it. Sending is a separate, explicit action (POST
+// /:id/send) so staff can generate, double-check details, and only then decide to send.
 router.post('/:id/generate', async (req, res) => {
-  const license = await prisma.licenseRequest.findUnique({ where: { id: req.params.id } })
-  if (!license) return res.status(404).json({ success: false, message: 'License request not found.' })
-  if (license.status === 'FULFILLED') {
-    return res.status(400).json({ success: false, message: 'A license has already been sent for this request.' })
-  }
-
   // Lets the admin backdate/postdate when the plan period actually starts (e.g. payment
   // confirmed on a different day than the license is generated) instead of always using "now".
   let activationDate
@@ -127,69 +102,35 @@ router.post('/:id/generate', async (req, res) => {
     }
   }
 
-  let issued
   try {
-    issued = await generateLicense({
-      machineId: license.machineId,
-      plan: PLAN_API_KEYS[license.plan],
-      customerName: license.businessName || license.customerName,
-      activationDate,
-    })
+    await mintLicense(req.params.id, { activationDate })
   } catch (error) {
-    const updatedLicense = await prisma.licenseRequest.update({
-      where: { id: license.id },
-      data: { status: 'FAILED', errorMessage: error.message },
-      select: PUBLIC_SELECT,
-    })
-    return res.status(400).json({ success: false, message: error.message || 'Failed to generate license.', license: updatedLicense })
+    const license = await prisma.licenseRequest.findUnique({ where: { id: req.params.id }, select: PUBLIC_SELECT })
+    if (!license) return res.status(404).json({ success: false, message: 'License request not found.' })
+    return res.status(400).json({ success: false, message: error.message || 'Failed to generate license.', license })
   }
 
-  const fulfilled = await prisma.licenseRequest.update({
-    where: { id: license.id },
-    data: {
-      status: 'FULFILLED',
-      licenseId: issued.licenseId || null,
-      fileContents: issued.fileContents,
-      issuedAt: issued.issuedAt ? new Date(issued.issuedAt) : new Date(),
-      expiresAt: issued.expiresAt ? new Date(issued.expiresAt) : null,
-      errorMessage: null,
-    },
-  })
-
-  if (license.leadId) {
-    await prisma.lead.update({ where: { id: license.leadId }, data: { status: 'WON' } })
-  }
-
-  const publicLicense = await prisma.licenseRequest.findUnique({ where: { id: license.id }, select: PUBLIC_SELECT })
+  const publicLicense = await prisma.licenseRequest.findUnique({ where: { id: req.params.id }, select: PUBLIC_SELECT })
   res.json({ success: true, license: publicLicense })
 })
 
-// Explicit, manual send/resend — the only place that actually emails the customer. Works
-// identically whether this is the first send or a re-send after an earlier failure; it always
-// (re)sends the already-generated license rather than minting a new one.
+// Explicit, manual send/resend (server/licenseFulfillment.js) — the only place that actually
+// emails the customer from the admin side. Works identically whether this is the first send
+// or a re-send after an earlier failure.
 router.post('/:id/send', async (req, res) => {
-  const license = await prisma.licenseRequest.findUnique({ where: { id: req.params.id } })
-  if (!license) return res.status(404).json({ success: false, message: 'License request not found.' })
-  if (license.status !== 'FULFILLED' || !license.fileContents) {
-    return res.status(400).json({ success: false, message: 'Generate the license before sending it.' })
-  }
-
   try {
-    await sendLicenseEmail(license)
+    await emailLicense(req.params.id)
   } catch (error) {
-    const updatedLicense = await prisma.licenseRequest.update({
-      where: { id: license.id },
-      data: { errorMessage: `Failed to send: ${error.message}` },
-      select: PUBLIC_SELECT,
-    })
-    return res.status(400).json({ success: false, message: `Failed to send: ${error.message}`, license: updatedLicense })
+    const license = await prisma.licenseRequest.findUnique({ where: { id: req.params.id }, select: PUBLIC_SELECT })
+    if (!license) return res.status(404).json({ success: false, message: 'License request not found.' })
+    return res.status(400).json({ success: false, message: error.message, license })
   }
 
-  const updatedLicense = await prisma.licenseRequest.update({
-    where: { id: license.id },
-    data: { errorMessage: null, emailSentAt: new Date() },
-    select: PUBLIC_SELECT,
-  })
+  // Never throws (returns null on any failure) and skips silently if already invoiced — safe
+  // to call on every send, including resends.
+  await invoiceLicense(req.params.id)
+
+  const updatedLicense = await prisma.licenseRequest.findUnique({ where: { id: req.params.id }, select: PUBLIC_SELECT })
   res.json({ success: true, license: updatedLicense })
 })
 

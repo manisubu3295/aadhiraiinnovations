@@ -86,6 +86,19 @@ export default function LicenseDetailPage() {
           <div><span className="text-slate-500">Plan:</span> {LICENSE_PLAN_LABELS[license.plan] || license.plan}</div>
           <div><span className="text-slate-500">Machine ID:</span> {license.machineId}</div>
           <div>
+            <span className="text-slate-500">Payment:</span>{' '}
+            {license.paymentStatus === 'PAID' ? (
+              <span className="font-medium text-emerald-700">
+                Paid{license.amountPaid ? ` — ₹${license.amountPaid}` : ''} via Razorpay
+                {license.paidAt ? ` (${formatDateTime(license.paidAt)})` : ''}
+              </span>
+            ) : license.paymentStatus === 'FAILED' ? (
+              <span className="font-medium text-red-700">Payment failed</span>
+            ) : (
+              <span className="text-slate-400">Not applicable / manual</span>
+            )}
+          </div>
+          <div>
             <span className="text-slate-500">Source:</span>{' '}
             {license.lead ? (
               <Link to={`/admin/leads/${license.lead.id}`} className="text-[#0B1F3A] hover:underline">

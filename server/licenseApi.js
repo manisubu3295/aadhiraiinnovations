@@ -15,6 +15,14 @@ export const PLAN_API_KEYS = {
   ONE_YEAR: '1y',
 }
 
+// LicensePlan enum -> the Setting field holding that plan's price — shared by /subscribe
+// (Razorpay order amount), /pricing (public display), and automatic license invoicing.
+export const PLAN_PRICE_FIELD = {
+  THREE_MONTH: 'licensePlan3MoPrice',
+  SIX_MONTH: 'licensePlan6MoPrice',
+  ONE_YEAR: 'licensePlan1YrPrice',
+}
+
 // Every plan's advertised duration already INCLUDES the 30-day free trial a customer has
 // necessarily already used by the time they buy — so the license itself only covers
 // (advertised duration - 30 days). Must stay identical to PLAN_DAYS in

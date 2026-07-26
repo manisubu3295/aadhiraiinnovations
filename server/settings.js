@@ -44,6 +44,10 @@ export async function getSettings() {
     licensePlan3MoPrice: row?.licensePlan3MoPrice ?? null,
     licensePlan6MoPrice: row?.licensePlan6MoPrice ?? null,
     licensePlan1YrPrice: row?.licensePlan1YrPrice ?? null,
+
+    razorpayKeyId: row?.razorpayKeyId || '',
+    razorpayKeySecret: row?.razorpayKeySecret || '',
+    razorpayWebhookSecret: row?.razorpayWebhookSecret || '',
   }
 }
 

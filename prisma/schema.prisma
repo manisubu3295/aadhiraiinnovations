@@ -571,6 +571,8 @@ model Invoice {
 
   payments Payment[]
 
+  licenseRequest LicenseRequest?
+
   @@map("invoices")
 }
 
@@ -695,6 +697,12 @@ model Setting {
   licensePlan6MoPrice  Int?
   licensePlan1YrPrice  Int?
 
+  // Razorpay — razorpayKeySecret/razorpayWebhookSecret follow the same plaintext-but-hidden
+  // convention as smtpPass above (never returned by GET /admin/settings).
+  razorpayKeyId         String?
+  razorpayKeySecret     String?
+  razorpayWebhookSecret String?
+
   updatedAt          DateTime @updatedAt
 
   @@map("settings")
@@ -741,8 +749,9 @@ enum LicenseRequestStatus {
 // Standalone license-fulfillment record, managed from the admin Licenses section (Support area,
 // ADMIN + STAFF). Created either automatically alongside a Lead (public
 // /api/offline-license/subscribe form) or manually by staff (e.g. a phone/WhatsApp order —
-// no Lead involved). Fulfilled via "Generate & Send License" (server/licenseApi.js), which
-// calls a separately-deployed external license-generation service.
+// no Lead involved). Fulfilled via server/licenseFulfillment.js (mintLicense/emailLicense),
+// which sign in-process (server/licenseApi.js) — either triggered manually from the admin
+// Licenses page, or automatically from a verified Razorpay webhook once payment clears.
 model LicenseRequest {
   id           String   @id @default(cuid())
   customerName String
@@ -757,17 +766,37 @@ model LicenseRequest {
                         // re-emailed without calling the license API again and minting a new one
   issuedAt     DateTime?
   expiresAt    DateTime?
-  emailSentAt  DateTime? // generation no longer auto-sends — set only when POST /:id/send
-                          // actually succeeds, so the UI can show whether the customer has
-                          // been emailed yet, not just whether the license was minted.
+  emailSentAt  DateTime? // generation no longer auto-sends — set only when the email actually
+                          // goes out, so the UI can show whether the customer has been emailed
+                          // yet, not just whether the license was minted.
   errorMessage String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  // Payment tracking — deliberately separate from `status` above, which means "has the
+  // license been minted," not "has it been paid for." A verified Razorpay webhook is the only
+  // thing allowed to flip paymentStatus to PAID (never trust a client-side payment callback).
+  paymentStatus     PaymentStatus @default(UNPAID)
+  razorpayOrderId   String?       @unique
+  razorpayPaymentId String?
+  amountPaid        Int? // rupees, same convention as licensePlan3MoPrice etc.
+  paidAt            DateTime?
+
   leadId String? @unique
   lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
+  // Set once invoiceLicense() (server/licenseFulfillment.js) succeeds — guards against
+  // minting a second, duplicate invoice if "Resend email" is clicked more than once.
+  invoiceId String?  @unique
+  invoice   Invoice? @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+
   @@map("license_requests")
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
 }
 
 model LeadCall {

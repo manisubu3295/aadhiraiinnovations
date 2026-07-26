@@ -1,14 +1,23 @@
 import express from 'express'
+import crypto from 'crypto'
+import Razorpay from 'razorpay'
 import rateLimit from 'express-rate-limit'
 import { prisma } from '../prismaClient.js'
 import { getSettings } from '../settings.js'
 import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
 import { sendMail } from '../mailer.js'
 import { sendWhatsApp, getStaffNotifyNumbers } from '../whatsapp.js'
+import { mintLicense, emailLicense, invoiceLicense } from '../licenseFulfillment.js'
+import { PLAN_PRICE_FIELD } from '../licenseApi.js'
 
 const router = express.Router()
 
 const PLAN_KEYS = ['THREE_MONTH', 'SIX_MONTH', 'ONE_YEAR']
+
+function getRazorpayClient(settings) {
+  if (!settings.razorpayKeyId || !settings.razorpayKeySecret) return null
+  return new Razorpay({ key_id: settings.razorpayKeyId, key_secret: settings.razorpayKeySecret })
+}
 
 // Public — no auth. Whitelisted fields only; licenseApiKey/licenseApiUrl never leave the server.
 router.get('/pricing', async (req, res) => {
@@ -107,6 +116,39 @@ router.post('/subscribe', subscribeLimiter, async (req, res) => {
       })
     }
 
+    // Payment: only attempted if both a price is configured for this plan and Razorpay is set
+    // up — otherwise fall back to today's "we'll email within 24h of confirming payment"
+    // manual flow untouched (nothing to charge an exact amount for otherwise).
+    const price = settings[PLAN_PRICE_FIELD[plan]]
+    const razorpay = getRazorpayClient(settings)
+    if (price && razorpay) {
+      try {
+        const order = await razorpay.orders.create({
+          amount: price * 100, // paise
+          currency: 'INR',
+          receipt: licenseRequest.id,
+        })
+        await prisma.licenseRequest.update({
+          where: { id: licenseRequest.id },
+          data: { razorpayOrderId: order.id },
+        })
+        return res.status(201).json({
+          success: true,
+          message: 'Complete payment to receive your license by email within minutes.',
+          leadId: lead.id,
+          licenseRequestId: licenseRequest.id,
+          razorpayOrderId: order.id,
+          razorpayKeyId: settings.razorpayKeyId,
+          amount: order.amount,
+          currency: order.currency,
+        })
+      } catch (error) {
+        // Payment setup failing shouldn't block the lead being captured — fall through to the
+        // manual-confirmation response below, same as if no gateway were configured at all.
+        console.error('Razorpay order creation failed:', error)
+      }
+    }
+
     res.status(201).json({
       success: true,
       message: "Thanks! We'll email your license within 24 hours of confirming payment.",
@@ -117,6 +159,73 @@ router.post('/subscribe', subscribeLimiter, async (req, res) => {
     console.error('Offline license subscribe failed:', error)
     res.status(500).json({ success: false, message: 'Failed to submit your request. Please try again.' })
   }
+})
+
+// Razorpay calls this directly (no auth — secured by signature verification instead). Needs
+// the raw request body to verify the HMAC signature; server.js's express.json() captures it
+// into req.rawBody via a `verify` callback for exactly this purpose.
+router.post('/razorpay-webhook', async (req, res) => {
+  const settings = await getSettings()
+  if (!settings.razorpayWebhookSecret) {
+    console.error('Razorpay webhook received but no webhook secret is configured — rejecting.')
+    return res.status(400).json({ success: false, message: 'Webhook not configured.' })
+  }
+
+  const signature = req.get('x-razorpay-signature')
+  const expected = crypto
+    .createHmac('sha256', settings.razorpayWebhookSecret)
+    .update(req.rawBody || Buffer.from(''))
+    .digest('hex')
+
+  if (!signature || signature.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+    console.error('Razorpay webhook signature verification failed.')
+    return res.status(400).json({ success: false, message: 'Invalid signature.' })
+  }
+
+  const event = req.body
+  if (event?.event !== 'payment.captured') {
+    // Not an event we act on — acknowledge so Razorpay doesn't retry it forever.
+    return res.json({ success: true })
+  }
+
+  const payment = event.payload?.payment?.entity
+  const orderId = payment?.order_id
+  if (!orderId) return res.json({ success: true })
+
+  const licenseRequest = await prisma.licenseRequest.findUnique({ where: { razorpayOrderId: orderId } })
+  if (!licenseRequest) {
+    console.error(`Razorpay webhook: no LicenseRequest found for order ${orderId}.`)
+    return res.json({ success: true })
+  }
+
+  // Idempotency — Razorpay retries webhooks, and this must never mint/send a license twice.
+  if (licenseRequest.paymentStatus === 'PAID') {
+    return res.json({ success: true })
+  }
+
+  await prisma.licenseRequest.update({
+    where: { id: licenseRequest.id },
+    data: {
+      paymentStatus: 'PAID',
+      razorpayPaymentId: payment.id,
+      amountPaid: Math.round(payment.amount / 100),
+      paidAt: new Date(),
+    },
+  })
+
+  try {
+    await mintLicense(licenseRequest.id)
+    await emailLicense(licenseRequest.id)
+    await invoiceLicense(licenseRequest.id) // never throws — safe alongside the above
+  } catch (error) {
+    // mintLicense/emailLicense already persisted status:FAILED / errorMessage on the
+    // LicenseRequest — it's visible on the admin Licenses page for staff to pick up manually,
+    // same as any other failed generation. Still ack the webhook so Razorpay doesn't retry
+    // (retrying wouldn't fix a broken signing key or SMTP config anyway).
+    console.error(`Auto-fulfillment failed for LicenseRequest ${licenseRequest.id}:`, error.message)
+  }
+
+  res.json({ success: true })
 })
 
 // Free trial — no Machine ID (the trial self-activates on first launch, nothing to license yet)

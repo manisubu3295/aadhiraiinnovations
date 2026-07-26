@@ -35,6 +35,9 @@ const emptyForm = {
   licensePlan3MoPrice: '',
   licensePlan6MoPrice: '',
   licensePlan1YrPrice: '',
+  razorpayKeyId: '',
+  razorpayKeySecret: '',
+  razorpayWebhookSecret: '',
 }
 
 function Field({ label, hint, children }) {
@@ -50,7 +53,7 @@ function Field({ label, hint, children }) {
 const inputClass =
   'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30'
 
-const BASE_TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Offline Licensing', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
+const BASE_TABS = ['SMTP', 'Business Profile', 'WhatsApp', 'My WhatsApp', 'Offline Licensing', 'Payments', 'Email Templates', 'WhatsApp Templates', 'Email Log', 'WhatsApp Log']
 
 export default function SettingsPage() {
   const { user } = useAuth()
@@ -80,7 +83,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="mt-6">
-        {(tab === 'SMTP' || tab === 'Business Profile' || tab === 'WhatsApp' || tab === 'Offline Licensing') && <SettingsForm activeTab={tab} />}
+        {(tab === 'SMTP' || tab === 'Business Profile' || tab === 'WhatsApp' || tab === 'Offline Licensing' || tab === 'Payments') && <SettingsForm activeTab={tab} />}
         {tab === 'My WhatsApp' && <MyWhatsAppTab />}
         {tab === 'Email Templates' && <EmailTemplatesTab />}
         {tab === 'WhatsApp Templates' && <WhatsAppTemplatesTab />}
@@ -96,6 +99,8 @@ function SettingsForm({ activeTab }) {
   const [form, setForm] = useState(emptyForm)
   const [smtpPassSet, setSmtpPassSet] = useState(false)
   const [whatsappTokenSet, setWhatsappTokenSet] = useState(false)
+  const [razorpayKeySecretSet, setRazorpayKeySecretSet] = useState(false)
+  const [razorpayWebhookSecretSet, setRazorpayWebhookSecretSet] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -110,10 +115,16 @@ function SettingsForm({ activeTab }) {
     api
       .get('/admin/settings')
       .then((data) => {
-        const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, ...rest } = data.settings
-        setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '' })
+        const {
+          smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet,
+          razorpayKeySecretSet: rzpKeySet, razorpayWebhookSecretSet: rzpWebhookSet,
+          ...rest
+        } = data.settings
+        setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '', razorpayKeySecret: '', razorpayWebhookSecret: '' })
         setSmtpPassSet(passSet)
         setWhatsappTokenSet(tokenSet)
+        setRazorpayKeySecretSet(rzpKeySet)
+        setRazorpayWebhookSecretSet(rzpWebhookSet)
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
@@ -128,10 +139,16 @@ function SettingsForm({ activeTab }) {
     setSuccess('')
     try {
       const data = await api.put('/admin/settings', form)
-      const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, ...rest } = data.settings
-      setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '' })
+      const {
+        smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet,
+        razorpayKeySecretSet: rzpKeySet, razorpayWebhookSecretSet: rzpWebhookSet,
+        ...rest
+      } = data.settings
+      setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '', razorpayKeySecret: '', razorpayWebhookSecret: '' })
       setSmtpPassSet(passSet)
       setWhatsappTokenSet(tokenSet)
+      setRazorpayKeySecretSet(rzpKeySet)
+      setRazorpayWebhookSecretSet(rzpWebhookSet)
       setSuccess('Settings saved.')
     } catch (err) {
       setError(err.message)
@@ -413,6 +430,61 @@ function SettingsForm({ activeTab }) {
                   min="0"
                   value={form.licensePlan1YrPrice}
                   onChange={(e) => setForm({ ...form, licensePlan1YrPrice: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'Payments' && (
+          <div>
+            <h2 className="text-sm font-semibold text-slate-800">Razorpay</h2>
+            <p className="mt-1 text-xs text-slate-400">
+              When a Key ID, Key Secret, and a plan price (Offline Licensing tab) are all set, the Medora
+              Offline pricing page opens Razorpay Checkout instead of just capturing a lead. On successful
+              payment (verified via the webhook below — never trust the browser), the license is generated
+              and emailed automatically, with no staff action needed.
+            </p>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field label="Key ID">
+                <input
+                  value={form.razorpayKeyId}
+                  onChange={(e) => setForm({ ...form, razorpayKeyId: e.target.value })}
+                  placeholder="rzp_test_…"
+                  className={inputClass}
+                />
+              </Field>
+              <Field
+                label="Key Secret"
+                hint={razorpayKeySecretSet ? 'A secret is already saved — leave blank to keep it.' : 'No secret saved yet.'}
+              >
+                <input
+                  type="password"
+                  value={form.razorpayKeySecret}
+                  onChange={(e) => setForm({ ...form, razorpayKeySecret: e.target.value })}
+                  placeholder={razorpayKeySecretSet ? '••••••••' : ''}
+                  className={inputClass}
+                />
+              </Field>
+            </div>
+
+            <h2 className="mt-5 text-sm font-semibold text-slate-800">Webhook</h2>
+            <p className="mt-1 text-xs text-slate-400">
+              In Razorpay's dashboard, add a webhook pointing at{' '}
+              <code>{`${window.location.origin}/api/offline-license/razorpay-webhook`}</code>, subscribed to
+              the <code>payment.captured</code> event, and paste the webhook secret it gives you below.
+            </p>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field
+                label="Webhook secret"
+                hint={razorpayWebhookSecretSet ? 'A secret is already saved — leave blank to keep it.' : 'No secret saved yet.'}
+              >
+                <input
+                  type="password"
+                  value={form.razorpayWebhookSecret}
+                  onChange={(e) => setForm({ ...form, razorpayWebhookSecret: e.target.value })}
+                  placeholder={razorpayWebhookSecretSet ? '••••••••' : ''}
                   className={inputClass}
                 />
               </Field>

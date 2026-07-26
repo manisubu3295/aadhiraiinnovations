@@ -30,6 +30,19 @@ function StatusBadge({ status }) {
   )
 }
 
+function PaymentBadge({ paymentStatus }) {
+  if (paymentStatus === 'UNPAID') return <span className="text-xs text-slate-400">—</span>
+  return (
+    <span
+      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+        paymentStatus === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+      }`}
+    >
+      {paymentStatus === 'PAID' ? 'Paid' : 'Payment failed'}
+    </span>
+  )
+}
+
 export default function LicensesPage() {
   const [licenses, setLicenses] = useState([])
   const [status, setStatus] = useState('')
@@ -104,6 +117,7 @@ export default function LicensesPage() {
                 <th className="px-4 py-3 font-medium">Machine ID</th>
                 <th className="px-4 py-3 font-medium">Plan</th>
                 <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">Payment</th>
                 <th className="px-4 py-3 font-medium">Lead</th>
                 <th className="px-4 py-3 font-medium">Created</th>
               </tr>
@@ -120,6 +134,7 @@ export default function LicensesPage() {
                   <td className="px-4 py-3 text-slate-600">{license.machineId}</td>
                   <td className="px-4 py-3 text-slate-600">{LICENSE_PLAN_LABELS[license.plan] || license.plan}</td>
                   <td className="px-4 py-3"><StatusBadge status={license.status} /></td>
+                  <td className="px-4 py-3"><PaymentBadge paymentStatus={license.paymentStatus} /></td>
                   <td className="px-4 py-3 text-slate-600">
                     {license.lead ? (
                       <Link to={`/admin/leads/${license.lead.id}`} className="text-[#0B1F3A] hover:underline">
@@ -134,7 +149,7 @@ export default function LicensesPage() {
               ))}
               {licenses.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-slate-400">
+                  <td colSpan={8} className="px-4 py-6 text-center text-slate-400">
                     No license requests yet.
                   </td>
                 </tr>

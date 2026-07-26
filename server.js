@@ -45,7 +45,10 @@ const corsOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split('
 
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors({ origin: corsOrigins, credentials: true }))
-app.use(express.json())
+// The `verify` callback captures the raw request bytes onto req.rawBody for every request —
+// needed by the Razorpay webhook route to verify its HMAC signature, since by the time a route
+// handler runs, express.json() has already consumed and discarded the original raw body.
+app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf } }))
 app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
