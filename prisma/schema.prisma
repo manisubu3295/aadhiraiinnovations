@@ -755,6 +755,8 @@ model LicenseRequest {
   machineId    String
   status       LicenseRequestStatus @default(PENDING)
   licenseId    String?
+  fileContents String? // the signed license token itself — kept so it can be re-downloaded or
+                        // re-emailed without calling the license API again and minting a new one
   issuedAt     DateTime?
   expiresAt    DateTime?
   errorMessage String?

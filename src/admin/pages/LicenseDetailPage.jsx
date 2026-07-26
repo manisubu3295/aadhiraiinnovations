@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { api } from '../api'
 import { formatDateTime } from '../format'
+import { API_BASE } from '../../lib/apiBase'
 
 const LICENSE_PLAN_LABELS = { THREE_MONTH: '3 Months', SIX_MONTH: '6 Months', ONE_YEAR: '1 Year' }
+
+function todayDateInput() {
+  const d = new Date()
+  const pad = (n) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+}
 
 export default function LicenseDetailPage() {
   const { id } = useParams()
@@ -11,6 +18,8 @@ export default function LicenseDetailPage() {
   const [error, setError] = useState('')
   const [generating, setGenerating] = useState(false)
   const [generateError, setGenerateError] = useState('')
+  const [resending, setResending] = useState(false)
+  const [activationDate, setActivationDate] = useState(todayDateInput())
 
   function load() {
     api.get(`/licenses/${id}`).then((data) => setLicense(data.license)).catch((err) => setError(err.message))
@@ -22,13 +31,26 @@ export default function LicenseDetailPage() {
     setGenerating(true)
     setGenerateError('')
     try {
-      const data = await api.post(`/licenses/${id}/generate`, {})
+      const data = await api.post(`/licenses/${id}/generate`, { activationDate })
       setLicense(data.license)
     } catch (err) {
       setGenerateError(err.message)
       load()
     } finally {
       setGenerating(false)
+    }
+  }
+
+  async function handleResend() {
+    setResending(true)
+    setGenerateError('')
+    try {
+      const data = await api.post(`/licenses/${id}/resend`, {})
+      setLicense(data.license)
+    } catch (err) {
+      setGenerateError(err.message)
+    } finally {
+      setResending(false)
     }
   }
 
@@ -82,19 +104,48 @@ export default function LicenseDetailPage() {
           )}
         </div>
 
-        {license.status === 'FAILED' && license.errorMessage && (
+        {license.errorMessage && (
           <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{license.errorMessage}</div>
         )}
         {generateError && <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{generateError}</div>}
 
         {license.status !== 'FULFILLED' && (
-          <button
-            onClick={handleGenerate}
-            disabled={generating}
-            className="mt-4 rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
-          >
-            {generating ? 'Generating…' : license.status === 'FAILED' ? 'Retry' : 'Generate & Send License'}
-          </button>
+          <div className="mt-4 flex flex-wrap items-end gap-3">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-slate-500">Activation date</label>
+              <input
+                type="date"
+                value={activationDate}
+                onChange={(e) => setActivationDate(e.target.value)}
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/30"
+              />
+            </div>
+            <button
+              onClick={handleGenerate}
+              disabled={generating}
+              className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+            >
+              {generating ? 'Generating…' : license.status === 'FAILED' ? 'Retry' : 'Generate & Send License'}
+            </button>
+          </div>
+        )}
+
+        {license.status === 'FULFILLED' && (
+          <div className="mt-4 flex flex-wrap gap-3">
+            <a
+              href={`${API_BASE}/api/licenses/${id}/download`}
+              className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90"
+            >
+              Download license file
+            </a>
+            <button
+              onClick={handleResend}
+              disabled={resending}
+              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+            >
+              {resending ? 'Resending…' : 'Resend email'}
+            </button>
+          </div>
         )}
       </div>
     </div>
