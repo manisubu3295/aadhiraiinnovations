@@ -32,9 +32,6 @@ export default function LeadDetailPage() {
   const [loggingCall, setLoggingCall] = useState(false)
   const [callError, setCallError] = useState('')
 
-  const [generatingLicense, setGeneratingLicense] = useState(false)
-  const [licenseError, setLicenseError] = useState('')
-
   function load() {
     api.get(`/admin/leads/${id}`).then((data) => setLead(data.lead)).catch((err) => setError(err.message))
   }
@@ -89,20 +86,6 @@ export default function LeadDetailPage() {
       setCallError(err.message)
     } finally {
       setLoggingCall(false)
-    }
-  }
-
-  async function handleGenerateLicense() {
-    setGeneratingLicense(true)
-    setLicenseError('')
-    try {
-      const data = await api.post(`/admin/leads/${id}/license/generate`, {})
-      setLead((prev) => ({ ...prev, licenseRequest: data.licenseRequest, status: 'WON' }))
-    } catch (err) {
-      setLicenseError(err.message)
-      load()
-    } finally {
-      setGeneratingLicense(false)
     }
   }
 
@@ -219,17 +202,13 @@ export default function LeadDetailPage() {
           {lead.licenseRequest.status === 'FAILED' && lead.licenseRequest.errorMessage && (
             <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{lead.licenseRequest.errorMessage}</div>
           )}
-          {licenseError && <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{licenseError}</div>}
 
-          {lead.licenseRequest.status !== 'FULFILLED' && (
-            <button
-              onClick={handleGenerateLicense}
-              disabled={generatingLicense}
-              className="mt-4 rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
-            >
-              {generatingLicense ? 'Generating…' : lead.licenseRequest.status === 'FAILED' ? 'Retry' : 'Generate & Send License'}
-            </button>
-          )}
+          <Link
+            to={`/admin/licenses/${lead.licenseRequest.id}`}
+            className="mt-4 inline-block rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90"
+          >
+            Manage in Licenses →
+          </Link>
         </div>
       )}
 

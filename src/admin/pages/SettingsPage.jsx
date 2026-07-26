@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { formatDateTime } from '../format'
 import { useAuth } from '../AuthContext'
-import { ADMIN_MENU_ITEMS, STAFF_MENU_ITEMS } from '../menuConfig'
+import { ADMIN_MENU_ITEMS, STAFF_MENU_ITEMS, flattenMenuItems } from '../menuConfig'
 
 const emptyForm = {
   smtpHost: '',
@@ -740,7 +740,7 @@ function MenuAccessTab() {
     setPermissions((prev) => {
       const current = prev[listName] || []
       const isRestricting = current.length > 0
-      const allKeys = (listName === 'adminMenuKeys' ? ADMIN_MENU_ITEMS : STAFF_MENU_ITEMS).map((i) => i.key)
+      const allKeys = flattenMenuItems(listName === 'adminMenuKeys' ? ADMIN_MENU_ITEMS : STAFF_MENU_ITEMS).map((i) => i.key)
       // Empty list means "show everything" — the first uncheck on a fully-open list needs to
       // start from the full set, not from nothing, or unchecking one item would hide all others too.
       const base = isRestricting ? current : allKeys
@@ -785,8 +785,8 @@ function MenuAccessTab() {
       </p>
 
       {[
-        { title: 'Admin menu', listName: 'adminMenuKeys', items: ADMIN_MENU_ITEMS },
-        { title: 'Staff menu', listName: 'staffMenuKeys', items: STAFF_MENU_ITEMS },
+        { title: 'Admin menu', listName: 'adminMenuKeys', items: flattenMenuItems(ADMIN_MENU_ITEMS) },
+        { title: 'Staff menu', listName: 'staffMenuKeys', items: flattenMenuItems(STAFF_MENU_ITEMS) },
       ].map(({ title, listName, items }) => (
         <div key={listName} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between">

@@ -740,12 +740,17 @@ enum LicenseRequestStatus {
   FAILED
 }
 
-// Created alongside a Lead when someone submits the offline-license subscribe form
-// (public /api/offline-license/subscribe) — one per Lead. Fulfilled via the admin
-// "Generate & Send License" action (server/licenseApi.js), which calls a separately-deployed
-// external license-generation service.
+// Standalone license-fulfillment record, managed from the admin Licenses section (Support area,
+// ADMIN + STAFF). Created either automatically alongside a Lead (public
+// /api/offline-license/subscribe form) or manually by staff (e.g. a phone/WhatsApp order —
+// no Lead involved). Fulfilled via "Generate & Send License" (server/licenseApi.js), which
+// calls a separately-deployed external license-generation service.
 model LicenseRequest {
   id           String   @id @default(cuid())
+  customerName String
+  email        String
+  whatsapp     String?
+  businessName String?
   plan         LicensePlan
   machineId    String
   status       LicenseRequestStatus @default(PENDING)
@@ -756,8 +761,8 @@ model LicenseRequest {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  leadId String @unique
-  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId String? @unique
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
   @@map("license_requests")
 }

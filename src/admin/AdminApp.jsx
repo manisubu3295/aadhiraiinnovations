@@ -21,6 +21,8 @@ const ExpensesAdminPage = lazy(() => import('./pages/ExpensesAdminPage'))
 const BusinessExpensesPage = lazy(() => import('./pages/BusinessExpensesPage'))
 const TicketsPage = lazy(() => import('./pages/TicketsPage'))
 const TicketDetailPage = lazy(() => import('./pages/TicketDetailPage'))
+const LicensesPage = lazy(() => import('./pages/LicensesPage'))
+const LicenseDetailPage = lazy(() => import('./pages/LicenseDetailPage'))
 const WhatsAppInboxPage = lazy(() => import('./pages/WhatsAppInboxPage'))
 const WhatsAppConversationPage = lazy(() => import('./pages/WhatsAppConversationPage'))
 const ChatFlowsPage = lazy(() => import('./pages/ChatFlowsPage'))
@@ -104,6 +106,8 @@ function AdminRoutes() {
         {/* Available to both roles: employee self-service + tickets */}
         <Route path="tickets" element={<Suspense fallback={<AdminLoader />}><TicketsPage /></Suspense>} />
         <Route path="tickets/:id" element={<Suspense fallback={<AdminLoader />}><TicketDetailPage /></Suspense>} />
+        <Route path="licenses" element={<Suspense fallback={<AdminLoader />}><LicensesPage /></Suspense>} />
+        <Route path="licenses/:id" element={<Suspense fallback={<AdminLoader />}><LicenseDetailPage /></Suspense>} />
         <Route path="whatsapp" element={<Suspense fallback={<AdminLoader />}><WhatsAppInboxPage /></Suspense>} />
         <Route path="whatsapp/flows" element={<Suspense fallback={<AdminLoader />}><ChatFlowsPage /></Suspense>} />
         <Route path="whatsapp/flows/:id" element={<Suspense fallback={<AdminLoader />}><ChatFlowBuilderPage /></Suspense>} />

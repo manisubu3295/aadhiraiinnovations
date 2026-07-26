@@ -10,7 +10,6 @@ import { renderDocumentHtml } from '../documentRenderer.js'
 import { htmlToPdfBuffer } from '../pdfRenderer.js'
 import { deliverWhatsApp, normalizeWhatsAppNumber } from '../whatsapp.js'
 import { paramsForKey, DEFAULT_TEMPLATES as DEFAULT_WHATSAPP_TEMPLATES } from '../whatsappTemplates.js'
-import { generateLicense, PLAN_API_KEYS } from '../licenseApi.js'
 
 const router = express.Router()
 // Everything under /api/admin is ADMIN-only — staff use /api/employee instead.
@@ -1137,70 +1136,6 @@ router.put('/leads/:id/calls/:callId', async (req, res) => {
   }
 
   res.json({ success: true, call: updated })
-})
-
-// Calls the external license-generation service (server/licenseApi.js) and emails the resulting
-// .lic file to the lead — the one-click fulfillment action from the offline-license build spec.
-// On failure, records the error on LicenseRequest (visible in the UI for a retry) but leaves
-// Lead.status untouched so a misconfigured API key doesn't silently mark a real sale as lost.
-router.post('/leads/:id/license/generate', async (req, res) => {
-  const lead = await prisma.lead.findUnique({ where: { id: req.params.id }, include: { licenseRequest: true } })
-  if (!lead || !lead.licenseRequest) {
-    return res.status(404).json({ success: false, message: 'This lead has no license request.' })
-  }
-  if (lead.licenseRequest.status === 'FULFILLED') {
-    return res.status(400).json({ success: false, message: 'A license has already been sent for this lead.' })
-  }
-
-  try {
-    if (!lead.email) {
-      throw new Error('This lead has no email address to send the license to.')
-    }
-
-    const data = await generateLicense({
-      machineId: lead.licenseRequest.machineId,
-      plan: PLAN_API_KEYS[lead.licenseRequest.plan],
-      customerName: lead.company || lead.name,
-    })
-
-    const settings = await getSettings()
-    const tpl = await getTemplate('LICENSE_DELIVERY')
-    const { subject, html } = renderTemplate(tpl, {
-      customerName: lead.company || lead.name,
-      plan: lead.licenseRequest.plan,
-      expiresAt: data.expiresAt ? new Date(data.expiresAt).toLocaleDateString() : '-',
-      businessName: settings.businessName,
-    })
-
-    await deliverMail({
-      to: lead.email,
-      subject,
-      text: htmlToText(html),
-      html,
-      attachments: [{ filename: 'license.lic', content: Buffer.from(data.fileContents, 'utf-8') }],
-      meta: { templateKey: 'LICENSE_DELIVERY', relatedType: 'LEAD', relatedId: lead.id },
-    })
-
-    const updatedRequest = await prisma.licenseRequest.update({
-      where: { id: lead.licenseRequest.id },
-      data: {
-        status: 'FULFILLED',
-        licenseId: data.licenseId || null,
-        issuedAt: data.issuedAt ? new Date(data.issuedAt) : new Date(),
-        expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
-        errorMessage: null,
-      },
-    })
-    await prisma.lead.update({ where: { id: lead.id }, data: { status: 'WON' } })
-
-    res.json({ success: true, licenseRequest: updatedRequest })
-  } catch (error) {
-    const updatedRequest = await prisma.licenseRequest.update({
-      where: { id: lead.licenseRequest.id },
-      data: { status: 'FAILED', errorMessage: error.message },
-    })
-    res.status(400).json({ success: false, message: error.message || 'Failed to generate license.', licenseRequest: updatedRequest })
-  }
 })
 
 // ---------- Settings (SMTP + notification emails) ----------

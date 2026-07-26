@@ -11,7 +11,7 @@ export const PLAN_API_KEYS = {
 // The only place that talks to the external, separately-deployed license-generation service —
 // never call this from the frontend (the API key must stay server-side). See the "Deploying the
 // license-generation API" section of the offline-license build spec for the service contract.
-export async function generateLicense({ machineId, plan, customerName }) {
+export async function generateLicense({ machineId, plan, customerName, email }) {
   const settings = await getSettings()
   if (!settings.licenseApiUrl || !settings.licenseApiKey) {
     throw new Error('License API is not configured yet — set it up on the Settings page.')
@@ -23,7 +23,7 @@ export async function generateLicense({ machineId, plan, customerName }) {
       'Content-Type': 'application/json',
       'x-api-key': settings.licenseApiKey,
     },
-    body: JSON.stringify({ machineId, plan, customerName }),
+    body: JSON.stringify({ machineId, plan, customerName, email }),
   })
 
   const data = await response.json().catch(() => ({}))

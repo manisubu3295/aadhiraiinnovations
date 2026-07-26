@@ -80,18 +80,31 @@ export default function AdminLayout() {
           </button>
         </div>
         <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
-              <span className="flex items-center justify-between">
-                {item.label}
-                {item.to === '/admin/leads' && dueFollowUps > 0 && (
-                  <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-[#0B1F3A]">
-                    {dueFollowUps}
-                  </span>
-                )}
-              </span>
-            </NavLink>
-          ))}
+          {navItems.map((item) =>
+            item.children ? (
+              <div key={item.key} className="pt-2 first:pt-0">
+                <div className="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/30">
+                  {item.label}
+                </div>
+                {item.children.map((child) => (
+                  <NavLink key={child.to} to={child.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
+                    {child.label}
+                  </NavLink>
+                ))}
+              </div>
+            ) : (
+              <NavLink key={item.to} to={item.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
+                <span className="flex items-center justify-between">
+                  {item.label}
+                  {item.to === '/admin/leads' && dueFollowUps > 0 && (
+                    <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-[#0B1F3A]">
+                      {dueFollowUps}
+                    </span>
+                  )}
+                </span>
+              </NavLink>
+            )
+          )}
         </nav>
         <div className="px-4 py-4 border-t border-white/10 text-sm">
           <div className="text-white/60 truncate">{user?.email}</div>

@@ -61,7 +61,15 @@ router.post('/subscribe', subscribeLimiter, async (req, res) => {
         },
       })
       const licenseRequest = await tx.licenseRequest.create({
-        data: { leadId: lead.id, plan, machineId: trimmedMachineId },
+        data: {
+          leadId: lead.id,
+          plan,
+          machineId: trimmedMachineId,
+          customerName: trimmedName,
+          email: trimmedEmail,
+          whatsapp: trimmedWhatsapp,
+          businessName: trimmedBusinessName || null,
+        },
       })
       return { lead, licenseRequest }
     })
