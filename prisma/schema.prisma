@@ -686,11 +686,9 @@ model Setting {
   staffMenuKeys String[] @default([])
 
   // Offline (desktop) license fulfillment — see server/licenseApi.js and
-  // src/pages/MedoraOfflinePage.jsx. licenseApiKey follows the same plaintext-but-hidden-from-API
-  // convention as smtpPass/whatsappAccessToken above (never returned by GET /admin/settings).
-  // Empty prices/URL mean "not configured yet" — the public page shows a fallback instead of ₹0.
-  licenseApiUrl        String?
-  licenseApiKey        String?
+  // src/pages/MedoraOfflinePage.jsx. Signing runs in-process using server/license-private.pem,
+  // no API URL/key needed. Empty prices/URL mean "not configured yet" — the public page shows
+  // a fallback instead of ₹0.
   licenseDownloadUrl   String?
   licenseInstallGuideUrl String?
   licensePlan3MoPrice  Int?

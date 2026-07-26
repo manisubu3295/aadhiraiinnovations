@@ -1144,14 +1144,13 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 router.get('/settings', async (req, res) => {
   const settings = await getSettings()
-  const { smtpPass, whatsappAccessToken, licenseApiKey, ...rest } = settings
+  const { smtpPass, whatsappAccessToken, ...rest } = settings
   res.json({
     success: true,
     settings: {
       ...rest,
       smtpPassSet: Boolean(smtpPass),
       whatsappAccessTokenSet: Boolean(whatsappAccessToken),
-      licenseApiKeySet: Boolean(licenseApiKey),
     },
   })
 })
@@ -1169,7 +1168,7 @@ router.put('/settings', async (req, res) => {
   const {
     smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo,
     whatsappEnabled, whatsappAccessToken, whatsappStaffNotifyNumber,
-    licenseApiUrl, licenseApiKey, licenseDownloadUrl, licenseInstallGuideUrl,
+    licenseDownloadUrl, licenseInstallGuideUrl,
   } = req.body ?? {}
 
   const data = {}
@@ -1216,9 +1215,6 @@ router.put('/settings', async (req, res) => {
     data.whatsappStaffNotifyNumber = trimmed || null
   }
 
-  if (licenseApiUrl !== undefined) data.licenseApiUrl = String(licenseApiUrl).trim() || null
-  // Same "empty string = leave alone" rule as smtpPass/whatsappAccessToken above.
-  if (licenseApiKey !== undefined && licenseApiKey !== '') data.licenseApiKey = String(licenseApiKey)
   if (licenseDownloadUrl !== undefined) data.licenseDownloadUrl = String(licenseDownloadUrl).trim() || null
   if (licenseInstallGuideUrl !== undefined) data.licenseInstallGuideUrl = String(licenseInstallGuideUrl).trim() || null
   for (const key of LICENSE_PRICE_FIELDS) {
@@ -1233,14 +1229,13 @@ router.put('/settings', async (req, res) => {
 
   await updateSettings(data)
   const settings = await getSettings()
-  const { smtpPass: _pass, whatsappAccessToken: _token, licenseApiKey: _licenseKey, ...rest } = settings
+  const { smtpPass: _pass, whatsappAccessToken: _token, ...rest } = settings
   res.json({
     success: true,
     settings: {
       ...rest,
       smtpPassSet: Boolean(settings.smtpPass),
       whatsappAccessTokenSet: Boolean(settings.whatsappAccessToken),
-      licenseApiKeySet: Boolean(settings.licenseApiKey),
     },
   })
 })

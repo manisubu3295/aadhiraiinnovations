@@ -39,8 +39,6 @@ export async function getSettings() {
     adminMenuKeys: row?.adminMenuKeys || [],
     staffMenuKeys: row?.staffMenuKeys || [],
 
-    licenseApiUrl: row?.licenseApiUrl || '',
-    licenseApiKey: row?.licenseApiKey || '',
     licenseDownloadUrl: row?.licenseDownloadUrl || '',
     licenseInstallGuideUrl: row?.licenseInstallGuideUrl || '',
     licensePlan3MoPrice: row?.licensePlan3MoPrice ?? null,

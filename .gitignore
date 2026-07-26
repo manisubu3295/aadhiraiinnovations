@@ -20,6 +20,10 @@ uploads
 # to track normally.
 public/offline/*.exe
 
+# License signing key — anyone with this can forge valid licenses for every customer. Never
+# commit it. Deploy it out-of-band (scp) directly to wherever this server actually runs.
+server/license-private.pem
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

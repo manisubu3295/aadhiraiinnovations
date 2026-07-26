@@ -30,8 +30,6 @@ const emptyForm = {
   whatsappBusinessAccountId: '',
   whatsappApiVersion: 'v21.0',
   whatsappStaffNotifyNumber: '',
-  licenseApiUrl: '',
-  licenseApiKey: '',
   licenseDownloadUrl: '',
   licenseInstallGuideUrl: '',
   licensePlan3MoPrice: '',
@@ -98,7 +96,6 @@ function SettingsForm({ activeTab }) {
   const [form, setForm] = useState(emptyForm)
   const [smtpPassSet, setSmtpPassSet] = useState(false)
   const [whatsappTokenSet, setWhatsappTokenSet] = useState(false)
-  const [licenseApiKeySet, setLicenseApiKeySet] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -113,11 +110,10 @@ function SettingsForm({ activeTab }) {
     api
       .get('/admin/settings')
       .then((data) => {
-        const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, licenseApiKeySet: keySet, ...rest } = data.settings
-        setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '', licenseApiKey: '' })
+        const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, ...rest } = data.settings
+        setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '' })
         setSmtpPassSet(passSet)
         setWhatsappTokenSet(tokenSet)
-        setLicenseApiKeySet(keySet)
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
@@ -132,11 +128,10 @@ function SettingsForm({ activeTab }) {
     setSuccess('')
     try {
       const data = await api.put('/admin/settings', form)
-      const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, licenseApiKeySet: keySet, ...rest } = data.settings
-      setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '', licenseApiKey: '' })
+      const { smtpPassSet: passSet, whatsappAccessTokenSet: tokenSet, ...rest } = data.settings
+      setForm({ ...emptyForm, ...rest, smtpPass: '', whatsappAccessToken: '' })
       setSmtpPassSet(passSet)
       setWhatsappTokenSet(tokenSet)
-      setLicenseApiKeySet(keySet)
       setSuccess('Settings saved.')
     } catch (err) {
       setError(err.message)
@@ -368,32 +363,12 @@ function SettingsForm({ activeTab }) {
 
         {activeTab === 'Offline Licensing' && (
           <div>
-            <h2 className="text-sm font-semibold text-slate-800">License-generation API</h2>
+            <h2 className="text-sm font-semibold text-slate-800">License generation</h2>
             <p className="mt-1 text-xs text-slate-400">
-              The separately-deployed service that generates .lic files for the Medora Offline product page's
-              "Generate &amp; Send License" action. Never exposed to the frontend.
+              License signing runs in-process on this server using <code>server/license-private.pem</code> —
+              nothing to configure here. If "Generate &amp; Send License" fails with a missing-key error,
+              copy that file onto the server (never commit it to git).
             </p>
-            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field label="License API URL" hint="e.g. https://license.yourdomain.com">
-                <input
-                  value={form.licenseApiUrl}
-                  onChange={(e) => setForm({ ...form, licenseApiUrl: e.target.value })}
-                  className={inputClass}
-                />
-              </Field>
-              <Field
-                label="License API key"
-                hint={licenseApiKeySet ? 'A key is already saved — leave blank to keep it.' : 'No key saved yet.'}
-              >
-                <input
-                  type="password"
-                  value={form.licenseApiKey}
-                  onChange={(e) => setForm({ ...form, licenseApiKey: e.target.value })}
-                  placeholder={licenseApiKeySet ? '••••••••' : ''}
-                  className={inputClass}
-                />
-              </Field>
-            </div>
 
             <h2 className="mt-5 text-sm font-semibold text-slate-800">Offline product page</h2>
             <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
