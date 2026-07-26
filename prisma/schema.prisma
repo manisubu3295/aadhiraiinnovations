@@ -757,6 +757,9 @@ model LicenseRequest {
                         // re-emailed without calling the license API again and minting a new one
   issuedAt     DateTime?
   expiresAt    DateTime?
+  emailSentAt  DateTime? // generation no longer auto-sends — set only when POST /:id/send
+                          // actually succeeds, so the UI can show whether the customer has
+                          // been emailed yet, not just whether the license was minted.
   errorMessage String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

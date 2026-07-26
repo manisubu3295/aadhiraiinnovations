@@ -29,6 +29,7 @@ const PUBLIC_SELECT = {
   licenseId: true,
   issuedAt: true,
   expiresAt: true,
+  emailSentAt: true,
   errorMessage: true,
   createdAt: true,
   updatedAt: true,
@@ -106,13 +107,9 @@ async function sendLicenseEmail(license) {
   })
 }
 
-// Calls the external license-generation service (server/licenseApi.js) and emails the resulting
-// .lic file to the customer. Generation and email delivery are tracked separately: once the
-// license API mints a token it is saved and the request marked FULFILLED immediately — a real
-// license now exists and must never be silently discarded — even if the email step then fails
-// (e.g. bad SMTP creds). A retry in that case would mint a second, redundant license instead of
-// just resending the one that already exists, so email failure surfaces as a warning with the
-// Resend/Download actions, not as FAILED. Only a failure to mint a license at all is FAILED.
+// Mints the license via server/licenseApi.js and stores it — deliberately does NOT email it.
+// Sending is a separate, explicit action (POST /:id/send) so staff can generate, double-check
+// details, and only then decide to send — never automatic.
 router.post('/:id/generate', async (req, res) => {
   const license = await prisma.licenseRequest.findUnique({ where: { id: req.params.id } })
   if (!license) return res.status(404).json({ success: false, message: 'License request not found.' })
@@ -163,39 +160,34 @@ router.post('/:id/generate', async (req, res) => {
     await prisma.lead.update({ where: { id: license.leadId }, data: { status: 'WON' } })
   }
 
-  try {
-    await sendLicenseEmail(fulfilled)
-  } catch (error) {
-    const withWarning = await prisma.licenseRequest.update({
-      where: { id: license.id },
-      data: { errorMessage: `License generated, but the email failed to send: ${error.message}. Use Download or Resend below.` },
-      select: PUBLIC_SELECT,
-    })
-    return res.json({ success: true, license: withWarning })
-  }
-
   const publicLicense = await prisma.licenseRequest.findUnique({ where: { id: license.id }, select: PUBLIC_SELECT })
   res.json({ success: true, license: publicLicense })
 })
 
-// Re-sends the already-generated license without minting a new one — the fix for exactly the
-// case above (email delivery failed after a real license was already issued).
-router.post('/:id/resend', async (req, res) => {
+// Explicit, manual send/resend — the only place that actually emails the customer. Works
+// identically whether this is the first send or a re-send after an earlier failure; it always
+// (re)sends the already-generated license rather than minting a new one.
+router.post('/:id/send', async (req, res) => {
   const license = await prisma.licenseRequest.findUnique({ where: { id: req.params.id } })
   if (!license) return res.status(404).json({ success: false, message: 'License request not found.' })
   if (license.status !== 'FULFILLED' || !license.fileContents) {
-    return res.status(400).json({ success: false, message: 'No generated license to resend yet.' })
+    return res.status(400).json({ success: false, message: 'Generate the license before sending it.' })
   }
 
   try {
     await sendLicenseEmail(license)
   } catch (error) {
-    return res.status(400).json({ success: false, message: `Failed to resend: ${error.message}` })
+    const updatedLicense = await prisma.licenseRequest.update({
+      where: { id: license.id },
+      data: { errorMessage: `Failed to send: ${error.message}` },
+      select: PUBLIC_SELECT,
+    })
+    return res.status(400).json({ success: false, message: `Failed to send: ${error.message}`, license: updatedLicense })
   }
 
   const updatedLicense = await prisma.licenseRequest.update({
     where: { id: license.id },
-    data: { errorMessage: null },
+    data: { errorMessage: null, emailSentAt: new Date() },
     select: PUBLIC_SELECT,
   })
   res.json({ success: true, license: updatedLicense })

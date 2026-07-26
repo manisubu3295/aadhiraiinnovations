@@ -18,7 +18,7 @@ export default function LicenseDetailPage() {
   const [error, setError] = useState('')
   const [generating, setGenerating] = useState(false)
   const [generateError, setGenerateError] = useState('')
-  const [resending, setResending] = useState(false)
+  const [sending, setSending] = useState(false)
   const [activationDate, setActivationDate] = useState(todayDateInput())
 
   function load() {
@@ -41,16 +41,16 @@ export default function LicenseDetailPage() {
     }
   }
 
-  async function handleResend() {
-    setResending(true)
+  async function handleSend() {
+    setSending(true)
     setGenerateError('')
     try {
-      const data = await api.post(`/licenses/${id}/resend`, {})
+      const data = await api.post(`/licenses/${id}/send`, {})
       setLicense(data.license)
     } catch (err) {
       setGenerateError(err.message)
     } finally {
-      setResending(false)
+      setSending(false)
     }
   }
 
@@ -100,6 +100,14 @@ export default function LicenseDetailPage() {
               <div><span className="text-slate-500">License ID:</span> {license.licenseId || '—'}</div>
               <div><span className="text-slate-500">Issued:</span> {formatDateTime(license.issuedAt)}</div>
               <div><span className="text-slate-500">Expires:</span> {formatDateTime(license.expiresAt)}</div>
+              <div>
+                <span className="text-slate-500">Emailed to customer:</span>{' '}
+                {license.emailSentAt ? (
+                  <span className="text-emerald-700">{formatDateTime(license.emailSentAt)}</span>
+                ) : (
+                  <span className="font-medium text-amber-700">Not sent yet</span>
+                )}
+              </div>
             </>
           )}
         </div>
@@ -125,26 +133,26 @@ export default function LicenseDetailPage() {
               disabled={generating}
               className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
             >
-              {generating ? 'Generating…' : license.status === 'FAILED' ? 'Retry' : 'Generate & Send License'}
+              {generating ? 'Generating…' : license.status === 'FAILED' ? 'Retry' : 'Generate License'}
             </button>
           </div>
         )}
 
         {license.status === 'FULFILLED' && (
           <div className="mt-4 flex flex-wrap gap-3">
+            <button
+              onClick={handleSend}
+              disabled={sending}
+              className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+            >
+              {sending ? 'Sending…' : license.emailSentAt ? 'Resend email' : 'Send email to customer'}
+            </button>
             <a
               href={`${API_BASE}/api/licenses/${id}/download`}
-              className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90"
+              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
             >
               Download license file
             </a>
-            <button
-              onClick={handleResend}
-              disabled={resending}
-              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
-            >
-              {resending ? 'Resending…' : 'Resend email'}
-            </button>
           </div>
         )}
       </div>
