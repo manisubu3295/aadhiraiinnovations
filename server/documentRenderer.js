@@ -26,6 +26,22 @@ function money(n) {
   return (Number(n) || 0).toFixed(2)
 }
 
+// Multi-line terms (one clause per line) render as a bulleted list; a plain single-line
+// string (the common case for existing hand-typed invoice/quotation terms) renders unchanged.
+function termsHtml(terms) {
+  if (!terms) return ''
+  const lines = terms.split('\n').map((l) => l.trim()).filter(Boolean)
+  if (lines.length <= 1) {
+    return `<div style="margin-top:12px"><strong>Terms:</strong> ${esc(terms)}</div>`
+  }
+  return `<div style="margin-top:12px">
+    <strong>Terms:</strong>
+    <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:#334155;line-height:1.6">
+      ${lines.map((line) => `<li>${esc(line)}</li>`).join('')}
+    </ul>
+  </div>`
+}
+
 export function renderDocumentHtml({
   type, seller, customer, details, items, totals, notes, terms, logoUrl, billingType, milestoneLabel, sow, tds, bankDetails,
 }) {
@@ -141,7 +157,7 @@ export function renderDocumentHtml({
       }
     </div>
     ${notes ? `<div style="margin-top:24px"><strong>Notes:</strong> ${esc(notes)}</div>` : ''}
-    ${terms ? `<div style="margin-top:12px"><strong>Terms:</strong> ${esc(terms)}</div>` : ''}
+    ${termsHtml(terms)}
     ${sowHtml}
     ${bankHtml}
   </div>

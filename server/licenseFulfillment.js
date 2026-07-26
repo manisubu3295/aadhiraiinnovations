@@ -21,7 +21,7 @@ const LICENSE_INVOICE_TERMS = [
   'For any issues, email info@aadhiraiinnovations.com — we will review and respond within 24 to 72 hours.',
   'This license is valid for the plan period shown and is locked to the Machine ID above; it is not transferable to another device.',
   'No refunds once the license has been issued and delivered.',
-].join(' ')
+].join('\n')
 
 // Shared by the admin Licenses page's manual Generate/Send buttons (server/routes/licenses.js)
 // and the automatic Razorpay webhook path (server/routes/offlineLicense.js) — one
