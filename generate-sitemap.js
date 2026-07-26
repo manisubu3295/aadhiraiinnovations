@@ -50,6 +50,7 @@ const cityList = [
   'peravurani',
   'pattukottai',
   'thanjavur',
+  'pudukkottai',
   'aranthangi',
   'alangudi',
   'salem',

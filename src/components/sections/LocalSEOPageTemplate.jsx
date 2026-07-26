@@ -579,6 +579,143 @@ const cityPageData = {
     },
   },
 
+  pudukkottai: {
+    city: 'Pudukkottai',
+    state: 'Tamil Nadu',
+    product: 'Medora+',
+    productSlug: 'pharmacy-billing-software',
+    tagline: 'Pharmacy Billing Software',
+
+    meta: {
+      title: 'Pharmacy Billing Software in Pudukkottai | Medora+ by Aadhirai',
+      description: 'Pharmacy billing software in Pudukkottai for medical shops. GST-compliant, offline-first, affordable.',
+    },
+
+    intro: {
+      headline: 'Pharmacy Billing Software in Pudukkottai',
+      subheading: 'For Medical Shops, Pharmacies & Retail Chains',
+      body: `Pudukkottai's pharmacy and retail sector serves a wide mix of town and rural customers, and most medical shops here still rely on manual registers or basic spreadsheets for billing and stock — losing hours to manual work and risking GST compliance violations.\n\nMedora+ is pharmacy billing software built for Indian pharmacies by Aadhirai Innovations (Peravurani-based, serving all of Thanjavur, Pudukkottai and Tiruchirappalli districts). It's designed for your context: works offline (no internet dependency), GST-ready billing, expiry tracking, and real-time stock management. Used by 200+ pharmacies across Tamil Nadu.`,
+    },
+
+    whatProductDoes: {
+      heading: 'What Medora+ Does for Your Pharmacy',
+      sections: [
+        {
+          title: 'Fast Billing',
+          detail: 'Barcode scanning and quick invoicing. Process transactions in seconds, even during peak hours.',
+        },
+        {
+          title: 'Real-Time Inventory',
+          detail: 'Know your stock anytime. Low-stock alerts prevent stockouts. Track every medicine category.',
+        },
+        {
+          title: 'Expiry Management',
+          detail: 'Track batch-level expiry dates. Get alerts before expiry. Prevent selling expired medicine.',
+        },
+        {
+          title: 'Works Offline',
+          detail: 'Complete offline operation. Billing works even without internet. No data loss.',
+        },
+        {
+          title: 'GST-Compliant Invoicing',
+          detail: 'All invoices GST-ready. HSN codes and GSTIN built-in. Audit-ready records.',
+        },
+        {
+          title: 'Business Reports',
+          detail: 'Daily sales summary, profit reports, top-selling items. Real business data.',
+        },
+      ],
+    },
+
+    whyItWorks: {
+      heading: 'Why Medora+ is Right for Pudukkottai Pharmacies',
+      sections: [
+        {
+          title: 'Made by Local Founders',
+          detail: 'Aadhirai Innovations is Tamil Nadu-based, headquartered nearby in Peravurani. Understands local compliance, regulations, and business needs.',
+        },
+        {
+          title: 'Offline-First Design',
+          detail: 'Pudukkottai\'s internet can be unreliable outside the town centre. Medora+ works fully offline. Your billing never stops.',
+        },
+        {
+          title: 'Built-In GST Compliance',
+          detail: 'Every invoice GST-ready. No manual tax calculations. Ready for audits anytime.',
+        },
+        {
+          title: 'Very Affordable',
+          detail: 'Starts at ₹5K/month for single shops. Much cheaper than big ERP systems. Pays for itself quickly.',
+        },
+        {
+          title: 'Quick to Set Up',
+          detail: '1–2 weeks implementation. Your staff learns in days. Minimal business disruption.',
+        },
+        {
+          title: 'Real Human Support',
+          detail: 'Direct WhatsApp and phone support. Not an automated helpdesk. People who understand your business.',
+        },
+      ],
+    },
+
+    useCases: {
+      heading: 'Medora+ for Pudukkottai\'s Pharmacies',
+      cases: [
+        {
+          type: 'Single Medical Shops',
+          detail: 'Efficient daily billing and inventory. One person can manage everything. No manual spreadsheets.',
+        },
+        {
+          type: 'Pharmacy Chains',
+          detail: 'Multiple locations? Unified dashboard. Manage inventory and reporting from one place.',
+        },
+        {
+          type: 'Institutional Pharmacies',
+          detail: 'Hospital or clinic pharmacies. High-volume transactions with controlled substance tracking.',
+        },
+        {
+          type: 'Medicine Wholesalers',
+          detail: 'Manage customer orders, invoicing, and stock allocation.',
+        },
+      ],
+    },
+
+    faq: [
+      {
+        q: 'Does Medora+ work without internet?',
+        a: 'Yes, completely. Medora+ is designed to work fully offline. All billing and inventory work without internet. Perfect for Pudukkottai.',
+      },
+      {
+        q: 'Is it GST-compliant?',
+        a: 'Yes. Full GST built-in. HSN codes, GSTIN validation, audit-ready records. Every invoice ready for tax filing.',
+      },
+      {
+        q: 'What\'s the cost?',
+        a: 'From ₹5,000/month for single shops. Free 30-day trial available.',
+      },
+      {
+        q: 'How long to implement?',
+        a: '1–2 weeks. Setup, training, and go-live support included.',
+      },
+      {
+        q: 'Can I track medicine batches and expiry?',
+        a: 'Yes. Batch-level tracking with automatic alerts 30 days before expiry.',
+      },
+      {
+        q: 'Is training included?',
+        a: 'Yes. Staff training on billing, inventory, and reports included in implementation.',
+      },
+    ],
+
+    cta: {
+      heading: 'Ready to upgrade your pharmacy billing?',
+      subheading: 'Get accuracy, efficiency, and compliance in one system.',
+      buttons: [
+        { text: 'Talk to Us', href: 'https://wa.me/918508716957', variant: 'primary' },
+        { text: 'See a Demo', href: 'https://demo.aadhiraiinnovations.com', variant: 'secondary' },
+      ],
+    },
+  },
+
   alangudi: {
     city: 'Alangudi',
     state: 'Tamil Nadu',

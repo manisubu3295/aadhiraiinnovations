@@ -29,23 +29,23 @@ function FinalCtaSection() {
               className="mt-6 font-semibold tracking-[-0.04em] text-white leading-[1.08]"
               style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}
             >
-              Engagements are limited.
+              Let's talk about
               <br />
-              Let's see if we're a fit.
+              your pharmacy or business.
             </h2>
 
             <p className="mt-7 text-[16px] text-white/40 leading-[1.85] max-w-[40ch]">
-              If you're a CTO or VP Engineering at a growth-stage software company and
-              you've been putting off a serious look at your backend architecture —
-              this is a good time.
+              Whether you run a pharmacy, need custom software built, or want senior
+              backend engineering for your growing company — we respond to every
+              enquiry within one business day.
             </p>
 
             <p className="mt-5 text-[13px] italic text-white/22">
-              We respond to all enquiries within one business day.
+              WhatsApp, call, or email — whichever is easiest for you.
             </p>
 
             <p className="mt-14 text-[11.5px] text-white/20 tracking-wide">
-              Serving growth-stage software companies globally
+              Serving pharmacies and businesses across Tamil Nadu and beyond
             </p>
           </motion.div>
 
@@ -78,11 +78,19 @@ function FinalCtaSection() {
             </div>
 
             <a
-              href="/contact"
+              href="https://wa.me/918508716957"
+              target="_blank"
+              rel="noreferrer"
               className="mt-8 flex items-center justify-center gap-2.5 rounded-sm bg-white py-4 text-[13.5px] font-bold text-[#0B1F3A] tracking-wide shadow-[0_4px_24px_rgba(0,0,0,0.3)] transition-all hover:bg-white/93 hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
             >
-              Book a Production Readiness Audit
+              Talk to Us on WhatsApp
               <ArrowRight className="h-4 w-4" strokeWidth={2} />
+            </a>
+            <a
+              href="/contact"
+              className="mt-3 flex items-center justify-center gap-2.5 rounded-sm border border-white/[0.14] py-4 text-[13.5px] font-semibold text-white/70 tracking-wide transition-all hover:bg-white/[0.05] hover:text-white"
+            >
+              Or send us a message
             </a>
           </motion.div>
 

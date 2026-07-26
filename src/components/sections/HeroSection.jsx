@@ -53,7 +53,7 @@ function HeroSection() {
             <motion.div variants={fadeUp} className="mb-7">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/38">
                 <span className="inline-block h-1.5 w-1.5 flex-none rounded-full bg-blue-400/70" />
-                Backend Architecture · Series A & B
+                Pharmacy Software · Tamil Nadu, India
               </span>
             </motion.div>
 
@@ -63,11 +63,11 @@ function HeroSection() {
               className="font-semibold leading-[1.04] tracking-[-0.04em] text-white"
               style={{ fontSize: 'clamp(2.6rem, 5vw, 4.1rem)' }}
             >
-              Your backend
+              Pharmacy billing software
               <br />
-              <span className="text-gradient-ai">shouldn't be</span>
+              <span className="text-gradient-ai">built for</span>
               <br />
-              what limits growth.
+              Tamil Nadu pharmacies.
             </motion.h1>
 
             {/* Sub */}
@@ -75,15 +75,17 @@ function HeroSection() {
               variants={fadeUp}
               className="mt-6 max-w-[42ch] text-[15px] leading-[1.9] text-white/44"
             >
-              We help growth-stage software companies build backend infrastructure
-              that holds up under real load — before the cracks become incidents.
+              Medora+ and Medora Offline give pharmacies from Peravurani to Chennai
+              GST-ready billing, real-time stock, and expiry alerts — online or fully
+              offline. We also build custom business software and backend engineering
+              for growing companies.
             </motion.p>
 
             {/* Credentials strip */}
             <motion.div variants={fadeUp} className="mt-8 flex items-center gap-5">
               <div className="h-px flex-1 bg-white/[0.07]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/22">
-                Banking-grade rigour · Fixed-scope engagements
+                200+ Pharmacies · 15+ TN Cities Served
               </span>
               <div className="h-px flex-1 bg-white/[0.07]" />
             </motion.div>
@@ -91,17 +93,19 @@ function HeroSection() {
             {/* CTAs */}
             <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-5">
               <a
-                href="/contact"
+                href="/solutions/pharmacy-software"
                 className="group inline-flex items-center gap-2.5 rounded-sm bg-white px-7 py-[14px] text-[13.5px] font-bold tracking-[0.01em] text-[#050d1a] shadow-[0_1px_0_rgba(255,255,255,0.18)_inset,0_8px_36px_rgba(0,0,0,0.42)] transition-all hover:bg-white/93 hover:shadow-[0_8px_48px_rgba(0,0,0,0.52)] active:scale-[0.985]"
               >
-                Book a Production Readiness Audit
+                Explore Medora Pharmacy Software
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
               </a>
               <a
-                href="/services"
+                href="https://wa.me/918508716957"
+                target="_blank"
+                rel="noreferrer"
                 className="text-[13px] font-medium text-white/38 underline underline-offset-[5px] decoration-white/16 transition-all hover:text-white/68 hover:decoration-white/38"
               >
-                See how it works
+                Talk to us on WhatsApp
               </a>
             </motion.div>
           </motion.div>
@@ -117,8 +121,8 @@ function HeroSection() {
               <HeroIntelligenceAnimation />
 
               <FloatingBadge
-                value="8+"
-                label="Years Experience"
+                value="200+"
+                label="Pharmacies Served"
                 glowColor="rgba(147, 197, 253, 0.25)"
                 floatAmount={-10}
                 floatDuration={8}
@@ -127,8 +131,8 @@ function HeroSection() {
               />
 
               <FloatingBadge
-                value="3W"
-                label="Audit Delivery"
+                value="Offline"
+                label="Works Without Internet"
                 glowColor="rgba(167, 139, 250, 0.22)"
                 valueClassName="text-gradient-ai"
                 floatAmount={10}
@@ -145,7 +149,7 @@ function HeroSection() {
                     style={{ marginLeft: '-14px' }}
                   />
                   <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-blue-400/60">
-                    Fixed Scope
+                    GST Ready
                   </span>
                 </div>
               </FloatingBadge>
@@ -158,7 +162,7 @@ function HeroSection() {
 
       {/* Scroll cue */}
       <motion.a
-        href="#services"
+        href="#pharmacy"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.22 }}
         transition={{ duration: 0.6, delay: 2.2 }}

@@ -6,14 +6,39 @@ import Container from '../ui/Container'
 function FeaturedCitiesSection() {
   const featuredCities = [
     {
-      name: 'Salem',
-      slug: 'salem',
-      description: 'Pharmacy billing software for Salem\'s 50+ pharmacies using Medora+',
+      name: 'Peravurani',
+      slug: 'peravurani',
+      description: 'Home base — pharmacy billing built where our founders work',
+    },
+    {
+      name: 'Pattukkottai',
+      slug: 'pattukottai',
+      description: 'GST-ready billing for Pattukkottai\'s medical shops',
+    },
+    {
+      name: 'Thanjavur',
+      slug: 'thanjavur',
+      description: 'Pharmacy billing and stock management across Thanjavur',
+    },
+    {
+      name: 'Pudukkottai',
+      slug: 'pudukkottai',
+      description: 'Offline-first pharmacy software for Pudukkottai district',
+    },
+    {
+      name: 'Aranthangi',
+      slug: 'aranthangi',
+      description: 'Billing software for Aranthangi\'s medical shops and chains',
     },
     {
       name: 'Trichy',
       slug: 'trichy',
       description: 'Multi-location pharmacy management across Tiruchirappalli',
+    },
+    {
+      name: 'Salem',
+      slug: 'salem',
+      description: 'Pharmacy billing software for Salem\'s 50+ pharmacies using Medora+',
     },
     {
       name: 'Vellore',

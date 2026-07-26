@@ -205,7 +205,7 @@ function Header() {
               href="/contact"
               className="hidden lg:inline-flex rounded-md bg-[#0B1F3A] px-5 py-2 text-[13px] font-semibold text-white transition-colors duration-150 hover:bg-[#173762] whitespace-nowrap"
             >
-              Book an Audit
+              Get Started
             </a>
 
             {/* Mobile menu button */}
@@ -293,7 +293,7 @@ function Header() {
                   onClick={() => setIsMenuOpen(false)}
                   className="mt-2 rounded-md bg-[#0B1F3A] px-3 py-3 text-[13px] font-semibold text-white text-center transition-colors hover:bg-[#173762] w-full"
                 >
-                  Book an Audit
+                  Get Started
                 </a>
               </div>
             </motion.nav>

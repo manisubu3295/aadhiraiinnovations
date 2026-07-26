@@ -9,12 +9,12 @@ import Footer from './Footer'
 ──────────────────────────────────────────────────────────────────────── */
 const SEO = {
   '/': {
-    title: 'Backend Architecture for Growth-Stage Software Companies | Aadhirai Innovations',
+    title: 'Pharmacy Software Tamil Nadu — Medora+ & Medora Offline | Aadhirai Innovations',
     description:
-      'Senior backend architecture services for Series A and B software companies. Production Readiness Audits, architecture advisory, and fixed-scope engineering engagements.',
-    ogTitle: 'Backend Architecture for Series A & B | Aadhirai Innovations',
+      'GST-compliant pharmacy billing software for Tamil Nadu pharmacies — Peravurani, Pattukkottai, Thanjavur, Pudukkottai, Trichy, Aranthangi and beyond. Offline-first, AI stock forecasting. We also build custom business software and backend engineering.',
+    ogTitle: 'Pharmacy Software for Tamil Nadu | Aadhirai Innovations',
     ogDescription:
-      'We help growth-stage software companies build backend infrastructure that scales. Banking-grade systems experience. Production Readiness Audit from ₹4–6 lakh.',
+      'Medora+ and Medora Offline — GST-ready billing, expiry alerts, and offline-first pharmacy management. Used by 200+ pharmacies across Tamil Nadu. Custom software and backend engineering also available.',
     canonical: 'https://www.aadhiraiinnovations.com/',
   },
   '/services': {
