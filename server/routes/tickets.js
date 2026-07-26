@@ -105,6 +105,38 @@ router.post('/', upload.array('attachments', 5), async (req, res) => {
   })
   await saveAttachments({ files: req.files, ticketId: ticket.id, uploadedById: req.user.id })
 
+  // Staff/admin logging a ticket on the client's behalf (e.g. a phone call) still needs to
+  // reach the client and whoever it's assigned to — unlike the client-portal creation path,
+  // nothing here notifies anyone by default otherwise.
+  if (client.email) {
+    const tpl = await getTemplate('TICKET_CLIENT_ACK')
+    const { subject: renderedSubject, html } = renderTemplate(tpl, { ticketNumber, subject: trimmedSubject })
+    sendMail({
+      to: client.email,
+      cc: parsedCcEmails.length ? parsedCcEmails : undefined,
+      subject: renderedSubject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_CLIENT_ACK', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+  if (ticket.assignedTo?.email) {
+    const tpl = await getTemplate('TICKET_ASSIGNED_STAFF')
+    const { subject: renderedSubject, html } = renderTemplate(tpl, {
+      staffName: ticket.assignedTo.name,
+      ticketNumber,
+      subject: trimmedSubject,
+      clientName: client.name,
+    })
+    sendMail({
+      to: ticket.assignedTo.email,
+      subject: renderedSubject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_ASSIGNED_STAFF', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+
   res.status(201).json({ success: true, ticket })
 })
 
@@ -147,10 +179,11 @@ router.put('/:id', async (req, res) => {
     }
     data.priority = priority
   }
+  let newAssignee = null
   if (assignedToId !== undefined) {
     if (assignedToId) {
-      const assignee = await prisma.user.findUnique({ where: { id: assignedToId } })
-      if (!assignee || !['ADMIN', 'STAFF', 'SUPER_ADMIN'].includes(assignee.role)) {
+      newAssignee = await prisma.user.findUnique({ where: { id: assignedToId } })
+      if (!newAssignee || !['ADMIN', 'STAFF', 'SUPER_ADMIN'].includes(newAssignee.role)) {
         return res.status(400).json({ success: false, message: 'Invalid assignee.' })
       }
     }
@@ -184,6 +217,23 @@ router.put('/:id', async (req, res) => {
       text: htmlToText(html),
       html,
       meta: { templateKey: 'TICKET_STATUS_CHANGED', relatedType: 'TICKET', relatedId: ticket.id },
+    })
+  }
+
+  if (assignedToId && assignedToId !== ticket.assignedToId && newAssignee?.email) {
+    const tpl = await getTemplate('TICKET_ASSIGNED_STAFF')
+    const { subject: renderedSubject, html } = renderTemplate(tpl, {
+      staffName: newAssignee.name,
+      ticketNumber: ticket.ticketNumber,
+      subject: ticket.subject,
+      clientName: ticket.client?.name || '',
+    })
+    sendMail({
+      to: newAssignee.email,
+      subject: renderedSubject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TICKET_ASSIGNED_STAFF', relatedType: 'TICKET', relatedId: ticket.id },
     })
   }
 

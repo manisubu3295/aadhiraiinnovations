@@ -46,6 +46,22 @@ export const DEFAULT_TEMPLATES = [
     bodyHtml: '<p><strong>{{clientName}}</strong> replied on ticket <strong>{{subject}}</strong> ({{ticketNumber}}):</p><p>{{body}}</p>',
   },
   {
+    key: 'TICKET_ASSIGNED_STAFF',
+    category: 'TICKET',
+    label: 'Ticket assigned to you (to staff)',
+    variables: ['staffName', 'ticketNumber', 'subject', 'clientName'],
+    subject: '[{{ticketNumber}}] Assigned to you: {{subject}}',
+    bodyHtml: '<p>Hi {{staffName}},</p><p>Ticket <strong>{{subject}}</strong> ({{ticketNumber}}) for <strong>{{clientName}}</strong> has been assigned to you.</p>',
+  },
+  {
+    key: 'TIMESHEET_SUBMITTED_ADMIN_NOTIFY',
+    category: 'TIMESHEET',
+    label: 'Timesheet entry submitted (to admin)',
+    variables: ['userName', 'date', 'hours', 'projectName', 'taskDescription'],
+    subject: 'Timesheet entry — {{userName}} ({{hours}}h on {{date}})',
+    bodyHtml: '<p><strong>{{userName}}</strong> logged <strong>{{hours}} hours</strong> on {{date}} for <strong>{{projectName}}</strong>:</p><p>{{taskDescription}}</p>',
+  },
+  {
     key: 'ENQUIRY_STAFF_NOTIFY',
     category: 'ENQUIRY',
     label: 'Website enquiry (to staff)',

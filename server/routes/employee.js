@@ -1,6 +1,9 @@
 import express from 'express'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
+import { getSettings } from '../settings.js'
+import { sendMail } from '../mailer.js'
+import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
 
 const router = express.Router()
 router.use(requireAuth)
@@ -49,7 +52,28 @@ router.post('/timesheets', async (req, res) => {
       taskDescription,
       billable: billable === undefined ? undefined : Boolean(billable),
     },
+    include: { project: { select: { name: true } }, user: { select: { name: true } } },
   })
+
+  const settings = await getSettings()
+  if (settings.ticketNotifyEmail) {
+    const tpl = await getTemplate('TIMESHEET_SUBMITTED_ADMIN_NOTIFY')
+    const { subject, html } = renderTemplate(tpl, {
+      userName: timesheet.user.name,
+      date: timesheet.date.toLocaleDateString(),
+      hours: String(timesheet.hours),
+      projectName: timesheet.project.name,
+      taskDescription: timesheet.taskDescription,
+    })
+    sendMail({
+      to: settings.ticketNotifyEmail,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TIMESHEET_SUBMITTED_ADMIN_NOTIFY', relatedType: 'TIMESHEET', relatedId: timesheet.id },
+    })
+  }
+
   res.status(201).json({ success: true, timesheet })
 })
 
