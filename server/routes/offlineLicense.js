@@ -111,6 +111,69 @@ router.post('/subscribe', subscribeLimiter, async (req, res) => {
   }
 })
 
+// Free trial — no Machine ID (the trial self-activates on first launch, nothing to license yet)
+// and no LicenseRequest, just a Lead so trial downloads still show up for follow-up.
+router.post('/trial-signup', subscribeLimiter, async (req, res) => {
+  try {
+    const { name, email, whatsapp, businessName } = req.body ?? {}
+
+    const trimmedName = String(name || '').trim()
+    const trimmedEmail = String(email || '').trim()
+    const trimmedWhatsapp = String(whatsapp || '').trim()
+    const trimmedBusinessName = String(businessName || '').trim()
+
+    if (!trimmedName || !trimmedEmail || !trimmedWhatsapp) {
+      return res.status(400).json({ success: false, message: 'Name, email, and WhatsApp number are required.' })
+    }
+
+    const lead = await prisma.lead.create({
+      data: {
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedWhatsapp,
+        company: trimmedBusinessName || null,
+        source: 'Medora Offline — Free Trial Download',
+      },
+    })
+
+    const settings = await getSettings()
+    const templateVars = {
+      name: trimmedName,
+      email: trimmedEmail,
+      whatsapp: trimmedWhatsapp,
+      businessName: trimmedBusinessName || '-',
+    }
+
+    if (settings.enquiryNotifyEmail || settings.ticketNotifyEmail) {
+      const tpl = await getTemplate('OFFLINE_TRIAL_LEAD_STAFF_NOTIFY')
+      const { subject, html } = renderTemplate(tpl, templateVars)
+      sendMail({
+        to: settings.enquiryNotifyEmail || settings.ticketNotifyEmail,
+        subject,
+        text: htmlToText(html),
+        html,
+        meta: { templateKey: 'OFFLINE_TRIAL_LEAD_STAFF_NOTIFY', relatedType: 'LEAD', relatedId: lead.id },
+      })
+    }
+
+    const staffNumbers = new Set(await getStaffNotifyNumbers())
+    if (settings.whatsappStaffNotifyNumber) staffNumbers.add(settings.whatsappStaffNotifyNumber)
+    for (const number of staffNumbers) {
+      sendWhatsApp({
+        to: number,
+        templateKey: 'OFFLINE_TRIAL_LEAD_STAFF',
+        components: [trimmedName, trimmedBusinessName || '-', trimmedWhatsapp],
+        meta: { relatedType: 'LEAD', relatedId: lead.id },
+      })
+    }
+
+    res.status(201).json({ success: true, message: 'Thanks! Your download will start now.', leadId: lead.id })
+  } catch (error) {
+    console.error('Offline trial signup failed:', error)
+    res.status(500).json({ success: false, message: 'Failed to submit your request. Please try again.' })
+  }
+})
+
 // Guided/custom setup — no fixed plan or Machine ID (nothing to activate yet; the whole point is
 // a human scopes it first), so this creates a plain Lead with no LicenseRequest, distinguished
 // from self-service subscriptions by `source`.

@@ -118,6 +118,15 @@ export const DEFAULT_TEMPLATES = [
       '<h2>New Offline License Subscription</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>WhatsApp:</strong> {{whatsapp}}</p><p><strong>Business:</strong> {{businessName}}</p><p><strong>Plan:</strong> {{plan}}</p><p><strong>Machine ID:</strong> {{machineId}}</p><p>Review and fulfill this from the Leads page.</p>',
   },
   {
+    key: 'OFFLINE_TRIAL_LEAD_STAFF_NOTIFY',
+    category: 'ENQUIRY',
+    label: 'Offline trial download (to staff)',
+    variables: ['name', 'email', 'whatsapp', 'businessName'],
+    subject: 'New offline trial download — {{name}}',
+    bodyHtml:
+      '<h2>New Offline Trial Download</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>WhatsApp:</strong> {{whatsapp}}</p><p><strong>Business:</strong> {{businessName}}</p><p>Review from the Leads page.</p>',
+  },
+  {
     key: 'OFFLINE_ENTERPRISE_LEAD_STAFF_NOTIFY',
     category: 'ENQUIRY',
     label: 'Offline enterprise/guided setup inquiry (to staff)',

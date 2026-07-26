@@ -36,6 +36,11 @@ export const DEFAULT_TEMPLATES = [
     params: ['name', 'plan', 'machineId'],
   },
   {
+    key: 'OFFLINE_TRIAL_LEAD_STAFF',
+    label: 'Offline trial download (to staff)',
+    params: ['name', 'businessName', 'whatsapp'],
+  },
+  {
     key: 'OFFLINE_ENTERPRISE_LEAD_STAFF',
     label: 'Offline enterprise/guided setup inquiry (to staff)',
     params: ['name', 'businessName', 'whatsapp'],

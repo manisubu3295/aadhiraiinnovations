@@ -130,6 +130,114 @@ function FaqItem({ faq, isOpen, onToggle }) {
   )
 }
 
+const emptyTrialForm = { name: '', email: '', whatsapp: '', businessName: '' }
+
+function TrialModal({ downloadUrl, onClose }) {
+  const [formData, setFormData] = useState(emptyTrialForm)
+  const [status, setStatus] = useState({ type: 'idle', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  function handleChange(event) {
+    const { name, value } = event.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    try {
+      setIsSubmitting(true)
+      setStatus({ type: 'idle', message: '' })
+
+      const response = await fetch(`${API_BASE}/api/offline-license/trial-signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const contentType = response.headers.get('content-type') || ''
+      let result = null
+      if (contentType.includes('application/json')) {
+        result = await response.json()
+      } else {
+        const text = await response.text()
+        try {
+          result = JSON.parse(text)
+        } catch {
+          result = { success: false, message: text || 'Unexpected server response.' }
+        }
+      }
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Unable to submit your request.')
+      }
+
+      setStatus({ type: 'success', message: result.message })
+      // A real anchor click triggers the file download reliably without navigating away
+      // (the server's octet-stream response prompts Save As rather than loading a page).
+      if (downloadUrl) {
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        link.click()
+      }
+    } catch (error) {
+      setStatus({ type: 'error', message: error.message || 'Failed to submit your request. Please try again.' })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const inputClass = 'w-full rounded-md border border-slate-300 px-4 py-2.5 text-slate-700 outline-none transition-colors focus:border-[#0B1F3A]'
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-8">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white shadow-xl">
+        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+          <h2 className="text-base font-semibold text-[#0B1F3A]">Download Free Trial</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600" aria-label="Close">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4 px-6 py-5">
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Just a few details so we can follow up if you have questions — no card, no commitment. Your
+            download starts right after.
+          </p>
+          <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
+            Name
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required className={inputClass} />
+          </label>
+          <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
+            Email
+            <input type="email" name="email" value={formData.email} onChange={handleChange} required className={inputClass} />
+          </label>
+          <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
+            WhatsApp number
+            <input type="tel" name="whatsapp" value={formData.whatsapp} onChange={handleChange} required className={inputClass} />
+          </label>
+          <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
+            Pharmacy / Business name (optional)
+            <input type="text" name="businessName" value={formData.businessName} onChange={handleChange} className={inputClass} />
+          </label>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full rounded-sm bg-[#0B1F3A] py-3 text-sm font-semibold text-white tracking-wide transition-colors hover:bg-[#173762] disabled:opacity-60"
+          >
+            {isSubmitting ? 'Submitting...' : 'Get My Download'}
+          </button>
+
+          {status.type !== 'idle' && (
+            <p className={`text-sm ${status.type === 'success' ? 'text-emerald-700' : 'text-red-600'}`} role="status">
+              {status.message}
+            </p>
+          )}
+        </form>
+      </div>
+    </div>
+  )
+}
+
 const emptySubscribeForm = { name: '', email: '', whatsapp: '', businessName: '', machineId: '' }
 
 function SubscribeModal({ plan, onClose }) {
@@ -347,6 +455,7 @@ export default function MedoraOfflinePage() {
   const [pricing, setPricing] = useState(null)
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [enterpriseModalOpen, setEnterpriseModalOpen] = useState(false)
+  const [trialModalOpen, setTrialModalOpen] = useState(false)
 
   useEffect(() => {
     fetch(`${API_BASE}/api/offline-license/pricing`)
@@ -389,13 +498,13 @@ export default function MedoraOfflinePage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               {pricing?.downloadUrl ? (
-                <a
-                  href={pricing.downloadUrl}
+                <button
+                  onClick={() => setTrialModalOpen(true)}
                   className="inline-flex items-center gap-2 rounded-sm bg-[#0B1F3A] px-7 py-3.5 text-sm font-semibold text-white tracking-wide transition-colors hover:bg-[#173762]"
                 >
                   <Download className="h-4 w-4" />
                   Download — Start Free Trial
-                </a>
+                </button>
               ) : (
                 <button
                   onClick={scrollToPricing}
@@ -490,13 +599,16 @@ export default function MedoraOfflinePage() {
               <div className="mt-2 text-2xl font-bold text-[#0B1F3A]">₹0</div>
               <p className="mt-1 text-xs text-slate-500">30 days</p>
               <p className="mt-4 text-sm text-slate-500 leading-relaxed">
-                No form needed — the trial begins automatically the moment you install and first open the app.
+                The trial begins automatically the moment you install and first open the app — no card, no commitment.
               </p>
               {pricing?.downloadUrl ? (
-                <a href={pricing.downloadUrl} className="mt-5 inline-flex items-center gap-2 rounded-sm border border-slate-300 px-4 py-2.5 text-sm font-medium text-[#0B1F3A] transition-colors hover:bg-white">
+                <button
+                  onClick={() => setTrialModalOpen(true)}
+                  className="mt-5 inline-flex items-center gap-2 rounded-sm border border-slate-300 px-4 py-2.5 text-sm font-medium text-[#0B1F3A] transition-colors hover:bg-white"
+                >
                   <Download className="h-4 w-4" />
                   Download
-                </a>
+                </button>
               ) : (
                 <p className="mt-5 text-xs text-slate-400">Download link coming soon — contact us to get started.</p>
               )}
@@ -643,6 +755,7 @@ export default function MedoraOfflinePage() {
 
       {selectedPlan && <SubscribeModal plan={selectedPlan} onClose={() => setSelectedPlan(null)} />}
       {enterpriseModalOpen && <EnterpriseInquiryModal onClose={() => setEnterpriseModalOpen(false)} />}
+      {trialModalOpen && <TrialModal downloadUrl={pricing?.downloadUrl} onClose={() => setTrialModalOpen(false)} />}
     </>
   )
 }
