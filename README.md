@@ -21,21 +21,18 @@ Production-ready enterprise website built with React, Vite, Tailwind CSS, and Re
 - Build for production: `npm run build`
 - Preview production build: `npm run preview`
 
-## Enquiry Email (Backend)
+## Backend & Email
 
-The contact form submits to backend endpoint `POST /api/enquiry` and sends email using SMTP.
+This is a split deployment: the marketing site (this repo's frontend) is hosted on Vercel, and
+`server.js` (Express) runs on a separate self-hosted server at `support.aadhiraiinnovations.com`.
+`vercel.json` rewrites all `/api/*` requests there — there are no Vercel serverless functions in
+this repo (an `api/` directory with files would shadow that rewrite; don't add one).
 
-1. Copy `.env.example` to `.env`
-2. Fill SMTP values:
-	- `SMTP_HOST`
-	- `SMTP_PORT`
-	- `SMTP_USER`
-	- `SMTP_PASS`
-	- `ENQUIRY_TO_EMAIL` (default: `info@aadhiraiinnovations.com`)
-3. Start backend: `npm run server`
-4. Start frontend: `npm run dev`
-
-In local dev, Vite proxies `/api/*` to `http://localhost:8787`.
+SMTP and notification-recipient settings (enquiry, tickets, licenses, etc.) are configured through
+the Admin panel's Settings page, stored in the database — not environment variables — and read via
+`server/settings.js`. To run the backend locally: `npm run server` (needs `DATABASE_URL` and
+`JWT_SECRET` in `.env`; see `.env.example`). In local dev, Vite proxies `/api/*` to
+`http://localhost:8787`.
 
 ## Content Notes
 
