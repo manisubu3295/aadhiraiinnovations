@@ -7,6 +7,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { states } from './src/data/locationSlugs.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -23,9 +24,9 @@ const staticPages = [
   { path: '/products/medora-offline', lastmod: today, priority: '0.9', changefreq: 'monthly' },
 ]
 
-// Product pages (from products.js data)
+// Product pages (from products.js data) — 'medora-plus' deliberately excluded, it's already
+// listed in staticPages above with a distinct priority; this was previously duplicated here.
 const productSlugs = [
-  'medora-plus',
   'sanko-erp',
   'passtrack',
   'mouna-ai',
@@ -45,35 +46,32 @@ const productPages = productSlugs.map(slug => ({
   changefreq: 'monthly'
 }))
 
-// Dynamic city pages — mapped from LocalSEOPageTemplate data
-const cityList = [
-  'peravurani',
-  'pattukottai',
-  'thanjavur',
-  'pudukkottai',
-  'aranthangi',
-  'alangudi',
-  'salem',
-  'trichy',
-  'tirunelveli',
-  'erode',
-  'visakhapatnam',
-  'kancheepuram',
-  'vellore',
-  'nagercoil',
-  'thoothukudi',
-  'dindigul',
+// National pharmacy-billing-software local SEO — hub -> state -> district. Slugs come from
+// src/data/locationSlugs.js (a single source of truth shared with the routing/page-data layer),
+// so this can never drift out of sync with what actually resolves at those URLs the way the old
+// hand-maintained city list could.
+const locationHubPage = [
+  { path: '/pharmacy-billing-software', lastmod: today, priority: '0.9', changefreq: 'monthly' },
 ]
 
-const cityPages = cityList.map(citySlug => ({
-  path: `/pharmacy-billing-software/${citySlug}`,
+const statePages = states.map(({ stateSlug }) => ({
+  path: `/pharmacy-billing-software/state/${stateSlug}`,
   lastmod: today,
   priority: '0.8',
-  changefreq: 'monthly'
+  changefreq: 'monthly',
 }))
 
+const districtPages = states.flatMap(({ districts }) =>
+  districts.map(({ slug }) => ({
+    path: `/pharmacy-billing-software/${slug}`,
+    lastmod: today,
+    priority: '0.6',
+    changefreq: 'monthly',
+  }))
+)
+
 // Combine all pages
-const allPages = [...staticPages, ...productPages, ...cityPages]
+const allPages = [...staticPages, ...productPages, ...locationHubPage, ...statePages, ...districtPages]
 
 // Generate XML
 const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
@@ -109,4 +107,6 @@ console.log(`📍 Location: public/sitemap.xml`)
 console.log(`📊 Total URLs: ${allPages.length}`)
 console.log(`   - Static pages: ${staticPages.length}`)
 console.log(`   - Product pages: ${productPages.length}`)
-console.log(`   - City pages: ${cityPages.length}`)
+console.log(`   - Location hub: ${locationHubPage.length}`)
+console.log(`   - State pages: ${statePages.length}`)
+console.log(`   - District pages: ${districtPages.length}`)

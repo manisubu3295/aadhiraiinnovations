@@ -96,13 +96,13 @@ function Footer() {
               </ul>
             </div>
 
-            {/* Learn + Contact */}
+            {/* Locations + Contact */}
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Learn</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Locations</p>
               <ul className="space-y-3 mb-8">
-                <li><Link to="/learn"              className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">All Courses</Link></li>
-                <li><Link to="/learn/java-dsa"     className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Java DSA</Link></li>
-                <li><Link to="/learn/java-dsa/arrays" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Arrays</Link></li>
+                <li><Link to="/pharmacy-billing-software"                       className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">All States &amp; Districts</Link></li>
+                <li><Link to="/pharmacy-billing-software/state/tamil-nadu"      className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Tamil Nadu</Link></li>
+                <li><Link to="/pharmacy-billing-software/state/maharashtra"     className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Maharashtra</Link></li>
               </ul>
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-3">Email</p>
               <a

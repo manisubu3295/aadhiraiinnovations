@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown, Download } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Container from '../ui/Container'
 
@@ -32,19 +32,17 @@ const NAV = [
     ],
   },
   {
-    key: 'learn',
-    label: 'Learn',
+    key: 'locations',
+    label: 'Locations',
     groups: [
       {
         items: [
-          { label: 'All Courses', desc: 'Browse all learning paths', href: '/learn' },
-          { label: 'Java DSA', desc: 'Data structures & algorithms in Java', href: '/learn/java-dsa' },
-          { label: 'Arrays', desc: 'Interactive guided lesson', href: '/learn/java-dsa/arrays' },
-          { label: 'Linked Lists', desc: 'Nodes, pointers, reversal', href: '/learn/java-dsa/linked-list' },
-          { label: 'Stacks', desc: 'LIFO — balanced brackets, undo ops', href: '/learn/java-dsa/stack' },
-          { label: 'Queues', desc: 'FIFO — BFS, job scheduling', href: '/learn/java-dsa/queue' },
-          { label: 'Binary Search', desc: 'O(log n) search on sorted data', href: '/learn/java-dsa/binary-search' },
-          { label: 'Recursion', desc: 'Call stack, base case, memoization', href: '/learn/java-dsa/recursion' },
+          { label: 'All States & Districts', desc: 'Pharmacy billing software availability across India', href: '/pharmacy-billing-software' },
+          { label: 'Tamil Nadu', desc: 'Where we\'re based', href: '/pharmacy-billing-software/state/tamil-nadu' },
+          { label: 'Maharashtra', desc: 'Mumbai, Pune, Nagpur and more', href: '/pharmacy-billing-software/state/maharashtra' },
+          { label: 'Karnataka', desc: 'Bengaluru, Mysuru and more', href: '/pharmacy-billing-software/state/karnataka' },
+          { label: 'Uttar Pradesh', desc: 'Lucknow, Kanpur and more', href: '/pharmacy-billing-software/state/uttar-pradesh' },
+          { label: 'Telangana', desc: 'Hyderabad and more', href: '/pharmacy-billing-software/state/telangana' },
         ],
       },
     ],
@@ -200,7 +198,14 @@ function Header() {
           </nav>
 
           {/* Right side: CTA + Mobile toggle */}
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Link
+              to="/products/medora-offline?download=1"
+              className="hidden lg:inline-flex items-center gap-1.5 rounded-md border border-[#0B1F3A]/20 px-4 py-2 text-[13px] font-semibold text-[#0B1F3A] transition-colors duration-150 hover:bg-[#0B1F3A]/5 whitespace-nowrap"
+            >
+              <Download className="h-3.5 w-3.5" strokeWidth={2} />
+              Download Medora
+            </Link>
             <a
               href="/contact"
               className="hidden lg:inline-flex rounded-md bg-[#0B1F3A] px-5 py-2 text-[13px] font-semibold text-white transition-colors duration-150 hover:bg-[#173762] whitespace-nowrap"
@@ -288,6 +293,14 @@ function Header() {
                 ))}
 
                 {/* Mobile CTA */}
+                <Link
+                  to="/products/medora-offline?download=1"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-md border border-[#0B1F3A]/20 px-3 py-3 text-[13px] font-semibold text-[#0B1F3A] transition-colors hover:bg-[#0B1F3A]/5 w-full"
+                >
+                  <Download className="h-3.5 w-3.5" strokeWidth={2} />
+                  Download Medora
+                </Link>
                 <a
                   href="/contact"
                   onClick={() => setIsMenuOpen(false)}

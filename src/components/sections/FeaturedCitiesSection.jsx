@@ -117,13 +117,13 @@ function FeaturedCitiesSection() {
           className="mt-8 text-center"
         >
           <p className="text-sm text-slate-500 mb-4">
-            Medora+ is built for pharmacies across Tamil Nadu
+            Medora+ is built for pharmacies across India
           </p>
           <Link
-            to="/pharmacy-billing-software/salem"
+            to="/pharmacy-billing-software"
             className="inline-flex items-center gap-2 text-sm font-medium text-[#0B1F3A] hover:text-[#0B1F3A]/70 transition-colors"
           >
-            View all cities
+            View all states &amp; districts
             <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.div>

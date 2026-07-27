@@ -1,18 +1,31 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import { ArrowRight, MapPin, CheckCircle2, MessageCircle, Phone } from 'lucide-react'
 import Container from '../components/ui/Container'
 import { cityPageData } from '../components/sections/LocalSEOPageTemplate'
+import { districtSlugToInfo, CURATED_ALIASES } from '../data/locationSlugs.js'
+import { buildDistrictPageData } from '../data/generateLocationContent.js'
+import { useNoIndex } from '../hooks/useNoIndex.js'
 
 function LocalSEOPage() {
   const { city } = useParams()
   const citySlug = city?.toLowerCase()
 
-  // Get data for this city
-  const data = cityPageData[citySlug]
+  // 1. A hand-written curated page (LocalSEOPageTemplate.jsx) always wins.
+  // 2. A few dataset districts are known by a different official name than their curated page
+  //    (e.g. "tiruchirappalli" -> the curated "trichy" page) — redirect rather than 404 or
+  //    render a competing near-duplicate page for the same real place.
+  // 3. Otherwise, generate content on the fly for any of the ~711 non-curated Indian districts.
+  const districtInfo = citySlug ? districtSlugToInfo.get(citySlug) : undefined
+  const data = cityPageData[citySlug] || (districtInfo && buildDistrictPageData(districtInfo))
+  const isAlias = !data && citySlug && CURATED_ALIASES[citySlug]
+  useNoIndex(!data && !isAlias)
 
   if (!data) {
+    if (isAlias) {
+      return <Navigate to={`/pharmacy-billing-software/${CURATED_ALIASES[citySlug]}`} replace />
+    }
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
         <div className="text-center">
