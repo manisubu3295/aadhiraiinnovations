@@ -105,6 +105,16 @@ router.post('/subscribe', subscribeLimiter, async (req, res) => {
       })
     }
 
+    const ackTpl = await getTemplate('OFFLINE_SUBSCRIBE_ACK')
+    const ack = renderTemplate(ackTpl, { name: trimmedName, plan })
+    sendMail({
+      to: trimmedEmail,
+      subject: ack.subject,
+      text: htmlToText(ack.html),
+      html: ack.html,
+      meta: { templateKey: 'OFFLINE_SUBSCRIBE_ACK', relatedType: 'LEAD', relatedId: lead.id },
+    })
+
     const staffNumbers = new Set(await getStaffNotifyNumbers())
     if (settings.whatsappStaffNotifyNumber) staffNumbers.add(settings.whatsappStaffNotifyNumber)
     for (const number of staffNumbers) {
@@ -272,6 +282,16 @@ router.post('/trial-signup', subscribeLimiter, async (req, res) => {
         meta: { templateKey: 'OFFLINE_TRIAL_LEAD_STAFF_NOTIFY', relatedType: 'LEAD', relatedId: lead.id },
       })
     }
+
+    const ackTpl = await getTemplate('OFFLINE_TRIAL_DOWNLOAD_ACK')
+    const ack = renderTemplate(ackTpl, { name: trimmedName })
+    sendMail({
+      to: trimmedEmail,
+      subject: ack.subject,
+      text: htmlToText(ack.html),
+      html: ack.html,
+      meta: { templateKey: 'OFFLINE_TRIAL_DOWNLOAD_ACK', relatedType: 'LEAD', relatedId: lead.id },
+    })
 
     const staffNumbers = new Set(await getStaffNotifyNumbers())
     if (settings.whatsappStaffNotifyNumber) staffNumbers.add(settings.whatsappStaffNotifyNumber)

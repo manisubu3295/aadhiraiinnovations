@@ -125,6 +125,24 @@ export const DEFAULT_TEMPLATES = [
       '<p>Hi {{userName}},</p><p>Your expense claim for "{{description}}" has been reimbursed: <strong>{{currency}} {{amount}}</strong>.</p><p>Regards,<br/>{{businessName}}</p>',
   },
   {
+    key: 'OFFLINE_SUBSCRIBE_ACK',
+    category: 'ENQUIRY',
+    label: 'Subscription request received (to customer)',
+    variables: ['name', 'plan'],
+    subject: "Thanks for subscribing to Medora Offline — we've got your request",
+    bodyHtml:
+      '<p>Hi {{name}},</p><p>Thanks for subscribing to Medora Offline ({{plan}} plan) — we\'ve received your request.</p><p>If you were taken to a payment screen, please complete payment there to receive your license by email shortly after. If not, we\'ll confirm payment and email your license within 24 hours.</p><p>Questions in the meantime? Just reply to this email or reach us at info@aadhiraiinnovations.com.</p>',
+  },
+  {
+    key: 'OFFLINE_TRIAL_DOWNLOAD_ACK',
+    category: 'ENQUIRY',
+    label: 'Trial download received (to customer)',
+    variables: ['name'],
+    subject: 'Thanks for downloading the Medora Offline trial',
+    bodyHtml:
+      '<p>Hi {{name}},</p><p>Thanks for downloading the Medora Offline free trial — you now have 30 days to explore GST-ready billing, stock management, and expiry alerts, fully offline.</p><p>Need help getting started, or ready to subscribe? Reach us anytime at info@aadhiraiinnovations.com.</p>',
+  },
+  {
     key: 'OFFLINE_LICENSE_LEAD_STAFF_NOTIFY',
     category: 'ENQUIRY',
     label: 'Offline license subscription request (to staff)',
