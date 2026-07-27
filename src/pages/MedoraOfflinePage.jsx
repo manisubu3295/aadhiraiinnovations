@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   ArrowLeft, ArrowRight, MessageCircle, X, Download, CheckCircle2,
   PackageCheck, Receipt, Percent, Users, ShieldCheck, HardDrive, BarChart3,
@@ -498,6 +498,7 @@ export default function MedoraOfflinePage() {
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [enterpriseModalOpen, setEnterpriseModalOpen] = useState(false)
   const [trialModalOpen, setTrialModalOpen] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     fetch(`${API_BASE}/api/offline-license/pricing`)
@@ -505,6 +506,20 @@ export default function MedoraOfflinePage() {
       .then((data) => data.success && setPricing(data.pricing))
       .catch(() => {})
   }, [])
+
+  // Lets the header's "Download Medora" link (visible on every page) jump straight into the
+  // trial download flow from anywhere on the site, instead of making someone land here and
+  // hunt for the button themselves. Waits for pricing to load since the modal needs
+  // pricing.downloadUrl; only fires once so it doesn't re-open after the visitor closes it.
+  useEffect(() => {
+    if (searchParams.get('download') && pricing?.downloadUrl) {
+      setTrialModalOpen(true)
+      setSearchParams((prev) => {
+        prev.delete('download')
+        return prev
+      }, { replace: true })
+    }
+  }, [pricing, searchParams, setSearchParams])
 
   function scrollToPricing() {
     document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })
@@ -789,8 +804,19 @@ export default function MedoraOfflinePage() {
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp India
               </a>
+              <a
+                href="https://wa.me/6590356479"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/20 px-7 py-3.5 text-sm font-medium text-white/75 tracking-wide transition-colors hover:border-white/40 hover:text-white"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp Singapore
+              </a>
             </div>
-            <p className="mt-6 text-xs text-white/30">info@aadhiraiinnovations.com · +91 8508716957 · Peravurani & Chennai, Tamil Nadu</p>
+            <p className="mt-6 text-xs text-white/30">
+              info@aadhiraiinnovations.com · India: +91 85087 16957 · +91 82481 95768 · Singapore: +65 9035 6479 · Peravurani &amp; Chennai, Tamil Nadu
+            </p>
           </div>
         </Container>
       </section>
