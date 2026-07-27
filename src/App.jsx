@@ -6,6 +6,9 @@ import FounderPage from './pages/FounderPage'
 const ServicesPage = lazy(() => import('./pages/ServicesPage'))
 const AboutPage    = lazy(() => import('./pages/AboutPage'))
 const ContactPage  = lazy(() => import('./pages/ContactPage'))
+const PrivacyPolicyPage    = lazy(() => import('./pages/PrivacyPolicyPage'))
+const TermsOfServicePage   = lazy(() => import('./pages/TermsOfServicePage'))
+const RefundPolicyPage     = lazy(() => import('./pages/RefundPolicyPage'))
 const AdminApp = lazy(() => import('./admin/AdminApp'))
 const ClientApp = lazy(() => import('./client/ClientApp'))
 
@@ -62,6 +65,9 @@ function App() {
         <Route path="/services" element={<Suspense fallback={<PageLoader />}><ServicesPage /></Suspense>} />
         <Route path="/about" element={<Suspense fallback={<PageLoader />}><AboutPage /></Suspense>} />
         <Route path="/contact" element={<Suspense fallback={<PageLoader />}><ContactPage /></Suspense>} />
+        <Route path="/privacy-policy" element={<Suspense fallback={<PageLoader />}><PrivacyPolicyPage /></Suspense>} />
+        <Route path="/terms-of-service" element={<Suspense fallback={<PageLoader />}><TermsOfServicePage /></Suspense>} />
+        <Route path="/refund-policy" element={<Suspense fallback={<PageLoader />}><RefundPolicyPage /></Suspense>} />
 
         {/* Business Tools */}
         <Route

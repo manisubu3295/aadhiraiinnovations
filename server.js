@@ -17,6 +17,7 @@ import chatFlowRoutes from './server/routes/chatFlows.js'
 import menuPermissionRoutes from './server/routes/menuPermissions.js'
 import offlineLicenseRoutes from './server/routes/offlineLicense.js'
 import licenseRoutes from './server/routes/licenses.js'
+import geoRoutes from './server/routes/geo.js'
 import { deliverMail } from './server/mailer.js'
 import { getSettings } from './server/settings.js'
 import { getTemplate, renderTemplate, htmlToText } from './server/emailTemplates.js'
@@ -62,6 +63,7 @@ app.use('/api/whatsapp/flows', chatFlowRoutes)
 app.use('/api/menu-permissions', menuPermissionRoutes)
 app.use('/api/offline-license', offlineLicenseRoutes)
 app.use('/api/licenses', licenseRoutes)
+app.use('/api/geo', geoRoutes)
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' })

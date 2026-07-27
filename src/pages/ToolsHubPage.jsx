@@ -51,7 +51,7 @@ function usePageSchema() {
           'name': 'Is my file safe and private?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Yes, your privacy is our priority. Files are processed in your browser whenever possible (PDF Editor, PDF to DOCX text extraction). Files are not stored on our servers, and we do not track or share your data.',
+            'text': 'Yes, your privacy is our priority. Files are processed entirely in your browser and never uploaded to our servers. We do not track or share your data.',
           },
         },
         {
@@ -142,7 +142,7 @@ const benefits = [
   },
   {
     title: 'Privacy First',
-    description: 'Your files are processed in your browser or securely on our servers. Never stored or shared.',
+    description: 'Your files are processed entirely in your browser and never uploaded to our servers.',
   },
   {
     title: 'No Signup Required',
@@ -333,7 +333,7 @@ export default function ToolsHubPage() {
           },
           {
             q: 'Is my file safe and private?',
-            a: 'Yes. Files are processed in your browser whenever possible and never stored on our servers. We do not track or share your data.',
+            a: 'Yes. Files are processed entirely in your browser and never uploaded to our servers. We do not track or share your data.',
           },
           {
             q: 'What file formats are supported?',

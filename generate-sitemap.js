@@ -22,6 +22,13 @@ const staticPages = [
   { path: '/solutions/erp-automation', lastmod: today, priority: '0.9', changefreq: 'monthly' },
   { path: '/products/medora-plus', lastmod: today, priority: '0.9', changefreq: 'monthly' },
   { path: '/products/medora-offline', lastmod: today, priority: '0.9', changefreq: 'monthly' },
+  { path: '/about', lastmod: today, priority: '0.7', changefreq: 'monthly' },
+  { path: '/services', lastmod: today, priority: '0.7', changefreq: 'monthly' },
+  { path: '/contact', lastmod: today, priority: '0.7', changefreq: 'monthly' },
+  { path: '/tools', lastmod: today, priority: '0.6', changefreq: 'monthly' },
+  { path: '/privacy-policy', lastmod: today, priority: '0.3', changefreq: 'yearly' },
+  { path: '/terms-of-service', lastmod: today, priority: '0.3', changefreq: 'yearly' },
+  { path: '/refund-policy', lastmod: today, priority: '0.3', changefreq: 'yearly' },
 ]
 
 // Product pages (from products.js data) — 'medora-plus' deliberately excluded, it's already

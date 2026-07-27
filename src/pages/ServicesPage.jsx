@@ -63,8 +63,8 @@ function ServicesPage() {
               One area of focus.
             </h1>
             <p className="mt-6 max-w-[52ch] text-[15px] text-slate-500 leading-[1.85]">
-              We specialise in backend architecture for funded startups. Every engagement we take is in
-              this domain — we don't dilute our practice with adjacent work outside our expertise.
+              We specialise in backend architecture for funded startups. Within our consulting practice,
+              every engagement is in this domain — we don't dilute it with adjacent work outside our expertise.
             </p>
           </motion.div>
         </Container>

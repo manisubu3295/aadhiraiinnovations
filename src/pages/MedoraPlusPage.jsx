@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import Container from '../components/ui/Container'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
+import { useVisitorLocation } from '../hooks/useVisitorLocation'
 
 /* ─── Schema ─────────────────────────────────────────────────────────── */
 function usePageSchema() {
@@ -77,7 +78,7 @@ const features = [
   {
     icon: Wifi,
     title: 'Offline-First Core',
-    description: 'Complete billing, inventory, and reporting without internet. Built for Tamil Nadu pharmacies where connectivity is intermittent.',
+    description: 'Complete billing, inventory, and reporting without internet. Built for Indian pharmacies where connectivity is intermittent.',
   },
   {
     icon: Cloud,
@@ -101,18 +102,27 @@ const features = [
   },
 ]
 
-const whyPoints = [
-  { label: 'GST-native', detail: 'Designed around Indian GST — not adapted from foreign billing software' },
-  { label: 'Offline-first', detail: 'All core operations work without internet — cloud sync when available' },
-  { label: 'AI layer included', detail: 'Forecasting, expiry prediction, and anomaly detection in every tier' },
-  { label: 'Built for Tamil Nadu', detail: 'Developed and used by pharmacies in Thanjavur, Chennai, and across Tamil Nadu' },
-  { label: 'Full support', detail: 'Structured 5-phase implementation with post-launch engineering support' },
-  { label: 'Live demo available', detail: 'Try Medora+ on the live demo environment before any commitment' },
-]
+function buildWhyPoints(visitorState) {
+  const builtPoint = visitorState && visitorState !== 'Tamil Nadu'
+    ? { label: `Built for ${visitorState}`, detail: `Developed in Tamil Nadu, built to fit pharmacy operations in ${visitorState} and across India` }
+    : { label: 'Built for Tamil Nadu', detail: 'Developed and used by pharmacies in Thanjavur, Chennai, and across Tamil Nadu' }
+
+  return [
+    { label: 'GST-native', detail: 'Designed around Indian GST — not adapted from foreign billing software' },
+    { label: 'Offline-first', detail: 'All core operations work without internet — cloud sync when available' },
+    { label: 'AI layer included', detail: 'Forecasting, expiry prediction, and anomaly detection in every tier' },
+    builtPoint,
+    { label: 'Full support', detail: 'Structured 5-phase implementation with post-launch engineering support' },
+    { label: 'Live demo available', detail: 'Try Medora+ on the live demo environment before any commitment' },
+  ]
+}
 
 /* ─── Page ───────────────────────────────────────────────────────────── */
 export default function MedoraPlusPage() {
   usePageSchema()
+  const location = useVisitorLocation()
+  const builtStrip = location?.state && location.state !== 'Tamil Nadu' ? `${location.state} Ready` : 'Tamil Nadu Built'
+  const whyPoints = buildWhyPoints(location?.state)
 
   return (
     <>
@@ -180,7 +190,7 @@ export default function MedoraPlusPage() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-2">
-                {['GST-Compliant', 'AI-Powered', 'Offline-First', 'Cloud Sync', 'Tamil Nadu Built'].map((tag) => (
+                {['GST-Compliant', 'AI-Powered', 'Offline-First', 'Cloud Sync', builtStrip].map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium text-white/45"
@@ -448,37 +458,53 @@ export default function MedoraPlusPage() {
               Pharmacy billing software for your city.
             </h2>
             <p className="mt-4 text-base text-slate-600 leading-relaxed max-w-2xl">
-              Medora+ is used by pharmacies across Tamil Nadu and South India. Explore how Medora+ fits your city's pharmacy operations.
+              Medora+ is proven in pharmacies across Tamil Nadu, and available to pharmacies
+              anywhere in India. Explore how Medora+ fits your city's pharmacy operations.
             </p>
           </motion.div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {[
+              ...(location?.stateSlug && location.state !== 'Tamil Nadu'
+                ? [{ city: location.state, slug: `state/${location.stateSlug}`, isState: true }]
+                : []),
               { city: 'Salem', slug: 'salem' },
               { city: 'Trichy', slug: 'trichy' },
               { city: 'Vellore', slug: 'vellore' },
               { city: 'Tirunelveli', slug: 'tirunelveli' },
               { city: 'Erode', slug: 'erode' },
-            ].map((location) => (
+            ].map((loc) => (
               <motion.div
-                key={location.slug}
+                key={loc.slug}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
               >
                 <Link
-                  to={`/pharmacy-billing-software/${location.slug}`}
+                  to={`/pharmacy-billing-software/${loc.slug}`}
                   className="block rounded-lg border border-slate-200 bg-slate-50 p-6 text-center hover:bg-slate-100 hover:border-slate-300 transition-all"
                 >
-                  <h3 className="text-sm font-semibold text-[#0B1F3A]">{location.city}</h3>
-                  <p className="mt-2 text-xs text-slate-500">Pharmacy billing software</p>
+                  <h3 className="text-sm font-semibold text-[#0B1F3A]">{loc.city}</h3>
+                  <p className="mt-2 text-xs text-slate-500">
+                    {loc.isState ? 'Pharmacy billing software near you' : 'Pharmacy billing software'}
+                  </p>
                   <div className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-[#0B1F3A]/60 group-hover:text-[#0B1F3A]">
                     Learn more <ArrowRight className="h-3 w-3" />
                   </div>
                 </Link>
               </motion.div>
             ))}
+            <Link
+              to="/pharmacy-billing-software"
+              className="block rounded-lg border border-dashed border-slate-300 bg-white p-6 text-center hover:bg-slate-50 hover:border-slate-400 transition-all"
+            >
+              <h3 className="text-sm font-semibold text-[#0B1F3A]">All States &amp; Districts</h3>
+              <p className="mt-2 text-xs text-slate-500">Browse full India coverage</p>
+              <div className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-[#0B1F3A]/60">
+                Browse all <ArrowRight className="h-3 w-3" />
+              </div>
+            </Link>
           </div>
         </Container>
       </section>

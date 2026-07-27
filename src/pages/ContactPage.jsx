@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Mail, CheckCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Container from '../components/ui/Container'
 import PatternBackground from '../components/ui/PatternBackground'
+import { API_BASE } from '../lib/apiBase'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -19,6 +20,8 @@ const nextSteps = [
 
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
     name: '', company: '', role: '', stage: '', service: '', situation: '',
   })
@@ -27,11 +30,36 @@ function ContactPage() {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    const body = Object.entries(form).map(([k, v]) => `${k}: ${v}`).join('\n')
-    window.location.href = `mailto:info@aadhiraiinnovations.com?subject=Enquiry from ${encodeURIComponent(form.name || 'website')}&body=${encodeURIComponent(body)}`
-    setSubmitted(true)
+    setIsSubmitting(true)
+    setError('')
+
+    const message = [
+      form.role && `Role: ${form.role}`,
+      form.stage && `Funding Stage: ${form.stage}`,
+      form.service && `Interested in: ${form.service}`,
+      form.situation && `\n${form.situation}`,
+    ].filter(Boolean).join('\n')
+
+    try {
+      const response = await fetch(`${API_BASE}/api/enquiry`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, company: form.company, message }),
+      })
+      const result = await response.json().catch(() => null)
+
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.message || 'Unable to send enquiry.')
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err.message || 'Failed to send enquiry. Please try again or email us directly.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -179,11 +207,16 @@ function ContactPage() {
 
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2.5 rounded-sm bg-[#0B1F3A] px-7 py-[14px] text-[13.5px] font-bold text-white transition-all hover:bg-[#173762] active:scale-[0.985]"
+                    disabled={isSubmitting}
+                    className="inline-flex items-center gap-2.5 rounded-sm bg-[#0B1F3A] px-7 py-[14px] text-[13.5px] font-bold text-white transition-all hover:bg-[#173762] active:scale-[0.985] disabled:opacity-60"
                   >
-                    Submit Enquiry
+                    {isSubmitting ? 'Sending...' : 'Submit Enquiry'}
                     <ArrowRight className="h-4 w-4" strokeWidth={2} />
                   </button>
+
+                  {error && (
+                    <p className="text-[13px] text-red-600" role="status">{error}</p>
+                  )}
                 </form>
               )}
             </motion.div>

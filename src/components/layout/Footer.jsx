@@ -1,7 +1,14 @@
 import { useEffect } from 'react'
 import Container from '../ui/Container'
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Facebook, Linkedin, Instagram, Youtube } from 'lucide-react'
+
+const SOCIAL_LINKS = [
+  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61577499183280', Icon: Facebook },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/113038075/', Icon: Linkedin },
+  { label: 'Instagram', href: 'https://www.instagram.com/aadhirai_innovations', Icon: Instagram },
+  { label: 'YouTube', href: 'https://www.youtube.com/@AadhiraiInnovations', Icon: Youtube },
+]
 
 function Footer() {
   useEffect(() => {
@@ -11,9 +18,7 @@ function Footer() {
       'name': 'Aadhirai Innovations',
       'url': 'https://aadhiraiinnovations.com',
       'description': 'Senior backend architecture services for growth-stage software companies.',
-      'sameAs': [
-        'https://www.linkedin.com/company/aadhirai-innovations',
-      ],
+      'sameAs': SOCIAL_LINKS.map((s) => s.href),
       'contactPoint': {
         '@type': 'ContactPoint',
         'contactType': 'Sales',
@@ -111,6 +116,20 @@ function Footer() {
               >
                 info@aadhiraiinnovations.com
               </a>
+              <div className="mt-6 flex items-center gap-3">
+                {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition-colors hover:border-[#0B1F3A] hover:text-[#0B1F3A]"
+                  >
+                    <Icon className="h-3.5 w-3.5" strokeWidth={1.75} />
+                  </a>
+                ))}
+              </div>
             </div>
 
           </div>
@@ -124,9 +143,11 @@ function Footer() {
             <p className="text-[11.5px] text-slate-400">
               © {new Date().getFullYear()} Aadhirai Innovations. All rights reserved.
             </p>
-            <p className="text-[11.5px] text-slate-400">
-              Backend architecture for growth-stage software companies.
-            </p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <Link to="/privacy-policy" className="text-[11.5px] text-slate-400 hover:text-[#0B1F3A] transition-colors">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="text-[11.5px] text-slate-400 hover:text-[#0B1F3A] transition-colors">Terms of Service</Link>
+              <Link to="/refund-policy" className="text-[11.5px] text-slate-400 hover:text-[#0B1F3A] transition-colors">Refund Policy</Link>
+            </div>
           </div>
         </Container>
       </div>

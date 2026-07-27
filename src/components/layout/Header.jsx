@@ -32,22 +32,6 @@ const NAV = [
     ],
   },
   {
-    key: 'locations',
-    label: 'Locations',
-    groups: [
-      {
-        items: [
-          { label: 'All States & Districts', desc: 'Pharmacy billing software availability across India', href: '/pharmacy-billing-software' },
-          { label: 'Tamil Nadu', desc: 'Where we\'re based', href: '/pharmacy-billing-software/state/tamil-nadu' },
-          { label: 'Maharashtra', desc: 'Mumbai, Pune, Nagpur and more', href: '/pharmacy-billing-software/state/maharashtra' },
-          { label: 'Karnataka', desc: 'Bengaluru, Mysuru and more', href: '/pharmacy-billing-software/state/karnataka' },
-          { label: 'Uttar Pradesh', desc: 'Lucknow, Kanpur and more', href: '/pharmacy-billing-software/state/uttar-pradesh' },
-          { label: 'Telangana', desc: 'Hyderabad and more', href: '/pharmacy-billing-software/state/telangana' },
-        ],
-      },
-    ],
-  },
-  {
     key: 'tools',
     label: 'Tools',
     groups: [

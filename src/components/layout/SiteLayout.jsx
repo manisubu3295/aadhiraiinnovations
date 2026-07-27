@@ -44,6 +44,30 @@ const SEO = {
       'Book a Production Readiness Audit or discuss an architecture engagement. We respond within one business day.',
     canonical: 'https://www.aadhiraiinnovations.com/contact',
   },
+  '/privacy-policy': {
+    title: 'Privacy Policy | Aadhirai Innovations',
+    description:
+      'How Aadhirai Innovations collects, uses, and protects your personal information across our website, Medora+ and Medora Offline software, and free tools.',
+    ogTitle: 'Privacy Policy | Aadhirai Innovations',
+    ogDescription: 'How we collect, use, and protect your personal information.',
+    canonical: 'https://www.aadhiraiinnovations.com/privacy-policy',
+  },
+  '/terms-of-service': {
+    title: 'Terms of Service | Aadhirai Innovations',
+    description:
+      'The terms governing use of aadhiraiinnovations.com, Medora+ and Medora Offline licenses, and our free browser-based tools.',
+    ogTitle: 'Terms of Service | Aadhirai Innovations',
+    ogDescription: 'Terms governing use of our website, software licenses, and free tools.',
+    canonical: 'https://www.aadhiraiinnovations.com/terms-of-service',
+  },
+  '/refund-policy': {
+    title: 'Refund & Cancellation Policy | Aadhirai Innovations',
+    description:
+      'Our refund and cancellation policy for Medora Offline license purchases, including exceptions for duplicate or failed payments.',
+    ogTitle: 'Refund & Cancellation Policy | Aadhirai Innovations',
+    ogDescription: 'Refund and cancellation terms for Medora Offline license purchases.',
+    canonical: 'https://www.aadhiraiinnovations.com/refund-policy',
+  },
   '/solutions/pharmacy-software': {
     title: 'Pharmacy Management Software India — Medora+ | Aadhirai Innovations',
     description:

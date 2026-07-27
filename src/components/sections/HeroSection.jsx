@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import Container from '../ui/Container'
 import HeroIntelligenceAnimation from '../ui/HeroIntelligenceAnimation'
 import FloatingBadge from '../ui/FloatingBadge'
+import { useVisitorLocation } from '../../hooks/useVisitorLocation'
 
 const stagger = {
   hidden: {},
@@ -14,6 +16,11 @@ const fadeUp = {
 }
 
 function HeroSection() {
+  const location = useVisitorLocation()
+  const eyebrowRegion = location?.state ? `${location.state}, India` : 'India'
+  const headlineRegion = location?.state ? `${location.state} pharmacies.` : 'Indian pharmacies.'
+  const builtStrip = location?.state ? `${location.state} Built` : 'Pan-India Ready'
+
   return (
     <section className="relative overflow-hidden bg-[#050d1a] min-h-screen flex items-center text-white noise-overlay">
 
@@ -53,7 +60,7 @@ function HeroSection() {
             <motion.div variants={fadeUp} className="mb-7">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/38">
                 <span className="inline-block h-1.5 w-1.5 flex-none rounded-full bg-blue-400/70" />
-                Pharmacy Software · Tamil Nadu, India
+                Pharmacy Software · {eyebrowRegion}
               </span>
             </motion.div>
 
@@ -67,7 +74,7 @@ function HeroSection() {
               <br />
               <span className="text-gradient-ai">built for</span>
               <br />
-              Tamil Nadu pharmacies.
+              {headlineRegion}
             </motion.h1>
 
             {/* Sub */}
@@ -85,7 +92,7 @@ function HeroSection() {
             <motion.div variants={fadeUp} className="mt-8 flex items-center gap-5">
               <div className="h-px flex-1 bg-white/[0.07]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/22">
-                GST-Compliant · Offline-First · Tamil Nadu Built
+                GST-Compliant · Offline-First · {builtStrip}
               </span>
               <div className="h-px flex-1 bg-white/[0.07]" />
             </motion.div>
@@ -107,6 +114,17 @@ function HeroSection() {
               >
                 Talk to us on WhatsApp
               </a>
+            </motion.div>
+
+            {/* Audience fork — startup engineering leaders land here too, not just pharmacy buyers */}
+            <motion.div variants={fadeUp} className="mt-6">
+              <Link
+                to="/services"
+                className="inline-flex items-center gap-1.5 text-[12px] font-medium text-white/28 transition-colors hover:text-white/56"
+              >
+                Startup CTO or VP Engineering? See our backend architecture services
+                <ArrowRight className="h-3 w-3" />
+              </Link>
             </motion.div>
           </motion.div>
 
