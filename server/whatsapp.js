@@ -14,6 +14,15 @@ export function normalizeWhatsAppNumber(raw) {
   return null
 }
 
+// Meta's webhook always sends `from` as a full E.164 number (country code included, no `+`),
+// unlike normalizeWhatsAppNumber's free-text input which assumes a bare 10-digit number is an
+// Indian mobile missing its +91. Applying that assumption to Meta's payload corrupts any contact
+// whose full number happens to also be 10 digits (e.g. Singapore: 65 + 8-digit number).
+export function sanitizeMetaWhatsAppNumber(raw) {
+  const digits = String(raw || '').replace(/\D/g, '')
+  return digits || null
+}
+
 export function isWhatsAppConfigured(settings) {
   return Boolean(settings.whatsappEnabled && settings.whatsappPhoneNumberId && settings.whatsappAccessToken)
 }

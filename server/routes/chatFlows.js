@@ -1,6 +1,7 @@
 import express from 'express'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
+import { createDefaultChatFlow, DEFAULT_CHAT_FLOW_NAME } from '../defaultChatFlow.js'
 
 const router = express.Router()
 router.use(requireAuth)
@@ -12,6 +13,23 @@ router.get('/', async (req, res) => {
     orderBy: { createdAt: 'desc' },
   })
   res.json({ success: true, flows })
+})
+
+// Idempotent — re-clicking the admin UI's "Create default WhatsApp menu" button is always safe:
+// once a flow named DEFAULT_CHAT_FLOW_NAME exists for this user, this just returns it as-is.
+router.post('/default', async (req, res) => {
+  const existing = await prisma.chatFlow.findFirst({ where: { userId: req.user.id, name: DEFAULT_CHAT_FLOW_NAME } })
+  if (existing) {
+    const full = await prisma.chatFlow.findUnique({ where: { id: existing.id }, include: { nodes: true, edges: true } })
+    return res.json({ success: true, flow: full, created: false })
+  }
+  try {
+    const flow = await createDefaultChatFlow(req.user.id)
+    res.status(201).json({ success: true, flow, created: true })
+  } catch (error) {
+    console.error('Failed to create default chat flow:', error)
+    res.status(400).json({ success: false, message: error.message || 'Failed to create the default flow.' })
+  }
 })
 
 router.post('/', async (req, res) => {

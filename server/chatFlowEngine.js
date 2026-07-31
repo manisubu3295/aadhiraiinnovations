@@ -95,6 +95,7 @@ export async function advanceFlow(conversationId, inboundMessage) {
           if (variableName) {
             const variables = { ...(session.variables || {}), [variableName]: inboundMessage.body }
             await tx.chatFlowSession.update({ where: { id: session.id }, data: { variables } })
+            session.variables = variables
           }
           const edge = await tx.chatFlowEdge.findFirst({ where: { flowId: session.flowId, fromNodeId: currentNode.id } })
           if (!edge) {
@@ -146,7 +147,27 @@ export async function advanceFlow(conversationId, inboundMessage) {
           }
 
           if (currentNode.type === 'END') {
-            await tx.chatFlowSession.update({ where: { id: session.id }, data: { status: 'COMPLETED' } })
+            const endData = currentNode.data || {}
+            if (endData.createLead) {
+              const variables = session.variables || {}
+              const name = String(variables.name || '').trim() || 'WhatsApp contact'
+              const details = String(variables.details || '').trim()
+              const emailMatch = details.match(/[^\s]+@[^\s]+\.[^\s]+/)
+              const lead = await tx.lead.create({
+                data: {
+                  name,
+                  phone: conversation.contactNumber,
+                  email: emailMatch ? emailMatch[0] : null,
+                  source: endData.leadSource || 'WhatsApp',
+                  notes: details || null,
+                },
+              })
+              await tx.whatsAppConversation.update({ where: { id: conversation.id }, data: { leadId: lead.id } })
+            }
+            await tx.chatFlowSession.update({
+              where: { id: session.id },
+              data: { status: endData.pauseSession ? 'PAUSED' : 'COMPLETED' },
+            })
             return
           }
 

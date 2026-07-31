@@ -31,7 +31,11 @@ function newClientId() {
 
 function nodePreview(nodeType, config) {
   if (nodeType === 'CONDITION') return `${config?.conditions?.length || 0} branch(es)`
-  if (nodeType === 'END') return 'Ends the conversation'
+  if (nodeType === 'END') {
+    if (config?.createLead) return 'Ends · saves a Lead'
+    if (config?.pauseSession) return 'Ends · hands off to a human'
+    return 'Ends the conversation'
+  }
   return config?.message || null
 }
 
@@ -186,7 +190,38 @@ function NodeEditPanel({ node, allNodes, isStart, onChange, onSetStart, onDelete
           </>
         )}
 
-        {nodeType === 'END' && <p className="text-sm text-slate-500">This step ends the conversation flow.</p>}
+        {nodeType === 'END' && (
+          <div className="space-y-3">
+            <p className="text-sm text-slate-500">This step ends the conversation flow.</p>
+            <label className="flex items-center gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                checked={Boolean(config.pauseSession)}
+                onChange={(e) => onChange({ ...config, pauseSession: e.target.checked })}
+              />
+              Hand off to a human agent (bot goes silent here until you reply manually)
+            </label>
+            <label className="flex items-center gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                checked={Boolean(config.createLead)}
+                onChange={(e) => onChange({ ...config, createLead: e.target.checked })}
+              />
+              Save as a Lead (uses the "name"/"details" variables collected earlier in this flow)
+            </label>
+            {config.createLead && (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700">Lead source label</label>
+                <input
+                  value={config.leadSource || ''}
+                  onChange={(e) => onChange({ ...config, leadSource: e.target.value })}
+                  placeholder="e.g. WhatsApp - Website"
+                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex items-center justify-between border-t border-slate-100 pt-3">
           <button

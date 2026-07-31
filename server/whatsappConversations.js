@@ -1,5 +1,12 @@
 import { prisma } from './prismaClient.js'
-import { normalizeWhatsAppNumber } from './whatsapp.js'
+import { normalizeWhatsAppNumber, sanitizeMetaWhatsAppNumber } from './whatsapp.js'
+import { sendMail } from './mailer.js'
+
+const NOTIFY_EMAIL = 'info@aadhiraiinnovations.com'
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+}
 
 const MESSAGE_TYPE_MAP = {
   text: 'TEXT',
@@ -45,7 +52,7 @@ export async function recordInboundMessage(userId, metaMessage) {
     if (existing) return null
   }
 
-  const contactNumber = normalizeWhatsAppNumber(metaMessage.from)
+  const contactNumber = sanitizeMetaWhatsAppNumber(metaMessage.from)
   if (!contactNumber) return null
 
   const conversation = await findOrCreateConversation(userId, contactNumber)
@@ -71,6 +78,15 @@ export async function recordInboundMessage(userId, metaMessage) {
       lastMessagePreview: body ? body.slice(0, 120) : `[${messageType.toLowerCase()}]`,
       unreadCount: { increment: 1 },
     },
+  })
+
+  const preview = body ? escapeHtml(body) : `[${messageType.toLowerCase()} message]`
+  sendMail({
+    to: NOTIFY_EMAIL,
+    subject: `New WhatsApp message from ${contactNumber}`,
+    text: `New WhatsApp message from ${contactNumber}:\n\n${body || `[${messageType.toLowerCase()} message]`}`,
+    html: `<p>New WhatsApp message from <strong>${escapeHtml(contactNumber)}</strong>:</p><p>${preview}</p>`,
+    meta: { relatedType: 'WHATSAPP_MESSAGE', relatedId: message.id },
   })
 
   return { conversation, message }

@@ -14,8 +14,10 @@ export default function ChatFlowsPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
+  const [seeding, setSeeding] = useState(false)
   const [togglingId, setTogglingId] = useState('')
   const navigate = useNavigate()
+  const hasDefaultFlow = flows.some((f) => f.name === 'Default Menu')
 
   function load() {
     api
@@ -42,6 +44,19 @@ export default function ChatFlowsPage() {
     }
   }
 
+  async function handleCreateDefault() {
+    setSeeding(true)
+    setError('')
+    try {
+      const data = await api.post('/whatsapp/flows/default', {})
+      navigate(`/admin/whatsapp/flows/${data.flow.id}`)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSeeding(false)
+    }
+  }
+
   async function toggleActive(flow) {
     setTogglingId(flow.id)
     setError('')
@@ -64,13 +79,24 @@ export default function ChatFlowsPage() {
           <h1 className="text-2xl font-semibold text-[#0B1F3A]">Chatbot flows</h1>
           <p className="mt-1 text-sm text-slate-500">Automated WhatsApp replies for your conversations.</p>
         </div>
-        <button
-          onClick={handleCreate}
-          disabled={creating}
-          className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
-        >
-          {creating ? 'Creating…' : 'New flow'}
-        </button>
+        <div className="flex items-center gap-2">
+          {!hasDefaultFlow && (
+            <button
+              onClick={handleCreateDefault}
+              disabled={seeding}
+              className="rounded-md border border-[#0B1F3A]/20 px-4 py-2 text-sm font-medium text-[#0B1F3A] hover:bg-[#0B1F3A]/5 disabled:opacity-60"
+            >
+              {seeding ? 'Creating…' : 'Create default WhatsApp menu'}
+            </button>
+          )}
+          <button
+            onClick={handleCreate}
+            disabled={creating}
+            className="rounded-md bg-[#0B1F3A] px-4 py-2 text-sm font-medium text-white hover:bg-[#0B1F3A]/90 disabled:opacity-60"
+          >
+            {creating ? 'Creating…' : 'New flow'}
+          </button>
+        </div>
       </div>
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
