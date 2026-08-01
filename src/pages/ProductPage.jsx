@@ -149,12 +149,12 @@ function ProductPage() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <a
-                href="https://demo.aadhiraiinnovations.com"
+                href={product.ctaUrl || 'https://demo.aadhiraiinnovations.com'}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-sm border border-white/14 px-7 py-[13px] text-[13px] font-medium text-white/55 transition-all hover:border-white/30 hover:text-white/82"
               >
-                View demo
+                {product.ctaLabel || 'View demo'}
               </a>
             </motion.div>
           </motion.div>
@@ -364,12 +364,12 @@ function ProductPage() {
               </a>
 
               <a
-                href="https://demo.aadhiraiinnovations.com"
+                href={product.ctaUrl || 'https://demo.aadhiraiinnovations.com'}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-1 flex items-center justify-center gap-2 rounded-sm bg-white py-4 text-[13px] font-bold text-[#060e1c] shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all hover:bg-white/93"
               >
-                View live demo
+                {product.ctaLabel ? product.ctaLabel : 'View live demo'}
                 <ArrowRight className="h-4 w-4" strokeWidth={2} />
               </a>
             </motion.div>

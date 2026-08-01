@@ -22,6 +22,7 @@ const MedoraOfflinePage    = lazy(() => import('./pages/MedoraOfflinePage'))
 const HrInventoryPage      = lazy(() => import('./pages/HrInventoryPage'))
 const WorkforceManagerPage = lazy(() => import('./pages/WorkforceManagerPage'))
 const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
+const BillingPage          = lazy(() => import('./pages/BillingPage'))
 const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
 const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
@@ -109,6 +110,10 @@ function App() {
         <Route
           path="/products/pos-system"
           element={<Suspense fallback={<PageLoader />}><PosSystemPage /></Suspense>}
+        />
+        <Route
+          path="/products/billing"
+          element={<Suspense fallback={<PageLoader />}><BillingPage /></Suspense>}
         />
 
         {/* Generic product pages — driven by products.js data */}

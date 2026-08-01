@@ -86,6 +86,7 @@ function Footer() {
                 <li><Link to="/contact" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Contact</Link></li>
                 <li><a href="https://support.aadhiraiinnovations.com/portal/login" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Client Portal</a></li>
                 <li><a href="https://support.aadhiraiinnovations.com/admin/login"  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Team Login</a></li>
+                <li><a href="https://billing.aadhiraiinnovations.com/admin/login"  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Billing Admin</a></li>
               </ul>
             </div>
 

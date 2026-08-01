@@ -1,10 +1,43 @@
 import {
   ReceiptIndianRupee, Building2, Users, Brain,
   GraduationCap, BriefcaseBusiness, ClipboardList,
-  ShieldCheck, Store, Zap, Cpu,
+  ShieldCheck, Store, Zap, Cpu, Barcode,
 } from 'lucide-react'
 
 const products = [
+  {
+    slug:        'billing',
+    name:        'Aadhirai Billing',
+    category:    'Billing & Inventory',
+    icon:        Barcode,
+    color:       '#b91c1c',
+    route:       '/products/billing',
+    ctaUrl:      'https://billing.aadhiraiinnovations.com/login',
+    ctaLabel:    'Create free account',
+    tagline:     'Multi-tenant billing and inventory management — sign up and get your own isolated database in minutes.',
+    description: 'Aadhirai Billing is a self-service billing and inventory platform for any retail business. Every business that signs up gets its own fully isolated database — never shared, never mixed with anyone else\'s data — provisioned automatically the moment they create an account. Barcode-driven checkout, GST-compliant invoicing, dual stock tracking, and role-based staff access come built in.',
+    features: [
+      { title: 'Instant Self-Signup',        detail: 'Create an account and get a dedicated, isolated database provisioned automatically — no manual setup, no waiting.' },
+      { title: 'Barcode & QR Billing',        detail: 'Fast checkout with barcode/QR scanning and instant thermal receipt printing.' },
+      { title: 'Dual Stock Tracking',         detail: 'Serial-tracked for high-value items, bulk quantity for everyday stock — per SKU.' },
+      { title: 'GST-Compliant Invoicing',     detail: 'HSN codes, tax breakdown, and audit-ready invoices with UPI QR on every receipt.' },
+      { title: 'Custom Fields Per Business',  detail: 'Configure the exact fields your business needs on products and customers — no rigid schema.' },
+      { title: 'Role-Based Access',           detail: 'Super Admin, Store Manager, Billing Clerk, and Inventory Manager roles out of the box.' },
+      { title: 'Inventory Import/Export',     detail: 'Bulk CSV import and CSV/Excel/PDF export for stock management.' },
+      { title: 'Secure Password Recovery',    detail: 'Admin-mediated password reset — no self-service email loopholes to exploit.' },
+    ],
+    useCases: [
+      { label: 'Retail shops',              detail: 'POS billing, inventory, and GST invoicing without per-business setup overhead.' },
+      { label: 'Multi-branch businesses',   detail: 'Each business gets its own isolated database; owners manage their own staff and roles.' },
+      { label: 'Spare parts & hardware',    detail: 'Flexible custom fields adapt to any product classification your business needs.' },
+    ],
+    outcomes: [
+      { metric: 'Live in minutes',    description: 'Self-signup provisions a dedicated database automatically — no manual onboarding required.' },
+      { metric: 'True data isolation', description: 'Every business\'s data lives in its own separate database, by design.' },
+      { metric: 'Faster billing',     description: 'Barcode-driven checkout completes transactions in seconds.' },
+      { metric: 'Full compliance',    description: 'GST-ready invoices with HSN codes and audit trails on every transaction.' },
+    ],
+  },
   {
     slug:        'medora',
     name:        'Medora+',

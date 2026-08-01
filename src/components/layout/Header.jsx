@@ -14,6 +14,7 @@ const NAV = [
         items: [
           { label: 'Medora+', desc: 'AI-powered pharmacy management, cloud-synced', href: '/products/medora-plus' },
           { label: 'Medora Offline', desc: 'Fully offline pharmacy software — one-time license, no internet needed', href: '/products/medora-offline' },
+          { label: 'Aadhirai Billing', desc: 'Multi-tenant billing & inventory — free signup, isolated database per business', href: '/products/billing' },
         ],
       },
     ],

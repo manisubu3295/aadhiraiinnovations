@@ -34,6 +34,7 @@ const staticPages = [
 // Product pages (from products.js data) — 'medora-plus' deliberately excluded, it's already
 // listed in staticPages above with a distinct priority; this was previously duplicated here.
 const productSlugs = [
+  'billing',
   'sanko-erp',
   'passtrack',
   'mouna-ai',
