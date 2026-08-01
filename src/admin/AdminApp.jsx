@@ -13,6 +13,9 @@ const QuotationEditorPage = lazy(() => import('./pages/QuotationEditorPage'))
 const InvoicesPage = lazy(() => import('./pages/InvoicesPage'))
 const InvoiceEditorPage = lazy(() => import('./pages/InvoiceEditorPage'))
 const UsersPage = lazy(() => import('./pages/UsersPage'))
+const ForumUsersPage = lazy(() => import('./pages/ForumUsersPage'))
+const ForumQuestionsPage = lazy(() => import('./pages/ForumQuestionsPage'))
+const ForumCategoriesPage = lazy(() => import('./pages/ForumCategoriesPage'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 const LeadsPage = lazy(() => import('./pages/LeadsPage'))
 const LeadDetailPage = lazy(() => import('./pages/LeadDetailPage'))
@@ -99,6 +102,9 @@ function AdminRoutes() {
         <Route path="expenses" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><ExpensesAdminPage /></Suspense></RequireAdmin>} />
         <Route path="business-expenses" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><BusinessExpensesPage /></Suspense></RequireAdmin>} />
         <Route path="users" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><UsersPage /></Suspense></RequireAdmin>} />
+        <Route path="forum/questions" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><ForumQuestionsPage /></Suspense></RequireAdmin>} />
+        <Route path="forum/users" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><ForumUsersPage /></Suspense></RequireAdmin>} />
+        <Route path="forum/categories" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><ForumCategoriesPage /></Suspense></RequireAdmin>} />
         <Route path="leads" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><LeadsPage /></Suspense></RequireAdmin>} />
         <Route path="leads/:id" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><LeadDetailPage /></Suspense></RequireAdmin>} />
         <Route path="settings" element={<RequireAdmin><Suspense fallback={<AdminLoader />}><SettingsPage /></Suspense></RequireAdmin>} />

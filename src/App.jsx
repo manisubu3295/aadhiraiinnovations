@@ -11,6 +11,7 @@ const TermsOfServicePage   = lazy(() => import('./pages/TermsOfServicePage'))
 const RefundPolicyPage     = lazy(() => import('./pages/RefundPolicyPage'))
 const AdminApp = lazy(() => import('./admin/AdminApp'))
 const ClientApp = lazy(() => import('./client/ClientApp'))
+const ForumSection = lazy(() => import('./forum/ForumSection'))
 
 /* Lazy-load all sub-pages — keeps initial bundle small */
 // Business Tools
@@ -69,6 +70,9 @@ function App() {
         <Route path="/privacy-policy" element={<Suspense fallback={<PageLoader />}><PrivacyPolicyPage /></Suspense>} />
         <Route path="/terms-of-service" element={<Suspense fallback={<PageLoader />}><TermsOfServicePage /></Suspense>} />
         <Route path="/refund-policy" element={<Suspense fallback={<PageLoader />}><RefundPolicyPage /></Suspense>} />
+
+        {/* Community forum — public browsing, forum-login gated posting (see src/forum/ForumSection.jsx) */}
+        <Route path="/forum/*" element={<Suspense fallback={<PageLoader />}><ForumSection /></Suspense>} />
 
         {/* Business Tools */}
         <Route

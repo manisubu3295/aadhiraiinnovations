@@ -170,6 +170,24 @@ export const DEFAULT_TEMPLATES = [
       '<h2>New Enterprise / Guided Setup Inquiry</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>WhatsApp:</strong> {{whatsapp}}</p><p><strong>Business:</strong> {{businessName}}</p><p><strong>Requirements:</strong></p><p>{{message}}</p><p>Review and follow up from the Leads page.</p>',
   },
   {
+    key: 'FORUM_NEW_QUESTION_STAFF_NOTIFY',
+    category: 'FORUM',
+    label: 'New forum question posted (to staff)',
+    variables: ['title', 'authorName', 'category', 'url'],
+    subject: 'New forum question: {{title}}',
+    bodyHtml:
+      '<p><strong>{{authorName}}</strong> posted a new question in <strong>{{category}}</strong>:</p><p><strong>{{title}}</strong></p><p><a href="{{url}}">View on the forum</a></p>',
+  },
+  {
+    key: 'FORUM_NEW_ANSWER_STAFF_NOTIFY',
+    category: 'FORUM',
+    label: 'New forum answer posted (to staff)',
+    variables: ['authorName', 'questionTitle', 'url'],
+    subject: 'New answer on: {{questionTitle}}',
+    bodyHtml:
+      '<p><strong>{{authorName}}</strong> answered a forum question:</p><p><strong>{{questionTitle}}</strong></p><p><a href="{{url}}">View on the forum</a></p>',
+  },
+  {
     key: 'LICENSE_DELIVERY',
     category: 'LICENSE',
     label: 'License delivered (to customer)',

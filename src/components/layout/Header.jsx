@@ -63,6 +63,7 @@ const NAV = [
         items: [
           { label: 'About', desc: 'Our story and approach', href: '/about' },
           { label: 'Contact', desc: 'Start a conversation', href: '/contact' },
+          { label: 'Forum', desc: 'Ask questions, browse answers from our community and team', href: '/forum' },
         ],
       },
     ],

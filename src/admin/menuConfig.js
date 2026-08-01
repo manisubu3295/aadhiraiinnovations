@@ -10,12 +10,23 @@ const SUPPORT_GROUP = {
   ],
 }
 
+const FORUM_GROUP = {
+  key: 'forum',
+  label: 'Forum',
+  children: [
+    { key: 'forum-questions', to: '/admin/forum/questions', label: 'Questions' },
+    { key: 'forum-users', to: '/admin/forum/users', label: 'Forum Users' },
+    { key: 'forum-categories', to: '/admin/forum/categories', label: 'Categories' },
+  ],
+}
+
 export const ADMIN_MENU_ITEMS = [
   { key: 'dashboard', to: '/admin/dashboard', label: 'Dashboard' },
   { key: 'clients', to: '/admin/clients', label: 'Clients' },
   { key: 'projects', to: '/admin/projects', label: 'Projects' },
   { key: 'leads', to: '/admin/leads', label: 'Leads' },
   SUPPORT_GROUP,
+  FORUM_GROUP,
   { key: 'whatsapp', to: '/admin/whatsapp', label: 'WhatsApp' },
   { key: 'whatsapp-flows', to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
   { key: 'quotations', to: '/admin/quotations', label: 'Quotations' },

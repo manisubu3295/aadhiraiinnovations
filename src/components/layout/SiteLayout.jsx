@@ -149,6 +149,14 @@ const SEO = {
       'Convert PDF to editable Word documents online for free. No account needed. Works for text-based PDFs.',
     canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-to-docx-converter',
   },
+  '/forum': {
+    title: 'Community Forum — Ask a Question | Aadhirai Innovations',
+    description:
+      'Ask questions about Medora+, Medora Offline, Aadhirai Billing, or any of our products and get answers from our community and support team.',
+    ogTitle: 'Community Forum | Aadhirai Innovations',
+    ogDescription: 'Ask a question, browse answers, or help someone else out.',
+    canonical: 'https://www.aadhiraiinnovations.com/forum',
+  },
   '/tools/pdf-editor': {
     title: 'PDF Editor Online — Rotate, Delete & Reorder PDF Pages | Aadhirai Innovations',
     description:

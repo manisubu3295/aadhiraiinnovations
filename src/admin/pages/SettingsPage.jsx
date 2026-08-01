@@ -14,6 +14,7 @@ const emptyForm = {
   ticketNotifyEmail: '',
   enquiryNotifyEmail: '',
   enquiryReplyTo: '',
+  forumNotifyEmail: '',
   businessName: '',
   businessContactPerson: '',
   businessAddress: '',
@@ -264,6 +265,14 @@ function SettingsForm({ activeTab }) {
                     type="email"
                     value={form.enquiryReplyTo}
                     onChange={(e) => setForm({ ...form, enquiryReplyTo: e.target.value })}
+                    className={inputClass}
+                  />
+                </Field>
+                <Field label="Forum notifications go to" hint="Staff inbox for new forum questions and answers.">
+                  <input
+                    type="email"
+                    value={form.forumNotifyEmail}
+                    onChange={(e) => setForm({ ...form, forumNotifyEmail: e.target.value })}
                     className={inputClass}
                   />
                 </Field>

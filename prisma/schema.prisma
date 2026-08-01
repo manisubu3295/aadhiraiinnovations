@@ -118,6 +118,12 @@ enum EmailTemplateCategory {
   EXPENSE
   ENQUIRY
   LICENSE
+  FORUM
+}
+
+enum ForumUserStatus {
+  ACTIVE
+  BANNED
 }
 
 enum EmailStatus {
@@ -171,6 +177,11 @@ model User {
   whatsappConversations WhatsAppConversation[]
   sentWhatsAppMessages  WhatsAppMessage[]
   chatFlows             ChatFlow[]
+
+  // Staff/admin can answer public forum questions using their existing admin_session login —
+  // see server/middleware/forumAuth.js dual-auth helper. Distinct from ForumAnswer.authorForumUserId.
+  forumAnswers     ForumAnswer[]
+  forumAttachments ForumAttachment[]
 
   @@map("users")
 }
@@ -656,6 +667,7 @@ model Setting {
   ticketNotifyEmail  String?
   enquiryNotifyEmail String?
   enquiryReplyTo     String?
+  forumNotifyEmail   String?
 
   // Business profile used as the "seller" on invoice/quotation PDFs — previously only
   // stored client-side in localStorage, so it didn't survive across machines/browsers.
@@ -870,4 +882,117 @@ model WhatsAppLog {
   sentAt       DateTime       @default(now())
 
   @@map("whatsapp_logs")
+}
+
+// ---------- Public Q&A forum ----------
+// Self-service public accounts, deliberately NOT part of the `User` table (which is the
+// staff/admin/CLIENT credentials table — every CLIENT login today is admin-provisioned via
+// POST /admin/clients/:id/portal-user, there is no public self-registration elsewhere in this
+// app). Kept on a separate model + separate session cookie (server/middleware/forumAuth.js) so a
+// forum-issued JWT can never be mistaken for/accepted by admin/staff/client auth guards.
+model ForumUser {
+  id           String          @id @default(cuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  status       ForumUserStatus @default(ACTIVE)
+  createdAt    DateTime        @default(now())
+  lastLoginAt  DateTime?
+
+  questions   ForumQuestion[]
+  answers     ForumAnswer[]
+  attachments ForumAttachment[] @relation("ForumAttachmentUploadedByForumUser")
+
+  @@map("forum_users")
+}
+
+model ForumCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  questions ForumQuestion[]
+
+  @@map("forum_categories")
+}
+
+// Auto-published on create (no moderation queue) — hiddenAt/hiddenReason is how an admin takes
+// down inappropriate content after the fact, set via PATCH /admin/forum/questions/:id.
+model ForumQuestion {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  title        String
+  body         String
+  viewCount    Int       @default(0)
+  hiddenAt     DateTime?
+  hiddenReason String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  authorId String
+  author   ForumUser @relation(fields: [authorId], references: [id])
+
+  categoryId String
+  category   ForumCategory @relation(fields: [categoryId], references: [id])
+
+  // Set by the question author or any admin/staff member (POST /questions/:id/accept-answer/:answerId).
+  acceptedAnswerId String?      @unique
+  acceptedAnswer   ForumAnswer? @relation("AcceptedAnswer", fields: [acceptedAnswerId], references: [id], onDelete: SetNull)
+
+  answers     ForumAnswer[]     @relation("QuestionAnswers")
+  attachments ForumAttachment[]
+
+  @@index([createdAt])
+  @@index([categoryId])
+  @@map("forum_questions")
+}
+
+// Answered by either a public ForumUser or internal staff (User) — exactly one of
+// authorForumUserId/authorStaffUserId is set, enforced at the application layer (same
+// optional-relation convention as LicenseRequest.leadId/invoiceId above).
+model ForumAnswer {
+  id           String    @id @default(cuid())
+  body         String
+  hiddenAt     DateTime?
+  hiddenReason String?
+  createdAt    DateTime  @default(now())
+
+  questionId String
+  question   ForumQuestion @relation("QuestionAnswers", fields: [questionId], references: [id], onDelete: Cascade)
+
+  authorForumUserId String?
+  authorForumUser   ForumUser? @relation(fields: [authorForumUserId], references: [id])
+
+  authorStaffUserId String?
+  authorStaffUser   User?     @relation(fields: [authorStaffUserId], references: [id])
+
+  acceptedFor ForumQuestion? @relation("AcceptedAnswer")
+  attachments ForumAttachment[]
+
+  @@index([questionId, createdAt])
+  @@map("forum_answers")
+}
+
+model ForumAttachment {
+  id        String   @id @default(cuid())
+  fileName  String
+  filePath  String
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+
+  questionId String?
+  question   ForumQuestion? @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  answerId String?
+  answer   ForumAnswer? @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  uploadedByForumUserId String?
+  uploadedByForumUser   ForumUser? @relation("ForumAttachmentUploadedByForumUser", fields: [uploadedByForumUserId], references: [id])
+
+  uploadedByStaffUserId String?
+  uploadedByStaffUser   User?     @relation(fields: [uploadedByStaffUserId], references: [id])
+
+  @@map("forum_attachments")
 }

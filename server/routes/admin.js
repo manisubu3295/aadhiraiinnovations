@@ -1142,7 +1142,7 @@ const LICENSE_PRICE_FIELDS = ['licensePlan3MoPrice', 'licensePlan6MoPrice', 'lic
 
 router.put('/settings', async (req, res) => {
   const {
-    smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo,
+    smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo, forumNotifyEmail,
     whatsappEnabled, whatsappAccessToken, whatsappStaffNotifyNumber,
     licenseDownloadUrl, licenseInstallGuideUrl,
     razorpayKeyId, razorpayKeySecret, razorpayWebhookSecret,
@@ -1163,7 +1163,7 @@ router.put('/settings', async (req, res) => {
   // so a blank field on save should not wipe out a previously configured password.
   if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass)
 
-  for (const [key, value] of Object.entries({ emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo })) {
+  for (const [key, value] of Object.entries({ emailFrom, ticketNotifyEmail, enquiryNotifyEmail, enquiryReplyTo, forumNotifyEmail })) {
     if (value === undefined) continue
     const trimmed = String(value).trim()
     if (trimmed && !EMAIL_RE.test(trimmed)) {

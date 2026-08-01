@@ -17,6 +17,7 @@ export async function getSettings() {
     ticketNotifyEmail: row?.ticketNotifyEmail || process.env.TICKET_NOTIFY_EMAIL || process.env.ENQUIRY_TO_EMAIL || '',
     enquiryNotifyEmail: row?.enquiryNotifyEmail || process.env.ENQUIRY_TO_EMAIL || '',
     enquiryReplyTo: row?.enquiryReplyTo || process.env.ENQUIRY_REPLY_TO || '',
+    forumNotifyEmail: row?.forumNotifyEmail || process.env.FORUM_NOTIFY_EMAIL || '',
 
     businessName: row?.businessName || 'Aadhirai Innovations',
     businessContactPerson: row?.businessContactPerson || '',
