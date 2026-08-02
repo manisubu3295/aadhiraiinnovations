@@ -1,6 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 import rateLimit from 'express-rate-limit'
 import { prisma } from '../prismaClient.js'
 import {
@@ -103,6 +104,54 @@ router.post('/login', loginLimiter, async (req, res) => {
   const valid = await bcrypt.compare(password, forumUser.passwordHash)
   if (!valid) {
     return res.status(401).json({ success: false, message: 'Invalid email or password.' })
+  }
+
+  await prisma.forumUser.update({ where: { id: forumUser.id }, data: { lastLoginAt: new Date() } })
+
+  const token = signForumSession(forumUser)
+  res.cookie(FORUM_AUTH_COOKIE, token, forumCookieOptions())
+  res.json({ success: true, forumUser: { id: forumUser.id, name: forumUser.name, email: forumUser.email } })
+})
+
+// Lets an existing client-portal login (User, role CLIENT) post on the forum under their
+// portal credentials instead of creating a separate forum account — see
+// ForumUser.linkedUserId in prisma/schema.prisma. First use auto-links (or creates) a forum
+// identity for that client; every login after that reuses the same linked ForumUser.
+router.post('/client-login', loginLimiter, async (req, res) => {
+  const { username = '', password = '' } = req.body ?? {}
+  const trimmedUsername = String(username).trim().toLowerCase()
+
+  if (!trimmedUsername || !password) {
+    return res.status(400).json({ success: false, message: 'Username and password are required.' })
+  }
+
+  const user = await prisma.user.findUnique({ where: { username: trimmedUsername } })
+  if (!user || user.role !== 'CLIENT') {
+    return res.status(401).json({ success: false, message: 'Invalid username or password.' })
+  }
+  const valid = await bcrypt.compare(password, user.passwordHash)
+  if (!valid) {
+    return res.status(401).json({ success: false, message: 'Invalid username or password.' })
+  }
+
+  let forumUser = await prisma.forumUser.findUnique({ where: { linkedUserId: user.id } })
+  if (!forumUser) {
+    // Reuse an existing self-signed-up forum account sharing this client's email if one
+    // exists (same person), otherwise mint a new linked forum identity for them.
+    const existingByEmail = await prisma.forumUser.findUnique({ where: { email: user.email } })
+    if (existingByEmail) {
+      forumUser = await prisma.forumUser.update({ where: { id: existingByEmail.id }, data: { linkedUserId: user.id } })
+    } else {
+      // Never used to log in directly — client-login always authenticates against the
+      // linked User's own password instead.
+      const placeholderHash = await bcrypt.hash(crypto.randomUUID(), 12)
+      forumUser = await prisma.forumUser.create({
+        data: { name: user.name, email: user.email, passwordHash: placeholderHash, linkedUserId: user.id },
+      })
+    }
+  }
+  if (forumUser.status === 'BANNED') {
+    return res.status(403).json({ success: false, message: 'This account is not allowed to use the forum.' })
   }
 
   await prisma.forumUser.update({ where: { id: forumUser.id }, data: { lastLoginAt: new Date() } })

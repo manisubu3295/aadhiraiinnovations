@@ -34,6 +34,7 @@ router.get('/users', async (req, res) => {
       take,
       select: {
         id: true, name: true, email: true, status: true, createdAt: true, lastLoginAt: true,
+        linkedUser: { select: { username: true } },
         _count: { select: { questions: true, answers: true } },
       },
     }),

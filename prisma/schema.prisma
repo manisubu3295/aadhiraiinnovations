@@ -183,6 +183,10 @@ model User {
   forumAnswers     ForumAnswer[]
   forumAttachments ForumAttachment[]
 
+  // Set only for CLIENT-role logins that have used "Log in with your client account" on the
+  // forum — see ForumUser.linkedUserId above.
+  linkedForumUser ForumUser?
+
   @@map("users")
 }
 
@@ -898,6 +902,14 @@ model ForumUser {
   status       ForumUserStatus @default(ACTIVE)
   createdAt    DateTime        @default(now())
   lastLoginAt  DateTime?
+
+  // Set the first time this client-portal login (User, role CLIENT) uses "Log in with your
+  // client account" on the forum (server/routes/forum.js POST /client-login) — lets an existing
+  // paying client post on the forum under their portal credentials without a separate forum
+  // password. passwordHash above is a random, never-used value for these linked accounts; login
+  // always goes through the linked User's credentials instead.
+  linkedUserId String? @unique
+  linkedUser   User?   @relation(fields: [linkedUserId], references: [id])
 
   questions   ForumQuestion[]
   answers     ForumAnswer[]

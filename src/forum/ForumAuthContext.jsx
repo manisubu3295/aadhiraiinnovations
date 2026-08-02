@@ -31,6 +31,13 @@ export function ForumAuthProvider({ children }) {
     setForumUser(data.forumUser)
   }
 
+  // For an existing client-portal login (username/password) — see server/routes/forum.js
+  // POST /client-login, which auto-links/creates a forum identity for them.
+  const loginAsClient = async (username, password) => {
+    const data = await api.post('/forum/client-login', { username, password })
+    setForumUser(data.forumUser)
+  }
+
   const register = async (name, email, password) => {
     const data = await api.post('/forum/register', { name, email, password })
     setForumUser(data.forumUser)
@@ -42,7 +49,7 @@ export function ForumAuthProvider({ children }) {
   }
 
   return (
-    <ForumAuthContext.Provider value={{ forumUser, loading, login, register, logout, refresh }}>
+    <ForumAuthContext.Provider value={{ forumUser, loading, login, loginAsClient, register, logout, refresh }}>
       {children}
     </ForumAuthContext.Provider>
   )

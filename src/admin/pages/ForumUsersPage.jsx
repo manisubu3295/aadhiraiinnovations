@@ -69,7 +69,14 @@ export default function ForumUsersPage() {
             <tbody>
               {forumUsers.map((u) => (
                 <tr key={u.id} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-medium text-slate-800">{u.name}</td>
+                  <td className="px-4 py-3 font-medium text-slate-800">
+                    {u.name}
+                    {u.linkedUser && (
+                      <span className="ml-2 rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700" title={`Linked to client login: ${u.linkedUser.username}`}>
+                        Client: {u.linkedUser.username}
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-slate-600">{u.email}</td>
                   <td className="px-4 py-3">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${u.status === 'BANNED' ? 'bg-red-50 text-red-700' : 'bg-emerald-50 text-emerald-700'}`}>

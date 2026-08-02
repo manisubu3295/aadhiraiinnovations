@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
-import { requireAuth as requireStaffAuth } from './auth.js'
+import { AUTH_COOKIE } from './auth.js'
+
+const STAFF_ROLES = new Set(['ADMIN', 'STAFF', 'SUPER_ADMIN'])
 
 // Deliberately separate from the admin_session cookie (server/middleware/auth.js) — forum
 // accounts are public self-registrations (ForumUser), not staff/admin/CLIENT logins, and must
@@ -51,14 +53,29 @@ export function optionalForumAuth(req, res, next) {
 }
 
 // Answering/accepting an answer is allowed for either a logged-in forum user OR a logged-in
-// staff/admin (reusing their existing admin_session cookie) — this tries forum auth first, then
-// falls back to staff auth, and 401s only if neither identity resolves. Route handlers branch on
-// req.forumUser vs req.user to decide which author field to set.
+// ADMIN/STAFF (reusing their existing admin_session cookie) — this tries forum auth first, then
+// falls back to a staff-only admin_session check, and 401s only if neither identity resolves.
+// Deliberately excludes CLIENT: a client-portal login should post under its own forum identity
+// via POST /forum/client-login (see server/routes/forum.js), not be mislabeled as staff here.
+// Route handlers branch on req.forumUser vs req.user to decide which author field to set.
 export function requireForumOrStaffAuth(req, res, next) {
   const forumUser = verifyForumToken(req.cookies?.[FORUM_AUTH_COOKIE])
   if (forumUser) {
     req.forumUser = forumUser
     return next()
   }
-  return requireStaffAuth(req, res, next)
+
+  const token = req.cookies?.[AUTH_COOKIE]
+  if (token) {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET)
+      if (STAFF_ROLES.has(payload.role)) {
+        req.user = { id: payload.sub, role: payload.role }
+        return next()
+      }
+    } catch {
+      // fall through to 401 below
+    }
+  }
+  return res.status(401).json({ success: false, message: 'Not authenticated.' })
 }
