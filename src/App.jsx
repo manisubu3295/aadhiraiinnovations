@@ -30,6 +30,14 @@ const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
 const PharmacyLocationsHubPage = lazy(() => import('./pages/PharmacyLocationsHubPage'))
 const StateSEOPage         = lazy(() => import('./pages/StateSEOPage'))
 const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
+const AmountToWordsPage    = lazy(() => import('./pages/AmountToWordsPage'))
+const EmiCalculatorPage    = lazy(() => import('./pages/EmiCalculatorPage'))
+const QrCodeGeneratorPage  = lazy(() => import('./pages/QrCodeGeneratorPage'))
+const BarcodeGeneratorPage = lazy(() => import('./pages/BarcodeGeneratorPage'))
+const ImageCompressorPage  = lazy(() => import('./pages/ImageCompressorPage'))
+const PasswordGeneratorPage = lazy(() => import('./pages/PasswordGeneratorPage'))
+const UnitConverterPage    = lazy(() => import('./pages/UnitConverterPage'))
+const CurrencyConverterPage = lazy(() => import('./pages/CurrencyConverterPage'))
 const ToolsHubPage         = lazy(() => import('./pages/ToolsHubPage'))
 const DocxToPdfPage        = lazy(() => import('./pages/DocxToPdfPage'))
 const PdfToDocxPage        = lazy(() => import('./pages/PdfToDocxPage'))
@@ -157,6 +165,40 @@ function App() {
         <Route
           path="/tools/gst-calculator"
           element={<Suspense fallback={<PageLoader />}><GstCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/amount-to-words"
+          element={<Suspense fallback={<PageLoader />}><AmountToWordsPage /></Suspense>}
+        />
+        <Route
+          path="/tools/emi-calculator"
+          element={<Suspense fallback={<PageLoader />}><EmiCalculatorPage /></Suspense>}
+        />
+
+        {/* Utilities */}
+        <Route
+          path="/tools/qr-code-generator"
+          element={<Suspense fallback={<PageLoader />}><QrCodeGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/barcode-generator"
+          element={<Suspense fallback={<PageLoader />}><BarcodeGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/image-compressor"
+          element={<Suspense fallback={<PageLoader />}><ImageCompressorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/password-generator"
+          element={<Suspense fallback={<PageLoader />}><PasswordGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/unit-converter"
+          element={<Suspense fallback={<PageLoader />}><UnitConverterPage /></Suspense>}
+        />
+        <Route
+          path="/tools/currency-converter"
+          element={<Suspense fallback={<PageLoader />}><CurrencyConverterPage /></Suspense>}
         />
         <Route
           path="/tools/docx-to-pdf-converter"

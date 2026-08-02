@@ -131,6 +131,72 @@ const SEO = {
       'Instantly calculate GST in India. Add GST or remove GST from any price. Get CGST, SGST, and IGST breakdowns for all GST slabs.',
     canonical: 'https://www.aadhiraiinnovations.com/tools/gst-calculator',
   },
+  '/tools/amount-to-words': {
+    title: 'Amount to Words Converter — Rupees in Words for Invoices | Aadhirai Innovations',
+    description:
+      'Free tool to convert any ₹ amount into words using the Indian numbering system (Lakh, Crore, paise) — for invoices, cheques, and quotations.',
+    ogTitle: 'Amount to Words Converter | Aadhirai Innovations',
+    ogDescription:
+      'Convert rupee amounts into words instantly — Indian Lakh/Crore numbering, paise supported. Free, no signup.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/amount-to-words',
+  },
+  '/tools/emi-calculator': {
+    title: 'EMI Calculator India — Loan EMI, Interest & Total Payment | Aadhirai Innovations',
+    description:
+      'Free EMI calculator for India. Calculate monthly EMI, total interest, and total payment for home loans, car loans, and personal loans.',
+    ogTitle: 'EMI Calculator | Aadhirai Innovations',
+    ogDescription:
+      'Instantly calculate loan EMI, total interest, and total payment. Works for home, car, and personal loans.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/emi-calculator',
+  },
+  '/tools/qr-code-generator': {
+    title: 'QR Code Generator — Free Online, No Signup | Aadhirai Innovations',
+    description:
+      'Free online QR code generator. Turn any text, URL, or contact info into a downloadable QR code instantly. No signup, no watermark.',
+    ogTitle: 'QR Code Generator | Aadhirai Innovations',
+    ogDescription: 'Create a QR code from any text or URL, instantly, for free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/qr-code-generator',
+  },
+  '/tools/barcode-generator': {
+    title: 'Barcode Generator Online — CODE128, EAN-13, UPC | Aadhirai Innovations',
+    description:
+      'Free online barcode generator. Create CODE128, EAN-13, and UPC barcodes for inventory labels or packaging, and download as PNG.',
+    ogTitle: 'Barcode Generator | Aadhirai Innovations',
+    ogDescription: 'Generate CODE128, EAN-13, and UPC barcodes instantly, for free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/barcode-generator',
+  },
+  '/tools/image-compressor': {
+    title: 'Image Compressor Online — Reduce JPEG & PNG Size | Aadhirai Innovations',
+    description:
+      'Free online image compressor. Reduce JPEG, PNG, and WebP file size in your browser with an adjustable quality slider. No upload to any server.',
+    ogTitle: 'Image Compressor | Aadhirai Innovations',
+    ogDescription: 'Shrink image file size in your browser, free, with instant before/after preview.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/image-compressor',
+  },
+  '/tools/password-generator': {
+    title: 'Free Password Generator — Strong, Random & Secure | Aadhirai Innovations',
+    description:
+      'Free online password generator using cryptographically secure randomness. Adjustable length and character types, nothing stored or transmitted.',
+    ogTitle: 'Password Generator | Aadhirai Innovations',
+    ogDescription: 'Generate strong, random passwords instantly, free, with nothing stored.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/password-generator',
+  },
+  '/tools/unit-converter': {
+    title: 'Unit Converter Online — Length, Weight, Temperature, Volume | Aadhirai Innovations',
+    description:
+      'Free online unit converter for length, weight, temperature, volume, and area. Convert between metric and imperial units instantly.',
+    ogTitle: 'Unit Converter | Aadhirai Innovations',
+    ogDescription: 'Convert length, weight, temperature, volume, and area units instantly, for free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/unit-converter',
+  },
+  '/tools/currency-converter': {
+    title: 'Currency Converter — Live Exchange Rates | Aadhirai Innovations',
+    description:
+      'Free online currency converter with live, daily exchange rates for major world currencies including INR, USD, EUR, and GBP.',
+    ogTitle: 'Currency Converter | Aadhirai Innovations',
+    ogDescription: 'Convert between world currencies using live, daily reference exchange rates.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/currency-converter',
+  },
   '/tools/docx-to-pdf-converter': {
     title: 'DOCX to PDF Converter — Convert Word to PDF Online | Aadhirai Innovations',
     description:

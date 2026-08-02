@@ -43,14 +43,35 @@ const NAV = [
           { label: 'DOCX to PDF', desc: 'Convert Word to PDF', href: '/tools/docx-to-pdf-converter' },
           { label: 'PDF to DOCX', desc: 'Extract text, create Word docs', href: '/tools/pdf-to-docx-converter' },
           { label: 'PDF Editor', desc: 'Rotate, delete, reorder pages', href: '/tools/pdf-editor' },
+        ],
+      },
+      {
+        heading: 'Developer Tools',
+        items: [
           { label: 'JSON Formatter', desc: 'Format and beautify JSON', href: '/tools/json-formatter' },
+          { label: 'XML Formatter', desc: 'Format and beautify XML', href: '/tools/xml-formatter' },
           { label: 'Text Formatter', desc: 'Clean, beautify, and format text', href: '/tools/text-formatter' },
+          { label: 'JSON to XML', desc: 'Convert JSON data to XML', href: '/tools/json-to-xml' },
+          { label: 'XML to JSON', desc: 'Convert XML data to JSON', href: '/tools/xml-to-json' },
         ],
       },
       {
         heading: 'Business Tools',
         items: [
           { label: 'Invoice/Quotation Builder', desc: 'Edit, print, and save invoices or quotations', href: '/document-builder' },
+          { label: 'Amount to Words', desc: 'Convert ₹ amounts to words for invoices', href: '/tools/amount-to-words' },
+          { label: 'EMI Calculator', desc: 'Loan EMI, total interest, and total payment', href: '/tools/emi-calculator' },
+        ],
+      },
+      {
+        heading: 'Utilities',
+        items: [
+          { label: 'QR Code Generator', desc: 'Turn text or a URL into a QR code', href: '/tools/qr-code-generator' },
+          { label: 'Barcode Generator', desc: 'CODE128, EAN-13, and UPC barcodes', href: '/tools/barcode-generator' },
+          { label: 'Image Compressor', desc: 'Reduce image file size in your browser', href: '/tools/image-compressor' },
+          { label: 'Password Generator', desc: 'Strong, random, cryptographically secure', href: '/tools/password-generator' },
+          { label: 'Unit Converter', desc: 'Length, weight, temperature, volume, area', href: '/tools/unit-converter' },
+          { label: 'Currency Converter', desc: 'Live exchange rates for major currencies', href: '/tools/currency-converter' },
         ],
       },
     ],
@@ -106,7 +127,7 @@ function NavDropdown({ label, groups }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.98 }}
             transition={{ duration: 0.14, ease: 'easeOut' }}
-            className="absolute left-0 top-full mt-3 min-w-[240px] rounded-xl border border-slate-100 bg-white shadow-[0_8px_32px_rgba(11,31,58,0.1)] overflow-hidden z-50"
+            className="absolute left-0 top-full mt-3 min-w-[240px] max-h-[70vh] overflow-y-auto rounded-xl border border-slate-100 bg-white shadow-[0_8px_32px_rgba(11,31,58,0.1)] z-50"
           >
             {groups.map((group, groupIdx) => (
               <div key={groupIdx}>

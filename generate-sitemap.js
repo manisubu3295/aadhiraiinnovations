@@ -31,6 +31,34 @@ const staticPages = [
   { path: '/refund-policy', lastmod: today, priority: '0.3', changefreq: 'yearly' },
 ]
 
+// Individual /tools/* pages — previously missing from the sitemap entirely.
+const toolSlugs = [
+  'gst-calculator',
+  'amount-to-words',
+  'emi-calculator',
+  'docx-to-pdf-converter',
+  'pdf-to-docx-converter',
+  'pdf-editor',
+  'json-formatter',
+  'xml-formatter',
+  'text-formatter',
+  'json-to-xml',
+  'xml-to-json',
+  'qr-code-generator',
+  'barcode-generator',
+  'image-compressor',
+  'password-generator',
+  'unit-converter',
+  'currency-converter',
+]
+
+const toolPages = toolSlugs.map(slug => ({
+  path: `/tools/${slug}`,
+  lastmod: today,
+  priority: '0.6',
+  changefreq: 'monthly',
+}))
+
 // Product pages (from products.js data) — 'medora-plus' deliberately excluded, it's already
 // listed in staticPages above with a distinct priority; this was previously duplicated here.
 const productSlugs = [
@@ -79,7 +107,7 @@ const districtPages = states.flatMap(({ districts }) =>
 )
 
 // Combine all pages
-const allPages = [...staticPages, ...productPages, ...locationHubPage, ...statePages, ...districtPages]
+const allPages = [...staticPages, ...toolPages, ...productPages, ...locationHubPage, ...statePages, ...districtPages]
 
 // Generate XML
 const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
@@ -114,6 +142,7 @@ console.log(`✅ Sitemap generated successfully!`)
 console.log(`📍 Location: public/sitemap.xml`)
 console.log(`📊 Total URLs: ${allPages.length}`)
 console.log(`   - Static pages: ${staticPages.length}`)
+console.log(`   - Tool pages: ${toolPages.length}`)
 console.log(`   - Product pages: ${productPages.length}`)
 console.log(`   - Location hub: ${locationHubPage.length}`)
 console.log(`   - State pages: ${statePages.length}`)
