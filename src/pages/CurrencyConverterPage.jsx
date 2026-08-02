@@ -88,7 +88,10 @@ function usePageSchema() {
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'SGD', 'AED', 'CNY', 'CHF', 'ZAR']
 
-/* Fetches the from→to rate from frankfurter.app (free, keyless, CORS-enabled, ECB-sourced). */
+/* Fetches the from→to rate from frankfurter.dev (free, keyless, CORS-enabled, ECB-sourced).
+   Note: the old api.frankfurter.app host now 301-redirects here, but that redirect response
+   itself lacks CORS headers, which browsers correctly block for a cross-origin fetch() — so
+   this must call the .dev host directly rather than relying on the redirect. */
 function useExchangeRate(from, to) {
   const [state, setState] = useState({ status: 'idle', rate: null, date: null })
 
@@ -98,7 +101,7 @@ function useExchangeRate(from, to) {
 
     let cancelled = false
 
-    fetch(`https://api.frankfurter.app/latest?from=${from}&to=${to}`)
+    fetch(`https://api.frankfurter.dev/v1/latest?from=${from}&to=${to}`)
       .then((res) => {
         if (!res.ok) throw new Error('Rate lookup failed')
         return res.json()
