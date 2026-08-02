@@ -1,8 +1,24 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { api } from '../api'
 import { ADMIN_MENU_ITEMS, STAFF_MENU_ITEMS, filterMenuItems } from '../menuConfig'
+
+function ChevronIcon({ open }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className={`shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+    >
+      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 
 function linkClasses({ isActive }) {
   return `block rounded-md px-3 py-2 text-sm font-medium transition ${
@@ -12,9 +28,12 @@ function linkClasses({ isActive }) {
 
 export default function AdminLayout() {
   const { user, logout } = useAuth()
+  const { pathname } = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [dueFollowUps, setDueFollowUps] = useState(0)
   const [permissions, setPermissions] = useState({ adminMenuKeys: [], staffMenuKeys: [] })
+  const [expandedGroups, setExpandedGroups] = useState(new Set())
+  const [expandedForPathname, setExpandedForPathname] = useState(null)
   const isAdminTier = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN'
 
   useEffect(() => {
@@ -28,6 +47,23 @@ export default function AdminLayout() {
       : isAdminTier
         ? filterMenuItems(ADMIN_MENU_ITEMS, permissions.adminMenuKeys)
         : filterMenuItems(STAFF_MENU_ITEMS, permissions.staffMenuKeys)
+
+  // Auto-expand whichever group contains the current route so users always land with it visible.
+  // Adjusted during render (rather than an effect) per React's guidance on deriving state from props.
+  if (pathname !== expandedForPathname) {
+    setExpandedForPathname(pathname)
+    const activeGroup = navItems.find((item) => item.children?.some((child) => child.to === pathname))
+    if (activeGroup) setExpandedGroups((prev) => new Set(prev).add(activeGroup.key))
+  }
+
+  function toggleGroup(key) {
+    setExpandedGroups((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }
 
   useEffect(() => {
     if (!isAdminTier) return
@@ -80,31 +116,55 @@ export default function AdminLayout() {
           </button>
         </div>
         <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) =>
-            item.children ? (
+          {navItems.map((item) => {
+            if (!item.children) {
+              return (
+                <NavLink key={item.to} to={item.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
+                  {item.label}
+                </NavLink>
+              )
+            }
+
+            const open = expandedGroups.has(item.key)
+            const groupDueFollowUps = item.children.some((child) => child.to === '/admin/leads') ? dueFollowUps : 0
+
+            return (
               <div key={item.key} className="pt-2 first:pt-0">
-                <div className="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/30">
-                  {item.label}
-                </div>
-                {item.children.map((child) => (
-                  <NavLink key={child.to} to={child.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
-                    {child.label}
-                  </NavLink>
-                ))}
+                <button
+                  type="button"
+                  onClick={() => toggleGroup(item.key)}
+                  aria-expanded={open}
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/40 hover:text-white/70 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    {item.label}
+                    {!open && groupDueFollowUps > 0 && (
+                      <span className="rounded-full bg-amber-400 px-1.5 py-0.5 text-[10px] font-semibold normal-case tracking-normal text-[#0B1F3A]">
+                        {groupDueFollowUps}
+                      </span>
+                    )}
+                  </span>
+                  <ChevronIcon open={open} />
+                </button>
+                {open && (
+                  <div className="space-y-1">
+                    {item.children.map((child) => (
+                      <NavLink key={child.to} to={child.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
+                        <span className="flex items-center justify-between">
+                          {child.label}
+                          {child.to === '/admin/leads' && dueFollowUps > 0 && (
+                            <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-[#0B1F3A]">
+                              {dueFollowUps}
+                            </span>
+                          )}
+                        </span>
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
               </div>
-            ) : (
-              <NavLink key={item.to} to={item.to} className={linkClasses} onClick={() => setSidebarOpen(false)}>
-                <span className="flex items-center justify-between">
-                  {item.label}
-                  {item.to === '/admin/leads' && dueFollowUps > 0 && (
-                    <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-[#0B1F3A]">
-                      {dueFollowUps}
-                    </span>
-                  )}
-                </span>
-              </NavLink>
             )
-          )}
+          })}
         </nav>
         <div className="px-4 py-4 border-t border-white/10 text-sm">
           <div className="text-white/60 truncate">{user?.email}</div>

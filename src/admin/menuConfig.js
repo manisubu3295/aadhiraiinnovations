@@ -20,28 +20,67 @@ const FORUM_GROUP = {
   ],
 }
 
+const WHATSAPP_GROUP = {
+  key: 'whatsapp-group',
+  label: 'WhatsApp',
+  children: [
+    { key: 'whatsapp', to: '/admin/whatsapp', label: 'Inbox' },
+    { key: 'whatsapp-flows', to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
+  ],
+}
+
+const BUSINESS_GROUP = {
+  key: 'business',
+  label: 'Business',
+  children: [
+    { key: 'leads', to: '/admin/leads', label: 'Leads' },
+    { key: 'clients', to: '/admin/clients', label: 'Clients' },
+    { key: 'projects', to: '/admin/projects', label: 'Projects' },
+  ],
+}
+
+const BILLING_GROUP = {
+  key: 'billing',
+  label: 'Billing',
+  children: [
+    { key: 'quotations', to: '/admin/quotations', label: 'Quotations' },
+    { key: 'invoices', to: '/admin/invoices', label: 'Invoices' },
+  ],
+}
+
+const FINANCE_GROUP = {
+  key: 'finance',
+  label: 'Finance',
+  children: [
+    { key: 'timesheets', to: '/admin/timesheets', label: 'Timesheets' },
+    { key: 'expenses', to: '/admin/expenses', label: 'Expense Claims' },
+    { key: 'business-expenses', to: '/admin/business-expenses', label: 'Business Expenses' },
+  ],
+}
+
+const ADMINISTRATION_GROUP = {
+  key: 'administration',
+  label: 'Administration',
+  children: [
+    { key: 'users', to: '/admin/users', label: 'Users' },
+    { key: 'settings', to: '/admin/settings', label: 'Settings' },
+  ],
+}
+
 export const ADMIN_MENU_ITEMS = [
   { key: 'dashboard', to: '/admin/dashboard', label: 'Dashboard' },
-  { key: 'clients', to: '/admin/clients', label: 'Clients' },
-  { key: 'projects', to: '/admin/projects', label: 'Projects' },
-  { key: 'leads', to: '/admin/leads', label: 'Leads' },
+  BUSINESS_GROUP,
   SUPPORT_GROUP,
+  WHATSAPP_GROUP,
   FORUM_GROUP,
-  { key: 'whatsapp', to: '/admin/whatsapp', label: 'WhatsApp' },
-  { key: 'whatsapp-flows', to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
-  { key: 'quotations', to: '/admin/quotations', label: 'Quotations' },
-  { key: 'invoices', to: '/admin/invoices', label: 'Invoices' },
-  { key: 'timesheets', to: '/admin/timesheets', label: 'Timesheets' },
-  { key: 'expenses', to: '/admin/expenses', label: 'Expense Claims' },
-  { key: 'business-expenses', to: '/admin/business-expenses', label: 'Business Expenses' },
-  { key: 'users', to: '/admin/users', label: 'Users' },
-  { key: 'settings', to: '/admin/settings', label: 'Settings' },
+  BILLING_GROUP,
+  FINANCE_GROUP,
+  ADMINISTRATION_GROUP,
 ]
 
 export const STAFF_MENU_ITEMS = [
   SUPPORT_GROUP,
-  { key: 'whatsapp', to: '/admin/whatsapp', label: 'WhatsApp' },
-  { key: 'whatsapp-flows', to: '/admin/whatsapp/flows', label: 'Chatbot Flows' },
+  WHATSAPP_GROUP,
   { key: 'my-timesheet', to: '/admin/my-timesheet', label: 'My Timesheet' },
   { key: 'my-expenses', to: '/admin/my-expenses', label: 'My Expenses' },
   { key: 'my-projects', to: '/admin/my-projects', label: 'Projects' },
