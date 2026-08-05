@@ -8,6 +8,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { states } from './src/data/locationSlugs.js'
+import blogPosts from './src/data/blogPosts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -24,6 +25,11 @@ const staticPages = [
   { path: '/products/medora-offline', lastmod: today, priority: '0.9', changefreq: 'monthly' },
   { path: '/about', lastmod: today, priority: '0.7', changefreq: 'monthly' },
   { path: '/services', lastmod: today, priority: '0.7', changefreq: 'monthly' },
+  { path: '/pricing', lastmod: today, priority: '0.8', changefreq: 'monthly' },
+  { path: '/case-studies', lastmod: today, priority: '0.7', changefreq: 'monthly' },
+  { path: '/blog', lastmod: today, priority: '0.7', changefreq: 'weekly' },
+  { path: '/resources', lastmod: today, priority: '0.6', changefreq: 'monthly' },
+  { path: '/careers', lastmod: today, priority: '0.4', changefreq: 'monthly' },
   { path: '/contact', lastmod: today, priority: '0.7', changefreq: 'monthly' },
   { path: '/tools', lastmod: today, priority: '0.6', changefreq: 'monthly' },
   { path: '/privacy-policy', lastmod: today, priority: '0.3', changefreq: 'yearly' },
@@ -50,6 +56,41 @@ const toolSlugs = [
   'password-generator',
   'unit-converter',
   'currency-converter',
+  'percentage-calculator',
+  'discount-calculator',
+  'tds-calculator',
+  'hsn-sac-lookup',
+  'merge-pdf',
+  'split-pdf',
+  'image-to-pdf',
+  'pdf-to-image',
+  'age-calculator',
+  'date-difference-calculator',
+  'base64-encoder-decoder',
+  'url-encoder-decoder',
+  'timestamp-converter',
+  'uuid-generator',
+  'case-converter',
+  'word-counter',
+  'compound-interest-calculator',
+  'simple-interest-calculator',
+  'sip-calculator',
+  'salary-ctc-calculator',
+  'gstin-validator',
+  'loan-comparison-calculator',
+  'pdf-compressor',
+  'watermark-pdf',
+  'pdf-page-numbers',
+  'jwt-decoder',
+  'regex-tester',
+  'text-diff-checker',
+  'color-converter',
+  'slug-generator',
+  'cron-explainer',
+  'lorem-ipsum-generator',
+  'meta-tag-generator',
+  'robots-txt-generator',
+  'open-graph-preview',
 ]
 
 const toolPages = toolSlugs.map(slug => ({
@@ -82,6 +123,15 @@ const productPages = productSlugs.map(slug => ({
   changefreq: 'monthly'
 }))
 
+// Blog posts (from src/data/blogPosts.js) — kept in sync automatically since both the
+// /blog index page and this sitemap read from the same source.
+const blogPages = Object.keys(blogPosts).map(slug => ({
+  path: `/blog/${slug}`,
+  lastmod: today,
+  priority: '0.5',
+  changefreq: 'monthly',
+}))
+
 // National pharmacy-billing-software local SEO — hub -> state -> district. Slugs come from
 // src/data/locationSlugs.js (a single source of truth shared with the routing/page-data layer),
 // so this can never drift out of sync with what actually resolves at those URLs the way the old
@@ -107,7 +157,7 @@ const districtPages = states.flatMap(({ districts }) =>
 )
 
 // Combine all pages
-const allPages = [...staticPages, ...toolPages, ...productPages, ...locationHubPage, ...statePages, ...districtPages]
+const allPages = [...staticPages, ...toolPages, ...productPages, ...blogPages, ...locationHubPage, ...statePages, ...districtPages]
 
 // Generate XML
 const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
@@ -144,6 +194,7 @@ console.log(`📊 Total URLs: ${allPages.length}`)
 console.log(`   - Static pages: ${staticPages.length}`)
 console.log(`   - Tool pages: ${toolPages.length}`)
 console.log(`   - Product pages: ${productPages.length}`)
+console.log(`   - Blog posts: ${blogPages.length}`)
 console.log(`   - Location hub: ${locationHubPage.length}`)
 console.log(`   - State pages: ${statePages.length}`)
 console.log(`   - District pages: ${districtPages.length}`)

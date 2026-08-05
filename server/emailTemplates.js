@@ -196,6 +196,24 @@ export const DEFAULT_TEMPLATES = [
     bodyHtml:
       '<p>Dear {{customerName}},</p><p>Thanks for subscribing! Your <strong>{{plan}}</strong> license is attached to this email as <code>license.lic</code>, valid until <strong>{{expiresAt}}</strong>.</p><p>To activate: open the app, go to the Activate screen, and import this file (file picker or paste its contents). See the installation guide on our website for step-by-step instructions.</p><p>Regards,<br/>{{businessName}}</p>',
   },
+  {
+    key: 'RESOURCE_DOWNLOAD_STAFF_NOTIFY',
+    category: 'ENQUIRY',
+    label: 'Resource downloaded (to staff)',
+    variables: ['name', 'email', 'resourceName'],
+    subject: 'Resource download — {{resourceName}}',
+    bodyHtml:
+      '<p><strong>{{name}}</strong> ({{email}}) downloaded <strong>{{resourceName}}</strong> from the website.</p>',
+  },
+  {
+    key: 'RESOURCE_DOWNLOAD_ACK',
+    category: 'ENQUIRY',
+    label: 'Resource download link (to requester)',
+    variables: ['name', 'resourceName', 'resourceUrl'],
+    subject: 'Your download: {{resourceName}}',
+    bodyHtml:
+      '<p>Hi {{name}},</p><p>Here\'s your copy of <strong>{{resourceName}}</strong>:</p><p><a href="{{resourceUrl}}">{{resourceUrl}}</a></p><p>Open the link and use the Print / Save as PDF button to keep a copy.</p><p>Regards,<br/>Aadhirai Innovations</p>',
+  },
 ]
 
 const DEFAULTS_BY_KEY = Object.fromEntries(DEFAULT_TEMPLATES.map((t) => [t.key, t]))

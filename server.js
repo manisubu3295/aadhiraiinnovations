@@ -16,6 +16,7 @@ import conversationRoutes from './server/routes/conversations.js'
 import chatFlowRoutes from './server/routes/chatFlows.js'
 import menuPermissionRoutes from './server/routes/menuPermissions.js'
 import offlineLicenseRoutes from './server/routes/offlineLicense.js'
+import resourcesRoutes from './server/routes/resources.js'
 import licenseRoutes from './server/routes/licenses.js'
 import geoRoutes from './server/routes/geo.js'
 import forumRoutes from './server/routes/forum.js'
@@ -64,6 +65,7 @@ app.use('/api/whatsapp/conversations', conversationRoutes)
 app.use('/api/whatsapp/flows', chatFlowRoutes)
 app.use('/api/menu-permissions', menuPermissionRoutes)
 app.use('/api/offline-license', offlineLicenseRoutes)
+app.use('/api/resources', resourcesRoutes)
 app.use('/api/licenses', licenseRoutes)
 app.use('/api/geo', geoRoutes)
 app.use('/api/forum', forumRoutes)

@@ -25,6 +25,11 @@ const WorkforceManagerPage = lazy(() => import('./pages/WorkforceManagerPage'))
 const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
 const BillingPage          = lazy(() => import('./pages/BillingPage'))
 const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
+const BlogIndexPage        = lazy(() => import('./pages/BlogIndexPage'))
+const CaseStudiesPage      = lazy(() => import('./pages/CaseStudiesPage'))
+const PricingPage          = lazy(() => import('./pages/PricingPage'))
+const CareersPage          = lazy(() => import('./pages/CareersPage'))
+const ResourcesPage        = lazy(() => import('./pages/ResourcesPage'))
 const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
 const PharmacyLocationsHubPage = lazy(() => import('./pages/PharmacyLocationsHubPage'))
@@ -49,6 +54,48 @@ const XmlFormatterPage     = lazy(() => import('./pages/XmlFormatterPage'))
 const TextFormatterPage    = lazy(() => import('./pages/TextFormatterPage'))
 const JsonToXmlPage        = lazy(() => import('./pages/JsonToXmlPage'))
 const XmlToJsonPage        = lazy(() => import('./pages/XmlToJsonPage'))
+const Base64EncoderDecoderPage = lazy(() => import('./pages/Base64EncoderDecoderPage'))
+const UrlEncoderDecoderPage    = lazy(() => import('./pages/UrlEncoderDecoderPage'))
+const TimestampConverterPage   = lazy(() => import('./pages/TimestampConverterPage'))
+const UuidGeneratorPage        = lazy(() => import('./pages/UuidGeneratorPage'))
+const CaseConverterPage        = lazy(() => import('./pages/CaseConverterPage'))
+const WordCounterPage          = lazy(() => import('./pages/WordCounterPage'))
+// Business Tools (calculators)
+const PercentageCalculatorPage = lazy(() => import('./pages/PercentageCalculatorPage'))
+const DiscountCalculatorPage   = lazy(() => import('./pages/DiscountCalculatorPage'))
+const TdsCalculatorPage        = lazy(() => import('./pages/TdsCalculatorPage'))
+const HsnSacLookupPage         = lazy(() => import('./pages/HsnSacLookupPage'))
+// PDF Tools
+const MergePdfPage    = lazy(() => import('./pages/MergePdfPage'))
+const SplitPdfPage    = lazy(() => import('./pages/SplitPdfPage'))
+const ImageToPdfPage  = lazy(() => import('./pages/ImageToPdfPage'))
+const PdfToImagePage  = lazy(() => import('./pages/PdfToImagePage'))
+// Utilities
+const AgeCalculatorPage            = lazy(() => import('./pages/AgeCalculatorPage'))
+const DateDifferenceCalculatorPage = lazy(() => import('./pages/DateDifferenceCalculatorPage'))
+// Batch 3 — Finance & Business
+const CompoundInterestCalculatorPage = lazy(() => import('./pages/CompoundInterestCalculatorPage'))
+const SimpleInterestCalculatorPage   = lazy(() => import('./pages/SimpleInterestCalculatorPage'))
+const SipCalculatorPage              = lazy(() => import('./pages/SipCalculatorPage'))
+const SalaryCtcCalculatorPage        = lazy(() => import('./pages/SalaryCtcCalculatorPage'))
+const GstinValidatorPage             = lazy(() => import('./pages/GstinValidatorPage'))
+const LoanComparisonCalculatorPage   = lazy(() => import('./pages/LoanComparisonCalculatorPage'))
+// Batch 3 — PDF cluster
+const PdfCompressorPage    = lazy(() => import('./pages/PdfCompressorPage'))
+const WatermarkPdfPage     = lazy(() => import('./pages/WatermarkPdfPage'))
+const PdfPageNumbersPage   = lazy(() => import('./pages/PdfPageNumbersPage'))
+// Batch 3 — Developer tools
+const JwtDecoderPage           = lazy(() => import('./pages/JwtDecoderPage'))
+const RegexTesterPage          = lazy(() => import('./pages/RegexTesterPage'))
+const TextDiffCheckerPage      = lazy(() => import('./pages/TextDiffCheckerPage'))
+const ColorConverterPage       = lazy(() => import('./pages/ColorConverterPage'))
+const SlugGeneratorPage        = lazy(() => import('./pages/SlugGeneratorPage'))
+const CronExplainerPage        = lazy(() => import('./pages/CronExplainerPage'))
+const LoremIpsumGeneratorPage  = lazy(() => import('./pages/LoremIpsumGeneratorPage'))
+// Batch 3 — SEO/marketing utilities
+const MetaTagGeneratorPage   = lazy(() => import('./pages/MetaTagGeneratorPage'))
+const RobotsTxtGeneratorPage = lazy(() => import('./pages/RobotsTxtGeneratorPage'))
+const OpenGraphPreviewPage   = lazy(() => import('./pages/OpenGraphPreviewPage'))
 /* Spinner while lazy chunks load */
 function PageLoader() {
   return (
@@ -135,10 +182,32 @@ function App() {
           element={<Suspense fallback={<PageLoader />}><ProductPage /></Suspense>}
         />
 
-        {/* Blog posts */}
+        {/* Blog */}
+        <Route
+          path="/blog"
+          element={<Suspense fallback={<PageLoader />}><BlogIndexPage /></Suspense>}
+        />
         <Route
           path="/blog/:slug"
           element={<Suspense fallback={<PageLoader />}><BlogPostPage /></Suspense>}
+        />
+
+        {/* Case studies, pricing, careers, resources */}
+        <Route
+          path="/case-studies"
+          element={<Suspense fallback={<PageLoader />}><CaseStudiesPage /></Suspense>}
+        />
+        <Route
+          path="/pricing"
+          element={<Suspense fallback={<PageLoader />}><PricingPage /></Suspense>}
+        />
+        <Route
+          path="/careers"
+          element={<Suspense fallback={<PageLoader />}><CareersPage /></Suspense>}
+        />
+        <Route
+          path="/resources"
+          element={<Suspense fallback={<PageLoader />}><ResourcesPage /></Suspense>}
         />
 
         {/* National pharmacy-software local SEO — hub -> state -> district. More specific
@@ -173,6 +242,46 @@ function App() {
         <Route
           path="/tools/emi-calculator"
           element={<Suspense fallback={<PageLoader />}><EmiCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/percentage-calculator"
+          element={<Suspense fallback={<PageLoader />}><PercentageCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/discount-calculator"
+          element={<Suspense fallback={<PageLoader />}><DiscountCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/tds-calculator"
+          element={<Suspense fallback={<PageLoader />}><TdsCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/hsn-sac-lookup"
+          element={<Suspense fallback={<PageLoader />}><HsnSacLookupPage /></Suspense>}
+        />
+        <Route
+          path="/tools/compound-interest-calculator"
+          element={<Suspense fallback={<PageLoader />}><CompoundInterestCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/simple-interest-calculator"
+          element={<Suspense fallback={<PageLoader />}><SimpleInterestCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/sip-calculator"
+          element={<Suspense fallback={<PageLoader />}><SipCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/salary-ctc-calculator"
+          element={<Suspense fallback={<PageLoader />}><SalaryCtcCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/gstin-validator"
+          element={<Suspense fallback={<PageLoader />}><GstinValidatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/loan-comparison-calculator"
+          element={<Suspense fallback={<PageLoader />}><LoanComparisonCalculatorPage /></Suspense>}
         />
 
         {/* Utilities */}
@@ -212,6 +321,42 @@ function App() {
           path="/tools/pdf-editor"
           element={<Suspense fallback={<PageLoader />}><PdfEditorPage /></Suspense>}
         />
+        <Route
+          path="/tools/merge-pdf"
+          element={<Suspense fallback={<PageLoader />}><MergePdfPage /></Suspense>}
+        />
+        <Route
+          path="/tools/split-pdf"
+          element={<Suspense fallback={<PageLoader />}><SplitPdfPage /></Suspense>}
+        />
+        <Route
+          path="/tools/image-to-pdf"
+          element={<Suspense fallback={<PageLoader />}><ImageToPdfPage /></Suspense>}
+        />
+        <Route
+          path="/tools/pdf-to-image"
+          element={<Suspense fallback={<PageLoader />}><PdfToImagePage /></Suspense>}
+        />
+        <Route
+          path="/tools/age-calculator"
+          element={<Suspense fallback={<PageLoader />}><AgeCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/date-difference-calculator"
+          element={<Suspense fallback={<PageLoader />}><DateDifferenceCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/pdf-compressor"
+          element={<Suspense fallback={<PageLoader />}><PdfCompressorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/watermark-pdf"
+          element={<Suspense fallback={<PageLoader />}><WatermarkPdfPage /></Suspense>}
+        />
+        <Route
+          path="/tools/pdf-page-numbers"
+          element={<Suspense fallback={<PageLoader />}><PdfPageNumbersPage /></Suspense>}
+        />
 
         {/* Developer Tools */}
         <Route
@@ -233,6 +378,72 @@ function App() {
         <Route
           path="/tools/xml-to-json"
           element={<Suspense fallback={<PageLoader />}><XmlToJsonPage /></Suspense>}
+        />
+        <Route
+          path="/tools/base64-encoder-decoder"
+          element={<Suspense fallback={<PageLoader />}><Base64EncoderDecoderPage /></Suspense>}
+        />
+        <Route
+          path="/tools/url-encoder-decoder"
+          element={<Suspense fallback={<PageLoader />}><UrlEncoderDecoderPage /></Suspense>}
+        />
+        <Route
+          path="/tools/timestamp-converter"
+          element={<Suspense fallback={<PageLoader />}><TimestampConverterPage /></Suspense>}
+        />
+        <Route
+          path="/tools/uuid-generator"
+          element={<Suspense fallback={<PageLoader />}><UuidGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/case-converter"
+          element={<Suspense fallback={<PageLoader />}><CaseConverterPage /></Suspense>}
+        />
+        <Route
+          path="/tools/word-counter"
+          element={<Suspense fallback={<PageLoader />}><WordCounterPage /></Suspense>}
+        />
+        <Route
+          path="/tools/jwt-decoder"
+          element={<Suspense fallback={<PageLoader />}><JwtDecoderPage /></Suspense>}
+        />
+        <Route
+          path="/tools/regex-tester"
+          element={<Suspense fallback={<PageLoader />}><RegexTesterPage /></Suspense>}
+        />
+        <Route
+          path="/tools/text-diff-checker"
+          element={<Suspense fallback={<PageLoader />}><TextDiffCheckerPage /></Suspense>}
+        />
+        <Route
+          path="/tools/color-converter"
+          element={<Suspense fallback={<PageLoader />}><ColorConverterPage /></Suspense>}
+        />
+        <Route
+          path="/tools/slug-generator"
+          element={<Suspense fallback={<PageLoader />}><SlugGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/cron-explainer"
+          element={<Suspense fallback={<PageLoader />}><CronExplainerPage /></Suspense>}
+        />
+        <Route
+          path="/tools/lorem-ipsum-generator"
+          element={<Suspense fallback={<PageLoader />}><LoremIpsumGeneratorPage /></Suspense>}
+        />
+
+        {/* SEO / Marketing Utilities */}
+        <Route
+          path="/tools/meta-tag-generator"
+          element={<Suspense fallback={<PageLoader />}><MetaTagGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/robots-txt-generator"
+          element={<Suspense fallback={<PageLoader />}><RobotsTxtGeneratorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/open-graph-preview"
+          element={<Suspense fallback={<PageLoader />}><OpenGraphPreviewPage /></Suspense>}
         />
 
         {/* Catch-all */}

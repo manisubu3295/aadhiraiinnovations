@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacy GST &amp; Compliance Checklist — Aadhirai Innovations</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #f6f3ec;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: #0B1F3A;
+      padding: 32px 16px 64px;
+    }
+    .no-print { display: flex; justify-content: center; margin-bottom: 20px; }
+    .no-print button {
+      background: #0B1F3A;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .no-print button:hover { background: #173762; }
+    .sheet {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 48px rgba(11,31,58,0.1);
+      padding: 48px 44px;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .intro {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 60ch;
+    }
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 28px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    ul.checklist { list-style: none; }
+    ul.checklist li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+      padding: 7px 0;
+    }
+    ul.checklist li::before {
+      content: '\2610';
+      font-size: 15px;
+      color: #0B1F3A;
+      line-height: 1.3;
+      flex: none;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+    .footer a { color: #0B1F3A; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print { display: none !important; }
+      .sheet { box-shadow: none; border-radius: 0; padding: 12mm; max-width: 100%; }
+      @page { size: A4; margin: 14mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <button onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="sheet">
+    <p class="eyebrow">Aadhirai Innovations · Resource</p>
+    <h1>Pharmacy GST &amp; Compliance Checklist</h1>
+    <p class="intro">
+      A working checklist for pharmacy owners to self-assess GST and operational compliance —
+      whether you're running billing manually or evaluating software. Print this or save it as a PDF.
+    </p>
+
+    <h2>Billing &amp; GST</h2>
+    <ul class="checklist">
+      <li>Every invoice shows the correct HSN code for each medicine sold</li>
+      <li>GST rate (0%, 5%, or 12%) is applied correctly per medicine, not a flat rate</li>
+      <li>CGST + SGST is applied for intra-state sales, IGST for inter-state sales</li>
+      <li>Customer GSTIN is captured and validated on every B2B invoice</li>
+      <li>Invoice numbering is sequential with no gaps or duplicates</li>
+    </ul>
+
+    <h2>Audit Readiness</h2>
+    <ul class="checklist">
+      <li>Complete invoice copies are retained and searchable for at least 6 years</li>
+      <li>HSN classification for each medicine is documented and consistent</li>
+      <li>Tax calculation breakdown is available per invoice, not just a total</li>
+      <li>Exemption documentation is on file for any 0%-rated sales</li>
+    </ul>
+
+    <h2>Inventory &amp; Expiry</h2>
+    <ul class="checklist">
+      <li>Stock is tracked at the batch level, with expiry date per batch</li>
+      <li>There's an alert or manual process to flag stock nearing expiry (30 days out)</li>
+      <li>Expired stock is physically segregated and never billed</li>
+      <li>Stock counts are reconciled against system/ledger records regularly</li>
+    </ul>
+
+    <h2>Operational Resilience</h2>
+    <ul class="checklist">
+      <li>Billing can continue during an internet or power outage</li>
+      <li>There's a defined process for syncing/reconciling transactions after an outage</li>
+      <li>At least one other staff member can operate billing if the primary user is unavailable</li>
+    </ul>
+
+    <div class="footer">
+      <p>
+        Built by Aadhirai Innovations — makers of
+        <a href="https://www.aadhiraiinnovations.com/products/medora-plus">Medora+</a> and
+        <a href="https://www.aadhiraiinnovations.com/products/medora-offline">Medora Offline</a>,
+        GST-compliant pharmacy billing software for Indian pharmacies.
+      </p>
+      <p style="margin-top:8px;">
+        Questions about your specific setup? <a href="https://www.aadhiraiinnovations.com/contact">Talk to us</a>.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

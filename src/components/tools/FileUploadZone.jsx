@@ -6,6 +6,13 @@ export default function FileUploadZone({
   accept = { 'application/pdf': ['.pdf'] },
   maxSizeMB = 50,
   onFileAccepted = () => {},
+  // Multi-file mode — set multiple=true and provide onFilesAccepted (plural) for tools like
+  // Merge PDF / Image to PDF that take several files in one selection. Single-file callers
+  // (the majority of existing tools) are unaffected — multiple defaults to false and onFileAccepted
+  // keeps working exactly as before.
+  onFilesAccepted = () => {},
+  multiple = false,
+  maxFiles = 1,
   toolLabel = 'Drag and drop your file here or click to upload',
   isProcessing = false,
   result = null,
@@ -15,6 +22,7 @@ export default function FileUploadZone({
   fileSize = '',
 }) {
   const maxBytes = maxSizeMB * 1024 * 1024
+  const effectiveMaxFiles = multiple ? maxFiles : 1
 
   const onDrop = useCallback(
     (acceptedFiles, rejectedFiles) => {
@@ -32,17 +40,21 @@ export default function FileUploadZone({
       }
 
       if (acceptedFiles && acceptedFiles.length > 0) {
-        onFileAccepted(acceptedFiles[0])
+        if (multiple) {
+          onFilesAccepted(acceptedFiles)
+        } else {
+          onFileAccepted(acceptedFiles[0])
+        }
       }
     },
-    [onFileAccepted, maxSizeMB]
+    [onFileAccepted, onFilesAccepted, multiple, maxSizeMB]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
     maxSize: maxBytes,
-    maxFiles: 1,
+    maxFiles: effectiveMaxFiles,
     disabled: isProcessing || !!result,
   })
 

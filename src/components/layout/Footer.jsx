@@ -82,9 +82,13 @@ function Footer() {
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Company</p>
               <ul className="space-y-3">
-                <li><Link to="/about"   className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">About</Link></li>
-                <li><Link to="/contact" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Contact</Link></li>
-                <li><Link to="/forum"   className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Forum</Link></li>
+                <li><Link to="/about"        className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">About</Link></li>
+                <li><Link to="/case-studies" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Case Studies</Link></li>
+                <li><Link to="/pricing"      className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Pricing</Link></li>
+                <li><Link to="/blog"         className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Blog</Link></li>
+                <li><Link to="/careers"      className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Careers</Link></li>
+                <li><Link to="/contact"      className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Contact</Link></li>
+                <li><Link to="/forum"        className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Forum</Link></li>
                 <li><a href="https://support.aadhiraiinnovations.com/portal/login" className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Client Portal</a></li>
                 <li><a href="https://support.aadhiraiinnovations.com/admin/login"  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Team Login</a></li>
                 <li><a href="https://billing.aadhiraiinnovations.com/admin/login"  className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Billing Admin</a></li>
@@ -96,6 +100,7 @@ function Footer() {
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Free Tools</p>
               <ul className="space-y-3">
                 <li><Link to="/tools"                          className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">All Tools</Link></li>
+                <li><Link to="/resources"                      className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">Resources</Link></li>
                 <li><Link to="/tools/gst-calculator"           className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">GST Calculator</Link></li>
                 <li><Link to="/tools/docx-to-pdf-converter"    className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">DOCX to PDF</Link></li>
                 <li><Link to="/tools/pdf-to-docx-converter"    className="text-[13.5px] text-slate-500 hover:text-[#0B1F3A] transition-colors">PDF to DOCX</Link></li>

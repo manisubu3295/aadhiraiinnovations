@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Header from './Header'
 import Footer from './Footer'
+import WhatsAppWidget from '../ui/WhatsAppWidget'
 
 /* ─── Per-route SEO config ────────────────────────────────────────────
    All title/description/og values are set here in one place.
@@ -223,6 +224,291 @@ const SEO = {
     ogDescription: 'Ask a question, browse answers, or help someone else out.',
     canonical: 'https://www.aadhiraiinnovations.com/forum',
   },
+  '/blog': {
+    title: 'Blog — Pharmacy & Business Software Insights | Aadhirai Innovations',
+    description:
+      'Practical guides on GST compliance, pharmacy operations, inventory management, workforce scheduling, and digitizing retail — from real implementation experience.',
+    ogTitle: 'Blog | Aadhirai Innovations',
+    ogDescription: 'Practical guides on pharmacy operations, GST compliance, inventory, and business software.',
+    canonical: 'https://www.aadhiraiinnovations.com/blog',
+  },
+  '/case-studies': {
+    title: 'Case Studies — Client Results | Aadhirai Innovations',
+    description:
+      'How Ebrain Technologies and Vasantham Pharmacy use Aadhirai Innovations software and engineering to run their operations.',
+    ogTitle: 'Case Studies | Aadhirai Innovations',
+    ogDescription: 'Real client results from Aadhirai Innovations products and engineering work.',
+    canonical: 'https://www.aadhiraiinnovations.com/case-studies',
+  },
+  '/pricing': {
+    title: 'Pricing — Medora+, Medora Offline, Aadhirai Billing | Aadhirai Innovations',
+    description:
+      'Pricing for Medora+ pharmacy software, Medora Offline licenses, and Aadhirai Billing. Custom-scoped pricing for our other business systems.',
+    ogTitle: 'Pricing | Aadhirai Innovations',
+    ogDescription: 'Transparent pricing for Medora+, Medora Offline, and Aadhirai Billing.',
+    canonical: 'https://www.aadhiraiinnovations.com/pricing',
+  },
+  '/careers': {
+    title: 'Careers — Join Aadhirai Innovations',
+    description:
+      'How we hire at Aadhirai Innovations, and our current opening for a Sales Partner covering Medora+ and Aadhirai Billing.',
+    ogTitle: 'Careers | Aadhirai Innovations',
+    ogDescription: 'Current opening: Sales Partner for Medora+ and Aadhirai Billing. Remote, commission or salaried.',
+    canonical: 'https://www.aadhiraiinnovations.com/careers',
+  },
+  '/resources': {
+    title: 'Resources — Free Tools & Pharmacy Compliance Checklist | Aadhirai Innovations',
+    description:
+      'Free business tools and a downloadable pharmacy GST & compliance checklist, from Aadhirai Innovations.',
+    ogTitle: 'Resources | Aadhirai Innovations',
+    ogDescription: 'Free tools and downloadable guides for pharmacy and business operations.',
+    canonical: 'https://www.aadhiraiinnovations.com/resources',
+  },
+  '/tools/percentage-calculator': {
+    title: 'Percentage Calculator — Find X% of a Number | Aadhirai Innovations',
+    description: 'Free percentage calculator. Find X% of a number, what percentage one number is of another, or the percentage change between two values.',
+    ogTitle: 'Percentage Calculator | Aadhirai Innovations',
+    ogDescription: 'Calculate X% of a number, percentage of a total, or percentage change instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/percentage-calculator',
+  },
+  '/tools/discount-calculator': {
+    title: 'Discount & Margin Calculator — Price, Profit, Markup | Aadhirai Innovations',
+    description: 'Free discount and profit margin calculator. Calculate a discounted price, or find margin and markup from cost and selling price.',
+    ogTitle: 'Discount & Margin Calculator | Aadhirai Innovations',
+    ogDescription: 'Calculate discounted prices, profit margin, and markup instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/discount-calculator',
+  },
+  '/tools/tds-calculator': {
+    title: 'TDS Calculator India — Sections 194C, 194H, 194I, 194J | Aadhirai Innovations',
+    description: 'Free TDS calculator for India. Estimate TDS deduction and net payable by section — contractor payments, rent, commission, professional fees.',
+    ogTitle: 'TDS Calculator | Aadhirai Innovations',
+    ogDescription: 'Estimate TDS deduction and net payable amount for common Income Tax Act sections.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/tds-calculator',
+  },
+  '/tools/hsn-sac-lookup': {
+    title: 'HSN & SAC Code Lookup — Pharmacy & Retail Reference | Aadhirai Innovations',
+    description: 'A curated reference of common HSN and SAC codes for pharmacy and general retail businesses in India, with typical GST rates.',
+    ogTitle: 'HSN & SAC Code Lookup | Aadhirai Innovations',
+    ogDescription: 'Common HSN and SAC codes for pharmacy and retail, with typical GST rates.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/hsn-sac-lookup',
+  },
+  '/tools/merge-pdf': {
+    title: 'Merge PDF Online — Combine PDF Files Free | Aadhirai Innovations',
+    description: 'Free online tool to merge multiple PDF files into one, in the order you choose. Runs entirely in your browser.',
+    ogTitle: 'Merge PDF | Aadhirai Innovations',
+    ogDescription: 'Combine multiple PDFs into one file, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/merge-pdf',
+  },
+  '/tools/split-pdf': {
+    title: 'Split PDF Online — Extract Pages Free | Aadhirai Innovations',
+    description: 'Free online tool to split a PDF into multiple files by page range. Runs entirely in your browser.',
+    ogTitle: 'Split PDF | Aadhirai Innovations',
+    ogDescription: 'Split a PDF into multiple files by page range, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/split-pdf',
+  },
+  '/tools/image-to-pdf': {
+    title: 'Image to PDF Converter — JPG & PNG to PDF Free | Aadhirai Innovations',
+    description: 'Free online tool to combine JPG and PNG images into a single PDF file, in the order you choose.',
+    ogTitle: 'Image to PDF Converter | Aadhirai Innovations',
+    ogDescription: 'Combine images into a single PDF, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/image-to-pdf',
+  },
+  '/tools/pdf-to-image': {
+    title: 'PDF to Image Converter — PDF to PNG Free | Aadhirai Innovations',
+    description: 'Free online tool to convert each page of a PDF into a PNG image. Runs entirely in your browser.',
+    ogTitle: 'PDF to Image Converter | Aadhirai Innovations',
+    ogDescription: 'Convert PDF pages to PNG images, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-to-image',
+  },
+  '/tools/age-calculator': {
+    title: 'Age Calculator — Exact Age in Years, Months, Days | Aadhirai Innovations',
+    description: 'Free online age calculator. Calculate exact age in years, months, and days from a date of birth, plus days until next birthday.',
+    ogTitle: 'Age Calculator | Aadhirai Innovations',
+    ogDescription: 'Calculate exact age in years, months, and days instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/age-calculator',
+  },
+  '/tools/date-difference-calculator': {
+    title: 'Date Difference Calculator — Days Between Two Dates | Aadhirai Innovations',
+    description: 'Free online date difference calculator. Find the number of years, months, days, and weeks between two dates.',
+    ogTitle: 'Date Difference Calculator | Aadhirai Innovations',
+    ogDescription: 'Find the difference between two dates in years, months, days, and weeks.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/date-difference-calculator',
+  },
+  '/tools/base64-encoder-decoder': {
+    title: 'Base64 Encoder / Decoder Online Free | Aadhirai Innovations',
+    description: 'Free online Base64 encoder and decoder. Convert text to Base64 or decode Base64 back to text, entirely in your browser.',
+    ogTitle: 'Base64 Encoder / Decoder | Aadhirai Innovations',
+    ogDescription: 'Encode or decode Base64 instantly, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/base64-encoder-decoder',
+  },
+  '/tools/url-encoder-decoder': {
+    title: 'URL Encoder / Decoder Online Free | Aadhirai Innovations',
+    description: 'Free online URL encoder and decoder. Percent-encode text for safe use in URLs, or decode an encoded URL back to plain text.',
+    ogTitle: 'URL Encoder / Decoder | Aadhirai Innovations',
+    ogDescription: 'Percent-encode or decode URLs instantly, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/url-encoder-decoder',
+  },
+  '/tools/timestamp-converter': {
+    title: 'Timestamp Converter — Unix Time to Date Online | Aadhirai Innovations',
+    description: 'Free online Unix timestamp converter. Convert a Unix timestamp to a human-readable date, or a date to a Unix timestamp.',
+    ogTitle: 'Timestamp Converter | Aadhirai Innovations',
+    ogDescription: 'Convert Unix timestamps to dates and back, instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/timestamp-converter',
+  },
+  '/tools/uuid-generator': {
+    title: 'UUID Generator Online Free — UUID v4 | Aadhirai Innovations',
+    description: 'Free online UUID (v4) generator. Generate one or many random, cryptographically secure UUIDs instantly.',
+    ogTitle: 'UUID Generator | Aadhirai Innovations',
+    ogDescription: 'Generate random, cryptographically secure UUIDs instantly, free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/uuid-generator',
+  },
+  '/tools/case-converter': {
+    title: 'Case Converter Online — UPPERCASE, Title Case & More | Aadhirai Innovations',
+    description: 'Free online text case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, or camelCase instantly.',
+    ogTitle: 'Case Converter | Aadhirai Innovations',
+    ogDescription: 'Convert text case instantly, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/case-converter',
+  },
+  '/tools/word-counter': {
+    title: 'Word & Character Counter Online Free | Aadhirai Innovations',
+    description: 'Free online word and character counter. Get live word count, character count, sentence count, and estimated reading time.',
+    ogTitle: 'Word & Character Counter | Aadhirai Innovations',
+    ogDescription: 'Live word count, character count, and reading time, free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/word-counter',
+  },
+  '/tools/compound-interest-calculator': {
+    title: 'Compound Interest Calculator Online Free | Aadhirai Innovations',
+    description: 'Free compound interest calculator. Calculate maturity value and interest earned with annual, semi-annual, quarterly, or monthly compounding.',
+    ogTitle: 'Compound Interest Calculator | Aadhirai Innovations',
+    ogDescription: 'Calculate compound interest and maturity value instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/compound-interest-calculator',
+  },
+  '/tools/simple-interest-calculator': {
+    title: 'Simple Interest Calculator Online Free | Aadhirai Innovations',
+    description: 'Free simple interest calculator. Calculate interest earned and total amount for a given principal, rate, and time.',
+    ogTitle: 'Simple Interest Calculator | Aadhirai Innovations',
+    ogDescription: 'Calculate simple interest and total amount instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/simple-interest-calculator',
+  },
+  '/tools/sip-calculator': {
+    title: 'SIP Calculator — Mutual Fund Maturity Value | Aadhirai Innovations',
+    description: 'Free SIP calculator. Estimate the maturity value of monthly mutual fund investments.',
+    ogTitle: 'SIP Calculator | Aadhirai Innovations',
+    ogDescription: 'Estimate SIP maturity value, invested amount, and returns.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/sip-calculator',
+  },
+  '/tools/salary-ctc-calculator': {
+    title: 'Salary / CTC Breakup Calculator India | Aadhirai Innovations',
+    description: 'Free illustrative CTC to in-hand salary breakup calculator. Estimate Basic, HRA, PF, and take-home pay from annual CTC.',
+    ogTitle: 'Salary / CTC Calculator | Aadhirai Innovations',
+    ogDescription: 'Illustrative breakup of Basic, HRA, PF, and take-home pay from CTC.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/salary-ctc-calculator',
+  },
+  '/tools/gstin-validator': {
+    title: 'GSTIN Format Validator — Check GST Number | Aadhirai Innovations',
+    description: 'Free GSTIN format and checksum validator for India. Checks the 15-character structure and check-digit of a GST Identification Number.',
+    ogTitle: 'GSTIN Validator | Aadhirai Innovations',
+    ogDescription: 'Validate GSTIN structure and check-digit instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/gstin-validator',
+  },
+  '/tools/loan-comparison-calculator': {
+    title: 'Loan Comparison Calculator — Compare EMI Offers | Aadhirai Innovations',
+    description: 'Free loan comparison calculator. Compare EMI, total interest, and total payment across up to 3 loan offers side by side.',
+    ogTitle: 'Loan Comparison Calculator | Aadhirai Innovations',
+    ogDescription: 'Compare multiple loan offers side by side instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/loan-comparison-calculator',
+  },
+  '/tools/pdf-compressor': {
+    title: 'PDF Compressor Online — Reduce PDF Size Free | Aadhirai Innovations',
+    description: 'Free online PDF compressor. Reduce PDF file size by re-rendering pages at a lower image quality, entirely in your browser.',
+    ogTitle: 'PDF Compressor | Aadhirai Innovations',
+    ogDescription: 'Reduce PDF file size, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-compressor',
+  },
+  '/tools/watermark-pdf': {
+    title: 'Watermark PDF Online Free | Aadhirai Innovations',
+    description: 'Free online tool to add a diagonal text watermark to every page of a PDF. Runs entirely in your browser.',
+    ogTitle: 'Watermark PDF | Aadhirai Innovations',
+    ogDescription: 'Add a text watermark to every PDF page, free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/watermark-pdf',
+  },
+  '/tools/pdf-page-numbers': {
+    title: 'Add Page Numbers to PDF Online Free | Aadhirai Innovations',
+    description: 'Free online tool to add page numbers to every page of a PDF. Runs entirely in your browser.',
+    ogTitle: 'Add Page Numbers to PDF | Aadhirai Innovations',
+    ogDescription: 'Add page numbers to a PDF, free, in your browser.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/pdf-page-numbers',
+  },
+  '/tools/jwt-decoder': {
+    title: 'JWT Decoder Online Free | Aadhirai Innovations',
+    description: 'Free online JWT decoder. Decode the header and payload of a JSON Web Token, entirely in your browser.',
+    ogTitle: 'JWT Decoder | Aadhirai Innovations',
+    ogDescription: 'Decode JWT header and payload instantly, free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/jwt-decoder',
+  },
+  '/tools/regex-tester': {
+    title: 'Regex Tester Online Free | Aadhirai Innovations',
+    description: 'Free online regular expression tester. Test a regex pattern against sample text, see matches highlighted, and inspect capture groups.',
+    ogTitle: 'Regex Tester | Aadhirai Innovations',
+    ogDescription: 'Test regular expressions against sample text instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/regex-tester',
+  },
+  '/tools/text-diff-checker': {
+    title: 'Text Diff Checker Online Free | Aadhirai Innovations',
+    description: 'Free online text diff checker. Compare two blocks of text line by line and see additions and deletions highlighted.',
+    ogTitle: 'Text Diff Checker | Aadhirai Innovations',
+    ogDescription: 'Compare two blocks of text and see differences highlighted.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/text-diff-checker',
+  },
+  '/tools/color-converter': {
+    title: 'Color Converter — Hex, RGB, HSL Online Free | Aadhirai Innovations',
+    description: 'Free online color converter. Convert between Hex, RGB, and HSL color formats instantly, with a live preview.',
+    ogTitle: 'Color Converter | Aadhirai Innovations',
+    ogDescription: 'Convert Hex, RGB, and HSL color formats instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/color-converter',
+  },
+  '/tools/slug-generator': {
+    title: 'URL Slug Generator Online Free | Aadhirai Innovations',
+    description: 'Free online URL slug generator. Convert any text into a clean, lowercase, hyphenated URL slug instantly.',
+    ogTitle: 'Slug Generator | Aadhirai Innovations',
+    ogDescription: 'Convert text into a clean URL slug instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/slug-generator',
+  },
+  '/tools/cron-explainer': {
+    title: 'Cron Expression Explainer Online Free | Aadhirai Innovations',
+    description: 'Free online cron expression explainer. Paste a 5-field cron expression and get a plain-English explanation of when it runs.',
+    ogTitle: 'Cron Expression Explainer | Aadhirai Innovations',
+    ogDescription: 'Understand any cron expression in plain English.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/cron-explainer',
+  },
+  '/tools/lorem-ipsum-generator': {
+    title: 'Lorem Ipsum Generator Online Free | Aadhirai Innovations',
+    description: 'Free online Lorem Ipsum placeholder text generator. Generate paragraphs, sentences, or words of classic dummy text.',
+    ogTitle: 'Lorem Ipsum Generator | Aadhirai Innovations',
+    ogDescription: 'Generate Lorem Ipsum placeholder text instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/lorem-ipsum-generator',
+  },
+  '/tools/meta-tag-generator': {
+    title: 'Meta Tag Generator — SEO Tags Online Free | Aadhirai Innovations',
+    description: 'Free online SEO meta tag generator. Generate title, description, canonical, Open Graph, and Twitter Card tags for any page.',
+    ogTitle: 'Meta Tag Generator | Aadhirai Innovations',
+    ogDescription: 'Generate SEO meta tags for any page instantly.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/meta-tag-generator',
+  },
+  '/tools/robots-txt-generator': {
+    title: 'Robots.txt Generator Online Free | Aadhirai Innovations',
+    description: 'Free online robots.txt generator. Build a robots.txt file with allow/disallow rules and a sitemap reference.',
+    ogTitle: 'Robots.txt Generator | Aadhirai Innovations',
+    ogDescription: 'Generate a robots.txt file instantly, free.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/robots-txt-generator',
+  },
+  '/tools/open-graph-preview': {
+    title: 'Open Graph Preview Tool — Social Share Preview | Aadhirai Innovations',
+    description: 'Free online Open Graph preview tool. See how your page will look when shared on Facebook, LinkedIn, or Twitter/X before you publish.',
+    ogTitle: 'Open Graph Preview Tool | Aadhirai Innovations',
+    ogDescription: 'Preview how your page looks when shared on social media.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/open-graph-preview',
+  },
   '/tools/pdf-editor': {
     title: 'PDF Editor Online — Rotate, Delete & Reorder PDF Pages | Aadhirai Innovations',
     description:
@@ -291,7 +577,8 @@ function SiteLayout() {
         <Outlet />
       </main>
 
-<Footer />
+      <Footer />
+      <WhatsAppWidget />
     </div>
   )
 }
