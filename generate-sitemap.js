@@ -12,7 +12,10 @@ import blogPosts from './src/data/blogPosts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const DOMAIN = 'https://aadhiraiinnovations.com'
+// Must match the canonical domain used sitewide (index.html's default canonical/og:url and
+// every SiteLayout.jsx SEO entry use www — a mismatched sitemap domain confuses search engines
+// about which host is canonical).
+const DOMAIN = 'https://www.aadhiraiinnovations.com'
 const today = new Date().toISOString().split('T')[0]
 
 // All static pages

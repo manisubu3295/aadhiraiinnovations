@@ -1,10 +1,16 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FileText, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { Search, ArrowRight } from 'lucide-react'
 import Container from '../components/ui/Container'
+import HoverCard from '../components/ui/HoverCard'
 import ToolCta from '../components/tools/ToolCta'
 import ToolFaqSection from '../components/tools/ToolFaqSection'
+import toolsDirectory from '../data/toolsDirectory'
+
+const allTools = toolsDirectory.flatMap((group) =>
+  group.items.map((item) => ({ ...item, category: group.heading }))
+)
 
 /* ─── Schema Injection ──────────────────────────────────────────────────── */
 function usePageSchema() {
@@ -12,26 +18,28 @@ function usePageSchema() {
     const webPageSchema = {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      'name': 'Free Document Tools Online — PDF & DOCX Utilities',
-      'description': 'Free online document tools: convert DOCX to PDF, convert PDF to Word, and edit PDF files online. Fast, browser-based tools for offices, students, and businesses.',
+      'name': 'Free Online Tools — GST, PDF, Developer & Business Utilities',
+      'description': `${allTools.length}+ free online tools: GST and financial calculators, PDF utilities, developer tools, and SEO utilities. Fast, browser-based, no signup.`,
       'url': 'https://www.aadhiraiinnovations.com/tools',
       'breadcrumb': {
         '@type': 'BreadcrumbList',
         'itemListElement': [
-          {
-            '@type': 'ListItem',
-            'position': 1,
-            'name': 'Home',
-            'item': 'https://www.aadhiraiinnovations.com',
-          },
-          {
-            '@type': 'ListItem',
-            'position': 2,
-            'name': 'Tools',
-            'item': 'https://www.aadhiraiinnovations.com/tools',
-          },
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.aadhiraiinnovations.com' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.aadhiraiinnovations.com/tools' },
         ],
       },
+    }
+
+    const itemListSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'name': 'Free Online Tools',
+      'itemListElement': allTools.map((tool, i) => ({
+        '@type': 'ListItem',
+        'position': i + 1,
+        'name': tool.label,
+        'url': `https://www.aadhiraiinnovations.com${tool.href}`,
+      })),
     }
 
     const faqSchema = {
@@ -40,122 +48,58 @@ function usePageSchema() {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': 'Are these document tools free to use?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text': 'Yes, all our document tools are completely free to use. No signup, no credit card required, no watermarks, and no hidden charges. You can convert, edit, and download your files instantly.',
-          },
+          'name': 'Are these tools free to use?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, every tool on this page is completely free. No signup, no credit card, no watermarks, and no hidden charges.' },
         },
         {
           '@type': 'Question',
-          'name': 'Is my file safe and private?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text': 'Yes, your privacy is our priority. Files are processed entirely in your browser and never uploaded to our servers. We do not track or share your data.',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'What file formats are supported?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text': 'We support DOCX (Word), PDF, and basic text extraction. Check each tool page for specific format support. For advanced conversions with complex formatting, server-side processing may be needed.',
-          },
+          'name': 'Is my data safe and private?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Every tool runs entirely in your browser — files and text are processed locally and never uploaded to our servers, unless a tool explicitly says otherwise (like the gated resource downloads).' },
         },
         {
           '@type': 'Question',
           'name': 'Do I need to install software?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text': 'No software installation needed. All tools run in your web browser. They work on Windows, Mac, Linux, and mobile devices.',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'What is the file size limit?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text': 'Most tools support files up to 50MB. Check individual tool pages for specific limits. Larger files may require server-side processing.',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'Can I use these tools on mobile?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text': 'Yes, all tools are fully responsive and work on mobile phones and tablets. Simply visit aadhiraiinnovations.com/tools on your mobile browser.',
-          },
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Every tool runs in your web browser on Windows, Mac, Linux, and mobile devices.' },
         },
       ],
     }
 
-    const wpScript = document.createElement('script')
-    wpScript.type = 'application/ld+json'
-    wpScript.setAttribute('data-schema', 'webpage')
-    wpScript.text = JSON.stringify(webPageSchema)
-    document.head.appendChild(wpScript)
+    const scripts = [
+      ['webpage', webPageSchema],
+      ['itemlist', itemListSchema],
+      ['faqpage', faqSchema],
+    ].map(([name, schema]) => {
+      const el = document.createElement('script')
+      el.type = 'application/ld+json'
+      el.setAttribute('data-schema', name)
+      el.text = JSON.stringify(schema)
+      document.head.appendChild(el)
+      return el
+    })
 
-    const faqScript = document.createElement('script')
-    faqScript.type = 'application/ld+json'
-    faqScript.setAttribute('data-schema', 'faqpage')
-    faqScript.text = JSON.stringify(faqSchema)
-    document.head.appendChild(faqScript)
-
-    return () => {
-      wpScript.remove()
-      faqScript.remove()
-    }
+    return () => scripts.forEach((el) => el.remove())
   }, [])
 }
 
-const tools = [
-  {
-    title: 'DOCX to PDF Converter',
-    description: 'Convert Word documents to PDF instantly. No formatting loss, fast processing.',
-    href: '/tools/docx-to-pdf-converter',
-    icon: FileText,
-    features: ['Instant conversion', 'Format preservation', 'No signup needed'],
-    status: 'Live & Free',
-  },
-  {
-    title: 'PDF to DOCX Converter',
-    description: 'Extract text from PDF and create an editable Word document.',
-    href: '/tools/pdf-to-docx-converter',
-    icon: FileText,
-    features: ['Text extraction', 'Editable output', 'Works with digital PDFs'],
-    status: 'Live & Free',
-  },
-  {
-    title: 'PDF Editor Online',
-    description: 'Rotate pages, delete pages, and reorder your PDF. No software needed.',
-    href: '/tools/pdf-editor',
-    icon: FileText,
-    features: ['Rotate & delete pages', 'Reorder pages', 'Download instantly'],
-    status: 'Live & Free',
-  },
-]
-
-const benefits = [
-  {
-    title: 'Fast & Reliable',
-    description: 'Process documents in seconds without waiting for email confirmations or account setup.',
-  },
-  {
-    title: 'Privacy First',
-    description: 'Your files are processed entirely in your browser and never uploaded to our servers.',
-  },
-  {
-    title: 'No Signup Required',
-    description: 'Use all tools immediately without creating an account, giving passwords, or entering credit card details.',
-  },
-  {
-    title: 'Mobile Friendly',
-    description: 'All tools work perfectly on phones and tablets. Access anytime, anywhere.',
-  },
-]
-
 export default function ToolsHubPage() {
   usePageSchema()
+  const [query, setQuery] = useState('')
+  const [activeCategory, setActiveCategory] = useState('All')
+
+  const categories = ['All', ...toolsDirectory.map((g) => g.heading)]
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return allTools.filter((tool) => {
+      const matchesCategory = activeCategory === 'All' || tool.category === activeCategory
+      const matchesQuery = !q || tool.label.toLowerCase().includes(q) || tool.desc.toLowerCase().includes(q)
+      return matchesCategory && matchesQuery
+    })
+  }, [query, activeCategory])
+
+  const groupedFiltered = toolsDirectory
+    .map((group) => ({ ...group, items: filtered.filter((t) => t.category === group.heading) }))
+    .filter((group) => group.items.length > 0)
 
   return (
     <>
@@ -176,22 +120,22 @@ export default function ToolsHubPage() {
           >
             <div className="flex items-center gap-2 mb-6">
               <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold uppercase tracking-wider text-white/60">
-                Free Tools
+                {allTools.length}+ Free Tools
               </span>
             </div>
 
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1] mb-4">
-              Free Document Tools Online
+              Free Online Tools
             </h1>
 
             <p className="text-lg text-white/60 leading-relaxed max-w-2xl">
-              Convert, edit, and process documents in your browser. Fast, secure, and completely free. No signup, no watermarks, no limits.
+              GST and financial calculators, PDF utilities, developer tools, and SEO utilities — all free, browser-based, no signup, no watermarks.
             </p>
           </motion.div>
         </Container>
       </section>
 
-      {/* ── Tool Cards ─────────────────────────────────────────────────────── */}
+      {/* ── Search + Filter + Grid ────────────────────────────────────────── */}
       <section className="bg-white border-b border-slate-100 py-16 md:py-20 lg:py-24">
         <Container>
           <motion.div
@@ -199,112 +143,77 @@ export default function ToolsHubPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
-            className="mb-12"
+            className="mb-10"
           >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="h-px w-10 bg-slate-300" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Available Tools
-              </span>
+            <div className="relative max-w-md mb-6">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search tools — e.g. GST, PDF, JSON, calculator"
+                className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-[#0B1F3A] text-sm"
+              />
             </div>
-            <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl leading-[1.2]">
-              Powerful document utilities, all free
-            </h2>
-          </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {tools.map((tool, idx) => {
-              const Icon = tool.icon
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="group relative rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-lg transition-all overflow-hidden"
+            <div className="flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={`rounded-full border px-4 py-1.5 text-[12.5px] font-medium transition-colors ${
+                    activeCategory === cat
+                      ? 'border-[#0B1F3A] bg-[#0B1F3A] text-white'
+                      : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:text-[#0B1F3A]'
+                  }`}
                 >
-                  {/* Top gradient accent */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0B1F3A]/20 to-transparent" />
-
-                  <div className="p-6 md:p-7">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="h-10 w-10 rounded-lg bg-[#0B1F3A]/5 flex items-center justify-center group-hover:bg-[#0B1F3A]/10 transition-colors">
-                        <Icon className="h-5 w-5 text-[#0B1F3A]" strokeWidth={1.75} />
-                      </div>
-                      <span className="inline-block px-2.5 py-1 rounded-full bg-green-100 text-xs font-bold uppercase tracking-wider text-green-700">
-                        {tool.status}
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg font-semibold text-[#0B1F3A] mb-2">{tool.title}</h3>
-                    <p className="text-sm text-slate-600 leading-relaxed mb-4">{tool.description}</p>
-
-                    <ul className="space-y-2 mb-6">
-                      {tool.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs text-slate-600">
-                          <CheckCircle2 className="h-4 w-4 text-green-600 flex-none" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      to={tool.href}
-                      className="inline-flex items-center gap-2 text-sm font-medium text-[#0B1F3A] hover:text-[#0B1F3A]/70 transition-colors group/link"
-                    >
-                      Try Tool
-                      <ArrowRight className="h-4 w-4 group-hover/link:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-        </Container>
-      </section>
-
-      {/* ── Benefits ───────────────────────────────────────────────────────── */}
-      <section className="bg-slate-50 border-b border-slate-100 py-16 md:py-20 lg:py-24">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6 }}
-            className="mb-12"
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="h-px w-10 bg-slate-300" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Why Use Our Tools
-              </span>
+                  {cat}
+                </button>
+              ))}
             </div>
-            <h2 className="text-3xl font-semibold tracking-tight text-[#0B1F3A] sm:text-4xl leading-[1.2]">
-              Built for real work, not marketing
-            </h2>
           </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {benefits.map((benefit, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-              >
-                <h3 className="font-semibold text-[#0B1F3A] mb-2">{benefit.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{benefit.description}</p>
-              </motion.div>
+          {groupedFiltered.length === 0 && (
+            <p className="text-sm text-slate-400 py-12 text-center">No tools match "{query}".</p>
+          )}
+
+          <div className="space-y-14">
+            {groupedFiltered.map((group) => (
+              <div key={group.heading}>
+                <h2 className="text-lg font-semibold text-[#0B1F3A] mb-5">{group.heading}</h2>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((tool, idx) => (
+                    <motion.div
+                      key={tool.href}
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.4, delay: (idx % 6) * 0.05 }}
+                    >
+                      <HoverCard className="h-full">
+                        <Link to={tool.href} className="flex h-full flex-col justify-between p-5">
+                          <div>
+                            <h3 className="text-sm font-semibold text-[#0B1F3A] mb-1.5">{tool.label}</h3>
+                            <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
+                          </div>
+                          <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#0B1F3A]">
+                            Open tool
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </div>
+                        </Link>
+                      </HoverCard>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </Container>
       </section>
 
       {/* ── Brand Trust ────────────────────────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-16 md:py-20">
+      <section className="bg-slate-50 border-b border-slate-100 py-16 md:py-20">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -328,36 +237,28 @@ export default function ToolsHubPage() {
         title="Common Questions About Our Tools"
         items={[
           {
-            q: 'Are these document tools free to use?',
-            a: 'Yes, all our document tools are completely free. No signup, no credit card, no hidden charges. You can convert, edit, and download files instantly.',
+            q: 'Are these tools free to use?',
+            a: 'Yes, every tool on this page is completely free. No signup, no credit card, no hidden charges.',
           },
           {
-            q: 'Is my file safe and private?',
-            a: 'Yes. Files are processed entirely in your browser and never uploaded to our servers. We do not track or share your data.',
-          },
-          {
-            q: 'What file formats are supported?',
-            a: 'We support DOCX (Word), PDF, and text extraction. Check each tool page for specific format support.',
+            q: 'Is my data safe and private?',
+            a: 'Yes. Files and text are processed entirely in your browser and never uploaded to our servers, unless a tool explicitly says otherwise.',
           },
           {
             q: 'Do I need to install software?',
             a: 'No software needed. All tools run in your web browser on Windows, Mac, Linux, and mobile devices.',
           },
           {
-            q: 'What is the file size limit?',
-            a: 'Most tools support files up to 50MB. Check individual tool pages for specific limits.',
-          },
-          {
             q: 'Can I use these tools on mobile?',
-            a: 'Yes, all tools are fully responsive and work perfectly on mobile phones and tablets.',
+            a: 'Yes, all tools are fully responsive and work on mobile phones and tablets.',
           },
         ]}
       />
 
       {/* ── CTA ────────────────────────────────────────────────────────────── */}
       <ToolCta
-        headline="Need enterprise document workflows?"
-        body="Aadhirai Innovations builds custom software for large-scale document automation, business process workflows, and data transformation. From invoice processing to document OCR, we turn documents into data."
+        headline="Need enterprise document or business workflows?"
+        body="Aadhirai Innovations builds custom software for large-scale document automation, business process workflows, and data transformation. From invoice processing to pharmacy management, we turn manual work into automated systems."
         ctas={[
           { label: 'Explore Solutions', href: '/solutions/erp-automation', primary: true },
           { label: 'Talk to Us', href: 'https://wa.me/918508716957', primary: false },

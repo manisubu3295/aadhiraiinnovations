@@ -6,35 +6,7 @@ import Container from '../components/ui/Container'
 import ToolFaqSection from '../components/tools/ToolFaqSection'
 import ToolCta from '../components/tools/ToolCta'
 import { API_BASE } from '../lib/apiBase'
-
-const TOOL_GROUPS = [
-  {
-    heading: 'Free Business Tools',
-    items: [
-      { label: 'GST Calculator', href: '/tools/gst-calculator' },
-      { label: 'Invoice/Quotation Builder', href: '/document-builder' },
-      { label: 'Amount to Words', href: '/tools/amount-to-words' },
-      { label: 'EMI Calculator', href: '/tools/emi-calculator' },
-    ],
-  },
-  {
-    heading: 'Document Tools',
-    items: [
-      { label: 'DOCX to PDF', href: '/tools/docx-to-pdf-converter' },
-      { label: 'PDF to DOCX', href: '/tools/pdf-to-docx-converter' },
-      { label: 'PDF Editor', href: '/tools/pdf-editor' },
-    ],
-  },
-  {
-    heading: 'Utilities',
-    items: [
-      { label: 'QR Code Generator', href: '/tools/qr-code-generator' },
-      { label: 'Barcode Generator', href: '/tools/barcode-generator' },
-      { label: 'Currency Converter', href: '/tools/currency-converter' },
-      { label: 'Unit Converter', href: '/tools/unit-converter' },
-    ],
-  },
-]
+import toolsDirectory from '../data/toolsDirectory'
 
 function ChecklistDownloadForm() {
   const [formData, setFormData] = useState({ name: '', email: '' })
@@ -232,16 +204,16 @@ export default function ResourcesPage() {
               Tools you can use right now
             </h2>
             <p className="mt-4 max-w-2xl text-sm text-slate-500 leading-relaxed">
-              No signup, no watermarks. See{' '}
+              No signup, no watermarks. Every category, all in one place — or browse{' '}
               <Link to="/tools" className="font-medium text-[#0B1F3A] hover:text-[#0B1F3A]/70">
                 the full tools directory
               </Link>{' '}
-              for all of them.
+              with search and filters.
             </p>
           </motion.div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {TOOL_GROUPS.map((group, gIdx) => (
+            {toolsDirectory.map((group, gIdx) => (
               <motion.div
                 key={group.heading}
                 initial={{ opacity: 0, y: 18 }}
