@@ -16,10 +16,9 @@ export default function TicketsListPage() {
 
   function load() {
     const params = new URLSearchParams()
-    if (myOpenOnly) {
-      params.set('mine', '1')
-      params.set('openOnly', '1')
-    }
+    if (myOpenOnly) params.set('mine', '1')
+    // Leaving status unset (rather than "") is what makes the backend hide CLOSED by default —
+    // an explicit status pick (including CLOSED) always wins.
     if (status) params.set('status', status)
     if (projectId) params.set('projectId', projectId)
     api
@@ -69,7 +68,7 @@ export default function TicketsListPage() {
           onChange={(e) => setStatus(e.target.value)}
           className="rounded-md border border-slate-300 px-3 py-2 text-sm"
         >
-          <option value="">All statuses</option>
+          <option value="">All except closed</option>
           {STATUSES.map((s) => (
             <option key={s} value={s}>{s.replace('_', ' ')}</option>
           ))}

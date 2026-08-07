@@ -29,7 +29,9 @@ export default function TicketsPage() {
   const [priority, setPriority] = useState('')
   const [projectId, setProjectId] = useState('')
   const [clientId, setClientId] = useState('')
-  const [myOpenOnly, setMyOpenOnly] = useState(false)
+  // Defaults to on — landing on this page should show what's actionable for me, not the
+  // whole company's ticket history. CLOSED is also hidden by default (see load()/backend).
+  const [myOpenOnly, setMyOpenOnly] = useState(true)
 
   const [clients, setClients] = useState([])
   const [projects, setProjects] = useState([])
@@ -43,10 +45,9 @@ export default function TicketsPage() {
 
   function load() {
     const params = new URLSearchParams()
-    if (myOpenOnly) {
-      params.set('mine', '1')
-      params.set('openOnly', '1')
-    }
+    if (myOpenOnly) params.set('mine', '1')
+    // Leaving status unset (rather than sending "" ) is what makes the backend apply its
+    // "hide CLOSED" default — an explicit status pick (including CLOSED) always wins.
     if (status) params.set('status', status)
     if (priority) params.set('priority', priority)
     if (projectId) params.set('projectId', projectId)
@@ -63,13 +64,15 @@ export default function TicketsPage() {
     api.get('/employee/projects').then((data) => setProjects(data.projects)).catch(() => {})
   }, [])
 
-  const hasActiveFilters = Boolean(status || priority || projectId || clientId || myOpenOnly)
+  // "My open issues" on is the default baseline, so it alone shouldn't count as an active
+  // filter — only turning it *off*, or narrowing with another control, does.
+  const hasActiveFilters = Boolean(status || priority || projectId || clientId || !myOpenOnly)
   function clearFilters() {
     setStatus('')
     setPriority('')
     setProjectId('')
     setClientId('')
-    setMyOpenOnly(false)
+    setMyOpenOnly(true)
   }
 
   function openAdd() {
@@ -137,7 +140,7 @@ export default function TicketsPage() {
           onChange={(e) => setStatus(e.target.value)}
           className="rounded-md border border-slate-300 px-3 py-2 text-sm"
         >
-          <option value="">All statuses</option>
+          <option value="">All except closed</option>
           {STATUSES.map((s) => (
             <option key={s} value={s}>{s.replace('_', ' ')}</option>
           ))}

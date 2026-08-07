@@ -32,8 +32,8 @@ const upload = multer({
 
 const STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
-// Mirrors tickets.js — statuses treated as "still open" by the openOnly/mine quick filters.
-const OPEN_STATUSES = ['OPEN', 'IN_PROGRESS']
+// Mirrors tickets.js — shown by default whenever no explicit status filter is picked.
+const NOT_CLOSED_STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED']
 
 const ticketListInclude = {
   project: { select: { id: true, name: true } },
@@ -50,12 +50,12 @@ router.get('/projects', async (req, res) => {
 })
 
 router.get('/tickets', async (req, res) => {
-  const { status, projectId, mine, openOnly } = req.query
+  const { status, projectId, mine } = req.query
   const where = { clientId: req.clientUser.clientId }
   if (status && STATUSES.includes(status)) {
     where.status = status
-  } else if (openOnly === '1' || openOnly === 'true') {
-    where.status = { in: OPEN_STATUSES }
+  } else if (!status) {
+    where.status = { in: NOT_CLOSED_STATUSES }
   }
   if (projectId) where.projectId = projectId
   // "My tickets" — this client account may have several logged-in contacts, so scope to

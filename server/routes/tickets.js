@@ -27,17 +27,17 @@ const ticketListInclude = {
   createdBy: { select: { id: true, name: true, email: true } },
 }
 
-// Statuses treated as "still open" by the openOnly/mine quick filters — RESOLVED is deliberately
-// excluded from CLOSED-adjacent grouping but also not "open" in the sense of needing action.
-const OPEN_STATUSES = ['OPEN', 'IN_PROGRESS']
+// Shown by default whenever no explicit status filter is picked — CLOSED tickets pile up
+// over time and would otherwise dominate the list, so they're opt-in via the status dropdown.
+const NOT_CLOSED_STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED']
 
 router.get('/', async (req, res) => {
-  const { status, priority, assignedToId, projectId, clientId, mine, openOnly } = req.query
+  const { status, priority, assignedToId, projectId, clientId, mine } = req.query
   const where = {}
   if (status && STATUSES.includes(status)) {
     where.status = status
-  } else if (openOnly === '1' || openOnly === 'true') {
-    where.status = { in: OPEN_STATUSES }
+  } else if (!status) {
+    where.status = { in: NOT_CLOSED_STATUSES }
   }
   if (priority && PRIORITIES.includes(priority)) where.priority = priority
   if (projectId) where.projectId = projectId
