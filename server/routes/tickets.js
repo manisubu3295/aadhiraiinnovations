@@ -2,7 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails } from '../ticketUtils.js'
+import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails, logTicketActivity } from '../ticketUtils.js'
 import { sendMail } from '../mailer.js'
 import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
 import { sendWhatsApp } from '../whatsapp.js'
@@ -27,12 +27,26 @@ const ticketListInclude = {
   createdBy: { select: { id: true, name: true, email: true } },
 }
 
+// Statuses treated as "still open" by the openOnly/mine quick filters — RESOLVED is deliberately
+// excluded from CLOSED-adjacent grouping but also not "open" in the sense of needing action.
+const OPEN_STATUSES = ['OPEN', 'IN_PROGRESS']
+
 router.get('/', async (req, res) => {
-  const { status, priority, assignedToId } = req.query
+  const { status, priority, assignedToId, projectId, clientId, mine, openOnly } = req.query
   const where = {}
-  if (status && STATUSES.includes(status)) where.status = status
+  if (status && STATUSES.includes(status)) {
+    where.status = status
+  } else if (openOnly === '1' || openOnly === 'true') {
+    where.status = { in: OPEN_STATUSES }
+  }
   if (priority && PRIORITIES.includes(priority)) where.priority = priority
-  if (assignedToId) where.assignedToId = assignedToId
+  if (projectId) where.projectId = projectId
+  if (clientId) where.clientId = clientId
+  if (mine === '1' || mine === 'true') {
+    where.assignedToId = req.user.id
+  } else if (assignedToId) {
+    where.assignedToId = assignedToId
+  }
 
   const tickets = await prisma.ticket.findMany({
     where,
@@ -104,6 +118,7 @@ router.post('/', upload.array('attachments', 5), async (req, res) => {
     include: ticketListInclude,
   })
   await saveAttachments({ files: req.files, ticketId: ticket.id, uploadedById: req.user.id })
+  await logTicketActivity({ ticketId: ticket.id, actorId: req.user.id, type: 'CREATED' })
 
   // Staff/admin logging a ticket on the client's behalf (e.g. a phone call) still needs to
   // reach the client and whoever it's assigned to — unlike the client-portal creation path,
@@ -153,6 +168,10 @@ router.get('/:id', async (req, res) => {
           attachments: true,
         },
       },
+      activities: {
+        orderBy: { createdAt: 'asc' },
+        include: { actor: { select: { id: true, name: true, role: true } } },
+      },
     },
   })
   if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found.' })
@@ -161,7 +180,10 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { status, priority, assignedToId, ccEmails } = req.body ?? {}
-  const ticket = await prisma.ticket.findUnique({ where: { id: req.params.id }, include: { createdBy: true, client: true } })
+  const ticket = await prisma.ticket.findUnique({
+    where: { id: req.params.id },
+    include: { createdBy: true, client: true, assignedTo: true },
+  })
   if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found.' })
 
   const data = {}
@@ -197,11 +219,35 @@ router.put('/:id', async (req, res) => {
     }
   }
 
+  // Diff against the pre-update ticket so the Activity tab shows one row per field that
+  // actually changed, not per field the client happened to send.
+  const activityEntries = []
+  if (status !== undefined && status !== ticket.status) {
+    activityEntries.push({ type: 'STATUS_CHANGED', field: 'status', oldValue: ticket.status, newValue: status })
+  }
+  if (priority !== undefined && priority !== ticket.priority) {
+    activityEntries.push({ type: 'PRIORITY_CHANGED', field: 'priority', oldValue: ticket.priority, newValue: priority })
+  }
+  if (assignedToId !== undefined && (assignedToId || null) !== ticket.assignedToId) {
+    activityEntries.push({
+      type: 'ASSIGNED',
+      field: 'assignedTo',
+      oldValue: ticket.assignedTo?.name || null,
+      newValue: newAssignee?.name || null,
+    })
+  }
+
   const updated = await prisma.ticket.update({
     where: { id: req.params.id },
     data,
     include: ticketListInclude,
   })
+
+  if (activityEntries.length) {
+    await logTicketActivity(
+      activityEntries.map((entry) => ({ ...entry, ticketId: ticket.id, actorId: req.user.id }))
+    )
+  }
 
   if (status !== undefined && status !== ticket.status && ticket.createdBy?.email) {
     const tpl = await getTemplate('TICKET_STATUS_CHANGED')

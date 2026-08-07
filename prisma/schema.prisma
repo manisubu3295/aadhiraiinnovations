@@ -33,6 +33,15 @@ enum TicketPriority {
   URGENT
 }
 
+// Discriminates the audit-trail entries on TicketActivity — kept as an enum (rather than a
+// free-text "type" string) so field-change vs. lifecycle rows stay easy to branch on in the UI.
+enum TicketActivityType {
+  CREATED
+  STATUS_CHANGED
+  PRIORITY_CHANGED
+  ASSIGNED
+}
+
 enum ProjectStatus {
   PROPOSED
   ACTIVE
@@ -150,23 +159,24 @@ model User {
   // a dialable number. Self-service, set from Settings > My WhatsApp.
   whatsappNumber String?
 
-  createdClients    Client[]    @relation("ClientCreatedBy")
-  createdProjects   Project[]   @relation("ProjectCreatedBy")
-  recordedPayments  Payment[]   @relation("PaymentRecordedBy")
-  createdQuotations Quotation[] @relation("QuotationCreatedBy")
-  createdInvoices   Invoice[]   @relation("InvoiceCreatedBy")
+  createdClients    Client[]          @relation("ClientCreatedBy")
+  createdProjects   Project[]         @relation("ProjectCreatedBy")
+  recordedPayments  Payment[]         @relation("PaymentRecordedBy")
+  createdQuotations Quotation[]       @relation("QuotationCreatedBy")
+  createdInvoices   Invoice[]         @relation("InvoiceCreatedBy")
   timesheets        Timesheet[]
-  expenseClaims     ExpenseClaim[] @relation("ExpenseClaimant")
-  approvedExpenses  ExpenseClaim[] @relation("ExpenseApprovedBy")
+  expenseClaims     ExpenseClaim[]    @relation("ExpenseClaimant")
+  approvedExpenses  ExpenseClaim[]    @relation("ExpenseApprovedBy")
   businessExpenses  BusinessExpense[] @relation("BusinessExpenseCreatedBy")
 
   clientId String?
   client   Client? @relation(fields: [clientId], references: [id])
 
-  createdTickets     Ticket[]        @relation("TicketCreatedBy")
-  assignedTickets    Ticket[]        @relation("TicketAssignedTo")
-  ticketMessages     TicketMessage[]
-  ticketAttachments  TicketAttachment[]
+  createdTickets    Ticket[]           @relation("TicketCreatedBy")
+  assignedTickets   Ticket[]           @relation("TicketAssignedTo")
+  ticketActivities  TicketActivity[]   @relation("TicketActivityActor")
+  ticketMessages    TicketMessage[]
+  ticketAttachments TicketAttachment[]
 
   createdLeads  Lead[]     @relation("LeadCreatedBy")
   assignedLeads Lead[]     @relation("LeadAssignedTo")
@@ -257,15 +267,15 @@ model WhatsAppConversation {
 // metaMessageId dedups against Meta's webhook retries and correlates later status callbacks
 // (SENT/DELIVERED/READ/FAILED) back to the outbound message that was sent.
 model WhatsAppMessage {
-  id             String                   @id @default(cuid())
-  direction      WhatsAppMessageDirection
-  messageType    WhatsAppMessageType      @default(TEXT)
-  body           String?
-  rawPayload     Json?
-  metaMessageId  String?                  @unique
-  sentByBot      Boolean                  @default(false)
-  status         String?
-  createdAt      DateTime                 @default(now())
+  id            String                   @id @default(cuid())
+  direction     WhatsAppMessageDirection
+  messageType   WhatsAppMessageType      @default(TEXT)
+  body          String?
+  rawPayload    Json?
+  metaMessageId String?                  @unique
+  sentByBot     Boolean                  @default(false)
+  status        String?
+  createdAt     DateTime                 @default(now())
 
   conversationId String
   conversation   WhatsAppConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
@@ -367,23 +377,23 @@ model ChatFlowSession {
 }
 
 model Client {
-  id         String   @id @default(cuid())
-  name       String
-  company    String?
-  email      String?
-  phone      String?
-  address    String?
-  gstNumber  String?
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  email     String?
+  phone     String?
+  address   String?
+  gstNumber String?
+  createdAt DateTime @default(now())
 
   createdById String?
   createdBy   User?   @relation("ClientCreatedBy", fields: [createdById], references: [id])
 
-  projects   Project[]
-  quotations Quotation[]
-  invoices   Invoice[]
-  users      User[]
-  tickets    Ticket[]
+  projects              Project[]
+  quotations            Quotation[]
+  invoices              Invoice[]
+  users                 User[]
+  tickets               Ticket[]
   whatsappConversations WhatsAppConversation[]
 
   @@map("clients")
@@ -409,13 +419,13 @@ model Project {
   createdById String?
   createdBy   User?   @relation("ProjectCreatedBy", fields: [createdById], references: [id])
 
-  payments   Payment[]
-  quotations Quotation[]
-  invoices   Invoice[]
-  milestones ProjectMilestone[]
-  timesheets Timesheet[]
+  payments      Payment[]
+  quotations    Quotation[]
+  invoices      Invoice[]
+  milestones    ProjectMilestone[]
+  timesheets    Timesheet[]
   expenseClaims ExpenseClaim[]
-  tickets    Ticket[]
+  tickets       Ticket[]
 
   @@map("projects")
 }
@@ -457,16 +467,16 @@ model Timesheet {
 }
 
 model ExpenseClaim {
-  id          String          @id @default(cuid())
-  category    ExpenseCategory @default(OTHER)
-  amount      Decimal         @db.Decimal(12, 2)
-  expenseDate DateTime        @default(now())
-  description String
-  status      ExpenseStatus   @default(PENDING)
-  approvedAt  DateTime?
+  id               String          @id @default(cuid())
+  category         ExpenseCategory @default(OTHER)
+  amount           Decimal         @db.Decimal(12, 2)
+  expenseDate      DateTime        @default(now())
+  description      String
+  status           ExpenseStatus   @default(PENDING)
+  approvedAt       DateTime?
   reimbursedAt     DateTime?
-  reimbursedAmount Decimal?   @db.Decimal(12, 2)
-  createdAt   DateTime        @default(now())
+  reimbursedAmount Decimal?        @db.Decimal(12, 2)
+  createdAt        DateTime        @default(now())
 
   userId String
   user   User   @relation("ExpenseClaimant", fields: [userId], references: [id])
@@ -483,13 +493,13 @@ model ExpenseClaim {
 // Recurring/one-off business overheads (GST, hosting, domains, salaries paid out) —
 // distinct from ExpenseClaim, which is employee reimbursement requests.
 model BusinessExpense {
-  id          String                   @id @default(cuid())
-  category    BusinessExpenseCategory  @default(OTHER)
-  amount      Decimal                  @db.Decimal(12, 2)
-  paidOn      DateTime                 @default(now())
+  id          String                  @id @default(cuid())
+  category    BusinessExpenseCategory @default(OTHER)
+  amount      Decimal                 @db.Decimal(12, 2)
+  paidOn      DateTime                @default(now())
   paidTo      String?
   description String?
-  createdAt   DateTime                 @default(now())
+  createdAt   DateTime                @default(now())
 
   createdById String?
   createdBy   User?   @relation("BusinessExpenseCreatedBy", fields: [createdById], references: [id])
@@ -618,8 +628,28 @@ model Ticket {
 
   messages    TicketMessage[]
   attachments TicketAttachment[]
+  activities  TicketActivity[]
 
   @@map("tickets")
+}
+
+// Audit trail shown on the ticket detail page's "Activity" tab, separate from the
+// client-facing TicketMessage comment thread — mirrors Jira's Comments/History split.
+model TicketActivity {
+  id        String             @id @default(cuid())
+  type      TicketActivityType
+  field     String? // e.g. "status", "priority", "assignedTo" — null for CREATED
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime           @default(now())
+
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+
+  actorId String
+  actor   User   @relation("TicketActivityActor", fields: [actorId], references: [id])
+
+  @@map("ticket_activities")
 }
 
 model TicketMessage {
@@ -661,10 +691,10 @@ model TicketAttachment {
 // Single-row table (id is always "singleton") holding admin-configurable settings
 // that would otherwise require an .env edit + redeploy to change.
 model Setting {
-  id                 String   @id @default("singleton")
+  id                 String  @id @default("singleton")
   smtpHost           String?
   smtpPort           Int?
-  smtpSecure         Boolean  @default(false)
+  smtpSecure         Boolean @default(false)
   smtpUser           String?
   smtpPass           String?
   emailFrom          String?
@@ -675,20 +705,20 @@ model Setting {
 
   // Business profile used as the "seller" on invoice/quotation PDFs — previously only
   // stored client-side in localStorage, so it didn't survive across machines/browsers.
-  businessName        String?
+  businessName          String?
   businessContactPerson String?
-  businessAddress     String?
-  businessPhone       String?
-  businessGst         String?
-  bankName            String?
-  bankAccountNumber   String?
-  bankIfsc            String?
-  upiId               String?
-  logoUrl             String?
+  businessAddress       String?
+  businessPhone         String?
+  businessGst           String?
+  bankName              String?
+  bankAccountNumber     String?
+  bankIfsc              String?
+  upiId                 String?
+  logoUrl               String?
 
   // WhatsApp Cloud API (Meta) — mirrors the SMTP block above. Outbound messages must use a
   // pre-approved Message Template (see WhatsAppTemplate), so there's no "body" to store here.
-  whatsappEnabled           Boolean  @default(false)
+  whatsappEnabled           Boolean @default(false)
   whatsappPhoneNumberId     String?
   whatsappAccessToken       String?
   whatsappBusinessAccountId String?
@@ -707,11 +737,11 @@ model Setting {
   // src/pages/MedoraOfflinePage.jsx. Signing runs in-process using server/license-private.pem,
   // no API URL/key needed. Empty prices/URL mean "not configured yet" — the public page shows
   // a fallback instead of ₹0.
-  licenseDownloadUrl   String?
+  licenseDownloadUrl     String?
   licenseInstallGuideUrl String?
-  licensePlan3MoPrice  Int?
-  licensePlan6MoPrice  Int?
-  licensePlan1YrPrice  Int?
+  licensePlan3MoPrice    Int?
+  licensePlan6MoPrice    Int?
+  licensePlan1YrPrice    Int?
 
   // Razorpay — razorpayKeySecret/razorpayWebhookSecret follow the same plaintext-but-hidden
   // convention as smtpPass above (never returned by GET /admin/settings).
@@ -719,7 +749,7 @@ model Setting {
   razorpayKeySecret     String?
   razorpayWebhookSecret String?
 
-  updatedAt          DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@map("settings")
 }
@@ -743,9 +773,9 @@ model Lead {
   assignedToId String?
   assignedTo   User?   @relation("LeadAssignedTo", fields: [assignedToId], references: [id])
 
-  calls LeadCall[]
+  calls                 LeadCall[]
   whatsappConversations WhatsAppConversation[]
-  licenseRequest LicenseRequest?
+  licenseRequest        LicenseRequest?
 
   @@map("leads")
 }
@@ -769,7 +799,7 @@ enum LicenseRequestStatus {
 // which sign in-process (server/licenseApi.js) — either triggered manually from the admin
 // Licenses page, or automatically from a verified Razorpay webhook once payment clears.
 model LicenseRequest {
-  id           String   @id @default(cuid())
+  id           String               @id @default(cuid())
   customerName String
   email        String
   whatsapp     String?
@@ -779,15 +809,15 @@ model LicenseRequest {
   status       LicenseRequestStatus @default(PENDING)
   licenseId    String?
   fileContents String? // the signed license token itself — kept so it can be re-downloaded or
-                        // re-emailed without calling the license API again and minting a new one
+  // re-emailed without calling the license API again and minting a new one
   issuedAt     DateTime?
   expiresAt    DateTime?
   emailSentAt  DateTime? // generation no longer auto-sends — set only when the email actually
-                          // goes out, so the UI can show whether the customer has been emailed
-                          // yet, not just whether the license was minted.
+  // goes out, so the UI can show whether the customer has been emailed
+  // yet, not just whether the license was minted.
   errorMessage String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
 
   // Payment tracking — deliberately separate from `status` above, which means "has the
   // license been minted," not "has it been paid for." A verified Razorpay webhook is the only
@@ -977,9 +1007,9 @@ model ForumAnswer {
   authorForumUser   ForumUser? @relation(fields: [authorForumUserId], references: [id])
 
   authorStaffUserId String?
-  authorStaffUser   User?     @relation(fields: [authorStaffUserId], references: [id])
+  authorStaffUser   User?   @relation(fields: [authorStaffUserId], references: [id])
 
-  acceptedFor ForumQuestion? @relation("AcceptedAnswer")
+  acceptedFor ForumQuestion?    @relation("AcceptedAnswer")
   attachments ForumAttachment[]
 
   @@index([questionId, createdAt])
@@ -1004,7 +1034,7 @@ model ForumAttachment {
   uploadedByForumUser   ForumUser? @relation("ForumAttachmentUploadedByForumUser", fields: [uploadedByForumUserId], references: [id])
 
   uploadedByStaffUserId String?
-  uploadedByStaffUser   User?     @relation(fields: [uploadedByStaffUserId], references: [id])
+  uploadedByStaffUser   User?   @relation(fields: [uploadedByStaffUserId], references: [id])
 
   @@map("forum_attachments")
 }

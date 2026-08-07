@@ -2,7 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import { prisma } from '../prismaClient.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
-import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails } from '../ticketUtils.js'
+import { nextTicketNumber, saveAttachments, attachmentDiskPath, parseCcEmails, logTicketActivity } from '../ticketUtils.js'
 import { sendMail } from '../mailer.js'
 import { getSettings } from '../settings.js'
 import { getTemplate, renderTemplate, htmlToText } from '../emailTemplates.js'
@@ -30,7 +30,10 @@ const upload = multer({
   limits: { fileSize: 15 * 1024 * 1024, files: 5 },
 })
 
+const STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
+// Mirrors tickets.js — statuses treated as "still open" by the openOnly/mine quick filters.
+const OPEN_STATUSES = ['OPEN', 'IN_PROGRESS']
 
 const ticketListInclude = {
   project: { select: { id: true, name: true } },
@@ -47,8 +50,20 @@ router.get('/projects', async (req, res) => {
 })
 
 router.get('/tickets', async (req, res) => {
+  const { status, projectId, mine, openOnly } = req.query
+  const where = { clientId: req.clientUser.clientId }
+  if (status && STATUSES.includes(status)) {
+    where.status = status
+  } else if (openOnly === '1' || openOnly === 'true') {
+    where.status = { in: OPEN_STATUSES }
+  }
+  if (projectId) where.projectId = projectId
+  // "My tickets" — this client account may have several logged-in contacts, so scope to
+  // tickets this particular contact raised rather than the whole company's tickets.
+  if (mine === '1' || mine === 'true') where.createdById = req.clientUser.id
+
   const tickets = await prisma.ticket.findMany({
-    where: { clientId: req.clientUser.clientId },
+    where,
     orderBy: { createdAt: 'desc' },
     include: ticketListInclude,
   })
@@ -67,6 +82,10 @@ router.get('/tickets/:id', async (req, res) => {
           author: { select: { id: true, name: true, role: true } },
           attachments: true,
         },
+      },
+      activities: {
+        orderBy: { createdAt: 'asc' },
+        include: { actor: { select: { id: true, name: true, role: true } } },
       },
     },
   })
@@ -114,6 +133,7 @@ router.post('/tickets', upload.array('attachments', 5), async (req, res) => {
     },
   })
   await saveAttachments({ files: req.files, ticketId: ticket.id, uploadedById: req.clientUser.id })
+  await logTicketActivity({ ticketId: ticket.id, actorId: req.clientUser.id, type: 'CREATED' })
 
   const settings = await getSettings()
   if (settings.ticketNotifyEmail) {

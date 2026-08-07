@@ -56,3 +56,11 @@ export async function saveAttachments({ files, ticketId, messageId, uploadedById
 export function attachmentDiskPath(filePath) {
   return path.join(UPLOAD_ROOT, filePath)
 }
+
+// Writes one or more rows to the ticket's audit trail (the detail page's "Activity" tab) —
+// kept separate from TicketMessage, which is the client-facing comment thread.
+export async function logTicketActivity(entries) {
+  const list = Array.isArray(entries) ? entries : [entries]
+  if (!list.length) return
+  await prisma.ticketActivity.createMany({ data: list })
+}

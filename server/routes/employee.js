@@ -9,11 +9,13 @@ const router = express.Router()
 router.use(requireAuth)
 router.use(requireRole(['ADMIN', 'STAFF']))
 
-// Lightweight project picker — no client or financial fields, available to any logged-in user.
+// Lightweight project picker — no financial fields, available to any logged-in user. clientId
+// is included (id only, not the full client) so callers can filter projects by client, e.g.
+// the ticket filters/create-ticket form narrowing the project list to the selected client.
 router.get('/projects', async (req, res) => {
   const projects = await prisma.project.findMany({
     orderBy: { name: 'asc' },
-    select: { id: true, name: true, status: true },
+    select: { id: true, name: true, status: true, clientId: true },
   })
   res.json({ success: true, projects })
 })
