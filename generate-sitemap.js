@@ -103,26 +103,28 @@ const toolPages = toolSlugs.map(slug => ({
   changefreq: 'monthly',
 }))
 
-// Product pages (from products.js data) — 'medora-plus' deliberately excluded, it's already
-// listed in staticPages above with a distinct priority; this was previously duplicated here.
+// Product pages (from products.js data) — 'medora-plus'/'medora-offline' deliberately excluded,
+// already listed in staticPages above with a distinct priority; this was previously duplicated
+// here. Slugs below must match the `route` field in src/data/products.js, not the `slug` field —
+// several of these have historically drifted out of sync (fixed 2026-08).
 const productSlugs = [
   'billing',
-  'sanko-erp',
-  'passtrack',
+  'hr-inventory',
+  'workforce-manager',
+  'decision-os',
   'mouna-ai',
-  'workforce',
-  'school-management',
-  'pos-system',
-  'inventory-management',
-  'billing-software',
-  'crm-software',
-  'hrms'
+  'school-os',
+  'crm',
+  'pharma-dist',
+  'passtrack',
+  'pos',
+  'voltage-iq',
 ]
 
 const productPages = productSlugs.map(slug => ({
   path: `/products/${slug}`,
   lastmod: today,
-  priority: '0.8',
+  priority: slug === 'hr-inventory' ? '0.9' : '0.8',
   changefreq: 'monthly'
 }))
 

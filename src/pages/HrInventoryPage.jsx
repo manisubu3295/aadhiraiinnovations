@@ -1,12 +1,20 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import {
   ArrowLeft, ArrowRight, CheckCircle2, ExternalLink,
   Download, MessageCircle, Users, Package,
   Clock, BarChart3, Shield, Zap,
 } from 'lucide-react'
 import Container from '../components/ui/Container'
+
+const DEMO_URL = 'https://hrm.aadhiraiinnovations.com'
+const DEMO_CREDENTIALS = [
+  { role: 'Admin',    email: 'admin@aadhirai.com',      password: 'Admin@123!' },
+  { role: 'Manager',  email: 'manager@aadhirai.com',    password: 'Manager@123!' },
+  { role: 'Employee', email: 'ali.hassan@aadhirai.com', password: 'Employee@123!' },
+]
 
 /* ─── Schema ─────────────────────────────────────────────────────────── */
 function usePageSchema() {
@@ -19,7 +27,7 @@ function usePageSchema() {
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'Windows, Web, Cloud',
       description:
-        'HR and inventory management system for growing businesses. Employee records, leave, attendance, payroll with stock tracking and purchase orders. One system for people and stock.',
+        'HR operations software for growing businesses. Employee records, leave, attendance, payroll with stock tracking and purchase orders. One system for people and stock.',
       screenshot: 'https://www.aadhiraiinnovations.com/media/dashboard.png',
       offers: {
         '@type': 'Offer',
@@ -103,6 +111,33 @@ export default function HrInventoryPage() {
 
   return (
     <>
+      <Helmet>
+        <title>HR Operations Software | HR & Inventory by Aadhirai</title>
+        <meta
+          name="description"
+          content="HR operations software for growing businesses — employee records, leave, attendance, payroll, and inventory in one system. Try the live demo free."
+        />
+        <meta
+          name="keywords"
+          content="HR operations software, HR operations, HR management system, HR and inventory software, workforce management, payroll software, leave management software"
+        />
+        <link rel="canonical" href="https://www.aadhiraiinnovations.com/products/hr-inventory" />
+        <meta property="og:title" content="HR Operations Software | HR & Inventory by Aadhirai" />
+        <meta
+          property="og:description"
+          content="HR operations software for growing businesses — employee records, leave, attendance, payroll, and inventory in one system."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.aadhiraiinnovations.com/products/hr-inventory" />
+        <meta property="og:site_name" content="Aadhirai Innovations" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="HR Operations Software | HR & Inventory by Aadhirai" />
+        <meta
+          name="twitter:description"
+          content="HR operations software for growing businesses — employee records, leave, attendance, payroll, and inventory in one system."
+        />
+      </Helmet>
+
       {/* ── Product hero ──────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#060e1c] py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 grid-texture pointer-events-none" />
@@ -129,26 +164,26 @@ export default function HrInventoryPage() {
               <div className="flex items-center gap-3 mb-7">
                 <div className="h-px w-10 bg-white/18" />
                 <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38">
-                  HR & Operations
+                  HR Operations Software
                 </span>
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl leading-[1.08]">
-                HR & Inventory
+                HR & Inventory — complete HR operations software
               </h1>
               <p className="mt-2 text-sm uppercase tracking-widest text-white/30">
                 People Management + Stock Control
               </p>
 
               <p className="mt-6 text-base text-white/50 leading-relaxed max-w-lg">
-                HR & Inventory combines employee management (leave, attendance, payroll) with stock tracking
-                and purchase orders. One system for your people and your stock — no disconnected tools, no manual
-                reconciliation.
+                HR & Inventory is HR operations software built for growing businesses — combining employee
+                management (leave, attendance, payroll) with stock tracking and purchase orders. One system for
+                your people and your stock — no disconnected tools, no manual reconciliation.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href="https://demo.aadhiraiinnovations.com"
+                  href={DEMO_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-sm bg-white px-6 py-3.5 text-sm font-semibold text-[#060e1c] tracking-wide transition-colors hover:bg-white/92"
@@ -165,6 +200,19 @@ export default function HrInventoryPage() {
                   <MessageCircle className="h-4 w-4" />
                   Talk to us
                 </a>
+              </div>
+
+              <div className="mt-6 inline-flex flex-col gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-4">
+                <div className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/32">
+                  Demo login
+                </div>
+                {DEMO_CREDENTIALS.map((cred) => (
+                  <div key={cred.role} className="flex items-center gap-3 text-[12.5px]">
+                    <span className="w-16 shrink-0 text-white/45">{cred.role}</span>
+                    <span className="font-mono text-white/78">{cred.email}</span>
+                    <span className="font-mono text-white/45">/ {cred.password}</span>
+                  </div>
+                ))}
               </div>
 
               <div className="mt-8 flex flex-wrap gap-2">
@@ -315,6 +363,10 @@ export default function HrInventoryPage() {
           >
             {[
               {
+                q: 'What is HR operations software?',
+                a: 'HR operations software centralizes the day-to-day work of running HR — employee records, leave and attendance, payroll data, and compliance — into one system instead of spreadsheets and disconnected tools. HR & Inventory extends this with stock and purchase order management for businesses that need both people and inventory under control.',
+              },
+              {
                 q: 'Can HR & Inventory manage multiple locations?',
                 a: 'Yes. HR & Inventory supports unlimited locations with centralized reporting. Each location maintains its own HR and inventory data while providing unified visibility across the organization.',
               },
@@ -377,7 +429,7 @@ export default function HrInventoryPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="https://demo.aadhiraiinnovations.com"
+                href={DEMO_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 text-sm font-semibold text-[#0B1F3A] tracking-wide transition-colors hover:bg-white/92"
@@ -394,6 +446,18 @@ export default function HrInventoryPage() {
                 <MessageCircle className="h-4 w-4" />
                 Request Demo
               </a>
+            </div>
+            <div className="mt-6 inline-flex flex-col gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-4">
+              <div className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/32">
+                Demo login
+              </div>
+              {DEMO_CREDENTIALS.map((cred) => (
+                <div key={cred.role} className="flex items-center gap-3 text-[12.5px]">
+                  <span className="w-16 shrink-0 text-white/45">{cred.role}</span>
+                  <span className="font-mono text-white/78">{cred.email}</span>
+                  <span className="font-mono text-white/45">/ {cred.password}</span>
+                </div>
+              ))}
             </div>
             <p className="mt-6 text-xs text-white/30">
               info@aadhiraiinnovations.com · +91 8508716957 · Peravurani & Chennai, Tamil Nadu

@@ -427,13 +427,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/sanko-erp</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/hr-inventory</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.aadhiraiinnovations.com/products/workforce-manager</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/passtrack</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/decision-os</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -445,43 +451,37 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/workforce</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/school-os</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/school-management</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/crm</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/pos-system</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/pharma-dist</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/inventory-management</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/passtrack</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/billing-software</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/pos</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aadhiraiinnovations.com/products/crm-software</loc>
-    <lastmod>2026-08-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.aadhiraiinnovations.com/products/hrms</loc>
+    <loc>https://www.aadhiraiinnovations.com/products/voltage-iq</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
