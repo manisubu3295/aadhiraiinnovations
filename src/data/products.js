@@ -76,6 +76,13 @@ const products = [
     icon:        Building2,
     color:       '#0B1F3A',
     route:       '/products/hr-inventory',
+    ctaUrl:      'https://hrm.aadhiraiinnovations.com',
+    ctaLabel:    'View live demo',
+    demoCredentials: [
+      { role: 'Admin',    email: 'admin@aadhirai.com',      password: 'Admin@123!' },
+      { role: 'Manager',  email: 'manager@aadhirai.com',    password: 'Manager@123!' },
+      { role: 'Employee', email: 'ali.hassan@aadhirai.com', password: 'Employee@123!' },
+    ],
     tagline:     'HR management and inventory control built for growing businesses.',
     description: 'HR & Inventory is a combined management system for businesses that need both people and stock under control. It handles employee records, leave, attendance, and payroll alongside purchase orders, stock tracking, and vendor management — removing the need for separate disconnected tools.',
     features: [

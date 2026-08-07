@@ -157,6 +157,24 @@ function ProductPage() {
                 {product.ctaLabel || 'View demo'}
               </a>
             </motion.div>
+
+            {product.demoCredentials && (
+              <motion.div
+                variants={fadeUp}
+                className="mt-6 inline-flex flex-col gap-2 rounded-xl border border-white/[0.1] bg-white/[0.04] px-5 py-4"
+              >
+                <div className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/32">
+                  Demo login
+                </div>
+                {product.demoCredentials.map((cred) => (
+                  <div key={cred.role} className="flex items-center gap-3 text-[12.5px]">
+                    <span className="w-16 shrink-0 text-white/45">{cred.role}</span>
+                    <span className="font-mono text-white/78">{cred.email}</span>
+                    <span className="font-mono text-white/45">/ {cred.password}</span>
+                  </div>
+                ))}
+              </motion.div>
+            )}
           </motion.div>
         </Container>
       </section>
@@ -362,6 +380,21 @@ function ProductPage() {
                 </div>
                 <ArrowRight className="h-4 w-4 text-white/22 group-hover:text-white/55 group-hover:translate-x-0.5 transition-all" strokeWidth={1.75} />
               </a>
+
+              {product.demoCredentials && (
+                <div className="flex flex-col gap-2 rounded-xl border border-white/[0.1] bg-white/[0.04] px-5 py-4">
+                  <div className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/32">
+                    Demo login
+                  </div>
+                  {product.demoCredentials.map((cred) => (
+                    <div key={cred.role} className="flex items-center gap-3 text-[12.5px]">
+                      <span className="w-16 shrink-0 text-white/45">{cred.role}</span>
+                      <span className="font-mono text-white/78">{cred.email}</span>
+                      <span className="font-mono text-white/45">/ {cred.password}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <a
                 href={product.ctaUrl || 'https://demo.aadhiraiinnovations.com'}
