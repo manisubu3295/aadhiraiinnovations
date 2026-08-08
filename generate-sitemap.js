@@ -9,6 +9,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { states } from './src/data/locationSlugs.js'
 import { states as hrmStates } from './src/data/hrmLocationSlugs.js'
+import { states as transportStates } from './src/data/transportLocationSlugs.js'
 import blogPosts from './src/data/blogPosts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -113,6 +114,7 @@ const toolPages = toolSlugs.map(slug => ({
 const productSlugs = [
   'billing',
   'hr-inventory',
+  'transport-logistics',
   'decision-os',
   'mouna-ai',
   'school-os',
@@ -123,10 +125,12 @@ const productSlugs = [
   'voltage-iq',
 ]
 
+const FLAGSHIP_PRODUCT_SLUGS = new Set(['hr-inventory', 'transport-logistics'])
+
 const productPages = productSlugs.map(slug => ({
   path: `/products/${slug}`,
   lastmod: today,
-  priority: slug === 'hr-inventory' ? '0.9' : '0.8',
+  priority: FLAGSHIP_PRODUCT_SLUGS.has(slug) ? '0.9' : '0.8',
   changefreq: 'monthly'
 }))
 
@@ -186,11 +190,35 @@ const hrmDistrictPages = hrmStates.flatMap(({ districts }) =>
   }))
 )
 
+// National transport-software local SEO — hub -> state -> district, same mechanics as the
+// hrm-software tree above but a fully independent slug source (src/data/transportLocationSlugs.js),
+// since its curated cities/aliases don't necessarily match hrm-software's.
+const transportLocationHubPage = [
+  { path: '/transport-software', lastmod: today, priority: '0.9', changefreq: 'monthly' },
+]
+
+const transportStatePages = transportStates.map(({ stateSlug }) => ({
+  path: `/transport-software/state/${stateSlug}`,
+  lastmod: today,
+  priority: '0.8',
+  changefreq: 'monthly',
+}))
+
+const transportDistrictPages = transportStates.flatMap(({ districts }) =>
+  districts.map(({ slug }) => ({
+    path: `/transport-software/${slug}`,
+    lastmod: today,
+    priority: '0.6',
+    changefreq: 'monthly',
+  }))
+)
+
 // Combine all pages
 const allPages = [
   ...staticPages, ...toolPages, ...productPages, ...blogPages,
   ...locationHubPage, ...statePages, ...districtPages,
   ...hrmLocationHubPage, ...hrmStatePages, ...hrmDistrictPages,
+  ...transportLocationHubPage, ...transportStatePages, ...transportDistrictPages,
 ]
 
 // Generate XML
@@ -235,3 +263,6 @@ console.log(`   - District pages: ${districtPages.length}`)
 console.log(`   - HRM location hub: ${hrmLocationHubPage.length}`)
 console.log(`   - HRM state pages: ${hrmStatePages.length}`)
 console.log(`   - HRM district pages: ${hrmDistrictPages.length}`)
+console.log(`   - Transport location hub: ${transportLocationHubPage.length}`)
+console.log(`   - Transport state pages: ${transportStatePages.length}`)
+console.log(`   - Transport district pages: ${transportDistrictPages.length}`)

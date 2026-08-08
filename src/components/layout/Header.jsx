@@ -17,6 +17,7 @@ const NAV = [
           { label: 'Medora Offline', desc: 'Fully offline pharmacy software — one-time license, no internet needed', href: '/products/medora-offline' },
           { label: 'Aadhirai Billing', desc: 'Multi-tenant billing & inventory — free signup, isolated database per business', href: '/products/billing' },
           { label: 'HR & Inventory', desc: 'HRM software with payroll, attendance & inventory — built for growing Indian businesses', href: '/products/hr-inventory' },
+          { label: 'Transport & Logistics', desc: 'Quotation-to-invoice, live GPS driver tracking, and fleet management', href: '/products/transport-logistics' },
         ],
       },
     ],

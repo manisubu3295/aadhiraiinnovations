@@ -1318,6 +1318,202 @@ Leave and attendance management done well is invisible — employees know their 
       { title: 'Payroll Software India', url: '/blog/payroll-software-india' },
     ],
   },
+  'transport-invoicing-software': {
+    slug: 'transport-invoicing-software',
+    title: 'Transport Company Invoicing: Why Manual Billing Breaks as You Scale',
+    excerpt: 'Word templates and spreadsheets work for a handful of trucks. Here\'s exactly where manual transport invoicing starts costing you money — and what replaces it.',
+    date: 'August 8, 2026',
+    readTime: '7 min read',
+    category: 'Transport & Logistics',
+    content: `
+# Transport Company Invoicing: Why Manual Billing Breaks as You Scale
+
+Most transport companies start with a Word or Excel invoice template. It works fine for a handful of trucks and a handful of regular clients — until it doesn't.
+
+This guide covers exactly where manual transport invoicing starts to break down, and what a proper transport billing system actually changes.
+
+## How Most Transport Companies Bill Today
+
+The typical setup:
+
+- **A Word or PDF template** — copied and edited for each new invoice, with line items typed in manually
+- **A separate quotation document** — usually a different file that has to be manually re-typed into the invoice once a client approves
+- **An Excel sheet or notebook** — tracking which invoices are paid, overdue, or disputed
+- **Manual numbering** — invoice numbers kept in someone's head or a running note, prone to duplicates or skipped numbers
+
+This works when you're issuing a handful of invoices a week. It stops working well before you'd expect.
+
+## Where It Breaks
+
+1. **Quotation-to-invoice re-entry** — Every approved quotation gets manually re-typed as an invoice, which is slow and introduces transcription errors on rates, quantities, and client details
+2. **Inconsistent numbering** — Without auto-numbering, duplicate or skipped invoice numbers become a real problem once more than one person is billing
+3. **No live status** — Nobody has a real-time answer to "which invoices are still unpaid" without opening the spreadsheet and manually checking
+4. **Rate inconsistency** — Different staff quote different rates for the same job type because there's no shared, reusable rate structure
+5. **No audit trail** — When a client disputes a charge, there's no clean statement of account to point to — just a folder of PDFs to search through
+
+None of these are visible problems with 5 invoices a month. They're daily friction at 50, and a real liability at 200+.
+
+## What Changes With Proper Transport Billing Software
+
+A system built for transport and logistics billing fixes each of these directly:
+
+- **Quotation → Invoice in one step** — no re-typing, no transcription errors
+- **Auto-numbered invoices** with a company-set prefix and start number — no duplicates, no manual tracking
+- **A reusable item catalog and configurable rate units** — every quote and invoice pulls from the same rate structure, so pricing stays consistent across staff and clients
+- **A revenue dashboard** — aging, revenue, and client summaries visible at any time, not just when someone updates a spreadsheet
+- **A statement of account** — date-ranged, status-filtered, ready to send when a client asks for a reconciliation
+
+## Configurable Billing for How Transport Actually Charges
+
+Transport billing isn't one-size-fits-all. Different jobs get billed per kilometre, per trip, or on a fixed monthly rate for a standing contract. A proper system needs rate units that reflect that — including a true calendar-month billing option for contract freight, not just a day-count approximation.
+
+## How Aadhirai Transport & Logistics Handles This
+
+[Aadhirai Transport & Logistics](https://www.aadhiraiinnovations.com/products/transport-logistics) replaces the Word template and spreadsheet entirely — quotations convert straight into invoices, invoice and quotation numbering is auto-generated with a company-set prefix, and a reusable item catalog with configurable rate units (including calendar-month billing) keeps every invoice consistent. Branded PDF invoices are generated and emailed directly to clients, and a statement of account is available for any date range.
+
+## Local Resources
+
+Transport billing software details are also available by city:
+- [Transport software in Chennai](https://www.aadhiraiinnovations.com/transport-software/chennai)
+- [Transport software in Mumbai](https://www.aadhiraiinnovations.com/transport-software/mumbai)
+- [Transport software in Delhi NCR](https://www.aadhiraiinnovations.com/transport-software/delhi)
+
+## Summary
+
+Manual transport invoicing works right up until it doesn't — usually somewhere between 20 and 50 invoices a month, when re-typing quotations, chasing numbering, and manually tracking unpaid invoices starts costing more time than it saves. A system built around quotation-to-invoice conversion, auto-numbering, and configurable rate units removes all of it at once.
+    `,
+    relatedLinks: [
+      { title: 'Aadhirai Transport & Logistics', url: '/products/transport-logistics' },
+      { title: 'Transport Software in Chennai', url: '/transport-software/chennai' },
+      { title: 'Live GPS Tracking for Delivery Fleets', url: '/blog/gps-tracking-delivery-fleets' },
+    ],
+  },
+  'gps-tracking-delivery-fleets': {
+    slug: 'gps-tracking-delivery-fleets',
+    title: 'Live GPS Tracking for Delivery Fleets: What It Actually Solves',
+    excerpt: 'Live driver tracking isn\'t about surveillance — it\'s about answering "where is my delivery" without a phone call. Here\'s what it changes in practice.',
+    date: 'August 8, 2026',
+    readTime: '6 min read',
+    category: 'Transport & Logistics',
+    content: `
+# Live GPS Tracking for Delivery Fleets: What It Actually Solves
+
+Ask any dispatcher at a transport company how they know where a driver is right now, and the honest answer is usually: "I called them." That's the default at most fleets — and it's the single biggest source of wasted time and client friction in day-to-day operations.
+
+## The Problem With Phone-Call Tracking
+
+- **It doesn't scale** — checking on 5 drivers by phone is manageable; checking on 30 is a full-time job
+- **Drivers can't always answer** — mid-drive, at a loading dock, or out of signal, which means the dispatcher waits
+- **Clients ask, and you don't have an answer** — "where's my delivery" becomes "let me call the driver and get back to you," every time
+- **No historical record** — once the call ends, there's no record of where the driver actually was at that time, which matters when a delivery is disputed
+
+## What a Live GPS Tracking Map Actually Shows
+
+A proper live tracking system, built into the transport software itself rather than a separate app, gives dispatchers a single map view with:
+
+- **Every active driver's current position**, refreshed automatically as location pings in
+- **Pickup and delivery pins** for each job, so it's clear at a glance whether a driver is en route to pickup or already on the way to delivery
+- **A live/last-known distinction** — knowing whether a position is a real-time ping or the last position received before contact was lost
+
+This isn't about micromanaging drivers minute to minute. It's about removing the phone call from the loop entirely — a dispatcher (or a client-facing team member) can answer "where is it" by looking at a screen instead of making a call and waiting.
+
+## Where This Actually Pays Off
+
+1. **Client-facing status updates** — answer delivery status questions immediately instead of "let me check and call you back"
+2. **Faster dispatch decisions** — see which driver is genuinely closest to a new job instead of guessing or calling around
+3. **Fewer disputes** — a driver's tracked position at pickup and delivery time settles most "the driver was late" conversations
+4. **Less driver interruption** — drivers aren't getting called every 20 minutes for a status check while they're driving
+
+## How Aadhirai Transport & Logistics Handles This
+
+[Aadhirai Transport & Logistics](https://www.aadhiraiinnovations.com/products/transport-logistics) includes a live GPS tracking map as part of the core system, not a bolt-on — pickup and delivery pins for every active job, positions refreshed automatically, tied directly to the same delivery job records used for invoicing and driver assignment. It sits alongside delivery job tracking, driver and fleet management, and expense management in one dashboard.
+
+## Local Resources
+
+Live GPS fleet tracking details are also available by city:
+- [Transport software in Bengaluru](https://www.aadhiraiinnovations.com/transport-software/bengaluru)
+- [Transport software in Hyderabad](https://www.aadhiraiinnovations.com/transport-software/hyderabad)
+- [Transport software in Kolkata](https://www.aadhiraiinnovations.com/transport-software/kolkata)
+
+## Summary
+
+Live GPS tracking's real value isn't the map — it's every phone call it removes from a dispatcher's day and every "where is my delivery" question a client can answer themselves. For fleets running more than a handful of jobs a day, that adds up fast.
+    `,
+    relatedLinks: [
+      { title: 'Aadhirai Transport & Logistics', url: '/products/transport-logistics' },
+      { title: 'Transport Software in Bengaluru', url: '/transport-software/bengaluru' },
+      { title: 'Transport Company Invoicing Guide', url: '/blog/transport-invoicing-software' },
+    ],
+  },
+  'transport-software-buying-guide': {
+    slug: 'transport-software-buying-guide',
+    title: 'Choosing Transport & Logistics Software: What to Actually Compare',
+    excerpt: 'Beyond the feature checklist — what actually separates transport software that gets adopted from software that gets abandoned after a month.',
+    date: 'August 8, 2026',
+    readTime: '7 min read',
+    category: 'Transport & Logistics',
+    content: `
+# Choosing Transport & Logistics Software: What to Actually Compare
+
+Most transport software comparisons focus on feature checklists — invoicing, yes; fleet tracking, yes; reports, yes. Nearly every product on the market checks those boxes. The differences that actually matter show up after go-live, not during the demo.
+
+## What Actually Separates These Systems
+
+### 1. Does Billing Match How You Actually Charge?
+
+Transport billing isn't uniform — some jobs are per-KM, some per-trip, some are fixed monthly contracts. If a system only supports one rate structure, you'll end up working around it with manual adjustments on every invoice that doesn't fit. Look for configurable rate units, including a genuine calendar-month billing option rather than a day-count approximation that produces odd totals.
+
+### 2. Does Quotation-to-Invoice Actually Save Re-Entry?
+
+Many systems technically have both a quotation module and an invoice module — but converting one to the other still means re-entering line items. That defeats the purpose. Confirm the conversion is genuinely one step.
+
+### 3. Is Driver Tracking Built In, or a Separate App?
+
+Fleet tracking that lives in a different app than your invoicing and dispatch system means switching between two logins and two sources of truth. Live GPS tracking tied directly to the same delivery job records used for billing is a meaningfully different experience than a standalone tracking app bolted on top.
+
+### 4. Can Drivers Actually Use It?
+
+A driver-facing portal that's too complex won't get used, and you'll be back to phone calls for status updates. Job status updates and expense submission should be simple enough that drivers actually do it from the road.
+
+### 5. What Happens When a Client Disputes an Invoice?
+
+This is the test most demos never show you. Can you pull a date-ranged, status-filtered statement of account for that client in under a minute? If reconciliation means manually searching through PDFs, the system hasn't actually solved the problem it was bought to solve.
+
+### 6. How Long Does Implementation Actually Take?
+
+Ask for a real number, not "it depends." A system built for transport operations — not adapted from a generic invoicing tool — should have a defined setup path: numbering configuration, item catalog setup, driver onboarding. 2–3 weeks is a reasonable benchmark; longer usually means the system is being customized more than configured.
+
+## A Practical Checklist
+
+- [ ] Configurable rate units, including true calendar-month billing
+- [ ] One-step quotation-to-invoice conversion
+- [ ] Live GPS tracking built into the same system as billing and dispatch
+- [ ] A driver portal simple enough drivers actually use
+- [ ] Date-ranged statement of account for reconciliation
+- [ ] A defined, reasonable implementation timeline
+- [ ] Role-based access so drivers and admins see only what they need
+
+## How Aadhirai Transport & Logistics Fits This
+
+[Aadhirai Transport & Logistics](https://www.aadhiraiinnovations.com/products/transport-logistics) was built directly around these gaps: one-step quotation-to-invoice conversion, configurable rate units with true calendar-month billing, a live GPS tracking map built into the same dashboard as delivery jobs and invoicing, a driver portal for status updates and expense submission, and a date-ranged statement of account for every client.
+
+## Local Resources
+
+Transport software comparisons and details are also available by city:
+- [Transport software in Pune](https://www.aadhiraiinnovations.com/transport-software/pune)
+- [Transport software in Coimbatore](https://www.aadhiraiinnovations.com/transport-software/coimbatore)
+- [All states & districts](https://www.aadhiraiinnovations.com/transport-software)
+
+## Summary
+
+The feature checklist gets you a shortlist. What actually determines whether a transport software purchase gets adopted or abandoned is whether billing matches your real rate structures, whether quotation-to-invoice is genuinely one step, and whether you can answer a billing dispute in under a minute. Test those three before you sign.
+    `,
+    relatedLinks: [
+      { title: 'Aadhirai Transport & Logistics', url: '/products/transport-logistics' },
+      { title: 'Transport Company Invoicing Guide', url: '/blog/transport-invoicing-software' },
+      { title: 'Live GPS Tracking for Delivery Fleets', url: '/blog/gps-tracking-delivery-fleets' },
+    ],
+  },
 }
 
 export default blogPosts

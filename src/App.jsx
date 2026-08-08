@@ -24,6 +24,7 @@ const HrInventoryPage      = lazy(() => import('./pages/HrInventoryPage'))
 const WorkforceManagerPage = lazy(() => import('./pages/WorkforceManagerPage'))
 const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
 const BillingPage          = lazy(() => import('./pages/BillingPage'))
+const TransportLogisticsPage = lazy(() => import('./pages/TransportLogisticsPage'))
 const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
 const BlogIndexPage        = lazy(() => import('./pages/BlogIndexPage'))
 const CaseStudiesPage      = lazy(() => import('./pages/CaseStudiesPage'))
@@ -37,6 +38,9 @@ const StateSEOPage         = lazy(() => import('./pages/StateSEOPage'))
 const HrmLocalSEOPage      = lazy(() => import('./pages/HrmLocalSEOPage'))
 const HrmLocationsHubPage  = lazy(() => import('./pages/HrmLocationsHubPage'))
 const HrmStateSEOPage      = lazy(() => import('./pages/HrmStateSEOPage'))
+const TransportLocalSEOPage     = lazy(() => import('./pages/TransportLocalSEOPage'))
+const TransportLocationsHubPage = lazy(() => import('./pages/TransportLocationsHubPage'))
+const TransportStateSEOPage     = lazy(() => import('./pages/TransportStateSEOPage'))
 const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
 const AmountToWordsPage    = lazy(() => import('./pages/AmountToWordsPage'))
 const EmiCalculatorPage    = lazy(() => import('./pages/EmiCalculatorPage'))
@@ -177,6 +181,10 @@ function App() {
           path="/products/billing"
           element={<Suspense fallback={<PageLoader />}><BillingPage /></Suspense>}
         />
+        <Route
+          path="/products/transport-logistics"
+          element={<Suspense fallback={<PageLoader />}><TransportLogisticsPage /></Suspense>}
+        />
 
         {/* Generic product pages — driven by products.js data */}
         {/* NOTE: this must come AFTER dedicated routes so that specific routes win */}
@@ -244,6 +252,23 @@ function App() {
         <Route
           path="/hrm-software/:city"
           element={<Suspense fallback={<PageLoader />}><HrmLocalSEOPage /></Suspense>}
+        />
+
+        {/* National transport-software local SEO — hub -> state -> district, same mechanics as the
+            hrm-software tree above but a fully independent slug source (src/data/transportLocationSlugs.js),
+            since its curated cities/aliases don't necessarily match hrm-software's. */}
+        <Route
+          path="/transport-software"
+          element={<Suspense fallback={<PageLoader />}><TransportLocationsHubPage /></Suspense>}
+        />
+        <Route
+          path="/transport-software/state/:stateSlug"
+          element={<Suspense fallback={<PageLoader />}><TransportStateSEOPage /></Suspense>}
+        />
+        {/* e.g. /transport-software/chennai, /transport-software/mumbai */}
+        <Route
+          path="/transport-software/:city"
+          element={<Suspense fallback={<PageLoader />}><TransportLocalSEOPage /></Suspense>}
         />
 
         {/* Free Tools */}

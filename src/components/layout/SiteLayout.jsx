@@ -1,12 +1,21 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import Header from './Header'
 import Footer from './Footer'
 import WhatsAppWidget from '../ui/WhatsAppWidget'
 
 /* ─── Per-route SEO config ────────────────────────────────────────────
-   All title/description/og values are set here in one place.
-   SiteLayout watches pathname and applies the matching config on mount.
+   All title/description/og values are set here in one place. Rendered as a
+   <Helmet> below (not a direct document.title/DOM mutation) so that dynamic
+   pages rendering their own nested <Helmet> (LocalSEOPage, HrmLocalSEOPage,
+   TransportLocalSEOPage, etc.) always win via react-helmet-async's normal
+   "innermost/last-mounted wins" merge, instead of racing a separate DOM-
+   mutation effect that could fire after Helmet's own commit and clobber it
+   back to this fallback — which is exactly what happened on client-side
+   redirects (e.g. an aliased city slug navigating to its canonical page)
+   before this fix, and would have started happening on the new
+   /transport-software tree's own alias redirects too.
 ──────────────────────────────────────────────────────────────────────── */
 const SEO = {
   '/': {
@@ -115,12 +124,12 @@ const SEO = {
     canonical: 'https://www.aadhiraiinnovations.com/products/hr-inventory',
   },
   '/products/transport-logistics': {
-    title: 'Transport & Logistics Software — Quotation, Invoicing, Fleet | Aadhirai Innovations',
+    title: 'Transport & Logistics Software India — Quotation, Invoicing, Fleet Tracking | Aadhirai Innovations',
     description:
-      'Aadhirai Transport & Logistics: quotation-to-invoice conversion, delivery job tracking, driver and fleet management, and revenue reporting for transport and logistics companies. Free live demo available.',
-    ogTitle: 'Transport & Logistics Software | Aadhirai Innovations',
+      'Transport and logistics software for Indian fleet operators — quotation-to-invoice conversion, live GPS driver tracking, delivery job tracking, fleet management, and revenue reporting in one system. Free live demo available.',
+    ogTitle: 'Transport & Logistics Software India | Aadhirai Innovations',
     ogDescription:
-      'Quotation-to-invoice, delivery job tracking, fleet and driver management, and revenue reporting — built for transport and logistics companies.',
+      'Quotation-to-invoice conversion, live GPS driver tracking, delivery job tracking, fleet management, and revenue reporting — built for transport and logistics companies.',
     canonical: 'https://www.aadhiraiinnovations.com/products/transport-logistics',
   },
   '/founder': {
@@ -540,33 +549,6 @@ const SEO = {
 
 const DEFAULT_SEO = SEO['/']
 
-function applySEO(config) {
-  const { title, description, ogTitle, ogDescription, canonical } = config
-
-  document.title = title
-
-  const setMeta = (sel, content) => {
-    document.querySelector(sel)?.setAttribute('content', content)
-  }
-  const setLink = (rel, href) => {
-    let el = document.querySelector(`link[rel="${rel}"]`)
-    if (!el) {
-      el = document.createElement('link')
-      el.rel = rel
-      document.head.appendChild(el)
-    }
-    el.href = href
-  }
-
-  setMeta('meta[name="description"]', description)
-  setMeta('meta[property="og:title"]', ogTitle)
-  setMeta('meta[property="og:description"]', ogDescription)
-  setMeta('meta[property="og:url"]', canonical)
-  setMeta('meta[name="twitter:title"]', ogTitle)
-  setMeta('meta[name="twitter:description"]', ogDescription)
-  setLink('canonical', canonical)
-}
-
 function SiteLayout() {
   const { pathname, hash } = useLocation()
 
@@ -582,14 +564,27 @@ function SiteLayout() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [pathname, hash])
 
-  /* Apply per-route SEO meta */
-  useEffect(() => {
-    const config = SEO[pathname] ?? DEFAULT_SEO
-    applySEO(config)
-  }, [pathname])
+  /* Fallback SEO for this route, rendered as a <Helmet> further up this component's
+     JSX below — any page rendered via <Outlet /> that mounts its own <Helmet> (all the
+     dynamic/local-SEO pages do) is nested deeper and always wins per-tag, no DOM-mutation
+     race involved. Routes with a specific SEO[pathname] entry get it exactly; anything
+     else (including every dynamic city/state/district page) falls back to the homepage's
+     tags here until/unless its own page-level Helmet overrides them. */
+  const seoConfig = SEO[pathname] ?? DEFAULT_SEO
 
   return (
     <div className="min-h-screen bg-white text-[#0B1F3A]">
+      <Helmet>
+        <title>{seoConfig.title}</title>
+        <meta name="description" content={seoConfig.description} />
+        <meta property="og:title" content={seoConfig.ogTitle} />
+        <meta property="og:description" content={seoConfig.ogDescription} />
+        <meta property="og:url" content={seoConfig.canonical} />
+        <meta name="twitter:title" content={seoConfig.ogTitle} />
+        <meta name="twitter:description" content={seoConfig.ogDescription} />
+        <link rel="canonical" href={seoConfig.canonical} />
+      </Helmet>
+
       <Header />
       <main>
         <Outlet />

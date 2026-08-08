@@ -73,6 +73,13 @@ const customSoftware = [
     desc: 'Fast, reliable point-of-sale billing for retail counters — barcode checkout, receipts, and daily sales tracking.',
     href: '/products/pos-system',
   },
+  {
+    num: '05',
+    title: 'Transport & Logistics',
+    tag: 'Fleet & billing',
+    desc: 'Quotation-to-invoice conversion, live GPS driver tracking, delivery job tracking, and fleet management for transport companies.',
+    href: '/products/transport-logistics',
+  },
 ]
 
 /* Tier 3 — Software company / backend engineering (tertiary) */
