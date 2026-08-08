@@ -114,6 +114,15 @@ const SEO = {
       'Complete HRM software: employee records, leave and attendance, payroll data, shift scheduling, and inventory control. Built for growing Indian businesses.',
     canonical: 'https://www.aadhiraiinnovations.com/products/hr-inventory',
   },
+  '/products/transport-logistics': {
+    title: 'Transport & Logistics Software — Quotation, Invoicing, Fleet | Aadhirai Innovations',
+    description:
+      'Aadhirai Transport & Logistics: quotation-to-invoice conversion, delivery job tracking, driver and fleet management, and revenue reporting for transport and logistics companies. Free live demo available.',
+    ogTitle: 'Transport & Logistics Software | Aadhirai Innovations',
+    ogDescription:
+      'Quotation-to-invoice, delivery job tracking, fleet and driver management, and revenue reporting — built for transport and logistics companies.',
+    canonical: 'https://www.aadhiraiinnovations.com/products/transport-logistics',
+  },
   '/founder': {
     title: 'Founder | Aadhirai Innovations — Enterprise Software Company, Tamil Nadu',
     description:
