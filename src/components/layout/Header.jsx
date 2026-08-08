@@ -16,7 +16,7 @@ const NAV = [
           { label: 'Medora+', desc: 'AI-powered pharmacy management, cloud-synced', href: '/products/medora-plus' },
           { label: 'Medora Offline', desc: 'Fully offline pharmacy software — one-time license, no internet needed', href: '/products/medora-offline' },
           { label: 'Aadhirai Billing', desc: 'Multi-tenant billing & inventory — free signup, isolated database per business', href: '/products/billing' },
-          { label: 'HR & Inventory', desc: 'HR operations software — employee records, leave, payroll, and stock control in one system', href: '/products/hr-inventory' },
+          { label: 'HR & Inventory', desc: 'HRM software with payroll, attendance & inventory — built for growing Indian businesses', href: '/products/hr-inventory' },
         ],
       },
     ],

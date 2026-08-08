@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import {
   ArrowLeft, ArrowRight, CheckCircle2, ExternalLink,
   MessageCircle, Users, Clock, Zap, BarChart3, Shield,
@@ -95,6 +96,15 @@ export default function WorkforceManagerPage() {
 
   return (
     <>
+      {/* Workforce Manager's attendance/leave/shift/payroll keyword territory has been
+          consolidated into HR & Inventory (the sole flagship HRM page) — this canonical tag
+          folds any ranking signal into that page rather than the two competing for the same
+          searches. Route stays live for existing links/bookmarks; just not sitemap-listed
+          (see generate-sitemap.js) or promoted in nav. */}
+      <Helmet>
+        <link rel="canonical" href="https://www.aadhiraiinnovations.com/products/hr-inventory" />
+      </Helmet>
+
       {/* ── Product hero ──────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#060e1c] py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 grid-texture pointer-events-none" />

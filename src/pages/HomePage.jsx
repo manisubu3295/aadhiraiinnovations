@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import HeroSection from '../components/sections/HeroSection'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 import FeaturedCitiesSection from '../components/sections/FeaturedCitiesSection'
+import WhyChooseUsSection from '../components/sections/WhyChooseUsSection'
 import Container from '../components/ui/Container'
 
 /* ─── Animation ─────────────────────────────────────────────────────────── */
@@ -123,6 +124,9 @@ function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* ── Handmade software USP — bridges the hero into the product tiers below ───── */}
+      <WhyChooseUsSection />
 
       {/* ══════════════════════════════════════════════════════════════════
           TIER 1 — Pharmacy (primary)

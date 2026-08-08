@@ -34,6 +34,9 @@ const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
 const PharmacyLocationsHubPage = lazy(() => import('./pages/PharmacyLocationsHubPage'))
 const StateSEOPage         = lazy(() => import('./pages/StateSEOPage'))
+const HrmLocalSEOPage      = lazy(() => import('./pages/HrmLocalSEOPage'))
+const HrmLocationsHubPage  = lazy(() => import('./pages/HrmLocationsHubPage'))
+const HrmStateSEOPage      = lazy(() => import('./pages/HrmStateSEOPage'))
 const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
 const AmountToWordsPage    = lazy(() => import('./pages/AmountToWordsPage'))
 const EmiCalculatorPage    = lazy(() => import('./pages/EmiCalculatorPage'))
@@ -224,6 +227,23 @@ function App() {
         <Route
           path="/pharmacy-billing-software/:city"
           element={<Suspense fallback={<PageLoader />}><LocalSEOPage /></Suspense>}
+        />
+
+        {/* National HRM-software local SEO — hub -> state -> district. Same architecture as the
+            pharmacy tree above but fully independent (own data/content files) since pharmacy's
+            curated cities and this tree's don't necessarily match. */}
+        <Route
+          path="/hrm-software"
+          element={<Suspense fallback={<PageLoader />}><HrmLocationsHubPage /></Suspense>}
+        />
+        <Route
+          path="/hrm-software/state/:stateSlug"
+          element={<Suspense fallback={<PageLoader />}><HrmStateSEOPage /></Suspense>}
+        />
+        {/* e.g. /hrm-software/chennai, /hrm-software/coimbatore */}
+        <Route
+          path="/hrm-software/:city"
+          element={<Suspense fallback={<PageLoader />}><HrmLocalSEOPage /></Suspense>}
         />
 
         {/* Free Tools */}

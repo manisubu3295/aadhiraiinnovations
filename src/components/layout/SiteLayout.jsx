@@ -105,6 +105,15 @@ const SEO = {
       'The offline pharmacy billing and inventory system built for Indian pharmacies — GST-compliant, works with zero internet after install, data never leaves your computer. Free trial.',
     canonical: 'https://www.aadhiraiinnovations.com/products/medora-offline',
   },
+  '/products/hr-inventory': {
+    title: 'HRM Software India — HR & Inventory Management | Aadhirai Innovations',
+    description:
+      'HRM software for growing Indian businesses — employee records, leave, attendance, payroll, shift scheduling, and real-time inventory in one system. Free demo available.',
+    ogTitle: 'HR & Inventory — HRM Software India | Aadhirai Innovations',
+    ogDescription:
+      'Complete HRM software: employee records, leave and attendance, payroll data, shift scheduling, and inventory control. Built for growing Indian businesses.',
+    canonical: 'https://www.aadhiraiinnovations.com/products/hr-inventory',
+  },
   '/founder': {
     title: 'Founder | Aadhirai Innovations — Enterprise Software Company, Tamil Nadu',
     description:

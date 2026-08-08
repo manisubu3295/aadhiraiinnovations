@@ -8,6 +8,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { states } from './src/data/locationSlugs.js'
+import { states as hrmStates } from './src/data/hrmLocationSlugs.js'
 import blogPosts from './src/data/blogPosts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -107,10 +108,11 @@ const toolPages = toolSlugs.map(slug => ({
 // already listed in staticPages above with a distinct priority; this was previously duplicated
 // here. Slugs below must match the `route` field in src/data/products.js, not the `slug` field —
 // several of these have historically drifted out of sync (fixed 2026-08).
+// 'workforce-manager' deliberately excluded — that page now canonicalizes to /products/hr-inventory
+// (HR & Inventory became the sole flagship HRM page), so it shouldn't self-list in the sitemap.
 const productSlugs = [
   'billing',
   'hr-inventory',
-  'workforce-manager',
   'decision-os',
   'mouna-ai',
   'school-os',
@@ -161,8 +163,35 @@ const districtPages = states.flatMap(({ districts }) =>
   }))
 )
 
+// National hrm-software local SEO — hub -> state -> district, same mechanics as the pharmacy
+// tree above but a fully independent slug source (src/data/hrmLocationSlugs.js), since its
+// curated cities/aliases don't necessarily match pharmacy's.
+const hrmLocationHubPage = [
+  { path: '/hrm-software', lastmod: today, priority: '0.9', changefreq: 'monthly' },
+]
+
+const hrmStatePages = hrmStates.map(({ stateSlug }) => ({
+  path: `/hrm-software/state/${stateSlug}`,
+  lastmod: today,
+  priority: '0.8',
+  changefreq: 'monthly',
+}))
+
+const hrmDistrictPages = hrmStates.flatMap(({ districts }) =>
+  districts.map(({ slug }) => ({
+    path: `/hrm-software/${slug}`,
+    lastmod: today,
+    priority: '0.6',
+    changefreq: 'monthly',
+  }))
+)
+
 // Combine all pages
-const allPages = [...staticPages, ...toolPages, ...productPages, ...blogPages, ...locationHubPage, ...statePages, ...districtPages]
+const allPages = [
+  ...staticPages, ...toolPages, ...productPages, ...blogPages,
+  ...locationHubPage, ...statePages, ...districtPages,
+  ...hrmLocationHubPage, ...hrmStatePages, ...hrmDistrictPages,
+]
 
 // Generate XML
 const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
@@ -203,3 +232,6 @@ console.log(`   - Blog posts: ${blogPages.length}`)
 console.log(`   - Location hub: ${locationHubPage.length}`)
 console.log(`   - State pages: ${statePages.length}`)
 console.log(`   - District pages: ${districtPages.length}`)
+console.log(`   - HRM location hub: ${hrmLocationHubPage.length}`)
+console.log(`   - HRM state pages: ${hrmStatePages.length}`)
+console.log(`   - HRM district pages: ${hrmDistrictPages.length}`)

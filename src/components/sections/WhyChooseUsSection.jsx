@@ -22,6 +22,22 @@ export default function WhyChooseUsSection() {
   return (
     <section className="border-b border-slate-100 bg-white py-16 md:py-20 lg:py-24">
       <Container>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6 }}
+          className="mb-12 text-center"
+        >
+          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            Handmade Software, Not Off-the-Shelf
+          </span>
+          <p className="mx-auto mt-3 max-w-2xl text-base text-slate-500 leading-relaxed">
+            Every system we build — pharmacy, HR, inventory, or fully custom — is handmade for your business,
+            not a template with your logo pasted on top.
+          </p>
+        </motion.div>
+
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 lg:items-start">
 
           {/* Left: The common problem */}

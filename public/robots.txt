@@ -10,8 +10,10 @@ Disallow: /.env*
 Disallow: /build/
 Disallow: /node_modules/
 
-# Sitemap location
-Sitemap: https://aadhiraiinnovations.com/sitemap.xml
+# Sitemap location — must match the www domain generate-sitemap.js writes into sitemap.xml and
+# every canonical tag sitewide uses (SiteLayout.jsx, index.html), or crawlers get a mixed signal
+# about which host is canonical.
+Sitemap: https://www.aadhiraiinnovations.com/sitemap.xml
 
 # Crawl delay (optional — tells bots to be respectful)
 Crawl-delay: 1

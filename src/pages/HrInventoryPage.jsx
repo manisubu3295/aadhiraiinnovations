@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import {
   ArrowLeft, ArrowRight, CheckCircle2, ExternalLink,
-  Download, MessageCircle, Users, Package,
-  Clock, BarChart3, Shield, Zap,
+  MessageCircle, Users, Package,
+  Clock, BarChart3, Shield, Zap, CalendarClock, Fingerprint,
 } from 'lucide-react'
 import Container from '../components/ui/Container'
 
@@ -16,50 +16,69 @@ const DEMO_CREDENTIALS = [
   { role: 'Employee', email: 'ali.hassan@aadhirai.com', password: 'Employee@123!' },
 ]
 
-/* ─── Schema ─────────────────────────────────────────────────────────── */
-function usePageSchema() {
+/* ─── Schema: SoftwareApplication + FAQ ──────────────────────────────── */
+// FAQ schema questions are pulled from the `faqs` array below (single source shared with the
+// visible FAQ section) so the structured data can never drift out of sync with what's on-page —
+// see PharmacySoftwarePage.jsx's usePageSchema() for the sibling pattern this mirrors.
+function usePageSchema(faqs) {
   useEffect(() => {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      name: 'HR & Inventory',
-      url: 'https://www.aadhiraiinnovations.com/products/hr-inventory',
-      applicationCategory: 'BusinessApplication',
-      operatingSystem: 'Windows, Web, Cloud',
-      description:
-        'HR operations software for growing businesses. Employee records, leave, attendance, payroll with stock tracking and purchase orders. One system for people and stock.',
-      screenshot: 'https://www.aadhiraiinnovations.com/media/dashboard.png',
-      offers: {
-        '@type': 'Offer',
-        seller: {
+    const schemas = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'HR & Inventory',
+        url: 'https://www.aadhiraiinnovations.com/products/hr-inventory',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Windows, Web, Cloud',
+        description:
+          'HRM software for growing businesses. Employee records, leave, attendance, payroll, shift scheduling with stock tracking and purchase orders. One system for people and stock.',
+        screenshot: 'https://www.aadhiraiinnovations.com/media/dashboard.png',
+        offers: {
+          '@type': 'Offer',
+          seller: {
+            '@type': 'Organization',
+            name: 'Aadhirai Innovations',
+            url: 'https://www.aadhiraiinnovations.com',
+          },
+        },
+        featureList: [
+          'Employee records and documents',
+          'Leave and attendance management',
+          'Payroll data generation',
+          'Shift scheduling',
+          'Biometric attendance integration',
+          'Real-time stock tracking',
+          'Purchase order management',
+          'Multi-location support',
+          'Role-based access control',
+          'Automated reports and analytics',
+        ],
+        publisher: {
           '@type': 'Organization',
           name: 'Aadhirai Innovations',
-          url: 'https://www.aadhiraiinnovations.com',
         },
       },
-      featureList: [
-        'Employee records and documents',
-        'Leave and attendance management',
-        'Payroll data generation',
-        'Real-time stock tracking',
-        'Purchase order management',
-        'Multi-location support',
-        'Role-based access control',
-        'Automated reports and analytics',
-      ],
-      publisher: {
-        '@type': 'Organization',
-        name: 'Aadhirai Innovations',
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.q,
+          acceptedAnswer: { '@type': 'Answer', text: faq.a },
+        })),
       },
-    }
+    ]
 
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.setAttribute('data-schema', 'hr-inventory-page')
-    script.text = JSON.stringify(schema)
-    document.head.appendChild(script)
-    return () => script.remove()
-  }, [])
+    const scripts = schemas.map((schema) => {
+      const s = document.createElement('script')
+      s.type = 'application/ld+json'
+      s.setAttribute('data-schema', 'hr-inventory-page')
+      s.text = JSON.stringify(schema)
+      document.head.appendChild(s)
+      return s
+    })
+    return () => scripts.forEach((s) => s.remove())
+  }, [faqs])
 }
 
 /* ─── Features ───────────────────────────────────────────────────────── */
@@ -94,6 +113,16 @@ const features = [
     title: 'Role-Based Access',
     description: 'Staff see and do exactly what their role permits — granular access control for data security.',
   },
+  {
+    icon: CalendarClock,
+    title: 'Shift Scheduling',
+    description: 'Plan and adjust shifts across teams with conflict detection — built for multi-shift operations.',
+  },
+  {
+    icon: Fingerprint,
+    title: 'Biometric Attendance',
+    description: 'Connects with fingerprint and card scanners for accurate, tamper-proof attendance tracking.',
+  },
 ]
 
 const whyPoints = [
@@ -105,36 +134,73 @@ const whyPoints = [
   { label: 'Compliance ready', detail: 'Full audit trail for every transaction and decision' },
 ]
 
+// Shared between the visible FAQ section below and usePageSchema()'s FAQPage JSON-LD, so the
+// structured data can never say something different from what's actually on the page.
+const faqs = [
+  {
+    q: 'What is HRM software?',
+    a: 'HRM (Human Resource Management) software centralizes the day-to-day work of running HR — employee records, leave and attendance, payroll data, shift scheduling, and compliance — into one system instead of spreadsheets and disconnected tools. HR & Inventory extends this with stock and purchase order management for businesses that need both people and inventory under control.',
+  },
+  {
+    q: 'Can HR & Inventory manage multiple locations?',
+    a: 'Yes. HR & Inventory supports unlimited locations with centralized reporting. Each location maintains its own HR and inventory data while providing unified visibility across the organization.',
+  },
+  {
+    q: 'How does payroll integration work?',
+    a: 'Payroll data is generated automatically from verified attendance records. No manual calculation needed. Export payroll data directly to your accounting system or payroll processor.',
+  },
+  {
+    q: 'Does HR & Inventory handle shift scheduling and biometric attendance?',
+    a: 'Yes. Plan and adjust shifts across teams with conflict detection, and connect fingerprint or card-based biometric scanners for tamper-proof attendance — these workforce-management capabilities are now part of HR & Inventory directly, so you don\'t need a separate system for them.',
+  },
+  {
+    q: 'Can HR & Inventory track stock across branches?',
+    a: 'Yes. Real-time stock tracking across all locations, with low-stock alerts and automated reorder recommendations per branch.',
+  },
+  {
+    q: 'What leave types does the system support?',
+    a: 'HR & Inventory supports customizable leave types — annual leave, sick leave, maternity, sabbatical, etc. Configure leave policies per department or organization-wide.',
+  },
+  {
+    q: 'How long does implementation take?',
+    a: 'Most organizations go live in 2-3 weeks. We handle setup, data migration, staff training, and support through go-live. Customization available for specific workflows.',
+  },
+  {
+    q: 'Can we integrate with our existing payroll system?',
+    a: 'Yes. HR & Inventory integrates with common payroll systems and accounting software. Data exports to standard formats (CSV, Excel) for seamless integration.',
+  },
+]
+
 /* ─── Page ───────────────────────────────────────────────────────────── */
 export default function HrInventoryPage() {
-  usePageSchema()
+  usePageSchema(faqs)
 
   return (
     <>
       <Helmet>
-        <title>HR Operations Software | HR & Inventory by Aadhirai</title>
+        <title>HRM Software India — HR & Inventory Management | Aadhirai Innovations</title>
         <meta
           name="description"
-          content="HR operations software for growing businesses — employee records, leave, attendance, payroll, and inventory in one system. Try the live demo free."
+          content="HRM software for growing Indian businesses — employee records, leave, attendance, payroll, shift scheduling, and real-time inventory in one system. Try the live demo free."
         />
         <meta
           name="keywords"
-          content="HR operations software, HR operations, HR management system, HR and inventory software, workforce management, payroll software, leave management software"
+          content="HRM software, HR management software, HR management system, HR operations software, HR and inventory software, workforce management, payroll software, leave management software, attendance management system, shift scheduling software"
         />
         <link rel="canonical" href="https://www.aadhiraiinnovations.com/products/hr-inventory" />
-        <meta property="og:title" content="HR Operations Software | HR & Inventory by Aadhirai" />
+        <meta property="og:title" content="HRM Software India — HR & Inventory Management | Aadhirai Innovations" />
         <meta
           property="og:description"
-          content="HR operations software for growing businesses — employee records, leave, attendance, payroll, and inventory in one system."
+          content="HRM software for growing Indian businesses — employee records, leave, attendance, payroll, shift scheduling, and real-time inventory in one system."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.aadhiraiinnovations.com/products/hr-inventory" />
         <meta property="og:site_name" content="Aadhirai Innovations" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="HR Operations Software | HR & Inventory by Aadhirai" />
+        <meta name="twitter:title" content="HRM Software India — HR & Inventory Management | Aadhirai Innovations" />
         <meta
           name="twitter:description"
-          content="HR operations software for growing businesses — employee records, leave, attendance, payroll, and inventory in one system."
+          content="HRM software for growing Indian businesses — employee records, leave, attendance, payroll, shift scheduling, and real-time inventory in one system."
         />
       </Helmet>
 
@@ -164,21 +230,21 @@ export default function HrInventoryPage() {
               <div className="flex items-center gap-3 mb-7">
                 <div className="h-px w-10 bg-white/18" />
                 <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38">
-                  HR Operations Software
+                  HRM Software · India
                 </span>
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl leading-[1.08]">
-                HR & Inventory — complete HR operations software
+                HR & Inventory — complete HRM software for growing businesses
               </h1>
               <p className="mt-2 text-sm uppercase tracking-widest text-white/30">
                 People Management + Stock Control
               </p>
 
               <p className="mt-6 text-base text-white/50 leading-relaxed max-w-lg">
-                HR & Inventory is HR operations software built for growing businesses — combining employee
-                management (leave, attendance, payroll) with stock tracking and purchase orders. One system for
-                your people and your stock — no disconnected tools, no manual reconciliation.
+                HR & Inventory is HRM software built for growing businesses — combining employee management
+                (leave, attendance, payroll, shift scheduling) with stock tracking and purchase orders. One
+                system for your people and your stock — no disconnected tools, no manual reconciliation.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -335,6 +401,46 @@ export default function HrInventoryPage() {
         </Container>
       </section>
 
+      {/* ── Available Across India ───────────────────────────────────── */}
+      <section className="bg-white border-t border-slate-100 py-14 md:py-16">
+        <Container>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-px w-10 bg-slate-300" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+              Available Across India
+            </span>
+          </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-[#0B1F3A] sm:text-3xl leading-[1.2] max-w-xl">
+            HRM software for growing businesses, wherever your team is.
+          </h2>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {[
+              { label: 'Chennai', href: '/hrm-software/chennai' },
+              { label: 'Coimbatore', href: '/hrm-software/coimbatore' },
+              { label: 'Bengaluru', href: '/hrm-software/bengaluru' },
+              { label: 'Hyderabad', href: '/hrm-software/hyderabad' },
+              { label: 'Salem', href: '/hrm-software/salem' },
+              { label: 'Madurai', href: '/hrm-software/madurai' },
+            ].map((c) => (
+              <Link
+                key={c.href}
+                to={c.href}
+                className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600 hover:border-slate-300 hover:text-[#0B1F3A] transition-colors"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
+          <Link
+            to="/hrm-software"
+            className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-[#0B1F3A] hover:underline"
+          >
+            Browse all states &amp; districts
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </Container>
+      </section>
+
       {/* ── FAQ Section ───────────────────────────────────────────────── */}
       <section className="bg-white border-t border-slate-100 py-16 md:py-20 lg:py-24">
         <Container>
@@ -361,36 +467,7 @@ export default function HrInventoryPage() {
             itemType="https://schema.org/FAQPage"
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 max-w-3xl"
           >
-            {[
-              {
-                q: 'What is HR operations software?',
-                a: 'HR operations software centralizes the day-to-day work of running HR — employee records, leave and attendance, payroll data, and compliance — into one system instead of spreadsheets and disconnected tools. HR & Inventory extends this with stock and purchase order management for businesses that need both people and inventory under control.',
-              },
-              {
-                q: 'Can HR & Inventory manage multiple locations?',
-                a: 'Yes. HR & Inventory supports unlimited locations with centralized reporting. Each location maintains its own HR and inventory data while providing unified visibility across the organization.',
-              },
-              {
-                q: 'How does payroll integration work?',
-                a: 'Payroll data is generated automatically from verified attendance records. No manual calculation needed. Export payroll data directly to your accounting system or payroll processor.',
-              },
-              {
-                q: 'Can HR & Inventory track stock across branches?',
-                a: 'Yes. Real-time stock tracking across all locations, with low-stock alerts and automated reorder recommendations per branch.',
-              },
-              {
-                q: 'What leave types does the system support?',
-                a: 'HR & Inventory supports customizable leave types — annual leave, sick leave, maternity, sabbatical, etc. Configure leave policies per department or organization-wide.',
-              },
-              {
-                q: 'How long does implementation take?',
-                a: 'Most organizations go live in 2-3 weeks. We handle setup, data migration, staff training, and support through go-live. Customization available for specific workflows.',
-              },
-              {
-                q: 'Can we integrate with our existing payroll system?',
-                a: 'Yes. HR & Inventory integrates with common payroll systems and accounting software. Data exports to standard formats (CSV, Excel) for seamless integration.',
-              },
-            ].map((faq, i) => (
+            {faqs.map((faq, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 12 }}

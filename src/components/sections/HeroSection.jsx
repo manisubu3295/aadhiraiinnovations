@@ -116,6 +116,12 @@ function HeroSection() {
               </a>
             </motion.div>
 
+            {/* Tagline — bridges the pharmacy-led headline above to the other products on this
+                same homepage (HR, inventory, custom engineering), without touching the H1/sub. */}
+            <motion.p variants={fadeUp} className="mt-5 text-[12.5px] italic text-white/26">
+              Handmade software for Indian businesses — pharmacy, HR, inventory, and the custom systems in between.
+            </motion.p>
+
             {/* Audience fork — startup engineering leaders land here too, not just pharmacy buyers */}
             <motion.div variants={fadeUp} className="mt-6">
               <Link
