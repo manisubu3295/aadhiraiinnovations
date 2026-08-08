@@ -206,6 +206,15 @@ export const DEFAULT_TEMPLATES = [
       '<p><strong>{{name}}</strong> ({{email}}) downloaded <strong>{{resourceName}}</strong> from the website.</p>',
   },
   {
+    key: 'TOOL_SUGGESTION_STAFF_NOTIFY',
+    category: 'ENQUIRY',
+    label: 'Tool suggestion submitted (to staff)',
+    variables: ['name', 'email', 'idea'],
+    subject: 'New tool suggestion — {{name}}',
+    bodyHtml:
+      '<h2>New Tool Suggestion</h2><p><strong>From:</strong> {{name}} ({{email}})</p><p><strong>Idea:</strong></p><p>{{idea}}</p>',
+  },
+  {
     key: 'RESOURCE_DOWNLOAD_ACK',
     category: 'ENQUIRY',
     label: 'Resource download link (to requester)',

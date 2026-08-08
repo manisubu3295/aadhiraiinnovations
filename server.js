@@ -131,6 +131,51 @@ app.post('/api/enquiry', enquiryLimiter, async (req, res) => {
   }
 })
 
+const toolSuggestionLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many suggestions from this address. Try again later.' },
+})
+
+// Public — no auth, no admin-configurable recipient (unlike /api/enquiry's
+// settings.enquiryNotifyEmail): tool suggestions always go straight to info@ as requested.
+app.post('/api/tool-suggestion', toolSuggestionLimiter, async (req, res) => {
+  try {
+    const { name = '', email = '', idea = '' } = req.body ?? {}
+
+    const trimmedName = String(name).trim()
+    const trimmedEmail = String(email).trim()
+    const trimmedIdea = String(idea).trim()
+
+    if (!trimmedIdea) {
+      return res.status(400).json({ success: false, message: 'Please describe the tool you\'d like to see.' })
+    }
+
+    const tpl = await getTemplate('TOOL_SUGGESTION_STAFF_NOTIFY')
+    const { subject, html } = renderTemplate(tpl, {
+      name: trimmedName || 'Anonymous',
+      email: trimmedEmail || '-',
+      idea: trimmedIdea.replace(/\n/g, '<br/>'),
+    })
+
+    await deliverMail({
+      to: 'info@aadhiraiinnovations.com',
+      replyTo: trimmedEmail || undefined,
+      subject,
+      text: htmlToText(html),
+      html,
+      meta: { templateKey: 'TOOL_SUGGESTION_STAFF_NOTIFY', relatedType: 'TOOL_SUGGESTION' },
+    })
+
+    res.status(200).json({ success: true, message: 'Suggestion sent — thank you!' })
+  } catch (error) {
+    console.error('Tool suggestion email send failed:', error)
+    res.status(500).json({ success: false, message: 'Failed to send suggestion.' })
+  }
+})
+
 // On a self-hosted Linux server (not Vercel), this process also serves the built SPA
 // so nginx/PM2 only need to point at one Node process. Run `npm run build` first.
 if (process.env.NODE_ENV === 'production') {

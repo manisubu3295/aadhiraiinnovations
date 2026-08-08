@@ -1,16 +1,30 @@
 import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { Search, ArrowRight } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Link, useNavigate } from 'react-router-dom'
+import { Search, ArrowRight, ChevronDown, Lightbulb, Send, CheckCircle2 } from 'lucide-react'
 import Container from '../components/ui/Container'
 import HoverCard from '../components/ui/HoverCard'
 import ToolCta from '../components/tools/ToolCta'
 import ToolFaqSection from '../components/tools/ToolFaqSection'
 import toolsDirectory from '../data/toolsDirectory'
+import { API_BASE } from '../lib/apiBase'
 
 const allTools = toolsDirectory.flatMap((group) =>
   group.items.map((item) => ({ ...item, category: group.heading }))
 )
+
+// A handful of the tools people reach for most — one tap, no scrolling or typing needed.
+const POPULAR_HREFS = [
+  '/tools/gst-calculator',
+  '/tools/tax-simulator',
+  '/tools/emi-calculator',
+  '/tools/merge-pdf',
+  '/document-builder',
+  '/tools/qr-code-generator',
+]
+const popularTools = POPULAR_HREFS.map((href) => allTools.find((t) => t.href === href)).filter(Boolean)
+
+const categorySlug = (heading) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
 /* ─── Schema Injection ──────────────────────────────────────────────────── */
 function usePageSchema() {
@@ -81,12 +95,120 @@ function usePageSchema() {
   }, [])
 }
 
+/* ─── Suggest a Tool ─────────────────────────────────────────────────────── */
+function SuggestToolSection() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [idea, setIdea] = useState('')
+  const [status, setStatus] = useState('idle') // idle | submitting | success | error
+  const [errorMsg, setErrorMsg] = useState('')
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (!idea.trim()) return
+    setStatus('submitting')
+    setErrorMsg('')
+    try {
+      const response = await fetch(`${API_BASE}/api/tool-suggestion`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, idea }),
+      })
+      const result = await response.json().catch(() => null)
+      if (!response.ok || !result?.success) throw new Error(result?.message || 'Unable to send suggestion.')
+      setStatus('success')
+      setName(''); setEmail(''); setIdea('')
+    } catch (err) {
+      setStatus('error')
+      setErrorMsg(err.message || 'Failed to send suggestion. Please try again.')
+    }
+  }
+
+  return (
+    <section className="bg-white border-b border-slate-100 py-16 md:py-20 lg:py-24">
+      <Container>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-2xl mx-auto text-center"
+        >
+          <div className="mx-auto mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#0B1F3A]/5">
+            <Lightbulb className="h-5 w-5 text-[#0B1F3A]" strokeWidth={1.75} />
+          </div>
+          <h2 className="text-2xl font-semibold text-[#0B1F3A] mb-2">Can't find the tool you need?</h2>
+          <p className="text-sm text-slate-500 mb-8">Tell us what you're looking for — we read every suggestion and regularly add new free tools.</p>
+
+          {status === 'success' ? (
+            <div className="flex items-center justify-center gap-2 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm text-green-700">
+              <CheckCircle2 className="h-4 w-4" /> Thanks — your suggestion has been sent!
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-3 text-left">
+              <textarea
+                value={idea}
+                onChange={(e) => setIdea(e.target.value)}
+                required
+                rows={3}
+                placeholder="What tool would help your business? (required)"
+                className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-[#0B1F3A] text-sm resize-none"
+              />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name (optional)"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-[#0B1F3A] text-sm"
+                />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email (optional, for a reply)"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-[#0B1F3A] text-sm"
+                />
+              </div>
+              {status === 'error' && <p className="text-xs text-red-600">{errorMsg}</p>}
+              <button
+                type="submit"
+                disabled={status === 'submitting' || !idea.trim()}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0B1F3A] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#173762] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="h-4 w-4" />
+                {status === 'submitting' ? 'Sending…' : 'Send Suggestion'}
+              </button>
+            </form>
+          )}
+        </motion.div>
+      </Container>
+    </section>
+  )
+}
+
 export default function ToolsHubPage() {
   usePageSchema()
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
+  const [showSuggestions, setShowSuggestions] = useState(false)
+
+  // Collapsed by default on mobile (computed once at mount — not re-derived on resize,
+  // this is a one-time "is this a small screen" read, same pattern as the JS-driven
+  // lg:hidden mobile menu in Header.jsx), expanded by default on desktop.
+  const [openCategories, setOpenCategories] = useState(() => {
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
+    return Object.fromEntries(toolsDirectory.map((g) => [g.heading, isDesktop]))
+  })
 
   const categories = ['All', ...toolsDirectory.map((g) => g.heading)]
+
+  const suggestions = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return []
+    return allTools.filter((t) => t.label.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)).slice(0, 6)
+  }, [query])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -101,10 +223,22 @@ export default function ToolsHubPage() {
     .map((group) => ({ ...group, items: filtered.filter((t) => t.category === group.heading) }))
     .filter((group) => group.items.length > 0)
 
+  const isSearchingOrFiltering = query.trim() !== '' || activeCategory !== 'All'
+
+  function toggleCategory(heading) {
+    setOpenCategories((prev) => ({ ...prev, [heading]: !prev[heading] }))
+  }
+
+  function goToSuggestion(tool) {
+    setShowSuggestions(false)
+    setQuery('')
+    navigate(tool.href)
+  }
+
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#060e1c] py-16 sm:py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-[#060e1c] py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 grid-texture pointer-events-none" />
         <div
           className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full opacity-[0.05] blur-3xl"
@@ -128,32 +262,66 @@ export default function ToolsHubPage() {
               Free Online Tools
             </h1>
 
-            <p className="text-lg text-white/60 leading-relaxed max-w-2xl">
+            <p className="text-lg text-white/60 leading-relaxed max-w-2xl mb-8">
               GST and financial calculators, PDF utilities, developer tools, and SEO utilities — all free, browser-based, no signup, no watermarks.
             </p>
+
+            {/* Popular tools — one tap, no scrolling or searching needed */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-white/40 mr-1">Popular:</span>
+              {popularTools.map((tool) => (
+                <Link
+                  key={tool.href}
+                  to={tool.href}
+                  className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-white/80 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
+                >
+                  {tool.label}
+                </Link>
+              ))}
+            </div>
           </motion.div>
         </Container>
       </section>
 
-      {/* ── Search + Filter + Grid ────────────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-16 md:py-20 lg:py-24">
+      {/* ── Sticky Search + Filter ──────────────────────────────────────────── */}
+      <div className="sticky top-16 z-30 border-b border-slate-100 bg-white/95 backdrop-blur-md">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6 }}
-            className="mb-10"
-          >
-            <div className="relative max-w-md mb-6">
+          <div className="py-4">
+            <div className="relative max-w-md mb-4">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true) }}
+                onFocus={() => setShowSuggestions(true)}
                 placeholder="Search tools — e.g. GST, PDF, JSON, calculator"
                 className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]/20 focus:border-[#0B1F3A] text-sm"
               />
+
+              {/* Live suggestions — jump straight to a tool without touching the grid below */}
+              <AnimatePresence>
+                {showSuggestions && suggestions.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 right-0 top-full mt-2 rounded-xl border border-slate-200 bg-white shadow-[0_12px_36px_rgba(11,31,58,0.12)] overflow-hidden z-40"
+                  >
+                    {suggestions.map((tool) => (
+                      <button
+                        key={tool.href}
+                        type="button"
+                        onClick={() => goToSuggestion(tool)}
+                        className="flex w-full flex-col gap-0.5 px-4 py-2.5 text-left hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors"
+                      >
+                        <span className="text-sm font-medium text-[#0B1F3A]">{tool.label}</span>
+                        <span className="text-[11px] text-slate-400">{tool.category} · {tool.desc}</span>
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="flex flex-wrap gap-2">
@@ -161,7 +329,7 @@ export default function ToolsHubPage() {
                 <button
                   key={cat}
                   type="button"
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => { setActiveCategory(cat); setShowSuggestions(false) }}
                   className={`rounded-full border px-4 py-1.5 text-[12.5px] font-medium transition-colors ${
                     activeCategory === cat
                       ? 'border-[#0B1F3A] bg-[#0B1F3A] text-white'
@@ -172,42 +340,65 @@ export default function ToolsHubPage() {
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
+        </Container>
+      </div>
 
+      {/* ── Collapsible Category Sections ───────────────────────────────────── */}
+      <section className="bg-white border-b border-slate-100 py-8 md:py-10" onClick={() => showSuggestions && setShowSuggestions(false)}>
+        <Container>
           {groupedFiltered.length === 0 && (
             <p className="text-sm text-slate-400 py-12 text-center">No tools match "{query}".</p>
           )}
 
-          <div className="space-y-14">
-            {groupedFiltered.map((group) => (
-              <div key={group.heading}>
-                <h2 className="text-lg font-semibold text-[#0B1F3A] mb-5">{group.heading}</h2>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {group.items.map((tool, idx) => (
-                    <motion.div
-                      key={tool.href}
-                      initial={{ opacity: 0, y: 14 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.4, delay: (idx % 6) * 0.05 }}
-                    >
-                      <HoverCard className="h-full">
-                        <Link to={tool.href} className="flex h-full flex-col justify-between p-5">
-                          <div>
-                            <h3 className="text-sm font-semibold text-[#0B1F3A] mb-1.5">{tool.label}</h3>
-                            <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
-                          </div>
-                          <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#0B1F3A]">
-                            Open tool
-                            <ArrowRight className="h-3.5 w-3.5" />
-                          </div>
-                        </Link>
-                      </HoverCard>
-                    </motion.div>
-                  ))}
+          <div className="divide-y divide-slate-100">
+            {groupedFiltered.map((group) => {
+              const isOpen = isSearchingOrFiltering || openCategories[group.heading]
+              return (
+                <div key={group.heading} id={`cat-${categorySlug(group.heading)}`} className="py-5" style={{ scrollMarginTop: '150px' }}>
+                  <button
+                    type="button"
+                    onClick={() => toggleCategory(group.heading)}
+                    className="flex w-full items-center justify-between gap-3 text-left"
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <h2 className="text-lg font-semibold text-[#0B1F3A]">{group.heading}</h2>
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500">{group.items.length}</span>
+                    </span>
+                    <ChevronDown className={`h-4 w-4 flex-none text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        className="overflow-hidden"
+                      >
+                        <div className="grid gap-4 pt-5 sm:grid-cols-2 lg:grid-cols-3">
+                          {group.items.map((tool) => (
+                            <HoverCard key={tool.href} className="h-full">
+                              <Link to={tool.href} className="flex h-full flex-col justify-between p-5">
+                                <div>
+                                  <h3 className="text-sm font-semibold text-[#0B1F3A] mb-1.5">{tool.label}</h3>
+                                  <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
+                                </div>
+                                <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#0B1F3A]">
+                                  Open tool
+                                  <ArrowRight className="h-3.5 w-3.5" />
+                                </div>
+                              </Link>
+                            </HoverCard>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </Container>
       </section>
@@ -231,6 +422,9 @@ export default function ToolsHubPage() {
           </motion.div>
         </Container>
       </section>
+
+      {/* ── Suggest a Tool ─────────────────────────────────────────────────── */}
+      <SuggestToolSection />
 
       {/* ── FAQ ────────────────────────────────────────────────────────────── */}
       <ToolFaqSection
