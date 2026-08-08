@@ -43,6 +43,7 @@ const TransportLocalSEOPage     = lazy(() => import('./pages/TransportLocalSEOPa
 const TransportLocationsHubPage = lazy(() => import('./pages/TransportLocationsHubPage'))
 const TransportStateSEOPage     = lazy(() => import('./pages/TransportStateSEOPage'))
 const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
+const TaxSimulatorPage     = lazy(() => import('./pages/TaxSimulatorPage'))
 const AmountToWordsPage    = lazy(() => import('./pages/AmountToWordsPage'))
 const EmiCalculatorPage    = lazy(() => import('./pages/EmiCalculatorPage'))
 const QrCodeGeneratorPage  = lazy(() => import('./pages/QrCodeGeneratorPage'))
@@ -280,6 +281,10 @@ function App() {
         <Route
           path="/tools/gst-calculator"
           element={<Suspense fallback={<PageLoader />}><GstCalculatorPage /></Suspense>}
+        />
+        <Route
+          path="/tools/tax-simulator"
+          element={<Suspense fallback={<PageLoader />}><TaxSimulatorPage /></Suspense>}
         />
         <Route
           path="/tools/amount-to-words"

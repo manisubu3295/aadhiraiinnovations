@@ -19,12 +19,12 @@ import WhatsAppWidget from '../ui/WhatsAppWidget'
 ──────────────────────────────────────────────────────────────────────── */
 const SEO = {
   '/': {
-    title: 'Pharmacy Software Tamil Nadu — Medora+ & Medora Offline | Aadhirai Innovations',
+    title: 'Business Software for Pharmacy, Billing, HR & Transport | Aadhirai Innovations',
     description:
-      'GST-compliant pharmacy billing software for Tamil Nadu pharmacies — Peravurani, Pattukkottai, Thanjavur, Pudukkottai, Trichy, Aranthangi and beyond. Offline-first, AI stock forecasting. We also build custom business software and backend engineering.',
-    ogTitle: 'Pharmacy Software for Tamil Nadu | Aadhirai Innovations',
+      'Aadhirai Innovations builds enterprise software for Indian businesses — Medora+ pharmacy billing, multi-tenant Aadhirai Billing, HR & Inventory management, and Transport & Logistics with live GPS tracking. GST-compliant, offline-first. Tamil Nadu-based, serving India & globally.',
+    ogTitle: 'Business Software for Pharmacy, Billing, HR & Transport | Aadhirai Innovations',
     ogDescription:
-      'Medora+ and Medora Offline — GST-ready billing, expiry alerts, and offline-first pharmacy management, built for Tamil Nadu pharmacies. Custom software and backend engineering also available.',
+      'Four flagship products in one company: Medora+ pharmacy billing, Aadhirai Billing, HR & Inventory management, and Transport & Logistics. GST-compliant, offline-first, built for Indian businesses.',
     canonical: 'https://www.aadhiraiinnovations.com/',
   },
   '/services': {
@@ -311,6 +311,13 @@ const SEO = {
     ogTitle: 'TDS Calculator | Aadhirai Innovations',
     ogDescription: 'Estimate TDS deduction and net payable amount for common Income Tax Act sections.',
     canonical: 'https://www.aadhiraiinnovations.com/tools/tds-calculator',
+  },
+  '/tools/tax-simulator': {
+    title: 'India Tax Simulator — Old vs New Regime, Capital Gains, HRA | Aadhirai Innovations',
+    description: 'Free India tax simulator. Compare old vs new income tax regime, calculate capital gains tax, HRA exemption, and advance tax installments — all in one tool.',
+    ogTitle: 'India Tax Simulator | Aadhirai Innovations',
+    ogDescription: 'Compare old vs new tax regime, capital gains, HRA exemption, and advance tax — free, in one place.',
+    canonical: 'https://www.aadhiraiinnovations.com/tools/tax-simulator',
   },
   '/tools/hsn-sac-lookup': {
     title: 'HSN & SAC Code Lookup — Pharmacy & Retail Reference | Aadhirai Innovations',

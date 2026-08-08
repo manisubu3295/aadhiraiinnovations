@@ -64,6 +64,7 @@ const toolSlugs = [
   'percentage-calculator',
   'discount-calculator',
   'tds-calculator',
+  'tax-simulator',
   'hsn-sac-lookup',
   'merge-pdf',
   'split-pdf',

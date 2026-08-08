@@ -51,6 +51,7 @@ const toolsDirectory = [
       { label: 'Percentage Calculator', desc: 'X% of a number, or percentage change', href: '/tools/percentage-calculator' },
       { label: 'Discount & Margin Calculator', desc: 'Discounted price, margin, and markup', href: '/tools/discount-calculator' },
       { label: 'TDS Calculator', desc: 'TDS deduction by section (194C, 194J...)', href: '/tools/tds-calculator' },
+      { label: 'India Tax Simulator', desc: 'Old vs new regime, capital gains, HRA & advance tax', href: '/tools/tax-simulator' },
       { label: 'HSN & SAC Lookup', desc: 'Common pharmacy/retail codes and GST rates', href: '/tools/hsn-sac-lookup' },
       { label: 'Compound Interest Calculator', desc: 'Maturity value with compounding', href: '/tools/compound-interest-calculator' },
       { label: 'Simple Interest Calculator', desc: 'Interest and total amount', href: '/tools/simple-interest-calculator' },
