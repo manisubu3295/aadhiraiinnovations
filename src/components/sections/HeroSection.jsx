@@ -1,10 +1,13 @@
-import { motion } from 'framer-motion'
+import { useEffect, useMemo, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import Container from '../ui/Container'
 import HeroIntelligenceAnimation from '../ui/HeroIntelligenceAnimation'
 import FloatingBadge from '../ui/FloatingBadge'
 import { useVisitorLocation } from '../../hooks/useVisitorLocation'
+
+const AUTO_ADVANCE_MS = 6000
 
 const stagger = {
   hidden: {},
@@ -14,12 +17,102 @@ const fadeUp = {
   hidden: { opacity: 0, y: 22 },
   show:   { opacity: 1, y: 0, transition: { duration: 0.92, ease: [0.22, 1, 0.36, 1] } },
 }
+const slideTransition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
 
-function HeroSection() {
+/* ─── Slides — one per Products-nav item, same design, different product ────
+   Slide 0 (Medora+) is the flagship default and keeps the original visitor-location
+   personalization; the rest use static India-wide copy. Each slide's primary CTA
+   routes to that product's own page so the slider drives traffic to owned SEO pages,
+   not straight to an external signup/demo URL. */
+function useSlides() {
   const location = useVisitorLocation()
   const eyebrowRegion = location?.state ? `${location.state}, India` : 'India'
   const headlineRegion = location?.state ? `${location.state} pharmacies.` : 'Indian pharmacies.'
   const builtStrip = location?.state ? `${location.state} Built` : 'Pan-India Ready'
+
+  return useMemo(() => [
+    {
+      key: 'medora-plus',
+      dotColor: 'bg-blue-400/70',
+      eyebrow: `Pharmacy Software · ${eyebrowRegion}`,
+      headline: ['Pharmacy billing software', 'built for', headlineRegion],
+      sub: 'Medora+ and Medora Offline give pharmacies from Peravurani to Chennai GST-ready billing, real-time stock, and expiry alerts — online or fully offline. We also build custom business software and backend engineering for growing companies.',
+      strip: `GST-Compliant · Offline-First · ${builtStrip}`,
+      primaryCta: { label: 'Explore Medora Pharmacy Software', href: '/solutions/pharmacy-software' },
+      badges: [
+        { value: 'TN', label: 'Tamil Nadu Built', glowColor: 'rgba(147, 197, 253, 0.25)', floatAmount: -10, floatDuration: 8, delay: 1.4, className: 'top-6 -left-2 lg:-left-6 hidden md:block' },
+        { value: 'Offline', label: 'Works Without Internet', valueClassName: 'text-gradient-ai', glowColor: 'rgba(167, 139, 250, 0.22)', floatAmount: 10, floatDuration: 10, delay: 1.9, className: 'bottom-10 -right-2 lg:-right-6 hidden md:block', pulseLabel: 'GST Ready' },
+      ],
+    },
+    {
+      key: 'medora-offline',
+      dotColor: 'bg-indigo-400/70',
+      eyebrow: 'Offline Pharmacy Software · India',
+      headline: ['Offline pharmacy software', 'built for', 'zero-downtime billing.'],
+      sub: 'The same Medora billing and inventory core, fully offline — no internet or monthly subscription. A one-time license, your data never leaves your computer, and a free 30-day trial to try it first.',
+      strip: 'One-Time License · No Internet Needed · Free Trial',
+      primaryCta: { label: 'Try Medora Offline Free', href: '/products/medora-offline?download=1' },
+      badges: [
+        { value: 'Offline', label: 'No Internet Needed', valueClassName: 'text-gradient-ai', glowColor: 'rgba(167, 139, 250, 0.22)', floatAmount: -10, floatDuration: 8, delay: 1.4, className: 'top-6 -left-2 lg:-left-6 hidden md:block' },
+        { value: '30-Day', label: 'Free Trial', glowColor: 'rgba(147, 197, 253, 0.25)', floatAmount: 10, floatDuration: 10, delay: 1.9, className: 'bottom-10 -right-2 lg:-right-6 hidden md:block', pulseLabel: 'One-Time License' },
+      ],
+    },
+    {
+      key: 'billing',
+      dotColor: 'bg-red-400/70',
+      eyebrow: 'Billing & Inventory Software · India',
+      headline: ['Multi-tenant billing software', 'built for', 'every Indian business.'],
+      sub: 'Aadhirai Billing gives any retail business its own isolated database, barcode-driven checkout, and GST-compliant invoicing — sign up free and go live in minutes, no manual setup.',
+      strip: 'Free Signup · Isolated Database · GST-Compliant',
+      primaryCta: { label: 'Create Free Account', href: '/products/billing' },
+      badges: [
+        { value: 'Free', label: 'Self-Signup', glowColor: 'rgba(185, 28, 28, 0.22)', floatAmount: -10, floatDuration: 8, delay: 1.4, className: 'top-6 -left-2 lg:-left-6 hidden md:block' },
+        { value: 'GST', label: 'Compliant Invoicing', valueClassName: 'text-gradient-ai', glowColor: 'rgba(147, 197, 253, 0.25)', floatAmount: 10, floatDuration: 10, delay: 1.9, className: 'bottom-10 -right-2 lg:-right-6 hidden md:block', pulseLabel: 'Isolated DB' },
+      ],
+    },
+    {
+      key: 'hr-inventory',
+      dotColor: 'bg-emerald-400/70',
+      eyebrow: 'HRM Software · India',
+      headline: ['HRM software', 'built for', 'growing Indian businesses.'],
+      sub: 'HR & Inventory brings employee records, leave, attendance, payroll data, and real-time stock into one system — no more disconnected spreadsheets and tools.',
+      strip: 'Payroll-Ready · Multi-Location · Free Demo',
+      primaryCta: { label: 'Explore HR & Inventory', href: '/products/hr-inventory' },
+      badges: [
+        { value: 'HRM', label: 'Payroll + Attendance', glowColor: 'rgba(52, 211, 153, 0.22)', floatAmount: -10, floatDuration: 8, delay: 1.4, className: 'top-6 -left-2 lg:-left-6 hidden md:block' },
+        { value: 'Demo', label: 'Try It Free', valueClassName: 'text-gradient-ai', glowColor: 'rgba(167, 139, 250, 0.22)', floatAmount: 10, floatDuration: 10, delay: 1.9, className: 'bottom-10 -right-2 lg:-right-6 hidden md:block', pulseLabel: 'Multi-Location' },
+      ],
+    },
+    {
+      key: 'transport-logistics',
+      dotColor: 'bg-sky-400/70',
+      eyebrow: 'Transport & Logistics Software · India',
+      headline: ['Transport & logistics software', 'built for', 'Indian fleet operators.'],
+      sub: 'Aadhirai Transport & Logistics converts quotations straight into invoices, tracks every driver live on GPS, and manages your fleet — replacing manual Word/PDF invoicing.',
+      strip: 'Live GPS Tracking · Fleet Management · Free Demo',
+      primaryCta: { label: 'Explore Transport & Logistics', href: '/products/transport-logistics' },
+      badges: [
+        { value: 'GPS', label: 'Live Driver Tracking', valueClassName: 'text-gradient-ai', glowColor: 'rgba(29, 78, 216, 0.25)', floatAmount: -10, floatDuration: 8, delay: 1.4, className: 'top-6 -left-2 lg:-left-6 hidden md:block' },
+        { value: 'Fleet', label: 'Driver & Vehicle Records', glowColor: 'rgba(147, 197, 253, 0.22)', floatAmount: 10, floatDuration: 10, delay: 1.9, className: 'bottom-10 -right-2 lg:-right-6 hidden md:block', pulseLabel: 'Live Demo' },
+      ],
+    },
+  ], [eyebrowRegion, headlineRegion, builtStrip])
+}
+
+function HeroSection() {
+  const slides = useSlides()
+  const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const slide = slides[index]
+
+  /* Auto-advance, paused on hover so a reading visitor never loses their place mid-sentence */
+  useEffect(() => {
+    if (paused) return
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % slides.length)
+    }, AUTO_ADVANCE_MS)
+    return () => clearInterval(id)
+  }, [paused, slides.length])
 
   return (
     <section className="relative overflow-hidden bg-[#050d1a] min-h-screen flex items-center text-white noise-overlay">
@@ -54,75 +147,97 @@ function HeroSection() {
             initial="hidden"
             animate="show"
             variants={stagger}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
             className="flex flex-col justify-center lg:py-24"
           >
-            {/* Eyebrow */}
-            <motion.div variants={fadeUp} className="mb-7">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/38">
-                <span className="inline-block h-1.5 w-1.5 flex-none rounded-full bg-blue-400/70" />
-                Pharmacy Software · {eyebrowRegion}
-              </span>
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1
-              variants={fadeUp}
-              className="font-semibold leading-[1.04] tracking-[-0.04em] text-white"
-              style={{ fontSize: 'clamp(2.6rem, 5vw, 4.1rem)' }}
-            >
-              Pharmacy billing software
-              <br />
-              <span className="text-gradient-ai">built for</span>
-              <br />
-              {headlineRegion}
-            </motion.h1>
-
-            {/* Sub */}
-            <motion.p
-              variants={fadeUp}
-              className="mt-6 max-w-[42ch] text-[15px] leading-[1.9] text-white/44"
-            >
-              Medora+ and Medora Offline give pharmacies from Peravurani to Chennai
-              GST-ready billing, real-time stock, and expiry alerts — online or fully
-              offline. We also build custom business software and backend engineering
-              for growing companies.
-            </motion.p>
-
-            {/* Credentials strip */}
-            <motion.div variants={fadeUp} className="mt-8 flex items-center gap-5">
-              <div className="h-px flex-1 bg-white/[0.07]" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/22">
-                GST-Compliant · Offline-First · {builtStrip}
-              </span>
-              <div className="h-px flex-1 bg-white/[0.07]" />
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-5">
-              <a
-                href="/solutions/pharmacy-software"
-                className="group inline-flex items-center gap-2.5 rounded-sm bg-white px-7 py-[14px] text-[13.5px] font-bold tracking-[0.01em] text-[#050d1a] shadow-[0_1px_0_rgba(255,255,255,0.18)_inset,0_8px_36px_rgba(0,0,0,0.42)] transition-all hover:bg-white/93 hover:shadow-[0_8px_48px_rgba(0,0,0,0.52)] active:scale-[0.985]"
+            {/* Per-product slide — eyebrow, headline, sub, strip, primary CTA all crossfade together */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={slide.key}
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={slideTransition}
               >
-                Explore Medora Pharmacy Software
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </a>
-              <a
-                href="https://wa.me/918508716957"
-                target="_blank"
-                rel="noreferrer"
-                className="text-[13px] font-medium text-white/38 underline underline-offset-[5px] decoration-white/16 transition-all hover:text-white/68 hover:decoration-white/38"
-              >
-                Talk to us on WhatsApp
-              </a>
+                {/* Eyebrow */}
+                <div className="mb-7">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/38">
+                    <span className={`inline-block h-1.5 w-1.5 flex-none rounded-full ${slide.dotColor}`} />
+                    {slide.eyebrow}
+                  </span>
+                </div>
+
+                {/* Headline */}
+                <h1
+                  className="font-semibold leading-[1.04] tracking-[-0.04em] text-white"
+                  style={{ fontSize: 'clamp(2.6rem, 5vw, 4.1rem)' }}
+                >
+                  {slide.headline[0]}
+                  <br />
+                  <span className="text-gradient-ai">{slide.headline[1]}</span>
+                  <br />
+                  {slide.headline[2]}
+                </h1>
+
+                {/* Sub */}
+                <p className="mt-6 max-w-[42ch] text-[15px] leading-[1.9] text-white/44">
+                  {slide.sub}
+                </p>
+
+                {/* Credentials strip */}
+                <div className="mt-8 flex items-center gap-5">
+                  <div className="h-px flex-1 bg-white/[0.07]" />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/22">
+                    {slide.strip}
+                  </span>
+                  <div className="h-px flex-1 bg-white/[0.07]" />
+                </div>
+
+                {/* CTAs */}
+                <div className="mt-8 flex flex-wrap items-center gap-5">
+                  <a
+                    href={slide.primaryCta.href}
+                    className="group inline-flex items-center gap-2.5 rounded-sm bg-white px-7 py-[14px] text-[13.5px] font-bold tracking-[0.01em] text-[#050d1a] shadow-[0_1px_0_rgba(255,255,255,0.18)_inset,0_8px_36px_rgba(0,0,0,0.42)] transition-all hover:bg-white/93 hover:shadow-[0_8px_48px_rgba(0,0,0,0.52)] active:scale-[0.985]"
+                  >
+                    {slide.primaryCta.label}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </a>
+                  <a
+                    href="https://wa.me/918508716957"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[13px] font-medium text-white/38 underline underline-offset-[5px] decoration-white/16 transition-all hover:text-white/68 hover:decoration-white/38"
+                  >
+                    Talk to us on WhatsApp
+                  </a>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Slide dots — jump directly to any product */}
+            <motion.div variants={fadeUp} className="mt-7 flex items-center gap-2">
+              {slides.map((s, i) => (
+                <button
+                  key={s.key}
+                  type="button"
+                  onClick={() => setIndex(i)}
+                  aria-label={`Show ${s.headline[0]}`}
+                  aria-current={i === index}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === index ? 'w-6 bg-white/70' : 'w-1.5 bg-white/20 hover:bg-white/40'
+                  }`}
+                />
+              ))}
             </motion.div>
 
-            {/* Tagline — bridges the pharmacy-led headline above to the other products on this
-                same homepage (HR, inventory, custom engineering), without touching the H1/sub. */}
+            {/* Tagline — bridges the rotating headline above to every product on this
+                same homepage, without touching the H1/sub. */}
             <motion.p variants={fadeUp} className="mt-5 text-[12.5px] italic text-white/26">
               Handmade software for Indian businesses — pharmacy, HR, inventory, and the custom systems in between.
             </motion.p>
 
-            {/* Audience fork — startup engineering leaders land here too, not just pharmacy buyers */}
+            {/* Audience fork — startup engineering leaders land here too, not just product buyers */}
             <motion.div variants={fadeUp} className="mt-6">
               <Link
                 to="/services"
@@ -144,40 +259,9 @@ function HeroSection() {
             >
               <HeroIntelligenceAnimation />
 
-              <FloatingBadge
-                value="TN"
-                label="Tamil Nadu Built"
-                glowColor="rgba(147, 197, 253, 0.25)"
-                floatAmount={-10}
-                floatDuration={8}
-                delay={1.4}
-                className="top-6 -left-2 lg:-left-6 hidden md:block"
-              />
-
-              <FloatingBadge
-                value="Offline"
-                label="Works Without Internet"
-                glowColor="rgba(167, 139, 250, 0.22)"
-                valueClassName="text-gradient-ai"
-                floatAmount={10}
-                floatDuration={10}
-                delay={1.9}
-                className="bottom-10 -right-2 lg:-right-6 hidden md:block"
-              >
-                <div className="mt-2.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 flex-none rounded-full bg-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.85)]" />
-                  <motion.span
-                    className="h-1.5 w-1.5 flex-none rounded-full bg-blue-400/40"
-                    animate={{ scale: [1, 1.8, 1], opacity: [0.4, 0, 0.4] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut' }}
-                    style={{ marginLeft: '-14px' }}
-                  />
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-blue-400/60">
-                    GST Ready
-                  </span>
-                </div>
-              </FloatingBadge>
-
+              {slide.badges.map((badge, i) => (
+                <FloatingBadge key={`${slide.key}-badge-${i}`} {...badge} />
+              ))}
             </motion.div>
           </div>
 

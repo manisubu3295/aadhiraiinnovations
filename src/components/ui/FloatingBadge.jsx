@@ -12,7 +12,8 @@ import { motion } from 'framer-motion'
  *  floatDuration  — full float cycle duration in seconds
  *  delay          — seconds to wait before fade-in AND before float loop starts
  *  className      — absolute positioning classes from parent
- *  children       — optional extra content rendered inside the badge (e.g. pulse indicator)
+ *  pulseLabel     — optional short label rendered with a live pulse-dot indicator (e.g. "GST Ready")
+ *  children       — optional extra content rendered inside the badge, below pulseLabel if both given
  */
 function FloatingBadge({
   value,
@@ -23,6 +24,7 @@ function FloatingBadge({
   floatDuration  = 8,
   delay          = 0,
   className      = '',
+  pulseLabel,
   children,
 }) {
   return (
@@ -73,6 +75,22 @@ function FloatingBadge({
         <div className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.24em] text-white/35">
           {label}
         </div>
+
+        {/* Optional pulse-dot indicator line */}
+        {pulseLabel && (
+          <div className="mt-2.5 flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 flex-none rounded-full bg-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.85)]" />
+            <motion.span
+              className="h-1.5 w-1.5 flex-none rounded-full bg-blue-400/40"
+              animate={{ scale: [1, 1.8, 1], opacity: [0.4, 0, 0.4] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut' }}
+              style={{ marginLeft: '-14px' }}
+            />
+            <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-blue-400/60">
+              {pulseLabel}
+            </span>
+          </div>
+        )}
 
         {/* Optional extra content */}
         {children}
