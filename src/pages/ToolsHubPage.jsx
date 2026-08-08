@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, ArrowRight, ChevronDown, Lightbulb, Send, CheckCircle2 } from 'lucide-react'
+import { Search, ArrowRight, Star, Lightbulb, Send, CheckCircle2 } from 'lucide-react'
 import Container from '../components/ui/Container'
 import HoverCard from '../components/ui/HoverCard'
 import ToolCta from '../components/tools/ToolCta'
 import ToolFaqSection from '../components/tools/ToolFaqSection'
 import toolsDirectory from '../data/toolsDirectory'
 import { API_BASE } from '../lib/apiBase'
+import { useFavoriteTools } from '../hooks/useFavoriteTools'
 
 const allTools = toolsDirectory.flatMap((group) =>
   group.items.map((item) => ({ ...item, category: group.heading }))
@@ -193,16 +194,9 @@ export default function ToolsHubPage() {
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const { favorites, toggleFavorite, isFavorite } = useFavoriteTools()
 
-  // Collapsed by default on mobile (computed once at mount — not re-derived on resize,
-  // this is a one-time "is this a small screen" read, same pattern as the JS-driven
-  // lg:hidden mobile menu in Header.jsx), expanded by default on desktop.
-  const [openCategories, setOpenCategories] = useState(() => {
-    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
-    return Object.fromEntries(toolsDirectory.map((g) => [g.heading, isDesktop]))
-  })
-
-  const categories = ['All', ...toolsDirectory.map((g) => g.heading)]
+  const categories = ['All', 'Favorites', ...toolsDirectory.map((g) => g.heading)]
 
   const suggestions = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -213,21 +207,18 @@ export default function ToolsHubPage() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     return allTools.filter((tool) => {
-      const matchesCategory = activeCategory === 'All' || tool.category === activeCategory
+      const matchesCategory =
+        activeCategory === 'All' ? true :
+        activeCategory === 'Favorites' ? favorites.has(tool.href) :
+        tool.category === activeCategory
       const matchesQuery = !q || tool.label.toLowerCase().includes(q) || tool.desc.toLowerCase().includes(q)
       return matchesCategory && matchesQuery
     })
-  }, [query, activeCategory])
+  }, [query, activeCategory, favorites])
 
   const groupedFiltered = toolsDirectory
     .map((group) => ({ ...group, items: filtered.filter((t) => t.category === group.heading) }))
     .filter((group) => group.items.length > 0)
-
-  const isSearchingOrFiltering = query.trim() !== '' || activeCategory !== 'All'
-
-  function toggleCategory(heading) {
-    setOpenCategories((prev) => ({ ...prev, [heading]: !prev[heading] }))
-  }
 
   function goToSuggestion(tool) {
     setShowSuggestions(false)
@@ -344,61 +335,54 @@ export default function ToolsHubPage() {
         </Container>
       </div>
 
-      {/* ── Collapsible Category Sections ───────────────────────────────────── */}
+      {/* ── Category Sections — every tool visible immediately, no expand step ── */}
       <section className="bg-white border-b border-slate-100 py-8 md:py-10" onClick={() => showSuggestions && setShowSuggestions(false)}>
         <Container>
           {groupedFiltered.length === 0 && (
-            <p className="text-sm text-slate-400 py-12 text-center">No tools match "{query}".</p>
+            <p className="text-sm text-slate-400 py-12 text-center">
+              {activeCategory === 'Favorites'
+                ? 'No favorites yet — tap the star on any tool to save it here.'
+                : `No tools match "${query}".`}
+            </p>
           )}
 
           <div className="divide-y divide-slate-100">
-            {groupedFiltered.map((group) => {
-              const isOpen = isSearchingOrFiltering || openCategories[group.heading]
-              return (
-                <div key={group.heading} id={`cat-${categorySlug(group.heading)}`} className="py-5" style={{ scrollMarginTop: '150px' }}>
-                  <button
-                    type="button"
-                    onClick={() => toggleCategory(group.heading)}
-                    className="flex w-full items-center justify-between gap-3 text-left"
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <h2 className="text-lg font-semibold text-[#0B1F3A]">{group.heading}</h2>
-                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500">{group.items.length}</span>
-                    </span>
-                    <ChevronDown className={`h-4 w-4 flex-none text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
-                        className="overflow-hidden"
-                      >
-                        <div className="grid gap-4 pt-5 sm:grid-cols-2 lg:grid-cols-3">
-                          {group.items.map((tool) => (
-                            <HoverCard key={tool.href} className="h-full">
-                              <Link to={tool.href} className="flex h-full flex-col justify-between p-5">
-                                <div>
-                                  <h3 className="text-sm font-semibold text-[#0B1F3A] mb-1.5">{tool.label}</h3>
-                                  <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
-                                </div>
-                                <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#0B1F3A]">
-                                  Open tool
-                                  <ArrowRight className="h-3.5 w-3.5" />
-                                </div>
-                              </Link>
-                            </HoverCard>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+            {groupedFiltered.map((group) => (
+              <div key={group.heading} id={`cat-${categorySlug(group.heading)}`} className="py-5" style={{ scrollMarginTop: '150px' }}>
+                <div className="flex items-center gap-2.5 mb-5">
+                  <h2 className="text-lg font-semibold text-[#0B1F3A]">{group.heading}</h2>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500">{group.items.length}</span>
                 </div>
-              )
-            })}
+
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((tool) => (
+                    <HoverCard key={tool.href} className="h-full relative">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(tool.href) }}
+                        aria-label={isFavorite(tool.href) ? `Remove ${tool.label} from favorites` : `Add ${tool.label} to favorites`}
+                        className="absolute right-3 top-3 z-10 rounded-full p-1.5 transition-colors hover:bg-slate-100"
+                      >
+                        <Star
+                          className={`h-4 w-4 ${isFavorite(tool.href) ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`}
+                          strokeWidth={1.75}
+                        />
+                      </button>
+                      <Link to={tool.href} className="flex h-full flex-col justify-between p-5 pr-10">
+                        <div>
+                          <h3 className="text-sm font-semibold text-[#0B1F3A] mb-1.5">{tool.label}</h3>
+                          <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
+                        </div>
+                        <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#0B1F3A]">
+                          Open tool
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </div>
+                      </Link>
+                    </HoverCard>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </Container>
       </section>

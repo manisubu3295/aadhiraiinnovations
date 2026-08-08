@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, ChevronDown, Download } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Container from '../ui/Container'
-import toolsDirectory from '../../data/toolsDirectory'
 
 /* ─── Navigation structure ───────────────────────────────────────────── */
 const NAV = [
@@ -38,7 +37,7 @@ const NAV = [
   {
     key: 'tools',
     label: 'Tools',
-    groups: toolsDirectory,
+    href: '/tools',
   },
   {
     key: 'company',
@@ -167,9 +166,19 @@ function Header() {
 
           {/* Desktop Navigation */}
           <nav aria-label="Primary" className="hidden lg:flex items-center gap-7 flex-1 justify-center">
-            {NAV.map((item) => (
-              <NavDropdown key={item.key} label={item.label} groups={item.groups} />
-            ))}
+            {NAV.map((item) =>
+              item.groups ? (
+                <NavDropdown key={item.key} label={item.label} groups={item.groups} />
+              ) : (
+                <Link
+                  key={item.key}
+                  to={item.href}
+                  className="text-[13.5px] font-medium text-[#0B1F3A]/60 hover:text-[#0B1F3A] whitespace-nowrap transition-colors duration-150"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
             <Link
               to="/pricing"
               className="text-[13.5px] font-medium text-[#0B1F3A]/60 hover:text-[#0B1F3A] whitespace-nowrap transition-colors duration-150"
@@ -219,7 +228,17 @@ function Header() {
               transition={{ duration: 0.22, ease: 'easeOut' }}
             >
               <div className="flex flex-col gap-0.5 py-3 px-1">
-                {NAV.map((navItem) => (
+                {NAV.map((navItem) =>
+                  !navItem.groups ? (
+                    <Link
+                      key={navItem.key}
+                      to={navItem.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center rounded-md px-3 py-2.5 text-[13px] font-medium text-[#0B1F3A]/70 hover:bg-slate-50 transition-colors"
+                    >
+                      {navItem.label}
+                    </Link>
+                  ) : (
                   <div key={navItem.key}>
                     {/* Accordion toggle button */}
                     <button
@@ -271,7 +290,8 @@ function Header() {
                       )}
                     </AnimatePresence>
                   </div>
-                ))}
+                  )
+                )}
 
                 {/* Pricing — plain link, not a dropdown */}
                 <Link
