@@ -1,7 +1,7 @@
 import {
   ReceiptIndianRupee, Building2, Users, Brain,
   GraduationCap, BriefcaseBusiness, ClipboardList,
-  ShieldCheck, Store, Zap, Cpu, Barcode,
+  ShieldCheck, Store, Zap, Cpu, Barcode, Truck,
 } from 'lucide-react'
 
 const products = [
@@ -104,6 +104,41 @@ const products = [
       { metric: 'Unified control',     description: 'HR and inventory managed in one system — no manual reconciliation between tools.' },
       { metric: 'Fewer errors',        description: 'Attendance-driven payroll and stock alerts reduce costly manual mistakes.' },
       { metric: 'Faster decisions',    description: 'Real-time people and stock data means decisions happen on facts.' },
+    ],
+  },
+  {
+    slug:        'transport-logistics',
+    name:        'Aadhirai Transport & Logistics',
+    category:    'Transport & Logistics',
+    icon:        Truck,
+    color:       '#1d4ed8',
+    route:       '/products/transport-logistics',
+    ctaUrl:      'https://transport.aadhiraiinnovations.com',
+    ctaLabel:    'View live demo',
+    demoCredentials: [
+      { role: 'Admin', email: 'admin', password: 'Admin@Demo2026' },
+    ],
+    tagline:     'Quotation-to-invoice, delivery jobs, and fleet management for transport companies.',
+    description: 'Aadhirai Transport & Logistics replaces manual Word/PDF invoicing with a full transport operations system — quotations that convert straight into invoices, delivery job tracking with driver status updates, fleet and driver records, and revenue reporting, all built around how transport and logistics businesses actually bill and run their fleet.',
+    features: [
+      { title: 'Quotation → Invoice',      detail: 'Build a quotation, then convert it to an invoice in one step — no re-entry.' },
+      { title: 'Configurable Numbering',    detail: 'Auto-numbered invoices and quotations with a company-set prefix and start number.' },
+      { title: 'Delivery Job Tracking',     detail: 'Assign jobs to drivers and track status from dispatch to delivery.' },
+      { title: 'Driver & Fleet Management', detail: 'Driver records with licence expiry warnings, plus vehicle/fleet tracking.' },
+      { title: 'PDF & Email Delivery',      detail: 'Branded invoice/quotation PDFs generated and emailed directly to clients.' },
+      { title: 'Revenue Dashboard',         detail: 'Aging, revenue, and client summary reports with CSV export.' },
+      { title: 'Role-Based Access',         detail: 'Admin and driver roles, each seeing only what their role needs.' },
+      { title: 'Statement of Account',      detail: 'Date-ranged, status-filtered statements for client billing reconciliation.' },
+    ],
+    useCases: [
+      { label: 'Transport companies', detail: 'Quotation, invoicing, and delivery job tracking in one system.' },
+      { label: 'Logistics operators',  detail: 'Fleet and driver management alongside client billing.' },
+      { label: 'Freight forwarders',   detail: 'Job-based billing with configurable per-unit rate structures.' },
+    ],
+    outcomes: [
+      { metric: 'Faster invoicing',    description: 'Quotations convert to invoices instantly — no manual re-typing.' },
+      { metric: 'Fleet visibility',    description: 'Every driver, vehicle, and delivery job tracked in one place.' },
+      { metric: 'Fewer billing errors', description: 'Configurable numbering and rate units keep invoices consistent.' },
     ],
   },
   {
