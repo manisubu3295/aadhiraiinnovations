@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Aadhirai Innovations — 30s Ad</title>
+<meta name="description" content="30-second animated brand explainer for Aadhirai Innovations, with built-in spoken voiceover and generated background music" />
+<style>
+  :root{
+    --ink:#0E2F63;
+    --ink-soft:#3E6BA8;
+    --text:#0E2F63;
+    --paper:#FAFAF7;
+    --paper-dim:#E9EEF6;
+    --accent:#D4AF37;
+    --accent-deep:#B8860B;
+    --accent-ink:#1A2B45;
+    --warn:#C0483E;
+    --on-ink:#F7FAFF;
+    --on-ink-dim:#AFC4E3;
+    --card:#FFFFFF;
+    --card-border:#DCE3EF;
+    --stage-card:#FFFFFF;
+    --stage-text:#0E2F63;
+    --shadow: 0 20px 50px -20px rgba(14,47,99,0.35);
+    --font: -apple-system, "Segoe UI", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  }
+  :root[data-theme="dark"]{ --paper:#0B1E3D; --paper-dim:#0A1930; --card:#122A52; --card-border:#274070; --on-ink-dim:#8FA9CF; --text:#EAF1FF; --ink-soft:#9DB8E0; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --paper:#0B1E3D; --paper-dim:#0A1930; --card:#122A52; --card-border:#274070; --on-ink-dim:#8FA9CF; --text:#EAF1FF; --ink-soft:#9DB8E0; }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:var(--font); background:var(--paper-dim); color:var(--text);
+    display:flex; flex-direction:column; align-items:center; gap:16px; padding:28px 16px 40px; min-height:100vh;
+  }
+  .wrap{ width:100%; max-width:900px; display:flex; flex-direction:column; gap:14px; }
+  .top-label{ display:flex; align-items:center; justify-content:space-between; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; }
+  .top-label span.dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:7px; box-shadow:0 0 0 4px rgba(212,175,55,.22); }
+
+  .stage{ position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:var(--ink); box-shadow:var(--shadow); border:1px solid var(--card-border); }
+  .progress-track{ position:absolute; top:0; left:0; right:0; height:4px; background:rgba(255,255,255,.14); z-index:20; }
+  .progress-fill{ height:100%; width:0%; background:var(--accent); }
+  .scenes{ position:absolute; inset:0; }
+  .scene{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:7% 8% 15%; opacity:0; pointer-events:none; transition:opacity .45s ease; }
+  .scene.active{ opacity:1; pointer-events:auto; }
+
+  /* ---------- Scene 1: Problem — 3 chaotic pain points ---------- */
+  #scene-1{ background:radial-gradient(120% 120% at 50% 0%, #163564 0%, #081428 100%); }
+  .pain-row{ display:flex; gap:14px; }
+  .pain{
+    background:var(--stage-card); border-radius:16px; padding:16px 14px; width:110px; text-align:center;
+    box-shadow:0 16px 32px rgba(0,0,0,.35); opacity:0; transform:scale(.7) rotate(0deg);
+    border-bottom:4px solid var(--warn);
+  }
+  .pain .pi{ font-size:30px; display:block; margin-bottom:8px; }
+  .pain .pt{ font-size:11.5px; font-weight:800; color:var(--stage-text); line-height:1.25; }
+  .scene.active .pain:nth-child(1){ animation: painIn .45s cubic-bezier(.3,1.4,.4,1) .2s forwards; }
+  .scene.active .pain:nth-child(2){ animation: painIn2 .45s cubic-bezier(.3,1.4,.4,1) .6s forwards; }
+  .scene.active .pain:nth-child(3){ animation: painIn3 .45s cubic-bezier(.3,1.4,.4,1) 1.0s forwards; }
+  @keyframes painIn{ to{ opacity:1; transform:scale(1) rotate(-4deg); } }
+  @keyframes painIn2{ to{ opacity:1; transform:scale(1) rotate(3deg); } }
+  @keyframes painIn3{ to{ opacity:1; transform:scale(1) rotate(-2deg); } }
+
+  /* ---------- Scene 2: Reveal ---------- */
+  #scene-2{ background:linear-gradient(160deg,#123B78 0%,#0A2050 100%); }
+  .mark{ width:64px; height:64px; margin-bottom:18px; }
+  .mark path{ fill:none; stroke:var(--accent); stroke-width:6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:220; stroke-dashoffset:220; }
+  .scene.active .mark path{ animation: draw 1s ease forwards; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .logotype{ color:var(--on-ink); font-size:clamp(22px,4vw,34px); font-weight:800; letter-spacing:-0.01em; opacity:0; text-align:center; }
+  .scene.active .logotype{ animation: fadeUp .5s ease .5s forwards; }
+  .tagline{ color:var(--on-ink-dim); font-size:clamp(13px,1.8vw,17px); margin-top:8px; font-weight:600; letter-spacing:.02em; opacity:0; text-align:center; }
+  .scene.active .tagline{ animation: fadeUp .5s ease .8s forwards; }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+
+  /* ---------- Scene 3 & 4: one big focal card (Billing / HR) ---------- */
+  #scene-3{ background:linear-gradient(160deg,#12356B 0%,#0E2F63 100%); }
+  #scene-4{ background:linear-gradient(160deg,#12356B 0%,#0E2F63 100%); }
+  .hero-card{
+    width:min(90%,460px); background:var(--stage-card); border-radius:20px; padding:26px 26px 22px;
+    box-shadow:0 26px 52px rgba(0,0,0,.42); opacity:0; transform:translateY(18px) scale(.96);
+    text-align:center; position:relative;
+  }
+  .scene.active .hero-card{ animation: heroIn .55s cubic-bezier(.2,.8,.2,1) forwards; }
+  @keyframes heroIn{ to{ opacity:1; transform:translateY(0) scale(1); } }
+  .hero-icon{
+    width:64px; height:64px; border-radius:18px; background:var(--stage-text); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 14px;
+  }
+  .hero-title{ font-size:clamp(19px,2.6vw,24px); font-weight:800; color:var(--stage-text); margin-bottom:14px; }
+  .hero-list{ display:flex; flex-direction:column; gap:10px; text-align:left; }
+  .hero-point{ display:flex; align-items:center; gap:10px; font-size:clamp(14px,1.9vw,16px); font-weight:700; color:var(--stage-text); opacity:0; transform:translateY(6px); }
+  .hero-point .tick{ width:22px; height:22px; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; flex:none; }
+  .scene.active .hero-point:nth-child(1){ animation: featIn .35s ease .55s forwards; }
+  .scene.active .hero-point:nth-child(2){ animation: featIn .35s ease 1.0s forwards; }
+  @keyframes featIn{ to{ opacity:1; transform:translateY(0); } }
+  .hero-badge{
+    position:absolute; top:-12px; right:-10px; background:var(--accent); color:var(--accent-ink); font-weight:800;
+    font-size:11px; padding:6px 12px; border-radius:999px; box-shadow:0 8px 18px rgba(0,0,0,.3);
+    opacity:0; transform:scale(.7);
+  }
+  .scene.active .hero-badge{ animation: badgePop .4s cubic-bezier(.3,1.6,.5,1) 1.35s forwards; }
+  @keyframes badgePop{ to{ opacity:1; transform:scale(1); } }
+
+  /* ---------- Scene 5: Universal — any business ---------- */
+  #scene-5{ background:linear-gradient(160deg,#0E2F63 0%,#0A1E3E 100%); }
+  .biz-row{ display:flex; gap:16px; margin-bottom:16px; }
+  .biz{ background:var(--stage-card); border-radius:16px; padding:16px 18px; width:96px; text-align:center; box-shadow:0 14px 30px rgba(0,0,0,.35); opacity:0; transform:scale(.8); }
+  .biz .bi{ font-size:28px; display:block; margin-bottom:6px; }
+  .biz .bt{ font-size:11.5px; font-weight:800; color:var(--stage-text); }
+  .scene.active .biz:nth-child(1){ animation: badgePop .4s cubic-bezier(.3,1.6,.5,1) .3s forwards; }
+  .scene.active .biz:nth-child(2){ animation: badgePop .4s cubic-bezier(.3,1.6,.5,1) .55s forwards; }
+  .scene.active .biz:nth-child(3){ animation: badgePop .4s cubic-bezier(.3,1.6,.5,1) .8s forwards; }
+  .biz-line{ color:var(--on-ink); font-size:clamp(15px,2.2vw,19px); font-weight:800; text-align:center; opacity:0; }
+  .scene.active .biz-line{ animation: fadeUp .4s ease 1.15s forwards; }
+
+  /* ---------- Scene 6: CTA ---------- */
+  #scene-6{ background:radial-gradient(120% 120% at 50% 100%, #17407F 0%, #0E2F63 60%, #081A38 100%); }
+  .cta-logo{ color:var(--on-ink); font-size:clamp(20px,3.6vw,28px); font-weight:800; opacity:0; }
+  .scene.active .cta-logo{ animation: fadeUp .45s ease .1s forwards; }
+  .cta-line{ color:var(--on-ink-dim); font-size:clamp(12px,1.6vw,14px); margin:8px 0 18px; font-weight:600; text-align:center; opacity:0; }
+  .scene.active .cta-line{ animation: fadeUp .45s ease .35s forwards; }
+  .cta-btn{ display:flex; align-items:center; gap:8px; background:var(--accent); color:var(--accent-ink); font-weight:800; font-size:14px; padding:11px 20px; border-radius:999px; opacity:0; transform:scale(.9); }
+  .scene.active .cta-btn{ animation: pulseIn .5s cubic-bezier(.3,1.6,.5,1) .6s forwards, pulseRing 1.6s ease 1.4s 2; }
+  @keyframes pulseIn{ to{ opacity:1; transform:scale(1); } }
+  @keyframes pulseRing{ 0%{ box-shadow:0 0 0 0 rgba(212,175,55,.55);} 70%{ box-shadow:0 0 0 14px rgba(212,175,55,0);} 100%{ box-shadow:0 0 0 0 rgba(212,175,55,0);} }
+  .cta-email{ margin-top:12px; color:var(--on-ink-dim); font-size:11.5px; font-weight:600; opacity:0; }
+  .scene.active .cta-email{ animation: fadeUp .4s ease 1s forwards; }
+
+  /* ---------- Captions + controls ---------- */
+  .caption-bar{ position:absolute; left:0; right:0; bottom:0; z-index:15; padding:14px 16px 12px; background:linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0)); display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+  .caption-text{ color:#fff; font-size:clamp(13px,1.9vw,16px); font-weight:600; line-height:1.35; max-width:80%; text-shadow:0 1px 3px rgba(0,0,0,.5); }
+  .scene-tag{ flex:none; color:rgba(255,255,255,.75); font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-variant-numeric:tabular-nums; }
+
+  .controls{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .controls-left{ display:flex; gap:8px; flex-wrap:wrap; }
+  button.ctrl{ font-family:var(--font); font-weight:700; font-size:13px; cursor:pointer; border-radius:9px; padding:9px 16px; border:1px solid var(--card-border); background:var(--card); color:var(--text); }
+  button.ctrl:hover{ border-color:var(--ink-soft); }
+  button.ctrl:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  button.ctrl.primary{ background:var(--ink); color:var(--on-ink); border-color:var(--ink); }
+  button.ctrl.sound{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  button.ctrl.sound.on{ background:var(--warn); color:#fff; border-color:var(--warn); }
+  .timecode{ font-variant-numeric:tabular-nums; font-size:12.5px; color:var(--ink-soft); font-weight:700; }
+
+  .scenebar{ display:flex; gap:5px; }
+  .segdot{ flex:1; height:5px; border-radius:3px; background:var(--card-border); overflow:hidden; }
+  .segdot i{ display:block; height:100%; width:0%; background:var(--ink); }
+
+  .note{ font-size:12px; color:var(--ink-soft); line-height:1.55; }
+  .note b{ color:var(--text); }
+  .audio-status{ font-size:11.5px; font-weight:700; color:var(--ink-soft); }
+  .audio-status.live{ color:var(--accent); }
+
+  @media (prefers-reduced-motion: reduce){
+    .scene, .pain, .mark path, .logotype, .tagline, .hero-card, .hero-point, .hero-badge, .biz, .biz-line, .cta-logo, .cta-line, .cta-btn, .cta-email{
+      animation-duration:.01ms !important; animation-delay:0s !important; transition-duration:.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top-label"><span><span class="dot"></span>ANIMATED AD — WITH SPOKEN VOICEOVER + GENERATED MUSIC</span><span id="statuslabel">PLAYING (SILENT PREVIEW)</span></div>
+
+  <div class="stage" id="stage">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="scenes">
+      <section class="scene" id="scene-1">
+        <div class="pain-row">
+          <div class="pain"><span class="pi">📝</span><span class="pt">Bills on paper</span></div>
+          <div class="pain"><span class="pi">💬</span><span class="pt">Staff on WhatsApp</span></div>
+          <div class="pain"><span class="pi">❓</span><span class="pt">Stock, a guess</span></div>
+        </div>
+      </section>
+
+      <section class="scene" id="scene-2">
+        <svg class="mark" viewBox="0 0 64 64"><path d="M10 52 L32 12 L54 52 M18 40 L46 40"/></svg>
+        <div class="logotype">Aadhirai Innovations</div>
+        <div class="tagline">Simple software for every business</div>
+      </section>
+
+      <section class="scene" id="scene-3">
+        <div class="hero-card">
+          <div class="hero-badge">STILL WORKS OFFLINE</div>
+          <div class="hero-icon">🧾</div>
+          <div class="hero-title">Billing</div>
+          <div class="hero-list">
+            <div class="hero-point"><span class="tick">✓</span>GST-ready in one tap</div>
+            <div class="hero-point"><span class="tick">✓</span>Works without internet</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="scene-4">
+        <div class="hero-card">
+          <div class="hero-icon">🧑‍🤝‍🧑</div>
+          <div class="hero-title">Your Team</div>
+          <div class="hero-list">
+            <div class="hero-point"><span class="tick">✓</span>Attendance &amp; leave</div>
+            <div class="hero-point"><span class="tick">✓</span>Salary, sorted</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="scene-5">
+        <div class="biz-row">
+          <div class="biz"><span class="bi">➕</span><span class="bt">Pharmacy</span></div>
+          <div class="biz"><span class="bi">🛍️</span><span class="bt">Shop</span></div>
+          <div class="biz"><span class="bi">🏢</span><span class="bt">Any Company</span></div>
+        </div>
+        <div class="biz-line">One system. Built for your business.</div>
+      </section>
+
+      <section class="scene" id="scene-6">
+        <div class="cta-logo">Aadhirai Innovations</div>
+        <div class="cta-line">Simple software, real support.</div>
+        <div class="cta-btn">💬 Chat on WhatsApp</div>
+        <div class="cta-email">info@aadhiraiinnovations.com</div>
+      </section>
+    </div>
+
+    <div class="caption-bar">
+      <div class="caption-text" id="captionText">Billing on paper. Staff on WhatsApp. Stock — a guess.</div>
+      <div class="scene-tag" id="timeTag">0:00 / 0:30</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="controls-left">
+      <button class="ctrl sound" id="soundBtn">🔊 Play with Sound</button>
+      <button class="ctrl primary" id="playBtn">Pause</button>
+      <button class="ctrl" id="replayBtn">Replay</button>
+    </div>
+    <div class="scenebar" id="scenebar"></div>
+    <div class="timecode" id="timecode">Scene 1 / 6</div>
+  </div>
+  <div class="audio-status" id="audioStatus">Silent preview — click "Play with Sound" to hear the voiceover and music (browsers block audio until you interact).</div>
+
+  <p class="note"><b>How the audio works:</b> the voiceover is spoken live by your browser's built-in text-to-speech reading the script below — no audio file, generated on the fly. The background score is an original ambient pad + pluck rhythm synthesized live with the Web Audio API — not a licensed track, so it's yours to use freely. Voice and exact timing will vary slightly by browser/OS.</p>
+</div>
+
+<script>
+(function(){
+  const SCENES = [
+    { id:'scene-1', dur:4000, text:"Billing on paper. Staff on WhatsApp. Stock — a guess." },
+    { id:'scene-2', dur:4000, text:"Meet Aadhirai Innovations. Simple software for every business." },
+    { id:'scene-3', dur:8000, text:"One tap billing, G S T ready, accurate every time. And it keeps working even when the internet doesn't." },
+    { id:'scene-4', dur:7000, text:"Attendance, leave, and salary — all in one simple place. No spreadsheets, no confusion." },
+    { id:'scene-5', dur:4000, text:"Pharmacy. Shop. Any company. One system, built for your business." },
+    { id:'scene-6', dur:3000, text:"Simple software, real support. WhatsApp us today." },
+  ];
+  const TOTAL = SCENES.reduce((a,s)=>a+s.dur,0);
+
+  const progressFill = document.getElementById('progressFill');
+  const captionText = document.getElementById('captionText');
+  const timeTag = document.getElementById('timeTag');
+  const timecode = document.getElementById('timecode');
+  const playBtn = document.getElementById('playBtn');
+  const replayBtn = document.getElementById('replayBtn');
+  const soundBtn = document.getElementById('soundBtn');
+  const scenebar = document.getElementById('scenebar');
+  const statuslabel = document.getElementById('statuslabel');
+  const audioStatus = document.getElementById('audioStatus');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  SCENES.forEach(()=>{
+    const d = document.createElement('div'); d.className='segdot';
+    const i = document.createElement('i'); d.appendChild(i);
+    scenebar.appendChild(d);
+  });
+  const segFills = Array.from(scenebar.querySelectorAll('i'));
+
+  let idx = 0, elapsed = 0, playing = true, raf = null, lastTs = null;
+  let soundMode = false;
+
+  function fmt(ms){ return "0:"+String(Math.floor(ms/1000)).padStart(2,'0'); }
+
+  function setScene(i){
+    SCENES.forEach((s,j)=> document.getElementById(s.id).classList.toggle('active', j===i));
+    captionText.textContent = SCENES[i].text.replace(/G S T/g,'GST');
+    timecode.textContent = `Scene ${i+1} / ${SCENES.length}`;
+    idx = i;
+  }
+
+  function elapsedBefore(i){ let t=0; for(let j=0;j<i;j++) t+=SCENES[j].dur; return t; }
+
+  /* ---------- Silent (fixed-timer) preview loop ---------- */
+  function silentTick(ts){
+    if(soundMode){ raf = null; return; }
+    if(!playing){ lastTs=null; raf=requestAnimationFrame(silentTick); return; }
+    if(lastTs===null) lastTs = ts;
+    const dt = ts - lastTs; lastTs = ts;
+    elapsed += dt;
+    if(elapsed >= TOTAL){ elapsed = 0; setScene(0); }
+    let acc = 0, newIdx = 0;
+    for(let j=0;j<SCENES.length;j++){ if(elapsed < acc + SCENES[j].dur){ newIdx=j; break;} acc+=SCENES[j].dur; }
+    if(newIdx !== idx) setScene(newIdx);
+    const sceneStart = elapsedBefore(idx);
+    const sceneProg = Math.min(1, (elapsed - sceneStart) / SCENES[idx].dur);
+    segFills.forEach((f,j)=>{ f.style.transition='none'; f.style.width = j<idx ? '100%' : (j===idx ? (sceneProg*100)+'%' : '0%'); });
+    progressFill.style.transition='none';
+    progressFill.style.width = (elapsed/TOTAL*100)+'%';
+    timeTag.textContent = fmt(elapsed)+" / 0:30";
+    raf = requestAnimationFrame(silentTick);
+  }
+
+  setScene(0);
+  raf = requestAnimationFrame(silentTick);
+
+  playBtn.addEventListener('click', ()=>{
+    if(soundMode){
+      if(speechSynthesis.speaking && !speechSynthesis.paused){ speechSynthesis.pause(); setMusicMuted(true); playBtn.textContent='Resume'; statuslabel.textContent='PAUSED'; }
+      else { speechSynthesis.resume(); setMusicMuted(false); playBtn.textContent='Pause'; statuslabel.textContent='PLAYING (SOUND ON)'; }
+      return;
+    }
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    statuslabel.textContent = playing ? 'PLAYING (SILENT PREVIEW)' : 'PAUSED';
+  });
+
+  replayBtn.addEventListener('click', ()=>{
+    if(soundMode){ startSoundSequence(); return; }
+    elapsed = 0; setScene(0); playing = true; lastTs = null;
+    playBtn.textContent='Pause'; statuslabel.textContent='PLAYING (SILENT PREVIEW)';
+  });
+
+  /* ---------- Sound mode: browser TTS voice + generated music ---------- */
+  let audioCtx=null, musicGain=null, musicOscs=[], arpTimer=null;
+  let voices=[];
+  function loadVoices(){ voices = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+  loadVoices();
+  if('speechSynthesis' in window) speechSynthesis.onvoiceschanged = loadVoices;
+  function pickVoice(){
+    return voices.find(v=>v.lang==='en-IN') || voices.find(v=>(v.lang||'').startsWith('en-IN'))
+      || voices.find(v=>v.lang==='en-GB') || voices.find(v=>(v.lang||'').startsWith('en')) || voices[0];
+  }
+
+  function ensureAudioCtx(){
+    if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+  }
+  function startMusic(){
+    ensureAudioCtx();
+    musicGain = audioCtx.createGain(); musicGain.gain.value = 0;
+    musicGain.connect(audioCtx.destination);
+    musicGain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 1.4);
+    const padFreqs = [130.81, 164.81, 196.00]; // C3 E3 G3 — warm pad
+    padFreqs.forEach(f=>{
+      const osc = audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value=f;
+      const g = audioCtx.createGain(); g.gain.value=0.55;
+      const filt = audioCtx.createBiquadFilter(); filt.type='lowpass'; filt.frequency.value=900;
+      osc.connect(g); g.connect(filt); filt.connect(musicGain);
+      osc.start();
+      musicOscs.push(osc);
+    });
+    scheduleArpeggio();
+  }
+  function scheduleArpeggio(){
+    if(!soundMode || !audioCtx) return;
+    const notes = [261.63, 329.63, 392.00, 329.63]; // C4 E4 G4 E4
+    const t = audioCtx.currentTime;
+    notes.forEach((f,i)=>{
+      const osc = audioCtx.createOscillator(); osc.type='triangle'; osc.frequency.value=f;
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t + i*0.5);
+      g.gain.linearRampToValueAtTime(0.06, t + i*0.5 + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + i*0.5 + 0.45);
+      osc.connect(g); g.connect(musicGain);
+      osc.start(t + i*0.5); osc.stop(t + i*0.5 + 0.5);
+    });
+    arpTimer = setTimeout(scheduleArpeggio, 2000);
+  }
+  function setMusicMuted(muted){
+    if(!musicGain || !audioCtx) return;
+    musicGain.gain.linearRampToValueAtTime(muted ? 0 : 0.05, audioCtx.currentTime + 0.3);
+  }
+  function stopMusic(){
+    if(musicGain && audioCtx){ musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5); }
+    clearTimeout(arpTimer);
+    const oscsToStop = musicOscs.slice(); musicOscs = [];
+    setTimeout(()=>{ oscsToStop.forEach(o=>{ try{ o.stop(); }catch(e){} }); }, 600);
+  }
+
+  function estimateMs(text){ const words = text.trim().split(/\s+/).length; return Math.max(2200, words*420); }
+
+  function speakScene(i){
+    if(!soundMode) return;
+    setScene(i);
+    segFills.forEach((f,j)=>{
+      f.style.transition='none'; f.style.width = j<i ? '100%' : '0%';
+    });
+    const est = estimateMs(SCENES[i].text);
+    requestAnimationFrame(()=>{
+      segFills[i].style.transition = `width ${est}ms linear`;
+      segFills[i].style.width = '100%';
+    });
+    progressFill.style.transition = `width ${TOTAL}ms linear`;
+    progressFill.style.width = (elapsedBefore(i+1)/TOTAL*100) + '%';
+    timeTag.textContent = fmt(elapsedBefore(i)) + " / 0:30";
+
+    const u = new SpeechSynthesisUtterance(SCENES[i].text);
+    const v = pickVoice(); if(v) u.voice = v;
+    u.rate = 1.0; u.pitch = 1.0;
+    u.onend = ()=>{
+      if(!soundMode) return;
+      const next = (i+1) % SCENES.length;
+      if(next === 0){ progressFill.style.transition='none'; progressFill.style.width='0%'; segFills.forEach(f=>{f.style.transition='none'; f.style.width='0%';}); }
+      speakScene(next);
+    };
+    u.onerror = ()=>{ if(soundMode){ const next=(i+1)%SCENES.length; speakScene(next); } };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+
+  function startSoundSequence(){
+    speechSynthesis.cancel();
+    if(!audioCtx){ startMusic(); } else { setMusicMuted(false); if(!arpTimer) scheduleArpeggio(); }
+    playBtn.textContent = 'Pause';
+    speakScene(0);
+  }
+
+  soundBtn.addEventListener('click', ()=>{
+    if(!('speechSynthesis' in window)){
+      audioStatus.textContent = "This browser doesn't support speech synthesis — try Chrome or Edge.";
+      return;
+    }
+    soundMode = !soundMode;
+    if(soundMode){
+      soundBtn.textContent = '🔇 Stop Sound';
+      soundBtn.classList.add('on');
+      statuslabel.textContent = 'PLAYING (SOUND ON)';
+      audioStatus.textContent = 'Voice: browser text-to-speech · Music: live-generated ambient pad — tap Stop Sound to return to silent preview.';
+      audioStatus.classList.add('live');
+      playing = true;
+      startSoundSequence();
+    } else {
+      soundBtn.textContent = '🔊 Play with Sound';
+      soundBtn.classList.remove('on');
+      statuslabel.textContent = 'PLAYING (SILENT PREVIEW)';
+      audioStatus.textContent = 'Silent preview — click "Play with Sound" to hear the voiceover and music (browsers block audio until you interact).';
+      audioStatus.classList.remove('live');
+      speechSynthesis.cancel();
+      stopMusic();
+      playing = true; lastTs = null; elapsed = elapsedBefore(idx);
+      progressFill.style.transition='none'; segFills.forEach(f=> f.style.transition='none');
+      if(!raf) raf = requestAnimationFrame(silentTick);
+    }
+  });
+
+  if(reduced){
+    playing = false; playBtn.textContent = 'Play'; statuslabel.textContent = 'PAUSED (reduced motion)';
+  }
+})();
+</script>
+
+</body>
+</html>

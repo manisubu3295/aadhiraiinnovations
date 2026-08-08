@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Aadhirai Innovations — 30s Ad (CSS-only backup)</title>
+<meta name="description" content="Zero-JavaScript animated fallback of the 30-second Aadhirai Innovations brand explainer (visual only, no audio)" />
+<style>
+  :root{
+    --ink:#0E2F63; --ink-soft:#3E6BA8; --text:#0E2F63; --paper-dim:#E9EEF6; --accent:#D4AF37; --accent-ink:#1A2B45; --warn:#C0483E;
+    --on-ink:#F7FAFF; --on-ink-dim:#AFC4E3; --card:#FFFFFF; --card-border:#DCE3EF;
+    --stage-card:#FFFFFF; --stage-text:#0E2F63;
+    --font: -apple-system, "Segoe UI", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  }
+  :root[data-theme="dark"]{ --paper-dim:#0A1930; --card:#122A52; --card-border:#274070; --on-ink-dim:#8FA9CF; --text:#EAF1FF; --ink-soft:#9DB8E0; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --paper-dim:#0A1930; --card:#122A52; --card-border:#274070; --on-ink-dim:#8FA9CF; --text:#EAF1FF; --ink-soft:#9DB8E0; }
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:var(--font); background:var(--paper-dim); color:var(--text);
+    display:flex; flex-direction:column; align-items:center; gap:14px; padding:28px 16px 40px; min-height:100vh; }
+  .wrap{ width:100%; max-width:900px; }
+  .top-label{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; margin-bottom:12px; }
+  .top-label .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:7px; }
+
+  .stage{ position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:var(--ink); box-shadow:0 20px 50px -20px rgba(11,31,58,.35); border:1px solid var(--card-border); }
+  .scene{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:7% 8% 17%; opacity:0; animation: cycle 30s infinite; text-align:center; }
+
+  #s1{ background:radial-gradient(120% 120% at 50% 0%,#163564 0%,#081428 100%); animation-name:show1; }
+  #s2{ background:linear-gradient(160deg,#123B78 0%,#0A2050 100%); animation-name:show2; }
+  #s3{ background:linear-gradient(160deg,#12356B 0%,#0E2F63 100%); animation-name:show3; }
+  #s4{ background:linear-gradient(160deg,#12356B 0%,#0E2F63 100%); animation-name:show4; }
+  #s5{ background:linear-gradient(160deg,#0E2F63 0%,#0A1E3E 100%); animation-name:show5; }
+  #s6{ background:radial-gradient(120% 120% at 50% 100%,#17407F 0%,#0E2F63 60%,#081A38 100%); animation-name:show6; }
+
+  /* Windows over 30s: s1 0-13.3%(4s) s2 13.3-26.6%(4s) s3 26.6-53.3%(8s) s4 53.3-76.6%(7s) s5 76.6-90%(4s) s6 90-100%(3s) */
+  @keyframes show1{ 0%{opacity:1;} 11.3%{opacity:1;} 13.3%{opacity:0;} 99.9%{opacity:0;} 100%{opacity:1;} }
+  @keyframes show2{ 0%,13.3%{opacity:0;} 15%{opacity:1;} 24.9%{opacity:1;} 26.6%{opacity:0;} 100%{opacity:0;} }
+  @keyframes show3{ 0%,26.6%{opacity:0;} 28.3%{opacity:1;} 51.6%{opacity:1;} 53.3%{opacity:0;} 100%{opacity:0;} }
+  @keyframes show4{ 0%,53.3%{opacity:0;} 55%{opacity:1;} 74.9%{opacity:1;} 76.6%{opacity:0;} 100%{opacity:0;} }
+  @keyframes show5{ 0%,76.6%{opacity:0;} 78.3%{opacity:1;} 88.3%{opacity:1;} 90%{opacity:0;} 100%{opacity:0;} }
+  @keyframes show6{ 0%,90%{opacity:0;} 91.6%{opacity:1;} 99.6%{opacity:1;} 100%{opacity:0;} }
+
+  .pain-row{ display:flex; gap:12px; }
+  .pain{ background:var(--stage-card); border-radius:16px; padding:14px 12px; width:100px; box-shadow:0 16px 32px rgba(0,0,0,.35); border-bottom:4px solid var(--warn); }
+  .pain .pi{ font-size:26px; display:block; margin-bottom:6px; }
+  .pain .pt{ font-size:10.5px; font-weight:800; color:var(--stage-text); line-height:1.25; }
+
+  .mark{ width:56px; height:56px; margin-bottom:14px; }
+  .mark path{ fill:none; stroke:var(--accent); stroke-width:6; stroke-linecap:round; stroke-linejoin:round; }
+  .logotype{ color:var(--on-ink); font-size:clamp(20px,4vw,30px); font-weight:800; }
+  .tagline{ color:var(--on-ink-dim); font-size:clamp(12px,1.8vw,15px); margin-top:6px; font-weight:600; }
+
+  .hero-card{ width:min(88%,420px); background:var(--stage-card); border-radius:20px; padding:22px 22px 18px; box-shadow:0 24px 48px rgba(0,0,0,.4); position:relative; }
+  .hero-icon{ width:56px; height:56px; border-radius:16px; background:var(--stage-text); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 12px; }
+  .hero-title{ font-size:19px; font-weight:800; color:var(--stage-text); margin-bottom:12px; }
+  .hero-list{ display:flex; flex-direction:column; gap:9px; text-align:left; }
+  .hero-point{ display:flex; align-items:center; gap:9px; font-size:14px; font-weight:700; color:var(--stage-text); }
+  .tick{ width:20px; height:20px; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; flex:none; }
+  .hero-badge{ position:absolute; top:-11px; right:-8px; background:var(--accent); color:var(--accent-ink); font-weight:800; font-size:10.5px; padding:5px 11px; border-radius:999px; }
+
+  .biz-row{ display:flex; gap:14px; margin-bottom:14px; }
+  .biz{ background:var(--stage-card); border-radius:16px; padding:14px 16px; width:88px; box-shadow:0 14px 30px rgba(0,0,0,.35); }
+  .biz .bi{ font-size:24px; display:block; margin-bottom:5px; }
+  .biz .bt{ font-size:10.5px; font-weight:800; color:var(--stage-text); }
+  .biz-line{ color:var(--on-ink); font-size:16px; font-weight:800; }
+
+  .cta-logo{ color:var(--on-ink); font-size:clamp(18px,3.6vw,26px); font-weight:800; }
+  .cta-line{ color:var(--on-ink-dim); font-size:clamp(11px,1.6vw,13px); margin:8px 0 16px; font-weight:600; }
+  .cta-btn{ display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:var(--accent-ink); font-weight:800; font-size:13px; padding:10px 18px; border-radius:999px; }
+  .cta-email{ margin-top:10px; color:var(--on-ink-dim); font-size:11px; font-weight:600; }
+
+  .cap{ position:absolute; left:0; right:0; bottom:0; padding:10px 14px; background:linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0)); color:#fff; font-size:11.5px; font-weight:600; text-shadow:0 1px 3px rgba(0,0,0,.5); }
+
+  .note{ font-size:12px; color:var(--ink-soft); line-height:1.5; margin-top:14px; }
+  .note b{ color:var(--text); }
+
+  @media (prefers-reduced-motion: reduce){
+    .scene{ animation:none !important; opacity:0; }
+    .scene:first-of-type{ opacity:1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top-label"><span class="dot"></span>ANIMATED AD MOCKUP — BACKUP (PURE CSS, NO JS, VISUAL ONLY)</div>
+  <div class="stage">
+    <section class="scene" id="s1">
+      <div class="pain-row">
+        <div class="pain"><span class="pi">📝</span><span class="pt">Bills on paper</span></div>
+        <div class="pain"><span class="pi">💬</span><span class="pt">Staff on WhatsApp</span></div>
+        <div class="pain"><span class="pi">❓</span><span class="pt">Stock, a guess</span></div>
+      </div>
+      <div class="cap">Billing on paper. Staff on WhatsApp. Stock — a guess.</div>
+    </section>
+    <section class="scene" id="s2">
+      <svg class="mark" viewBox="0 0 64 64"><path d="M10 52 L32 12 L54 52 M18 40 L46 40"/></svg>
+      <div class="logotype">Aadhirai Innovations</div>
+      <div class="tagline">Simple software for every business</div>
+      <div class="cap">Meet Aadhirai Innovations. Simple software for every business.</div>
+    </section>
+    <section class="scene" id="s3">
+      <div class="hero-card">
+        <div class="hero-badge">STILL WORKS OFFLINE</div>
+        <div class="hero-icon">🧾</div>
+        <div class="hero-title">Billing</div>
+        <div class="hero-list">
+          <div class="hero-point"><span class="tick">✓</span>GST-ready in one tap</div>
+          <div class="hero-point"><span class="tick">✓</span>Works without internet</div>
+        </div>
+      </div>
+      <div class="cap">One-tap billing, GST-ready. Keeps working even when the internet doesn't.</div>
+    </section>
+    <section class="scene" id="s4">
+      <div class="hero-card">
+        <div class="hero-icon">🧑‍🤝‍🧑</div>
+        <div class="hero-title">Your Team</div>
+        <div class="hero-list">
+          <div class="hero-point"><span class="tick">✓</span>Attendance &amp; leave</div>
+          <div class="hero-point"><span class="tick">✓</span>Salary, sorted</div>
+        </div>
+      </div>
+      <div class="cap">Attendance, leave, and salary — all in one simple place.</div>
+    </section>
+    <section class="scene" id="s5">
+      <div class="biz-row">
+        <div class="biz"><span class="bi">➕</span><span class="bt">Pharmacy</span></div>
+        <div class="biz"><span class="bi">🛍️</span><span class="bt">Shop</span></div>
+        <div class="biz"><span class="bi">🏢</span><span class="bt">Any Company</span></div>
+      </div>
+      <div class="biz-line">One system. Built for your business.</div>
+      <div class="cap">Pharmacy. Shop. Any company. One system, built for your business.</div>
+    </section>
+    <section class="scene" id="s6">
+      <div class="cta-logo">Aadhirai Innovations</div>
+      <div class="cta-line">Simple software, real support.</div>
+      <div class="cta-btn">💬 Chat on WhatsApp</div>
+      <div class="cta-email">info@aadhiraiinnovations.com</div>
+      <div class="cap">Simple software, real support. WhatsApp us today.</div>
+    </section>
+  </div>
+  <p class="note"><b>Visual only, by design:</b> real spoken voice and generated music both require JavaScript (Web Speech API / Web Audio API), so a true zero-JS file can't carry sound. Use this as the safety-net embed for strict CMSs, or pair it with an uploaded MP3 voiceover + &lt;audio autoplay muted loop&gt; if you want sound without JS-driven speech synthesis. <b>ad-primary.html</b> is the version with the live spoken voiceover and generated background music.</p>
+</div>
+
+</body>
+</html>

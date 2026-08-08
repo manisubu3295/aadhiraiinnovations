@@ -8,6 +8,7 @@ import HeroSection from '../components/sections/HeroSection'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 import FeaturedCitiesSection from '../components/sections/FeaturedCitiesSection'
 import WhyChooseUsSection from '../components/sections/WhyChooseUsSection'
+import ExplainerAdSection from '../components/sections/ExplainerAdSection'
 import Container from '../components/ui/Container'
 
 /* ─── Animation ─────────────────────────────────────────────────────────── */
@@ -134,6 +135,10 @@ function HomePage() {
 
       {/* ── Handmade software USP — bridges the hero into the product tiers below ───── */}
       <WhyChooseUsSection />
+
+      {/* ── 30-second animated explainer — reinforces the pitch right where visitors
+          land, before the product deep-dives below ─────────────────────────────── */}
+      <ExplainerAdSection />
 
       {/* ══════════════════════════════════════════════════════════════════
           TIER 1 — Pharmacy (primary)
