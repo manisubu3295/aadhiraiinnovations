@@ -4,7 +4,7 @@ import { RoughSVG } from 'roughjs/bin/svg'
 
 const team = [
   {
-    photo: '/media/founder.PNG',
+    photo: '/media/founder-optimized.jpg',
     name: 'Manikandan Subramaniyan',
     role: 'Founder & Architect',
     note: 'Leads business problem framing, system shape, and release accountability from the first architecture review.',

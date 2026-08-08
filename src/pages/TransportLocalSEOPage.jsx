@@ -43,13 +43,13 @@ function TransportLocalSEOPage() {
       <Helmet>
         <title>{data.meta.title}</title>
         <meta name="description" content={data.meta.description} />
-        <link rel="canonical" href={`https://aadhiraiinnovations.com/transport-software/${citySlug}`} />
+        <link rel="canonical" href={`https://www.aadhiraiinnovations.com/transport-software/${citySlug}`} />
 
         {/* Open Graph tags for social sharing */}
         <meta property="og:title" content={data.meta.title} />
         <meta property="og:description" content={data.meta.description} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://aadhiraiinnovations.com/transport-software/${citySlug}`} />
+        <meta property="og:url" content={`https://www.aadhiraiinnovations.com/transport-software/${citySlug}`} />
         <meta property="og:site_name" content="Aadhirai Innovations" />
 
         {/* Twitter Card tags */}
@@ -64,14 +64,14 @@ function TransportLocalSEOPage() {
             "@type": "LocalBusiness",
             "name": `Aadhirai Transport & Logistics - Transport Software in ${data.city}`,
             "description": data.meta.description,
-            "url": `https://aadhiraiinnovations.com/transport-software/${citySlug}`,
+            "url": `https://www.aadhiraiinnovations.com/transport-software/${citySlug}`,
             "areaServed": {
               "@type": "City",
               "name": data.city,
               "addressRegion": data.state,
               "addressCountry": "IN"
             },
-            "image": "https://aadhiraiinnovations.com/og-image.jpg",
+            "image": "https://www.aadhiraiinnovations.com/media/billing.png",
           })}
         </script>
       </Helmet>

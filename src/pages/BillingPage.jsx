@@ -24,7 +24,7 @@ function usePageSchema() {
       operatingSystem: 'Web, Cloud',
       description:
         'Multi-tenant billing and inventory management software for retail businesses in Tamil Nadu and across India. Every business gets its own isolated database, provisioned automatically at signup. Barcode billing, GST-compliant invoicing, and role-based staff access built in.',
-      screenshot: 'https://www.aadhiraiinnovations.com/media/dashboard.png',
+      screenshot: 'https://www.aadhiraiinnovations.com/media/billing.png',
       areaServed: [
         { '@type': 'State', name: 'Tamil Nadu' },
         { '@type': 'Country', name: 'India' },

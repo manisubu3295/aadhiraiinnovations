@@ -13,4 +13,18 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Vendor code split into its own chunks so they cache independently from app code and
+        // from each other — a deploy that only changes page/component code doesn't invalidate
+        // the vendor cache for a returning visitor (2026-08 perf audit: the single bundled
+        // entry chunk was 504KB/154KB gzip, loaded on every page).
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['framer-motion', 'lucide-react'],
+        },
+      },
+    },
+  },
 })

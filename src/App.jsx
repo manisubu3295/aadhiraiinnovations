@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import SiteLayout from './components/layout/SiteLayout'
 import HomePage from './pages/HomePage'
 import FounderPage from './pages/FounderPage'
@@ -25,6 +25,7 @@ const WorkforceManagerPage = lazy(() => import('./pages/WorkforceManagerPage'))
 const PosSystemPage        = lazy(() => import('./pages/PosSystemPage'))
 const BillingPage          = lazy(() => import('./pages/BillingPage'))
 const TransportLogisticsPage = lazy(() => import('./pages/TransportLogisticsPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const BlogPostPage         = lazy(() => import('./pages/BlogPostPage'))
 const BlogIndexPage        = lazy(() => import('./pages/BlogIndexPage'))
 const CaseStudiesPage      = lazy(() => import('./pages/CaseStudiesPage'))
@@ -491,8 +492,8 @@ function App() {
           element={<Suspense fallback={<PageLoader />}><OpenGraphPreviewPage /></Suspense>}
         />
 
-        {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Catch-all — real 404 page, not a silent redirect to home (was a soft-404 before) */}
+        <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFoundPage /></Suspense>} />
 
       </Route>
     </Routes>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Container from '../components/ui/Container'
 import PatternBackground from '../components/ui/PatternBackground'
 
-const founderPhoto = '/media/founder.PNG'
+const founderPhoto = '/media/founder-optimized.jpg'
 
 function FounderPage() {
   return (

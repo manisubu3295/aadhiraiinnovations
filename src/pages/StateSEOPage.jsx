@@ -31,11 +31,11 @@ function StateSEOPage() {
       <Helmet>
         <title>{data.meta.title}</title>
         <meta name="description" content={data.meta.description} />
-        <link rel="canonical" href={`https://aadhiraiinnovations.com/pharmacy-billing-software/state/${stateSlug}`} />
+        <link rel="canonical" href={`https://www.aadhiraiinnovations.com/pharmacy-billing-software/state/${stateSlug}`} />
         <meta property="og:title" content={data.meta.title} />
         <meta property="og:description" content={data.meta.description} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://aadhiraiinnovations.com/pharmacy-billing-software/state/${stateSlug}`} />
+        <meta property="og:url" content={`https://www.aadhiraiinnovations.com/pharmacy-billing-software/state/${stateSlug}`} />
         <meta property="og:site_name" content="Aadhirai Innovations" />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -43,9 +43,9 @@ function StateSEOPage() {
             '@type': 'LocalBusiness',
             name: `Medora+ - Pharmacy Billing Software in ${state}`,
             description: data.meta.description,
-            url: `https://aadhiraiinnovations.com/pharmacy-billing-software/state/${stateSlug}`,
+            url: `https://www.aadhiraiinnovations.com/pharmacy-billing-software/state/${stateSlug}`,
             areaServed: { '@type': 'State', name: state, addressCountry: 'IN' },
-            image: 'https://aadhiraiinnovations.com/og-image.jpg',
+            image: 'https://www.aadhiraiinnovations.com/media/billing.png',
           })}
         </script>
       </Helmet>

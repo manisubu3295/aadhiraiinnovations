@@ -4,6 +4,15 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react'
 import Container from '../components/ui/Container'
 import products from '../data/products'
+import { useNoIndex } from '../hooks/useNoIndex.js'
+
+// Kept live for anyone with a direct link, but deliberately dropped from the sitemap
+// (see generate-sitemap.js) since they have zero internal links anywhere on the site —
+// noindex here so any copy Google already crawled gets that signal too, not just silence
+// going forward.
+const DEINDEXED_SLUGS = new Set([
+  'decision-os', 'mouna-ai', 'school-os', 'crm', 'pharma-dist', 'passtrack', 'pos', 'voltage-iq',
+])
 
 /* ─── Animation ─────────────────────────────────────────────────────────── */
 const fadeUp = {
@@ -58,6 +67,8 @@ function Eyebrow({ children, light = false }) {
 function ProductPage() {
   const { slug } = useParams()
   const product  = products.find(p => p.slug === slug)
+
+  useNoIndex(DEINDEXED_SLUGS.has(slug))
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })

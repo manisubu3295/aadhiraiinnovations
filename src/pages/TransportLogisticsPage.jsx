@@ -30,7 +30,7 @@ function usePageSchema(faqs) {
         operatingSystem: 'Web, Cloud',
         description:
           'Transport and logistics software for Indian fleet operators — quotation-to-invoice conversion, live GPS driver tracking, delivery job tracking, fleet and driver management, expense management, and revenue reporting in one system.',
-        screenshot: 'https://www.aadhiraiinnovations.com/media/dashboard.png',
+        screenshot: 'https://www.aadhiraiinnovations.com/media/billing.png',
         offers: {
           '@type': 'Offer',
           seller: {

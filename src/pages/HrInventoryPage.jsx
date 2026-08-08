@@ -32,7 +32,7 @@ function usePageSchema(faqs) {
         operatingSystem: 'Windows, Web, Cloud',
         description:
           'HRM software for growing businesses. Employee records, leave, attendance, payroll, shift scheduling with stock tracking and purchase orders. One system for people and stock.',
-        screenshot: 'https://www.aadhiraiinnovations.com/media/dashboard.png',
+        screenshot: 'https://www.aadhiraiinnovations.com/media/billing.png',
         offers: {
           '@type': 'Offer',
           seller: {

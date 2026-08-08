@@ -111,18 +111,16 @@ const toolPages = toolSlugs.map(slug => ({
 // several of these have historically drifted out of sync (fixed 2026-08).
 // 'workforce-manager' deliberately excluded — that page now canonicalizes to /products/hr-inventory
 // (HR & Inventory became the sole flagship HRM page), so it shouldn't self-list in the sitemap.
+// 'decision-os', 'mouna-ai', 'school-os', 'crm', 'pharma-dist', 'passtrack', 'pos', 'voltage-iq'
+// deliberately excluded (2026-08 audit) — these products have zero internal links anywhere on
+// the site (no nav entry, no homepage tile), so sitemap-listing them was pure orphan-page SEO
+// waste: indexed and crawlable with no internal PageRank flow and nowhere for a visitor who
+// finds one via search to go next. Pages themselves stay live at /products/:slug for anyone with
+// a direct link — see ProductPage.jsx's DEINDEXED_SLUGS for the matching noindex.
 const productSlugs = [
   'billing',
   'hr-inventory',
   'transport-logistics',
-  'decision-os',
-  'mouna-ai',
-  'school-os',
-  'crm',
-  'pharma-dist',
-  'passtrack',
-  'pos',
-  'voltage-iq',
 ]
 
 const FLAGSHIP_PRODUCT_SLUGS = new Set(['hr-inventory', 'transport-logistics'])
