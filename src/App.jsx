@@ -44,6 +44,53 @@ const TransportLocationsHubPage = lazy(() => import('./pages/TransportLocationsH
 const TransportStateSEOPage     = lazy(() => import('./pages/TransportStateSEOPage'))
 const GstCalculatorPage    = lazy(() => import('./pages/GstCalculatorPage'))
 const TaxSimulatorPage     = lazy(() => import('./pages/TaxSimulatorPage'))
+const FdCalculatorPage     = lazy(() => import('./pages/FdCalculatorPage'))
+const RdCalculatorPage     = lazy(() => import('./pages/RdCalculatorPage'))
+const PpfCalculatorPage    = lazy(() => import('./pages/PpfCalculatorPage'))
+const GratuityCalculatorPage = lazy(() => import('./pages/GratuityCalculatorPage'))
+const RetirementCalculatorPage = lazy(() => import('./pages/RetirementCalculatorPage'))
+const InflationCalculatorPage  = lazy(() => import('./pages/InflationCalculatorPage'))
+const RuleOf72CalculatorPage   = lazy(() => import('./pages/RuleOf72CalculatorPage'))
+const BreakEvenCalculatorPage  = lazy(() => import('./pages/BreakEvenCalculatorPage'))
+const StampDutyCalculatorPage  = lazy(() => import('./pages/StampDutyCalculatorPage'))
+const FreelanceRateCalculatorPage = lazy(() => import('./pages/FreelanceRateCalculatorPage'))
+const LatePaymentInterestCalculatorPage = lazy(() => import('./pages/LatePaymentInterestCalculatorPage'))
+const BmiCalculatorPage = lazy(() => import('./pages/BmiCalculatorPage'))
+const TipCalculatorPage = lazy(() => import('./pages/TipCalculatorPage'))
+const CountdownTimerPage = lazy(() => import('./pages/CountdownTimerPage'))
+const PomodoroTimerPage = lazy(() => import('./pages/PomodoroTimerPage'))
+const TimezoneConverterPage = lazy(() => import('./pages/TimezoneConverterPage'))
+const NumberBaseConverterPage = lazy(() => import('./pages/NumberBaseConverterPage'))
+const RomanNumeralConverterPage = lazy(() => import('./pages/RomanNumeralConverterPage'))
+const MorseCodeTranslatorPage = lazy(() => import('./pages/MorseCodeTranslatorPage'))
+const ImageResizerPage = lazy(() => import('./pages/ImageResizerPage'))
+const ImageFormatConverterPage = lazy(() => import('./pages/ImageFormatConverterPage'))
+const RandomPickerPage = lazy(() => import('./pages/RandomPickerPage'))
+const BarBendingSchedulePage = lazy(() => import('./pages/BarBendingSchedulePage'))
+const SchemaMarkupGeneratorPage = lazy(() => import('./pages/SchemaMarkupGeneratorPage'))
+const XmlSitemapGeneratorPage = lazy(() => import('./pages/XmlSitemapGeneratorPage'))
+const UtmLinkBuilderPage = lazy(() => import('./pages/UtmLinkBuilderPage'))
+const KeywordDensityCheckerPage = lazy(() => import('./pages/KeywordDensityCheckerPage'))
+const TitleTagCheckerPage = lazy(() => import('./pages/TitleTagCheckerPage'))
+const MetaDescriptionCheckerPage = lazy(() => import('./pages/MetaDescriptionCheckerPage'))
+const ReadabilityCheckerPage = lazy(() => import('./pages/ReadabilityCheckerPage'))
+const SocialCaptionCheckerPage = lazy(() => import('./pages/SocialCaptionCheckerPage'))
+const YamlJsonConverterPage = lazy(() => import('./pages/YamlJsonConverterPage'))
+const MarkdownHtmlConverterPage = lazy(() => import('./pages/MarkdownHtmlConverterPage'))
+const HtmlFormatterPage = lazy(() => import('./pages/HtmlFormatterPage'))
+const CssFormatterPage = lazy(() => import('./pages/CssFormatterPage'))
+const JsFormatterPage = lazy(() => import('./pages/JsFormatterPage'))
+const SqlFormatterPage = lazy(() => import('./pages/SqlFormatterPage'))
+const HashGeneratorPage = lazy(() => import('./pages/HashGeneratorPage'))
+const CsvJsonConverterPage = lazy(() => import('./pages/CsvJsonConverterPage'))
+const HttpStatusCodesPage = lazy(() => import('./pages/HttpStatusCodesPage'))
+const FaviconGeneratorPage = lazy(() => import('./pages/FaviconGeneratorPage'))
+const PdfTextExtractorPage = lazy(() => import('./pages/PdfTextExtractorPage'))
+const PptToPdfConverterPage = lazy(() => import('./pages/PptToPdfConverterPage'))
+const ExcelToPdfConverterPage = lazy(() => import('./pages/ExcelToPdfConverterPage'))
+const ExcelCsvConverterPage = lazy(() => import('./pages/ExcelCsvConverterPage'))
+const PdfRotatePage = lazy(() => import('./pages/PdfRotatePage'))
+const PdfSignaturePage = lazy(() => import('./pages/PdfSignaturePage'))
 const AmountToWordsPage    = lazy(() => import('./pages/AmountToWordsPage'))
 const EmiCalculatorPage    = lazy(() => import('./pages/EmiCalculatorPage'))
 const QrCodeGeneratorPage  = lazy(() => import('./pages/QrCodeGeneratorPage'))
@@ -286,6 +333,53 @@ function App() {
           path="/tools/tax-simulator"
           element={<Suspense fallback={<PageLoader />}><TaxSimulatorPage /></Suspense>}
         />
+        <Route path="/tools/fd-calculator" element={<Suspense fallback={<PageLoader />}><FdCalculatorPage /></Suspense>} />
+        <Route path="/tools/rd-calculator" element={<Suspense fallback={<PageLoader />}><RdCalculatorPage /></Suspense>} />
+        <Route path="/tools/ppf-calculator" element={<Suspense fallback={<PageLoader />}><PpfCalculatorPage /></Suspense>} />
+        <Route path="/tools/gratuity-calculator" element={<Suspense fallback={<PageLoader />}><GratuityCalculatorPage /></Suspense>} />
+        <Route path="/tools/retirement-calculator" element={<Suspense fallback={<PageLoader />}><RetirementCalculatorPage /></Suspense>} />
+        <Route path="/tools/inflation-calculator" element={<Suspense fallback={<PageLoader />}><InflationCalculatorPage /></Suspense>} />
+        <Route path="/tools/rule-of-72-calculator" element={<Suspense fallback={<PageLoader />}><RuleOf72CalculatorPage /></Suspense>} />
+        <Route path="/tools/break-even-calculator" element={<Suspense fallback={<PageLoader />}><BreakEvenCalculatorPage /></Suspense>} />
+        <Route path="/tools/stamp-duty-calculator" element={<Suspense fallback={<PageLoader />}><StampDutyCalculatorPage /></Suspense>} />
+        <Route path="/tools/freelance-rate-calculator" element={<Suspense fallback={<PageLoader />}><FreelanceRateCalculatorPage /></Suspense>} />
+        <Route path="/tools/late-payment-interest-calculator" element={<Suspense fallback={<PageLoader />}><LatePaymentInterestCalculatorPage /></Suspense>} />
+        <Route path="/tools/bmi-calculator" element={<Suspense fallback={<PageLoader />}><BmiCalculatorPage /></Suspense>} />
+        <Route path="/tools/tip-calculator" element={<Suspense fallback={<PageLoader />}><TipCalculatorPage /></Suspense>} />
+        <Route path="/tools/countdown-timer" element={<Suspense fallback={<PageLoader />}><CountdownTimerPage /></Suspense>} />
+        <Route path="/tools/pomodoro-timer" element={<Suspense fallback={<PageLoader />}><PomodoroTimerPage /></Suspense>} />
+        <Route path="/tools/timezone-converter" element={<Suspense fallback={<PageLoader />}><TimezoneConverterPage /></Suspense>} />
+        <Route path="/tools/number-base-converter" element={<Suspense fallback={<PageLoader />}><NumberBaseConverterPage /></Suspense>} />
+        <Route path="/tools/roman-numeral-converter" element={<Suspense fallback={<PageLoader />}><RomanNumeralConverterPage /></Suspense>} />
+        <Route path="/tools/morse-code-translator" element={<Suspense fallback={<PageLoader />}><MorseCodeTranslatorPage /></Suspense>} />
+        <Route path="/tools/image-resizer" element={<Suspense fallback={<PageLoader />}><ImageResizerPage /></Suspense>} />
+        <Route path="/tools/image-format-converter" element={<Suspense fallback={<PageLoader />}><ImageFormatConverterPage /></Suspense>} />
+        <Route path="/tools/random-picker" element={<Suspense fallback={<PageLoader />}><RandomPickerPage /></Suspense>} />
+        <Route path="/tools/bar-bending-schedule" element={<Suspense fallback={<PageLoader />}><BarBendingSchedulePage /></Suspense>} />
+        <Route path="/tools/schema-markup-generator" element={<Suspense fallback={<PageLoader />}><SchemaMarkupGeneratorPage /></Suspense>} />
+        <Route path="/tools/xml-sitemap-generator" element={<Suspense fallback={<PageLoader />}><XmlSitemapGeneratorPage /></Suspense>} />
+        <Route path="/tools/utm-link-builder" element={<Suspense fallback={<PageLoader />}><UtmLinkBuilderPage /></Suspense>} />
+        <Route path="/tools/keyword-density-checker" element={<Suspense fallback={<PageLoader />}><KeywordDensityCheckerPage /></Suspense>} />
+        <Route path="/tools/title-tag-checker" element={<Suspense fallback={<PageLoader />}><TitleTagCheckerPage /></Suspense>} />
+        <Route path="/tools/meta-description-checker" element={<Suspense fallback={<PageLoader />}><MetaDescriptionCheckerPage /></Suspense>} />
+        <Route path="/tools/readability-checker" element={<Suspense fallback={<PageLoader />}><ReadabilityCheckerPage /></Suspense>} />
+        <Route path="/tools/social-caption-checker" element={<Suspense fallback={<PageLoader />}><SocialCaptionCheckerPage /></Suspense>} />
+        <Route path="/tools/yaml-json-converter" element={<Suspense fallback={<PageLoader />}><YamlJsonConverterPage /></Suspense>} />
+        <Route path="/tools/markdown-html-converter" element={<Suspense fallback={<PageLoader />}><MarkdownHtmlConverterPage /></Suspense>} />
+        <Route path="/tools/html-formatter" element={<Suspense fallback={<PageLoader />}><HtmlFormatterPage /></Suspense>} />
+        <Route path="/tools/css-formatter" element={<Suspense fallback={<PageLoader />}><CssFormatterPage /></Suspense>} />
+        <Route path="/tools/js-formatter" element={<Suspense fallback={<PageLoader />}><JsFormatterPage /></Suspense>} />
+        <Route path="/tools/sql-formatter" element={<Suspense fallback={<PageLoader />}><SqlFormatterPage /></Suspense>} />
+        <Route path="/tools/hash-generator" element={<Suspense fallback={<PageLoader />}><HashGeneratorPage /></Suspense>} />
+        <Route path="/tools/csv-json-converter" element={<Suspense fallback={<PageLoader />}><CsvJsonConverterPage /></Suspense>} />
+        <Route path="/tools/http-status-codes" element={<Suspense fallback={<PageLoader />}><HttpStatusCodesPage /></Suspense>} />
+        <Route path="/tools/favicon-generator" element={<Suspense fallback={<PageLoader />}><FaviconGeneratorPage /></Suspense>} />
+        <Route path="/tools/pdf-text-extractor" element={<Suspense fallback={<PageLoader />}><PdfTextExtractorPage /></Suspense>} />
+        <Route path="/tools/ppt-to-pdf-converter" element={<Suspense fallback={<PageLoader />}><PptToPdfConverterPage /></Suspense>} />
+        <Route path="/tools/excel-to-pdf-converter" element={<Suspense fallback={<PageLoader />}><ExcelToPdfConverterPage /></Suspense>} />
+        <Route path="/tools/excel-csv-converter" element={<Suspense fallback={<PageLoader />}><ExcelCsvConverterPage /></Suspense>} />
+        <Route path="/tools/pdf-rotate" element={<Suspense fallback={<PageLoader />}><PdfRotatePage /></Suspense>} />
+        <Route path="/tools/pdf-signature" element={<Suspense fallback={<PageLoader />}><PdfSignaturePage /></Suspense>} />
         <Route
           path="/tools/amount-to-words"
           element={<Suspense fallback={<PageLoader />}><AmountToWordsPage /></Suspense>}
