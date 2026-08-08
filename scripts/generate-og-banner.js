@@ -196,7 +196,7 @@ function buildHtml() {
       <div class="brand-mark">A</div>
       <div class="brand-name">AADHIRAI INNOVATIONS</div>
     </div>
-    <h1>Enterprise Software for Every Indian Business</h1>
+    <h1>Enterprise Software for Every Business</h1>
     <p class="tagline">Pharmacy billing, business billing &amp; inventory, HR &amp; Inventory management, and Transport &amp; Logistics — GST-compliant, offline-first, built in Tamil Nadu.</p>
     <div class="cards">
       ${cards}
