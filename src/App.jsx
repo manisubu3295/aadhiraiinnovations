@@ -91,6 +91,54 @@ const ExcelToPdfConverterPage = lazy(() => import('./pages/ExcelToPdfConverterPa
 const ExcelCsvConverterPage = lazy(() => import('./pages/ExcelCsvConverterPage'))
 const PdfRotatePage = lazy(() => import('./pages/PdfRotatePage'))
 const PdfSignaturePage = lazy(() => import('./pages/PdfSignaturePage'))
+// Construction & Real Estate
+const ConcreteVolumeCalculatorPage = lazy(() => import('./pages/ConcreteVolumeCalculatorPage'))
+const ConcreteMixCalculatorPage = lazy(() => import('./pages/ConcreteMixCalculatorPage'))
+const CementBagsCalculatorPage = lazy(() => import('./pages/CementBagsCalculatorPage'))
+const BrickCalculatorPage = lazy(() => import('./pages/BrickCalculatorPage'))
+const BlockCalculatorPage = lazy(() => import('./pages/BlockCalculatorPage'))
+const PlasterCalculatorPage = lazy(() => import('./pages/PlasterCalculatorPage'))
+const TileCalculatorPage = lazy(() => import('./pages/TileCalculatorPage'))
+const PaintCalculatorPage = lazy(() => import('./pages/PaintCalculatorPage'))
+const FlooringCostCalculatorPage = lazy(() => import('./pages/FlooringCostCalculatorPage'))
+const PaverBlockCalculatorPage = lazy(() => import('./pages/PaverBlockCalculatorPage'))
+const ExcavationCalculatorPage = lazy(() => import('./pages/ExcavationCalculatorPage'))
+const WaterproofingCalculatorPage = lazy(() => import('./pages/WaterproofingCalculatorPage'))
+const MortarCalculatorPage = lazy(() => import('./pages/MortarCalculatorPage'))
+const TmtSteelWeightCalculatorPage = lazy(() => import('./pages/TmtSteelWeightCalculatorPage'))
+const HomeLoanEligibilityCalculatorPage = lazy(() => import('./pages/HomeLoanEligibilityCalculatorPage'))
+const RentalYieldCalculatorPage = lazy(() => import('./pages/RentalYieldCalculatorPage'))
+const PropertyAppreciationCalculatorPage = lazy(() => import('./pages/PropertyAppreciationCalculatorPage'))
+const CarpetBuiltupAreaConverterPage = lazy(() => import('./pages/CarpetBuiltupAreaConverterPage'))
+const PricePerSqftCalculatorPage = lazy(() => import('./pages/PricePerSqftCalculatorPage'))
+const PropertyTaxCalculatorPage = lazy(() => import('./pages/PropertyTaxCalculatorPage'))
+const BrokerageCalculatorPage = lazy(() => import('./pages/BrokerageCalculatorPage'))
+const RentEscalationCalculatorPage = lazy(() => import('./pages/RentEscalationCalculatorPage'))
+const RentVsBuyCalculatorPage = lazy(() => import('./pages/RentVsBuyCalculatorPage'))
+const DownPaymentCalculatorPage = lazy(() => import('./pages/DownPaymentCalculatorPage'))
+const LtvCalculatorPage = lazy(() => import('./pages/LtvCalculatorPage'))
+const FsiCalculatorPage = lazy(() => import('./pages/FsiCalculatorPage'))
+const LandAreaUnitConverterPage = lazy(() => import('./pages/LandAreaUnitConverterPage'))
+const ConstructionCostEstimatorPage = lazy(() => import('./pages/ConstructionCostEstimatorPage'))
+const StaircaseCalculatorPage = lazy(() => import('./pages/StaircaseCalculatorPage'))
+const RoofPitchCalculatorPage = lazy(() => import('./pages/RoofPitchCalculatorPage'))
+const SlopeGradientCalculatorPage = lazy(() => import('./pages/SlopeGradientCalculatorPage'))
+const BeamDepthEstimatorPage = lazy(() => import('./pages/BeamDepthEstimatorPage'))
+const ColumnSizeEstimatorPage = lazy(() => import('./pages/ColumnSizeEstimatorPage'))
+const WindowWallRatioCalculatorPage = lazy(() => import('./pages/WindowWallRatioCalculatorPage'))
+const RoomAreaCalculatorPage = lazy(() => import('./pages/RoomAreaCalculatorPage'))
+const ConstructionVolumeConverterPage = lazy(() => import('./pages/ConstructionVolumeConverterPage'))
+const CurtainFabricCalculatorPage = lazy(() => import('./pages/CurtainFabricCalculatorPage'))
+const FalseCeilingCalculatorPage = lazy(() => import('./pages/FalseCeilingCalculatorPage'))
+const WallpaperCalculatorPage = lazy(() => import('./pages/WallpaperCalculatorPage'))
+const ModularFurnitureCostEstimatorPage = lazy(() => import('./pages/ModularFurnitureCostEstimatorPage'))
+const WallPuttyCalculatorPage = lazy(() => import('./pages/WallPuttyCalculatorPage'))
+const SkirtingCalculatorPage = lazy(() => import('./pages/SkirtingCalculatorPage'))
+const ShutteringCalculatorPage = lazy(() => import('./pages/ShutteringCalculatorPage'))
+const WaterTankCalculatorPage = lazy(() => import('./pages/WaterTankCalculatorPage'))
+const SolarPanelEstimatorPage = lazy(() => import('./pages/SolarPanelEstimatorPage'))
+const BorewellCostEstimatorPage = lazy(() => import('./pages/BorewellCostEstimatorPage'))
+const PropertyDocumentChecklistPage = lazy(() => import('./pages/PropertyDocumentChecklistPage'))
 const AmountToWordsPage    = lazy(() => import('./pages/AmountToWordsPage'))
 const EmiCalculatorPage    = lazy(() => import('./pages/EmiCalculatorPage'))
 const QrCodeGeneratorPage  = lazy(() => import('./pages/QrCodeGeneratorPage'))
@@ -380,6 +428,53 @@ function App() {
         <Route path="/tools/excel-csv-converter" element={<Suspense fallback={<PageLoader />}><ExcelCsvConverterPage /></Suspense>} />
         <Route path="/tools/pdf-rotate" element={<Suspense fallback={<PageLoader />}><PdfRotatePage /></Suspense>} />
         <Route path="/tools/pdf-signature" element={<Suspense fallback={<PageLoader />}><PdfSignaturePage /></Suspense>} />
+        <Route path="/tools/concrete-volume-calculator" element={<Suspense fallback={<PageLoader />}><ConcreteVolumeCalculatorPage /></Suspense>} />
+        <Route path="/tools/concrete-mix-calculator" element={<Suspense fallback={<PageLoader />}><ConcreteMixCalculatorPage /></Suspense>} />
+        <Route path="/tools/cement-bags-calculator" element={<Suspense fallback={<PageLoader />}><CementBagsCalculatorPage /></Suspense>} />
+        <Route path="/tools/brick-calculator" element={<Suspense fallback={<PageLoader />}><BrickCalculatorPage /></Suspense>} />
+        <Route path="/tools/block-calculator" element={<Suspense fallback={<PageLoader />}><BlockCalculatorPage /></Suspense>} />
+        <Route path="/tools/plaster-calculator" element={<Suspense fallback={<PageLoader />}><PlasterCalculatorPage /></Suspense>} />
+        <Route path="/tools/tile-calculator" element={<Suspense fallback={<PageLoader />}><TileCalculatorPage /></Suspense>} />
+        <Route path="/tools/paint-calculator" element={<Suspense fallback={<PageLoader />}><PaintCalculatorPage /></Suspense>} />
+        <Route path="/tools/flooring-cost-calculator" element={<Suspense fallback={<PageLoader />}><FlooringCostCalculatorPage /></Suspense>} />
+        <Route path="/tools/paver-block-calculator" element={<Suspense fallback={<PageLoader />}><PaverBlockCalculatorPage /></Suspense>} />
+        <Route path="/tools/excavation-calculator" element={<Suspense fallback={<PageLoader />}><ExcavationCalculatorPage /></Suspense>} />
+        <Route path="/tools/waterproofing-calculator" element={<Suspense fallback={<PageLoader />}><WaterproofingCalculatorPage /></Suspense>} />
+        <Route path="/tools/mortar-calculator" element={<Suspense fallback={<PageLoader />}><MortarCalculatorPage /></Suspense>} />
+        <Route path="/tools/tmt-steel-weight-calculator" element={<Suspense fallback={<PageLoader />}><TmtSteelWeightCalculatorPage /></Suspense>} />
+        <Route path="/tools/home-loan-eligibility-calculator" element={<Suspense fallback={<PageLoader />}><HomeLoanEligibilityCalculatorPage /></Suspense>} />
+        <Route path="/tools/rental-yield-calculator" element={<Suspense fallback={<PageLoader />}><RentalYieldCalculatorPage /></Suspense>} />
+        <Route path="/tools/property-appreciation-calculator" element={<Suspense fallback={<PageLoader />}><PropertyAppreciationCalculatorPage /></Suspense>} />
+        <Route path="/tools/carpet-builtup-area-converter" element={<Suspense fallback={<PageLoader />}><CarpetBuiltupAreaConverterPage /></Suspense>} />
+        <Route path="/tools/price-per-sqft-calculator" element={<Suspense fallback={<PageLoader />}><PricePerSqftCalculatorPage /></Suspense>} />
+        <Route path="/tools/property-tax-calculator" element={<Suspense fallback={<PageLoader />}><PropertyTaxCalculatorPage /></Suspense>} />
+        <Route path="/tools/brokerage-calculator" element={<Suspense fallback={<PageLoader />}><BrokerageCalculatorPage /></Suspense>} />
+        <Route path="/tools/rent-escalation-calculator" element={<Suspense fallback={<PageLoader />}><RentEscalationCalculatorPage /></Suspense>} />
+        <Route path="/tools/rent-vs-buy-calculator" element={<Suspense fallback={<PageLoader />}><RentVsBuyCalculatorPage /></Suspense>} />
+        <Route path="/tools/down-payment-calculator" element={<Suspense fallback={<PageLoader />}><DownPaymentCalculatorPage /></Suspense>} />
+        <Route path="/tools/ltv-calculator" element={<Suspense fallback={<PageLoader />}><LtvCalculatorPage /></Suspense>} />
+        <Route path="/tools/fsi-calculator" element={<Suspense fallback={<PageLoader />}><FsiCalculatorPage /></Suspense>} />
+        <Route path="/tools/land-area-unit-converter" element={<Suspense fallback={<PageLoader />}><LandAreaUnitConverterPage /></Suspense>} />
+        <Route path="/tools/construction-cost-estimator" element={<Suspense fallback={<PageLoader />}><ConstructionCostEstimatorPage /></Suspense>} />
+        <Route path="/tools/staircase-calculator" element={<Suspense fallback={<PageLoader />}><StaircaseCalculatorPage /></Suspense>} />
+        <Route path="/tools/roof-pitch-calculator" element={<Suspense fallback={<PageLoader />}><RoofPitchCalculatorPage /></Suspense>} />
+        <Route path="/tools/slope-gradient-calculator" element={<Suspense fallback={<PageLoader />}><SlopeGradientCalculatorPage /></Suspense>} />
+        <Route path="/tools/beam-depth-estimator" element={<Suspense fallback={<PageLoader />}><BeamDepthEstimatorPage /></Suspense>} />
+        <Route path="/tools/column-size-estimator" element={<Suspense fallback={<PageLoader />}><ColumnSizeEstimatorPage /></Suspense>} />
+        <Route path="/tools/window-wall-ratio-calculator" element={<Suspense fallback={<PageLoader />}><WindowWallRatioCalculatorPage /></Suspense>} />
+        <Route path="/tools/room-area-calculator" element={<Suspense fallback={<PageLoader />}><RoomAreaCalculatorPage /></Suspense>} />
+        <Route path="/tools/construction-volume-converter" element={<Suspense fallback={<PageLoader />}><ConstructionVolumeConverterPage /></Suspense>} />
+        <Route path="/tools/curtain-fabric-calculator" element={<Suspense fallback={<PageLoader />}><CurtainFabricCalculatorPage /></Suspense>} />
+        <Route path="/tools/false-ceiling-calculator" element={<Suspense fallback={<PageLoader />}><FalseCeilingCalculatorPage /></Suspense>} />
+        <Route path="/tools/wallpaper-calculator" element={<Suspense fallback={<PageLoader />}><WallpaperCalculatorPage /></Suspense>} />
+        <Route path="/tools/modular-furniture-cost-estimator" element={<Suspense fallback={<PageLoader />}><ModularFurnitureCostEstimatorPage /></Suspense>} />
+        <Route path="/tools/wall-putty-calculator" element={<Suspense fallback={<PageLoader />}><WallPuttyCalculatorPage /></Suspense>} />
+        <Route path="/tools/skirting-calculator" element={<Suspense fallback={<PageLoader />}><SkirtingCalculatorPage /></Suspense>} />
+        <Route path="/tools/shuttering-calculator" element={<Suspense fallback={<PageLoader />}><ShutteringCalculatorPage /></Suspense>} />
+        <Route path="/tools/water-tank-calculator" element={<Suspense fallback={<PageLoader />}><WaterTankCalculatorPage /></Suspense>} />
+        <Route path="/tools/solar-panel-estimator" element={<Suspense fallback={<PageLoader />}><SolarPanelEstimatorPage /></Suspense>} />
+        <Route path="/tools/borewell-cost-estimator" element={<Suspense fallback={<PageLoader />}><BorewellCostEstimatorPage /></Suspense>} />
+        <Route path="/tools/property-document-checklist" element={<Suspense fallback={<PageLoader />}><PropertyDocumentChecklistPage /></Suspense>} />
         <Route
           path="/tools/amount-to-words"
           element={<Suspense fallback={<PageLoader />}><AmountToWordsPage /></Suspense>}
