@@ -5,6 +5,7 @@
 const blogPosts = {
   'pharmacy-billing-101': {
     slug: 'pharmacy-billing-101',
+    ctaProduct: 'medora',
     title: 'Pharmacy Billing 101: Complete Guide to GST-Compliant Billing',
     excerpt: 'Everything pharmacy owners need to know about modern billing systems, GST compliance, and operational efficiency.',
     date: 'April 19, 2026',
@@ -119,6 +120,7 @@ Good billing is the foundation of a good pharmacy. Modern systems like Medora+ h
   },
   'gst-compliance-pharmacies': {
     slug: 'gst-compliance-pharmacies',
+    ctaProduct: 'medora',
     title: 'GST Compliance for Indian Pharmacies: 2026 Guide',
     excerpt: 'Complete guide to GST compliance for pharmacies — HSN codes, GSTIN validation, audit readiness, and common mistakes to avoid.',
     date: 'April 18, 2026',
@@ -246,6 +248,7 @@ GST compliance isn't optional — it's mandatory. But with modern billing system
   },
   'best-pharmacy-software-2026': {
     slug: 'best-pharmacy-software-2026',
+    ctaProduct: 'medora',
     title: 'Best Pharmacy Billing Software in 2026: Comparison Guide',
     excerpt: 'Compare pharmacy management software options. What features matter, how to evaluate vendors, and why Medora+ stands out.',
     date: 'April 17, 2026',
@@ -262,6 +265,7 @@ The pharmacy software market is crowded. This guide helps you evaluate options a
   },
   'offline-first-pharmacy-software': {
     slug: 'offline-first-pharmacy-software',
+    ctaProduct: 'medora',
     title: 'Why Offline-First Pharmacy Software Matters in India',
     excerpt: 'Understanding why offline-first architecture is critical for Indian pharmacies and how it protects your business during outages.',
     date: 'April 16, 2026',
@@ -361,6 +365,7 @@ For Indian pharmacies, offline-first isn't a nice-to-have—it's essential. It p
   },
   'inventory-tracking-pharmacies': {
     slug: 'inventory-tracking-pharmacies',
+    ctaProduct: 'medora',
     title: 'Inventory Tracking for Pharmacies: Complete Guide',
     excerpt: 'Master inventory management for pharmacies. Prevent stockouts, reduce waste, track expiry dates, and control costs.',
     date: 'April 15, 2026',
@@ -492,6 +497,7 @@ Real-time inventory tracking prevents stockouts, reduces expiry waste, improves 
   },
   'erp-small-business': {
     slug: 'erp-small-business',
+    ctaProduct: 'hr',
     title: 'ERP for Small Business: Complete Guide to HR and Inventory',
     excerpt: 'Understanding ERP systems for small businesses. How HR management and inventory control work together to streamline operations.',
     date: 'April 14, 2026',
@@ -644,6 +650,7 @@ ERP isn't just for enterprises. Small businesses benefit hugely from integrated 
   },
   'digital-transformation-retail': {
     slug: 'digital-transformation-retail',
+    ctaProduct: 'pos',
     title: 'Digital Transformation in Retail: 2026 Strategy',
     excerpt: 'How retail businesses are digitizing operations, from POS systems to workforce management to customer experience.',
     date: 'April 13, 2026',
@@ -778,6 +785,7 @@ Digital transformation isn't optional for retail anymore. Start with POS, add wo
   },
   'staff-scheduling-best-practices': {
     slug: 'staff-scheduling-best-practices',
+    ctaProduct: 'workforce',
     title: 'Staff Scheduling Best Practices: Modern Workforce Planning',
     excerpt: 'Effective staff scheduling reduces costs, improves customer service, and increases employee satisfaction. Learn the best practices.',
     date: 'April 12, 2026',
@@ -953,6 +961,7 @@ Good scheduling balances three demands: customer service, cost control, and staf
   },
   'pharmacy-billing-comparison': {
     slug: 'pharmacy-billing-comparison',
+    ctaProduct: 'medora',
     title: 'Best Pharmacy Billing Software in 2026: Comparison Guide',
     excerpt: 'Compare pharmacy billing software options. What makes good pharmacy software? How to choose between generic, adapted, and purpose-built systems.',
     date: 'April 15, 2026',
@@ -1090,6 +1099,7 @@ The best pharmacy software for you depends on your needs, budget, and location. 
   },
   'hrm-software-buying-guide': {
     slug: 'hrm-software-buying-guide',
+    ctaProduct: 'hr',
     title: 'HRM Software for Small Businesses: A Complete Buying Guide',
     excerpt: 'What HRM software actually does, when spreadsheets stop being enough, and how to evaluate systems for a growing Indian business.',
     date: 'August 5, 2026',
@@ -1175,6 +1185,7 @@ HRM software earns its cost the moment payroll stops being a monthly scramble. L
   },
   'payroll-software-india': {
     slug: 'payroll-software-india',
+    ctaProduct: 'hr',
     title: 'Payroll Software India: How Automated Payroll Actually Works',
     excerpt: 'How payroll software turns attendance records into accurate pay — and why manual payroll breaks down as a team grows.',
     date: 'August 6, 2026',
@@ -1243,6 +1254,7 @@ Payroll software isn't about replacing your accountant or payroll processor — 
   },
   'leave-attendance-management-guide': {
     slug: 'leave-attendance-management-guide',
+    ctaProduct: 'hr',
     title: 'Leave & Attendance Management: A Practical Guide for Growing Teams',
     excerpt: 'How to set up leave policies and attendance tracking that scale past a handful of employees — without turning HR into a full-time chase.',
     date: 'August 7, 2026',
@@ -1320,6 +1332,7 @@ Leave and attendance management done well is invisible — employees know their 
   },
   'transport-invoicing-software': {
     slug: 'transport-invoicing-software',
+    ctaProduct: 'transport',
     title: 'Transport Company Invoicing: Why Manual Billing Breaks as You Scale',
     excerpt: 'Word templates and spreadsheets work for a handful of trucks. Here\'s exactly where manual transport invoicing starts costing you money — and what replaces it.',
     date: 'August 8, 2026',
@@ -1390,6 +1403,7 @@ Manual transport invoicing works right up until it doesn't — usually somewhere
   },
   'gps-tracking-delivery-fleets': {
     slug: 'gps-tracking-delivery-fleets',
+    ctaProduct: 'transport',
     title: 'Live GPS Tracking for Delivery Fleets: What It Actually Solves',
     excerpt: 'Live driver tracking isn\'t about surveillance — it\'s about answering "where is my delivery" without a phone call. Here\'s what it changes in practice.',
     date: 'August 8, 2026',
@@ -1447,6 +1461,7 @@ Live GPS tracking's real value isn't the map — it's every phone call it remove
   },
   'transport-software-buying-guide': {
     slug: 'transport-software-buying-guide',
+    ctaProduct: 'transport',
     title: 'Choosing Transport & Logistics Software: What to Actually Compare',
     excerpt: 'Beyond the feature checklist — what actually separates transport software that gets adopted from software that gets abandoned after a month.',
     date: 'August 8, 2026',
@@ -1512,6 +1527,127 @@ The feature checklist gets you a shortlist. What actually determines whether a t
       { title: 'Aadhirai Transport & Logistics', url: '/products/transport-logistics' },
       { title: 'Transport Company Invoicing Guide', url: '/blog/transport-invoicing-software' },
       { title: 'Live GPS Tracking for Delivery Fleets', url: '/blog/gps-tracking-delivery-fleets' },
+    ],
+  },
+  'aadhirai-billing-multi-tenant-retail': {
+    slug: 'aadhirai-billing-multi-tenant-retail',
+    ctaProduct: 'billing',
+    title: 'Aadhirai Billing: Multi-Tenant GST Billing for Retail Businesses',
+    excerpt: 'How self-signup, per-business database isolation, and dual stock tracking make Aadhirai Billing different from a generic invoicing tool.',
+    date: 'August 20, 2026',
+    readTime: '7 min read',
+    category: 'Business Systems',
+    content: `
+# Aadhirai Billing: Multi-Tenant GST Billing for Retail Businesses
+
+Most small retail businesses start billing on whatever's fastest to set up — a generic invoicing app, a spreadsheet template, or a billing tool built for a completely different kind of business and bent into shape. That works until GST compliance, multi-staff access, or basic stock visibility become daily problems instead of occasional annoyances.
+
+This guide covers what Aadhirai Billing actually does and where it fits for a retail business evaluating billing software.
+
+## What "Multi-Tenant" Actually Means Here
+
+Aadhirai Billing is built as a multi-tenant system: every business that signs up gets its own isolated database, provisioned automatically the moment they register. There's no waiting on a sales call or a manual setup step — a business signs up and its own dedicated data environment exists immediately, separate from every other business on the platform.
+
+This matters for two reasons:
+
+- **Data isolation** — one business's inventory, invoices, and staff accounts are never mixed with another's
+- **No provisioning delay** — the system is usable the moment signup completes, not after an onboarding queue
+
+## Billing That Matches How a Counter Actually Works
+
+At the counter, speed and accuracy both matter. Aadhirai Billing supports:
+
+- **Barcode and QR code billing** — scan and go, rather than manually searching a product list for every sale
+- **GST-compliant invoicing** — HSN codes and correct tax breakdowns built into every invoice, not bolted on afterward
+- **Custom fields per business** — because a hardware store and a boutique don't track the same product attributes, and a rigid schema forces workarounds
+
+## Dual Stock Tracking: Serialized and Bulk
+
+A lot of billing software treats every product the same — a quantity number that goes up or down. Retail doesn't work that way. Some items (electronics, high-value goods) need to be tracked individually by serial number; others (loose stock, consumables) just need an accurate bulk quantity. Aadhirai Billing supports both models side by side, so a business doesn't have to force serialized-item tracking onto bulk stock or vice versa.
+
+## Staff Access Without the Risk
+
+As soon as more than one person is billing, access control stops being optional. Role-based staff access means each team member sees and does only what their role permits — a cashier isn't editing pricing rules, and a manager isn't stuck re-entering every sale themselves. Password recovery is admin-mediated rather than a generic email reset flow, keeping account recovery inside the business's own control rather than an open self-service loophole.
+
+## Getting Data In and Out
+
+Retail businesses rarely start from zero — there's usually an existing product list, a supplier catalog, or historical stock data sitting in a spreadsheet somewhere. Aadhirai Billing supports CSV, Excel, and PDF import and export for inventory, so migrating in (or pulling reports out) doesn't mean re-typing hundreds of line items by hand.
+
+## Who This Fits
+
+Aadhirai Billing is aimed at retail businesses in Tamil Nadu and across India that have outgrown a generic invoicing tool but don't need (or want to pay for) a full enterprise ERP rollout — a self-signup system with GST compliance, real stock tracking, and role-based access built in from the start.
+
+[Try Aadhirai Billing](https://www.aadhiraiinnovations.com/products/billing) — self-signup, with your own isolated business database provisioned instantly.
+
+## Summary
+
+The difference between Aadhirai Billing and a generic invoicing tool comes down to three things: true data isolation per business, stock tracking that matches how retail products actually work (serialized and bulk, not one-size-fits-all), and access control that scales past a single user. Together, that's what makes it a billing system rather than just an invoice generator.
+    `,
+    relatedLinks: [
+      { title: 'Aadhirai Billing', url: '/products/billing' },
+      { title: 'Retail POS System Buying Guide', url: '/blog/pos-system-buying-guide' },
+      { title: 'GST Compliance for Indian Pharmacies', url: '/blog/gst-compliance-pharmacies' },
+    ],
+  },
+  'pos-system-buying-guide': {
+    slug: 'pos-system-buying-guide',
+    ctaProduct: 'pos',
+    title: 'Retail POS System: What Actually Matters at the Counter',
+    excerpt: 'Beyond the feature checklist — what separates a POS system that speeds up the counter from one that just adds another screen to manage.',
+    date: 'August 22, 2026',
+    readTime: '7 min read',
+    category: 'Business Systems',
+    content: `
+# Retail POS System: What Actually Matters at the Counter
+
+Every POS vendor's feature list looks similar on paper — billing, inventory, reports. The differences that actually matter show up during a Saturday afternoon rush, not during a demo. This guide covers what to actually evaluate in a retail POS system.
+
+## Speed at the Counter Is the Whole Point
+
+A POS system's first job is to not slow down the sale. Barcode-based billing should mean scan-and-total, not scan-then-wait or scan-then-search. During peak hours — the exact time a slow system costs the most — this is where a POS system either earns its keep or becomes the bottleneck it was bought to remove.
+
+## Inventory That's Actually Real-Time
+
+A sale at the counter should reduce stock immediately, not on a delayed sync or a manual end-of-day reconciliation. For multi-branch retailers, that means real-time stock visibility across every location — not just the one making the sale — with low-stock alerts and reorder recommendations so a branch doesn't discover it's out of a fast-moving item only when a customer asks for it.
+
+## Customer and Loyalty Tracking
+
+Repeat customers are where retail margins actually live. A POS system worth using tracks purchase history and loyalty rewards as part of the same system a cashier is already using to bill — not a separate CRM that never gets updated because it's one more screen to check.
+
+## Reporting That Answers Real Questions
+
+At the end of a day (or a week), the questions that matter are simple: What sold? When were we busiest? What's our margin look like? A POS system should surface daily sales summaries, top-selling products, and peak-hour patterns without requiring a manual export-and-analyze step in a spreadsheet.
+
+## Offline-First Isn't Optional in India
+
+Power and connectivity outages happen. A POS system that stops billing the moment internet drops isn't a POS system a retail counter can depend on — it's a liability waiting for the next outage. Offline-first operation, where billing continues locally and syncs once connectivity returns, protects revenue during exactly the moments a cloud-only system fails.
+
+## Tax Compliance Without the Manual Work
+
+Every sale needs a tax-compliant invoice, and every day needs to reconcile cleanly against what was actually sold. Automated daily reconciliation removes the manual end-of-day tally that's both slow and error-prone, and keeps records audit-ready without extra effort.
+
+## A Practical Checklist
+
+- [ ] Barcode billing fast enough for peak-hour lines
+- [ ] Real-time inventory, not delayed sync
+- [ ] Multi-branch stock visibility with low-stock alerts
+- [ ] Customer purchase history and loyalty built in
+- [ ] Daily sales, top-product, and peak-hour reporting
+- [ ] Offline-first — billing doesn't stop when internet does
+- [ ] Automated tax-compliant invoicing and reconciliation
+
+## How Aadhirai's POS System Fits
+
+[Aadhirai's POS System](https://www.aadhiraiinnovations.com/products/pos-system) is built around this checklist directly — fast barcode-based billing, real-time multi-branch inventory, customer and loyalty tracking, sales analytics, offline-first operation, and automated daily reconciliation for tax-compliant records.
+
+## Summary
+
+A POS system earns its place at the counter by being faster than what it replaced, not slower. Test barcode speed, offline behavior, and multi-branch stock visibility before signing — those three things separate a POS system that gets used from one that gets worked around.
+    `,
+    relatedLinks: [
+      { title: 'POS System', url: '/products/pos-system' },
+      { title: 'Aadhirai Billing', url: '/blog/aadhirai-billing-multi-tenant-retail' },
+      { title: 'Digital Transformation in Retail', url: '/blog/digital-transformation-retail' },
     ],
   },
 }
