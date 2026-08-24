@@ -5,6 +5,7 @@ import { normalizeWhatsAppNumber } from '../whatsapp.js'
 import { getForUser, saveForUser, sendTestMessage, toPublicShape } from '../userWhatsappSettings.js'
 import { recordInboundMessage, recordStatusUpdate } from '../whatsappConversations.js'
 import { advanceFlow } from '../chatFlowEngine.js'
+import { processInboundMedia } from '../whatsappMedia.js'
 
 const router = express.Router()
 
@@ -41,10 +42,17 @@ router.post('/webhook/:userId', async (req, res) => {
         const value = change.value || {}
         for (const metaMessage of value.messages || []) {
           const result = await recordInboundMessage(req.params.userId, metaMessage)
-          // null means this exact message was already recorded (Meta retry) — don't re-run the bot.
+          // null means this exact message was already recorded (Meta retry) — don't re-run the
+          // bot or re-download media for it.
           if (result) {
             advanceFlow(result.conversation.id, result.message).catch((err) =>
               console.error('Flow engine error:', err),
+            )
+            // Fire-and-forget, same as advanceFlow above — the webhook has already responded
+            // 200 by this point, so this never delays or risks Meta's retry behaviour. A no-op
+            // for message types with no downloadable media (extractMediaRef returns null).
+            processInboundMedia(req.params.userId, result.message, metaMessage).catch((err) =>
+              console.error('WhatsApp media download error:', err),
             )
           }
         }

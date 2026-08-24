@@ -1,8 +1,8 @@
 import { prisma } from './prismaClient.js'
 import { encrypt, decrypt } from './crypto.js'
 import { normalizeWhatsAppNumber } from './whatsapp.js'
-
-const API_VERSION = 'v21.0'
+import { GRAPH_API_VERSION } from './graphApiVersion.js'
+import { validateOutboundMedia } from './whatsappMediaLimits.js'
 
 function mask(last4) {
   return last4 ? `••••••••••••${last4}` : null
@@ -66,7 +66,7 @@ async function callMetaSendText(userId, number, message) {
     throw new Error('Save your Phone Number ID and access token first.')
   }
   const accessToken = decrypt(settings.accessTokenEncrypted)
-  const url = `https://graph.facebook.com/${API_VERSION}/${settings.phoneNumberId}/messages`
+  const url = `https://graph.facebook.com/${GRAPH_API_VERSION}/${settings.phoneNumberId}/messages`
 
   const response = await fetch(url, {
     method: 'POST',
@@ -124,6 +124,133 @@ export async function sendConversationMessage(conversation, body, { sentByUserId
         conversationId: conversation.id,
         direction: 'OUTBOUND',
         body,
+        sentByUserId: sentByUserId || null,
+        sentByBot,
+        status: 'FAILED',
+      },
+    })
+    throw error
+  }
+}
+
+// Outbound "Upload" path (item 9) — POST the file's bytes directly to Meta first, then send the
+// returned media id in the message payload. Preferred over the "Link" path for anything private,
+// since Meta's link fetcher is unauthenticated and can't reach a signed/private URL.
+// Throws before ever calling Meta if the file is over the cap or an unsupported MIME type for
+// its message type (item 10) — same caps/allowlist the inbound side enforces on download.
+export async function uploadOutboundMedia(userId, { buffer, mimeType, messageType }) {
+  validateOutboundMedia(messageType, mimeType, buffer.length)
+
+  const settings = await getForUser(userId)
+  if (!settings?.accessTokenEncrypted || !settings.phoneNumberId) {
+    throw new Error('Save your Phone Number ID and access token first.')
+  }
+  const accessToken = decrypt(settings.accessTokenEncrypted)
+  const url = `https://graph.facebook.com/${GRAPH_API_VERSION}/${settings.phoneNumberId}/media`
+
+  const form = new FormData()
+  form.append('messaging_product', 'whatsapp')
+  form.append('type', mimeType)
+  form.append('file', new Blob([buffer], { type: mimeType }))
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: form,
+  })
+  const data = await response.json().catch(() => ({}))
+  if (!response.ok || data.error || !data.id) {
+    throw new Error(data?.error?.message || `WhatsApp media upload failed (${response.status}).`)
+  }
+  return data.id
+}
+
+// Low-level send for one outbound media message — either { mediaId } (Upload path) or
+// { link } (Link path, a publicly reachable HTTPS URL Meta's own fetcher can reach
+// unauthenticated). Exactly one of the two must be given.
+async function callMetaSendMedia(userId, number, { messageType, mediaId, link, caption, filename }) {
+  const settings = await getForUser(userId)
+  if (!settings?.accessTokenEncrypted || !settings.phoneNumberId) {
+    throw new Error('Save your Phone Number ID and access token first.')
+  }
+  const accessToken = decrypt(settings.accessTokenEncrypted)
+  const url = `https://graph.facebook.com/${GRAPH_API_VERSION}/${settings.phoneNumberId}/messages`
+
+  const typeKey = messageType.toLowerCase()
+  const mediaObject = mediaId ? { id: mediaId } : { link }
+  if (caption) mediaObject.caption = caption
+  if (filename && typeKey === 'document') mediaObject.filename = filename
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to: number,
+      type: typeKey,
+      [typeKey]: mediaObject,
+    }),
+  })
+  const data = await response.json().catch(() => ({}))
+  if (!response.ok || data.error) {
+    throw new Error(data?.error?.message || `WhatsApp API request failed (${response.status}).`)
+  }
+  return data
+}
+
+// Mirrors sendConversationMessage's shape (always persist the attempt, SENT or FAILED, before
+// rethrowing) but for a media message. `source` is either { mediaId } (already uploaded via
+// uploadOutboundMedia) or { link }. Also writes the WhatsAppMedia row for outbound messages so
+// the same GET /:id/messages/:messageId/media route and frontend rendering work for both
+// directions without a direction-specific branch.
+export async function sendConversationMedia(conversation, { messageType, source, caption, filename, storageKey, mimeType, fileSize }, { sentByUserId, sentByBot = false } = {}) {
+  const previewLabel = caption ? caption.slice(0, 120) : `[${messageType.toLowerCase()}]`
+  try {
+    const data = await callMetaSendMedia(conversation.userId, conversation.contactNumber, {
+      messageType,
+      mediaId: source.mediaId,
+      link: source.link,
+      caption,
+      filename,
+    })
+    const metaMessageId = data?.messages?.[0]?.id || null
+    const message = await prisma.whatsAppMessage.create({
+      data: {
+        conversationId: conversation.id,
+        direction: 'OUTBOUND',
+        messageType,
+        body: caption || null,
+        metaMessageId,
+        sentByUserId: sentByUserId || null,
+        sentByBot,
+        status: 'SENT',
+        media: storageKey
+          ? {
+              create: {
+                mediaId: source.mediaId || '',
+                mimeType: mimeType || 'application/octet-stream',
+                fileSize: fileSize ?? null,
+                storageKey,
+                originalFilename: filename || null,
+                caption: caption || null,
+                downloadStatus: 'COMPLETE',
+              },
+            }
+          : undefined,
+      },
+    })
+    await prisma.whatsAppConversation.update({
+      where: { id: conversation.id },
+      data: { lastMessageAt: new Date(), lastMessagePreview: previewLabel },
+    })
+    return message
+  } catch (error) {
+    await prisma.whatsAppMessage.create({
+      data: {
+        conversationId: conversation.id,
+        direction: 'OUTBOUND',
+        messageType,
+        body: caption || null,
         sentByUserId: sentByUserId || null,
         sentByBot,
         status: 'FAILED',

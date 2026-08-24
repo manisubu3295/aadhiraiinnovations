@@ -1,7 +1,10 @@
-// Case study content, sourced from the real testimonials already used in
-// src/components/sections/PartnershipsSection.jsx. Only 2 entries exist because
-// only 2 real, attributable client stories exist — do not add placeholder/fabricated
-// entries here. If a new client testimonial becomes available, add it in the same shape.
+// Case study content — every entry here is a real, named client. Do not add fabricated/
+// placeholder/composite entries: CaseStudiesPage.jsx's own copy promises visitors every quote
+// here is a real client's own words ("quoted directly, not a composite or a sample").
+//
+// contactName is optional — when a client gave a company-level account rather than a named
+// person's quote, leave it null/undefined and CaseStudyRow (src/pages/CaseStudiesPage.jsx) falls
+// back to attributing the quote to `client` directly instead of showing a blank name line.
 const caseStudies = [
   {
     slug: 'vasantham-pharmacy',
@@ -34,6 +37,54 @@ const caseStudies = [
     quote:
       'Aadhirai Innovations stands out for delivering high-quality software solutions with exceptional value. Their products are competitively priced, their team ensures timely delivery, and they consistently exceed expectations. I have full confidence in their work and will continue to recommend them to my colleagues.',
     product: { name: 'Fixed-Scope Engineering', href: '/services#engineering' },
+  },
+  {
+    slug: 'akb-transport-logistics',
+    client: 'AKB Transport & Logistics',
+    contactName: null,
+    role: null,
+    location: 'Singapore',
+    industry: 'Transport & Logistics',
+    initial: 'A',
+    outcome: 'Invoicing efficiency',
+    headline: 'Quotations turn into invoices — and client dues stop living in a spreadsheet.',
+    summary:
+      'AKB Transport & Logistics runs quotations, invoicing, and client account tracking on Aadhirai Transport & Logistics. Before switching, the team tracked quotations and outstanding client dues manually in Excel — invoicing took longer, and knowing exactly what each client owed meant digging through a spreadsheet. Converting an approved quotation straight into an invoice, and seeing every client\'s dues at a glance, is now part of the same system instead of a manual step.',
+    quote:
+      'Invoicing and quotations are far more efficient now, and we can see exactly what each client owes without digging through spreadsheets. It\'s a big change from how we used to track things in Excel.',
+    product: { name: 'Aadhirai Transport & Logistics', href: '/products/transport-logistics' },
+  },
+  {
+    slug: 'shanthi-clinic',
+    client: 'Shanthi Clinic',
+    contactName: null,
+    role: null,
+    location: 'Pattukottai',
+    industry: 'Pharmacy',
+    initial: 'S',
+    outcome: 'Reliable support',
+    headline: 'Signed on early, and the support is what has kept them with us.',
+    summary:
+      'Shanthi Clinic in Pattukottai adopted Medora+ for pharmacy billing and stock management early on. What has kept them with Aadhirai Innovations since isn\'t only the software — it\'s been the service and support, from the initial setup through everyday use.',
+    quote:
+      'We started with Medora+ when we were just getting going, and the service and support have been with us the whole way. That\'s what has kept us with Aadhirai Innovations.',
+    product: { name: 'Medora+', href: '/products/medora-plus' },
+  },
+  {
+    slug: 'pr-rajagopala-iyengar',
+    client: 'P R Rajagopala Iyengar',
+    contactName: null,
+    role: null,
+    location: 'Tiruvarur',
+    industry: 'Retail & Dealership',
+    initial: 'P',
+    outcome: 'Affordable, done well',
+    headline: 'A professional web presence, without an enterprise price tag.',
+    summary:
+      'P R Rajagopala Iyengar, an authorized Texmo dealer in Tiruvarur specializing in electrical, plumbing, pump, and borewell equipment, needed a website that represented the business properly without a large design budget. Aadhirai Innovations designed and built the site at an affordable price, giving the business a real web presence to point customers to.',
+    quote:
+      'We wanted a proper website for the business without paying enterprise prices for it. Aadhirai Innovations delivered exactly that — a professional site at a price that worked for us.',
+    product: { name: 'View live site', href: 'https://prrajagopalaiyengar.com' },
   },
 ]
 

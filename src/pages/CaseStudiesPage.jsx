@@ -3,27 +3,27 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
 import Container from '../components/ui/Container'
 import PatternBackground from '../components/ui/PatternBackground'
+import OutcomeTag from '../components/ui/OutcomeTag'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 import caseStudies from '../data/caseStudies'
 
-function OutcomeTag({ label, dark }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.18em] ${
-        dark
-          ? 'border-white/15 bg-white/[0.06] text-white/55'
-          : 'border-[#0B1F3A]/12 bg-[#0B1F3A]/[0.06] text-[#0B1F3A]/55'
-      }`}
-    >
-      <span className={`h-1.5 w-1.5 rounded-full ${dark ? 'bg-white/40' : 'bg-[#0B1F3A]/35'}`} />
-      {label}
-    </span>
-  )
+// study.product.href is normally an internal route (react-router Link) — but a case study about
+// a delivered website (rather than one of our own products) links out to the live site itself,
+// which needs a real <a>, not client-side routing.
+function isExternalHref(href) {
+  return /^https?:\/\//i.test(href)
 }
 
 function CaseStudyRow({ study, dark }) {
+  // contactName is optional (a company-level account with no named person) — fall back to the
+  // client name as the primary attribution rather than rendering a blank name line, and drop the
+  // "role · client" line down to just the location so it doesn't read as "· Client · Client".
+  const attributionName = study.contactName || study.client
+  const detailParts = study.contactName ? [study.role, study.client].filter(Boolean) : []
+  const attributionDetail = [detailParts.join(' · '), study.location].filter(Boolean).join(', ')
+
   return (
-    <section className={dark ? 'bg-[#0B1F3A] py-20 md:py-24' : 'bg-white py-20 md:py-24'}>
+    <section id={study.slug} className={dark ? 'bg-[#0B1F3A] py-20 md:py-24' : 'bg-white py-20 md:py-24'}>
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
           {/* Left: framing */}
@@ -51,17 +51,33 @@ function CaseStudyRow({ study, dark }) {
               {study.summary}
             </p>
             {study.product && (
-              <Link
-                to={study.product.href}
-                className={`group inline-flex items-center gap-2 text-[13.5px] font-semibold border-b-2 pb-0.5 transition-colors ${
-                  dark
-                    ? 'text-white border-white/25 hover:border-white'
-                    : 'text-[#0B1F3A] border-[#0B1F3A]/18 hover:border-[#0B1F3A]'
-                }`}
-              >
-                {study.product.name}
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} />
-              </Link>
+              isExternalHref(study.product.href) ? (
+                <a
+                  href={study.product.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`group inline-flex items-center gap-2 text-[13.5px] font-semibold border-b-2 pb-0.5 transition-colors ${
+                    dark
+                      ? 'text-white border-white/25 hover:border-white'
+                      : 'text-[#0B1F3A] border-[#0B1F3A]/18 hover:border-[#0B1F3A]'
+                  }`}
+                >
+                  {study.product.name}
+                  <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} />
+                </a>
+              ) : (
+                <Link
+                  to={study.product.href}
+                  className={`group inline-flex items-center gap-2 text-[13.5px] font-semibold border-b-2 pb-0.5 transition-colors ${
+                    dark
+                      ? 'text-white border-white/25 hover:border-white'
+                      : 'text-[#0B1F3A] border-[#0B1F3A]/18 hover:border-[#0B1F3A]'
+                  }`}
+                >
+                  {study.product.name}
+                  <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} />
+                </Link>
+              )
             )}
           </motion.div>
 
@@ -94,11 +110,10 @@ function CaseStudyRow({ study, dark }) {
               </div>
               <div>
                 <div className={`text-[13.5px] font-semibold ${dark ? 'text-white' : 'text-[#0B1F3A]'}`}>
-                  {study.contactName}
+                  {attributionName}
                 </div>
                 <div className={`mt-0.5 text-[12px] ${dark ? 'text-white/40' : 'text-[#0B1F3A]/45'}`}>
-                  {study.role} · {study.client}
-                  {study.location ? `, ${study.location}` : ''}
+                  {attributionDetail}
                 </div>
               </div>
             </figcaption>
@@ -127,7 +142,7 @@ export default function CaseStudiesPage() {
               Results, in our clients' own words.
             </h1>
             <p className="mt-5 text-base text-slate-600 md:text-lg leading-relaxed">
-              We work with a small number of clients at a time. Here's what two of them told us, unedited.
+              We work with a small number of clients at a time. Here's what they told us, unedited.
             </p>
           </motion.div>
         </Container>

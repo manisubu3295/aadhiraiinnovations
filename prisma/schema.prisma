@@ -234,9 +234,23 @@ enum WhatsAppMessageType {
   DOCUMENT
   AUDIO
   VIDEO
+  STICKER
   LOCATION
+  CONTACTS
+  REACTION
   INTERACTIVE
   OTHER
+}
+
+// One row per downloadable media object on a WhatsAppMessage (image/document/audio/video/
+// sticker only — location/contacts/reaction never carry a Meta media id, so they stay
+// rawPayload-only on WhatsAppMessage and never get a row here).
+enum WhatsAppMediaDownloadStatus {
+  PENDING
+  DOWNLOADING
+  COMPLETE
+  FAILED
+  REJECTED_SIZE
 }
 
 model WhatsAppConversation {
@@ -283,8 +297,44 @@ model WhatsAppMessage {
   sentByUserId String?
   sentByUser   User?   @relation(fields: [sentByUserId], references: [id], onDelete: SetNull)
 
+  media WhatsAppMedia?
+
   @@index([conversationId, createdAt])
   @@map("whatsapp_messages")
+}
+
+// Downloaded media for one WhatsAppMessage. sha256/mimeType/fileSize/mediaId are Meta's own
+// declared values from the media-metadata lookup (step a of the two-step download); detectedMime
+// is sniffed from the actual downloaded bytes (never trust the declared mime_type or the client
+// filename for anything security-sensitive — storageKey is always a server-generated name).
+// No hard-unique constraint on mediaId/sha256: the same photo legitimately arriving in two
+// different messages isn't an error, so dedup (reusing an existing storageKey instead of
+// re-downloading identical bytes) is an application-level lookup, not a DB constraint that would
+// reject a valid insert.
+model WhatsAppMedia {
+  id               String                      @id @default(cuid())
+  mediaId          String
+  sha256           String?
+  mimeType         String
+  detectedMimeType String?
+  fileSize         Int?
+  storageKey       String?
+  originalFilename String?
+  caption          String?
+  isVoiceNote      Boolean                     @default(false)
+  downloadStatus   WhatsAppMediaDownloadStatus @default(PENDING)
+  retryCount       Int                         @default(0)
+  lastError        String?
+  createdAt        DateTime                    @default(now())
+  updatedAt        DateTime                    @updatedAt
+
+  messageId String          @unique
+  message   WhatsAppMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([mediaId])
+  @@index([sha256])
+  @@index([downloadStatus])
+  @@map("whatsapp_media")
 }
 
 enum ChatFlowTriggerType {

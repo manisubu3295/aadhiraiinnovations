@@ -125,6 +125,19 @@ section {
   from { transform: translateX(0) }
   to   { transform: translateX(-50%) }
 }
+/* Used by TestimonialsMarqueeSection — the track renders its list twice back-to-back so
+   translateX(-50%) loops seamlessly. Reduced-motion is already handled globally above.
+   Pause-on-hover is a plain CSS rule here rather than a Tailwind arbitrary hover utility
+   (`hover:[animation-play-state:paused]`) — that utility never actually took effect, since
+   Tailwind's generated utilities land earlier in the cascade than this file's own rules, and
+   the shorthand `animation` property below resets animation-play-state regardless of the
+   utility's higher selector specificity once source order puts this rule last. */
+.animate-marquee {
+  animation: marquee-slide 45s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
 
 /* ─── Hide scrollbar utility ────────────────────────────────── */
 .no-scrollbar::-webkit-scrollbar { display: none; }

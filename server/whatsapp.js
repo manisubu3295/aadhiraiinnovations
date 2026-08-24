@@ -2,6 +2,7 @@ import { prisma } from './prismaClient.js'
 import { getSettings } from './settings.js'
 import { getWhatsAppTemplate } from './whatsappTemplates.js'
 import { logWhatsApp } from './whatsappLog.js'
+import { GRAPH_API_VERSION } from './graphApiVersion.js'
 
 // Client.phone (and the staff notify number) are free-text today, so this is a best-effort
 // normalizer rather than strict validation: strips formatting, and assumes +91 for a bare
@@ -52,7 +53,7 @@ export async function deliverWhatsApp({ to, templateKey, components = [], meta }
     throw error
   }
 
-  const apiVersion = settings.whatsappApiVersion || 'v21.0'
+  const apiVersion = settings.whatsappApiVersion || GRAPH_API_VERSION
   const url = `https://graph.facebook.com/${apiVersion}/${settings.whatsappPhoneNumberId}/messages`
 
   try {

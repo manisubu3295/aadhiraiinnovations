@@ -14,12 +14,34 @@ const MESSAGE_TYPE_MAP = {
   document: 'DOCUMENT',
   audio: 'AUDIO',
   video: 'VIDEO',
+  sticker: 'STICKER',
   location: 'LOCATION',
+  contacts: 'CONTACTS',
+  reaction: 'REACTION',
   interactive: 'INTERACTIVE',
 }
 
 export function mapMessageType(metaType) {
   return MESSAGE_TYPE_MAP[metaType] || 'OTHER'
+}
+
+// `body` was previously text-only, which silently dropped captions on image/video/document
+// messages — they were only reachable via rawPayload. Captions now surface the same way a text
+// body does, so both the conversation preview and the admin inbox show them without a separate
+// code path per media type.
+export function extractMessageBody(metaMessage) {
+  switch (metaMessage.type) {
+    case 'text':
+      return metaMessage.text?.body || null
+    case 'image':
+      return metaMessage.image?.caption || null
+    case 'video':
+      return metaMessage.video?.caption || null
+    case 'document':
+      return metaMessage.document?.caption || null
+    default:
+      return null
+  }
 }
 
 // Finds the conversation for (userId, contactNumber), or creates one — matching against
@@ -57,7 +79,7 @@ export async function recordInboundMessage(userId, metaMessage) {
 
   const conversation = await findOrCreateConversation(userId, contactNumber)
   const messageType = mapMessageType(metaMessage.type)
-  const body = metaMessage.type === 'text' ? metaMessage.text?.body || null : null
+  const body = extractMessageBody(metaMessage)
 
   const message = await prisma.whatsAppMessage.create({
     data: {

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import HeroSection from '../components/sections/HeroSection'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 import FeaturedCitiesSection from '../components/sections/FeaturedCitiesSection'
-import WhyChooseUsSection from '../components/sections/WhyChooseUsSection'
+import TestimonialsMarqueeSection from '../components/sections/TestimonialsMarqueeSection'
 import VideoSection from '../components/sections/VideoSection'
 import Container from '../components/ui/Container'
 
@@ -133,8 +133,9 @@ function HomePage() {
         </Container>
       </section>
 
-      {/* ── Handmade software USP — bridges the hero into the product tiers below ───── */}
-      <WhyChooseUsSection />
+      {/* ── Client results — real case-study testimonials, bridges the hero into the
+          product tiers below ─────────────────────────────────────────────────────── */}
+      <TestimonialsMarqueeSection />
 
       {/* ── Overview video — reinforces the pitch right where visitors
           land, before the product deep-dives below ─────────────────────────────── */}

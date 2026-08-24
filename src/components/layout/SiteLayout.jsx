@@ -1217,16 +1217,44 @@ const DEFAULT_SEO = SEO['/']
 function SiteLayout() {
   const { pathname, hash } = useLocation()
 
-  /* Scroll to hash anchor or page top on navigation */
+  /* Scroll to hash anchor or page top on navigation.
+     Every route in App.jsx is React.lazy + Suspense, so on a cold-cache navigation to a hash
+     link (e.g. a case-study card's "Read full story" -> /case-studies#slug) this effect can
+     fire while the target route is still showing its Suspense fallback — document.querySelector
+     finds nothing yet, and a single attempt would silently fall back to scrolling to the top,
+     with nothing re-triggering the scroll once the real content mounts a moment later. Poll
+     briefly instead of giving up on the first render. */
   useEffect(() => {
-    if (hash) {
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+
+    let cancelled = false
+    let attempts = 0
+    const maxAttempts = 40 // ~2s at 50ms — generous for a lazy chunk fetch on a slow connection
+    let timer
+
+    const tryScroll = () => {
+      if (cancelled) return
       const el = document.querySelector(hash)
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
         return
       }
+      attempts += 1
+      if (attempts >= maxAttempts) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+      timer = setTimeout(tryScroll, 50)
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    tryScroll()
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
   }, [pathname, hash])
 
   /* Fallback SEO for this route, rendered as a <Helmet> further up this component's
