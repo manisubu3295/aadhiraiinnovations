@@ -42,7 +42,7 @@ const SEO = {
       'Aadhirai Innovations was founded to help funded Indian startups build backend infrastructure that scales. Senior architect with enterprise-grade financial systems experience.',
     ogTitle: 'About | Aadhirai Innovations',
     ogDescription:
-      'Senior backend architecture for funded Indian startups. Founded by Arthi Manikandan. Senior architect with 8+ years experience in high-availability systems.',
+      'Senior backend architecture for funded Indian startups. Founded by Arthi Manikandan. Senior architect with 10+ years experience in high-availability systems.',
     canonical: 'https://www.aadhiraiinnovations.com/about',
   },
   '/contact': {

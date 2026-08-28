@@ -170,6 +170,15 @@ export const DEFAULT_TEMPLATES = [
       '<h2>New Enterprise / Guided Setup Inquiry</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>WhatsApp:</strong> {{whatsapp}}</p><p><strong>Business:</strong> {{businessName}}</p><p><strong>Requirements:</strong></p><p>{{message}}</p><p>Review and follow up from the Leads page.</p>',
   },
   {
+    key: 'PRICING_INQUIRY_STAFF_NOTIFY',
+    category: 'ENQUIRY',
+    label: 'Pricing page estimate request (to staff)',
+    variables: ['name', 'email', 'phone', 'product', 'teamSize', 'locations', 'message'],
+    subject: 'New pricing estimate request — {{product}}',
+    bodyHtml:
+      '<h2>New Pricing Estimate Request</h2><p><strong>Name:</strong> {{name}}</p><p><strong>Email:</strong> {{email}}</p><p><strong>Phone:</strong> {{phone}}</p><p><strong>Product:</strong> {{product}}</p><p><strong>Team size:</strong> {{teamSize}}</p><p><strong>Locations:</strong> {{locations}}</p><p><strong>Notes:</strong></p><p>{{message}}</p><p>Review and follow up from the Leads page.</p>',
+  },
+  {
     key: 'FORUM_NEW_QUESTION_STAFF_NOTIFY',
     category: 'FORUM',
     label: 'New forum question posted (to staff)',

@@ -45,6 +45,11 @@ export const DEFAULT_TEMPLATES = [
     label: 'Offline enterprise/guided setup inquiry (to staff)',
     params: ['name', 'businessName', 'whatsapp'],
   },
+  {
+    key: 'PRICING_INQUIRY_LEAD_STAFF',
+    label: 'Pricing page estimate request (to staff)',
+    params: ['name', 'product', 'phone'],
+  },
 ]
 
 const DEFAULTS_BY_KEY = Object.fromEntries(DEFAULT_TEMPLATES.map((t) => [t.key, t]))

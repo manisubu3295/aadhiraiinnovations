@@ -92,7 +92,7 @@ function AboutPage() {
               </p>
               <p className="mt-5 text-slate-600 leading-[1.85]">
                 Our practice is built around Manikandan Subramaniyan, our senior architect and technical lead,
-                who brings over eight years of backend engineering experience including direct work on
+                who brings over ten years of backend engineering experience including direct work on
                 enterprise-grade financial systems — high-availability, high-compliance infrastructure where
                 reliability is non-negotiable. That background shapes how we approach every engagement: we
                 look at startup systems with the same rigour applied to systems where failure carries serious

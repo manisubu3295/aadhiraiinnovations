@@ -18,7 +18,8 @@ const stagger  = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 /* ─── Data ──────────────────────────────────────────────────────────────── */
 const metrics = [
   { value: '10+',   sup: '',      label: 'Custom software\nproducts built' },
-  { value: '8+',    sup: 'yrs',   label: 'Software engineering\nexperience' },
+  { value: '4+',    sup: '',      label: 'Clients we\'ve\ndelivered for' },
+  { value: '10+',   sup: 'yrs',   label: 'Software engineering\nexperience' },
 ]
 
 /* Tier 1 — Pharmacy (primary) */
@@ -101,7 +102,7 @@ function HomePage() {
       {/* ── Metrics ───────────────────────────────────────────────────────── */}
       <section className="bg-[#0B1F3A]">
         <Container>
-          <div className="mx-auto grid max-w-md grid-cols-2 divide-x divide-white/[0.06]">
+          <div className="mx-auto grid max-w-xl grid-cols-3 divide-x divide-white/[0.06]">
             {metrics.map((m, i) => (
               <motion.div
                 key={m.label}
