@@ -32,6 +32,7 @@ const CaseStudiesPage      = lazy(() => import('./pages/CaseStudiesPage'))
 const PricingPage          = lazy(() => import('./pages/PricingPage'))
 const CareersPage          = lazy(() => import('./pages/CareersPage'))
 const ResourcesPage        = lazy(() => import('./pages/ResourcesPage'))
+const WebinarPage          = lazy(() => import('./pages/WebinarPage'))
 const ProductPage          = lazy(() => import('./pages/ProductPage'))
 const LocalSEOPage         = lazy(() => import('./pages/LocalSEOPage'))
 const PharmacyLocationsHubPage = lazy(() => import('./pages/PharmacyLocationsHubPage'))
@@ -316,6 +317,10 @@ function App() {
         <Route
           path="/resources"
           element={<Suspense fallback={<PageLoader />}><ResourcesPage /></Suspense>}
+        />
+        <Route
+          path="/webinar"
+          element={<Suspense fallback={<PageLoader />}><WebinarPage /></Suspense>}
         />
 
         {/* National pharmacy-software local SEO — hub -> state -> district. More specific

@@ -40,6 +40,11 @@ const NAV = [
     href: '/tools',
   },
   {
+    key: 'webinar',
+    label: 'Webinar',
+    href: '/webinar',
+  },
+  {
     key: 'company',
     label: 'Company',
     groups: [

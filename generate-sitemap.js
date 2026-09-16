@@ -34,6 +34,7 @@ const staticPages = [
   { path: '/case-studies', lastmod: today, priority: '0.7', changefreq: 'monthly' },
   { path: '/blog', lastmod: today, priority: '0.7', changefreq: 'weekly' },
   { path: '/resources', lastmod: today, priority: '0.6', changefreq: 'monthly' },
+  { path: '/webinar', lastmod: today, priority: '0.6', changefreq: 'monthly' },
   { path: '/careers', lastmod: today, priority: '0.4', changefreq: 'monthly' },
   { path: '/contact', lastmod: today, priority: '0.7', changefreq: 'monthly' },
   { path: '/tools', lastmod: today, priority: '0.6', changefreq: 'monthly' },

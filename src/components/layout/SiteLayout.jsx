@@ -291,6 +291,14 @@ const SEO = {
     ogDescription: 'Free tools and downloadable guides for pharmacy and business operations.',
     canonical: 'https://www.aadhiraiinnovations.com/resources',
   },
+  '/webinar': {
+    title: 'Webinar — NextGen Builder Session 01 | Aadhirai Innovations',
+    description:
+      'Join NextGen Builder Session 01, a live technical webinar covering requirement gathering, technology selection, database design, architecture, build & testing, and DevOps.',
+    ogTitle: 'Webinar | Aadhirai Innovations',
+    ogDescription: 'A live technical webinar on building production-grade software, from requirement gathering to architecture and DevOps.',
+    canonical: 'https://www.aadhiraiinnovations.com/webinar',
+  },
   '/tools/percentage-calculator': {
     title: 'Percentage Calculator — Find X% of a Number | Aadhirai Innovations',
     description: 'Free percentage calculator. Find X% of a number, what percentage one number is of another, or the percentage change between two values.',
