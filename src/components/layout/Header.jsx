@@ -14,6 +14,8 @@ const NAV = [
         items: [
           { label: 'Medora+', desc: 'AI-powered pharmacy management, cloud-synced', href: '/products/medora-plus' },
           { label: 'Medora Offline', desc: 'Fully offline pharmacy software — one-time license, no internet needed', href: '/products/medora-offline' },
+          { label: 'Clinic Pharmacy', desc: 'Pharmacy billing, stock & doctor referrals for clinics with their own dispensary', href: '/products/clinic-pharmacy' },
+          { label: 'Aadhirai LIMS', desc: 'Lab management with HL7/ASTM analyzer interfacing — results to report, no re-typing', href: '/products/lab-management' },
           { label: 'Aadhirai Billing', desc: 'Multi-tenant billing & inventory — free signup, isolated database per business', href: '/products/billing' },
           { label: 'HR & Inventory', desc: 'HRM software with payroll, attendance & inventory — built for growing Indian businesses', href: '/products/hr-inventory' },
           { label: 'Transport & Logistics', desc: 'Quotation-to-invoice, live GPS driver tracking, and fleet management', href: '/products/transport-logistics' },

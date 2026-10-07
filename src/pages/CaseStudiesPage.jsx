@@ -5,6 +5,7 @@ import Container from '../components/ui/Container'
 import PatternBackground from '../components/ui/PatternBackground'
 import OutcomeTag from '../components/ui/OutcomeTag'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
+import ClientsSection from '../components/sections/ClientsSection'
 import caseStudies from '../data/caseStudies'
 
 // study.product.href is normally an internal route (react-router Link) — but a case study about
@@ -152,6 +153,9 @@ export default function CaseStudiesPage() {
       {caseStudies.map((study, i) => (
         <CaseStudyRow key={study.slug} study={study} dark={i % 2 === 1} />
       ))}
+
+      {/* ── Full client roster (incl. clients not quoted above) ───────── */}
+      <ClientsSection bg="bg-white" />
 
       {/* ── Closing note ──────────────────────────────────────────────── */}
       <section className="bg-slate-50 border-y border-slate-100 py-14">

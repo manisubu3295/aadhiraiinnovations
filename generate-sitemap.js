@@ -217,6 +217,8 @@ const productSlugs = [
   'billing',
   'hr-inventory',
   'transport-logistics',
+  'clinic-pharmacy',
+  'lab-management',
 ]
 
 const FLAGSHIP_PRODUCT_SLUGS = new Set(['hr-inventory', 'transport-logistics'])

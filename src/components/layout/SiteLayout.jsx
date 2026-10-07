@@ -132,6 +132,24 @@ const SEO = {
       'Quotation-to-invoice conversion, live GPS driver tracking, delivery job tracking, fleet management, and revenue reporting — built for transport and logistics companies.',
     canonical: 'https://www.aadhiraiinnovations.com/products/transport-logistics',
   },
+  '/products/clinic-pharmacy': {
+    title: 'Clinic Pharmacy Software India — Billing & Medicine Stock for Clinics | Aadhirai Innovations',
+    description:
+      'Pharmacy software for clinics with their own dispensary — GST billing, credit billing, batch and expiry stock, doctor referrals and commissions, Tally export. Runs offline. Pairs with Aadhirai LIMS.',
+    ogTitle: 'Clinic Pharmacy Software | Aadhirai Innovations',
+    ogDescription:
+      'GST billing, batch and expiry stock, and doctor referrals for clinic dispensaries — shares patients and doctors with the clinic lab.',
+    canonical: 'https://www.aadhiraiinnovations.com/products/clinic-pharmacy',
+  },
+  '/products/lab-management': {
+    title: 'Aadhirai LIMS — Lab Management & Analyzer Interfacing Software India | Aadhirai Innovations',
+    description:
+      'Laboratory information management software (LIMS) with HL7/ASTM analyzer interfacing — registration, GST billing, barcode samples, QC, and NABL-style QR-verified reports. Cloud, on-premise, or offline branch servers.',
+    ogTitle: 'Aadhirai LIMS — Lab Management & Interfacing | Aadhirai Innovations',
+    ogDescription:
+      'Results captured straight from lab analyzers into patient reports — no re-typing. Built for clinic labs and diagnostic centres.',
+    canonical: 'https://www.aadhiraiinnovations.com/products/lab-management',
+  },
   '/founder': {
     title: 'Founder | Aadhirai Innovations — Enterprise Software Company, Tamil Nadu',
     description:
@@ -262,7 +280,7 @@ const SEO = {
   '/case-studies': {
     title: 'Case Studies — Client Results | Aadhirai Innovations',
     description:
-      'How Ebrain Technologies and Vasantham Pharmacy use Aadhirai Innovations software and engineering to run their operations.',
+      'Client results and delivered work from Aadhirai Innovations — clinics, pharmacies, retailers, and transport operators running on our pharmacy, lab, billing, and logistics software, websites, and SEO.',
     ogTitle: 'Case Studies | Aadhirai Innovations',
     ogDescription: 'Real client results from Aadhirai Innovations products and engineering work.',
     canonical: 'https://www.aadhiraiinnovations.com/case-studies',

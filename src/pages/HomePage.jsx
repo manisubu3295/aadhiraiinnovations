@@ -8,6 +8,7 @@ import HeroSection from '../components/sections/HeroSection'
 import FinalCtaSection from '../components/sections/FinalCtaSection'
 import FeaturedCitiesSection from '../components/sections/FeaturedCitiesSection'
 import TestimonialsMarqueeSection from '../components/sections/TestimonialsMarqueeSection'
+import ClientsSection from '../components/sections/ClientsSection'
 import VideoSection from '../components/sections/VideoSection'
 import Container from '../components/ui/Container'
 
@@ -17,8 +18,8 @@ const stagger  = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 
 /* ─── Data ──────────────────────────────────────────────────────────────── */
 const metrics = [
-  { value: '10+',   sup: '',      label: 'Custom software\nproducts built' },
-  { value: '4+',    sup: '',      label: 'Clients we\'ve\ndelivered for' },
+  { value: '15+',   sup: '',      label: 'Software products\n& systems built' },
+  { value: '9+',    sup: '',      label: 'Clients we\'ve\nworked with' },
   { value: '10+',   sup: 'yrs',   label: 'Software engineering\nexperience' },
 ]
 
@@ -42,6 +43,22 @@ const pharmacyProducts = [
     tag: 'One-time license',
     desc: 'The same billing and inventory core, fully offline — no internet or subscription required. Free trial available.',
     href: '/products/medora-offline',
+  },
+]
+
+/* Same pharmacy core, extended for clinics + their in-house labs */
+const clinicProducts = [
+  {
+    name: 'Aadhirai Clinic Pharmacy',
+    tag: 'For clinics',
+    desc: 'GST billing, batch and expiry stock, and doctor referrals for clinic dispensaries — shares patients with the clinic lab.',
+    href: '/products/clinic-pharmacy',
+  },
+  {
+    name: 'Aadhirai LIMS',
+    tag: 'Analyzer-connected',
+    desc: 'Lab management with HL7/ASTM analyzer interfacing — registration, barcode samples, QC, and verified reports, no re-typing.',
+    href: '/products/lab-management',
   },
 ]
 
@@ -138,6 +155,9 @@ function HomePage() {
           product tiers below ─────────────────────────────────────────────────────── */}
       <TestimonialsMarqueeSection />
 
+      {/* ── Full client roster — every business we've delivered for, incl. launching soon ── */}
+      <ClientsSection />
+
       {/* ── Overview video — reinforces the pitch right where visitors
           land, before the product deep-dives below ─────────────────────────────── */}
       <VideoSection />
@@ -203,6 +223,31 @@ function HomePage() {
                     <div className="flex items-baseline gap-3">
                       <h3 className="text-[17px] font-semibold text-[#0B1F3A] group-hover:text-blue-700 transition-colors">{p.name}</h3>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">{p.tag}</span>
+                    </div>
+                    <p className="mt-3 text-[13.5px] text-slate-500 leading-[1.75] flex-1">{p.desc}</p>
+                    <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#0B1F3A]">
+                      Learn more <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Clinics & labs — same pharmacy core, extended for clinic dispensaries + labs */}
+            <motion.div variants={fadeUp} className="mt-12 flex items-center gap-4">
+              <span className="h-px w-10 bg-slate-200" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">Also for clinics &amp; labs</span>
+            </motion.div>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              {clinicProducts.map((p) => (
+                <motion.div key={p.name} variants={fadeUp}>
+                  <Link
+                    to={p.href}
+                    className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50/60 p-7 transition-all hover:bg-white hover:shadow-md hover:border-slate-300"
+                  >
+                    <div className="flex flex-wrap items-baseline gap-3">
+                      <h3 className="text-[17px] font-semibold text-[#0B1F3A] group-hover:text-blue-700 transition-colors">{p.name}</h3>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400 bg-white px-2.5 py-1 rounded-full border border-slate-100">{p.tag}</span>
                     </div>
                     <p className="mt-3 text-[13.5px] text-slate-500 leading-[1.75] flex-1">{p.desc}</p>
                     <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#0B1F3A]">

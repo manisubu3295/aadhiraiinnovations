@@ -65,10 +65,10 @@ const caseStudies = [
     outcome: 'Reliable support',
     headline: 'Signed on early, and the support is what has kept them with us.',
     summary:
-      'Shanthi Clinic in Pattukottai adopted Medora+ for pharmacy billing and stock management early on. What has kept them with Aadhirai Innovations since isn\'t only the software — it\'s been the service and support, from the initial setup through everyday use.',
+      'Shanthi Clinic in Pattukottai adopted Medora+ for pharmacy billing and stock management early on, and today runs its in-house dispensary on Aadhirai Clinic Pharmacy — the clinic edition built on the same core. What has kept them with Aadhirai Innovations since isn\'t only the software — it\'s been the service and support, from the initial setup through everyday use.',
     quote:
       'We started with Medora+ when we were just getting going, and the service and support have been with us the whole way. That\'s what has kept us with Aadhirai Innovations.',
-    product: { name: 'Medora+', href: '/products/medora-plus' },
+    product: { name: 'Aadhirai Clinic Pharmacy', href: '/products/clinic-pharmacy' },
   },
   {
     slug: 'pr-rajagopala-iyengar',
@@ -79,12 +79,12 @@ const caseStudies = [
     industry: 'Retail & Dealership',
     initial: 'P',
     outcome: 'Affordable, done well',
-    headline: 'A professional web presence, without an enterprise price tag.',
+    headline: 'A professional web presence, found on search, without an enterprise price tag.',
     summary:
-      'P R Rajagopala Iyengar, an authorized Texmo dealer in Tiruvarur specializing in electrical, plumbing, pump, and borewell equipment, needed a website that represented the business properly without a large design budget. Aadhirai Innovations designed and built the site at an affordable price, giving the business a real web presence to point customers to.',
+      'P R Rajagopala Iyengar, an authorized Texmo dealer in Tiruvarur specializing in electrical, plumbing, pump, and borewell equipment, needed a website that represented the business properly without a large design budget. Aadhirai Innovations designed and built the site at an affordable price, then handled its search engine optimisation (SEO) — so the business has a real web presence that local customers can actually find on Google.',
     quote:
       'We wanted a proper website for the business without paying enterprise prices for it. Aadhirai Innovations delivered exactly that — a professional site at a price that worked for us.',
-    product: { name: 'View live site', href: 'https://prrajagopalaiyengar.com' },
+    product: { name: 'Visit prrajagopalaiyengar.com', href: 'https://prrajagopalaiyengar.com/' },
   },
 ]
 
